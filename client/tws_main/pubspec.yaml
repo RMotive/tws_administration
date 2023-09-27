@@ -9,6 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  go_router: ^11.0.0
+  cosmos_foundation:
+    git:
+      url: https://github.com/RMotive/CMSF-Cosmos_Foundation
+      path: package/cosmos_foundation
 
 dev_dependencies:
   flutter_test:
