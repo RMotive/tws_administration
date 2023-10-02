@@ -1,7 +1,7 @@
+import 'package:cosmos_foundation/widgets/hooks/themed_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/config/routing.dart';
-import 'package:tws_main/widgets/themed_widget.dart';
 
 void main() {
   runApp(
@@ -12,26 +12,33 @@ void main() {
 class MainApp extends StatelessWidget {
   MainApp({super.key});
 
-  final ValueListenable themeHandler = ValueNotifier(ThemeMode.dark);
+  final ValueListenable<ThemeMode> themeHandler = ValueNotifier<ThemeMode>(ThemeMode.dark);
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeHandler,
-      builder: (context, value, child) {
+      builder: (BuildContext context, ThemeMode value, Widget? child) {
         return MaterialApp.router(
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
+          theme: ThemeData.light(
+            useMaterial3: true,
+          ),
+          darkTheme: ThemeData.dark(
+            useMaterial3: true,
+          ),
           themeMode: value,
-          routerConfig: routingConfig,
-          builder: (context, child) {
+          routerConfig: Routing(),
+          builder: (BuildContext context, Widget? child) {
             if (child == null) return Container();
 
             return ThemedWidget(
-              builder: (ctx, theme) {
-                return ColoredBox(
-                  color: theme.colorScheme.background,
-                  child: child,
+              builder: (BuildContext ctx, ThemeData theme) {
+                return DefaultTextStyle(
+                  style: theme.textTheme.labelLarge ?? const TextStyle(),
+                  child: ColoredBox(
+                    color: theme.colorScheme.background,
+                    child: child,
+                  ),
                 );
               },
             );

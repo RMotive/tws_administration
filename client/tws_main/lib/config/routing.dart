@@ -1,12 +1,14 @@
 import 'package:go_router/go_router.dart';
-import 'package:tws_main/view/login_view/login_view.dart';
+import 'package:tws_main/views/screens/access_screen.dart';
 
-///
-final routingConfig = GoRouter(
-  routes: <RouteBase>[
-    GoRoute(
-      path: '/',
-      builder: (ctx, _) => const LoginScreen(),
-    ),
-  ],
-);
+class Routing extends GoRouter {
+  Routing()
+      : super(
+          routes: <RouteBase>[
+            GoRoute(
+              path: '/',
+              builder: (ctx, _) => const AccessScreen(),
+            ),
+          ],
+        );
+}
