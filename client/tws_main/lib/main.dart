@@ -1,48 +1,37 @@
-import 'package:cosmos_foundation/widgets/hooks/themed_widget.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cosmos_foundation/helpers/theme.dart';
+import 'package:cosmos_foundation/widgets/hooks/cosmos_app.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/config/routing.dart';
+import 'package:tws_main/config/theme/dark_theme.dart';
+import 'package:tws_main/config/theme/light_theme.dart';
+import 'package:tws_main/config/theme/theme_base.dart';
 
 void main() {
   runApp(
-    MainApp(),
+    const MainApp(),
   );
 }
 
 class MainApp extends StatelessWidget {
-  MainApp({super.key});
-
-  final ValueListenable<ThemeMode> themeHandler = ValueNotifier<ThemeMode>(ThemeMode.dark);
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: themeHandler,
-      builder: (BuildContext context, ThemeMode value, Widget? child) {
-        return MaterialApp.router(
-          theme: ThemeData.light(
-            useMaterial3: true,
-          ),
-          darkTheme: ThemeData.dark(
-            useMaterial3: true,
-          ),
-          themeMode: value,
-          routerConfig: Routing(),
-          builder: (BuildContext context, Widget? child) {
-            if (child == null) return Container();
+    return CosmosApp<ThemeBase>.router(
+      defaultTheme: const DarkTheme(),
+      routerConfig: Routing(),
+      listenFrameSize: true,
+      generalBuilder: (BuildContext context, Widget? home) {
+        ThemeBase theme = getTheme();
 
-            return ThemedWidget(
-              builder: (BuildContext ctx, ThemeData theme) {
-                return DefaultTextStyle(
-                  style: theme.textTheme.labelLarge ?? const TextStyle(),
-                  child: ColoredBox(
-                    color: theme.colorScheme.background,
-                    child: child,
-                  ),
-                );
-              },
-            );
-          },
+        return DefaultTextStyle(
+          style: const TextStyle(
+            decoration: TextDecoration.none,
+          ),
+          child: ColoredBox(
+            color: theme.primaryColor,
+            child: home,
+          ),
         );
       },
     );

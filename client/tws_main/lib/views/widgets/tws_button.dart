@@ -25,7 +25,7 @@ class TWSButton extends StatelessWidget {
           return MouseRegion(
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
-              onTap: () => action,
+              onTap: action,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: theme.colorScheme.secondary,

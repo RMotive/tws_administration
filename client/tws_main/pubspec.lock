@@ -46,7 +46,7 @@ packages:
     description:
       path: "package/cosmos_foundation"
       ref: HEAD
-      resolved-ref: "0743daf22ca948908b039fd22ed583126c9e0b91"
+      resolved-ref: a0199b5714347739b92d3cea84fe9fd89b69963e
       url: "https://github.com/RMotive/CMSF-Cosmos_Foundation"
     source: git
     version: "0.0.1"
@@ -85,10 +85,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "4b58412b92bd7d588f904425ef6d41a017da1f097e5e9428d2c27d275777e16e"
+      sha256: "2ccd74480706e0a70a0e0dfa9543dede41bc11d0fe3b146a6ad7b7686f6b4407"
       url: "https://pub.dev"
     source: hosted
-    version: "11.1.1"
+    version: "11.1.4"
   lints:
     dependency: transitive
     description:
