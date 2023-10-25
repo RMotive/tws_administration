@@ -3,7 +3,6 @@ import 'package:cosmos_foundation/widgets/hooks/cosmos_app.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/config/routing.dart';
 import 'package:tws_main/config/theme/dark_theme.dart';
-import 'package:tws_main/config/theme/light_theme.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
 
 void main() {
@@ -24,13 +23,17 @@ class MainApp extends StatelessWidget {
       generalBuilder: (BuildContext context, Widget? home) {
         ThemeBase theme = getTheme();
 
-        return DefaultTextStyle(
-          style: const TextStyle(
-            decoration: TextDecoration.none,
-          ),
-          child: ColoredBox(
-            color: theme.primaryColor,
-            child: home,
+        return Title(
+          color: Colors.white,
+          title: 'TWS Admin Services',
+          child: DefaultTextStyle(
+            style: const TextStyle(
+              decoration: TextDecoration.none,
+            ),
+            child: ColoredBox(
+              color: theme.primaryColor.mainColor,
+              child: home,
+            ),
           ),
         );
       },
