@@ -7,6 +7,7 @@ class TWSButton extends StatelessWidget {
   final EdgeInsets? padding;
   final String? label;
   final void Function()? action;
+  final String toolTip;
 
   const TWSButton({
     super.key,
@@ -14,6 +15,7 @@ class TWSButton extends StatelessWidget {
     this.padding,
     this.label,
     this.action,
+    this.toolTip = "",
   });
 
   @override
@@ -23,7 +25,7 @@ class TWSButton extends StatelessWidget {
     return Padding(
       padding: padding ?? const EdgeInsets.all(0),
       child: Tooltip(
-        message: 'Button to ${label ?? 'tap'}',
+        message: toolTip,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(

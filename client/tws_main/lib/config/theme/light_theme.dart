@@ -10,11 +10,11 @@ class LightTheme extends ThemeBase {
           ),
           onPrimaryColorFirstControlColor: const ColorBundle(
             mainColor: Color(0xffe8f2ff),
-            textColor: Colors.white,
+            textColor: Colors.black,
           ),
           onPrimaryColorSecondControlColor: const ColorBundle(
             mainColor: Colors.blue,
-            textColor: Colors.black38,
+            textColor: Colors.black,
           ),
         );
 }

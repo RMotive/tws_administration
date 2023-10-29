@@ -7,6 +7,7 @@ class TWSTextField extends StatefulWidget {
   final EdgeInsets? padding;
   final String? textfieldLabel;
   final bool isSecret;
+  final String toolTip;
   final List<String>? autofillHints;
   final TextEditingController? editorController;
   final String? errorHint;
@@ -21,6 +22,7 @@ class TWSTextField extends StatefulWidget {
     this.editorController,
     this.errorHint,
     this.onWritting,
+    this.toolTip = "",
     this.isSecret = false,
   });
 
@@ -30,7 +32,7 @@ class TWSTextField extends StatefulWidget {
 
 class _TWSTextFieldState extends State<TWSTextField> {
   // --> Init resources
-  late final ThemeBase theme;
+  late ThemeBase theme;
   late final FocusNode focusHandler;
 
   @override
@@ -41,6 +43,13 @@ class _TWSTextFieldState extends State<TWSTextField> {
     focusHandler.addListener(() {
       if (focusHandler.hasFocus) widget.onWritting?.call();
     });
+    listenTheme().addListener(
+      () {
+        setState(() {
+          theme = getTheme();
+        });
+      },
+    );
   }
 
   @override
@@ -68,7 +77,7 @@ class _TWSTextFieldState extends State<TWSTextField> {
           child: Material(
             color: Colors.transparent,
             child: Tooltip(
-              message: 'Textfield to input ${widget.textfieldLabel}',
+              message: widget.toolTip,
               child: TextField(
                 cursorOpacityAnimates: true,
                 cursorColor: Colors.black,
