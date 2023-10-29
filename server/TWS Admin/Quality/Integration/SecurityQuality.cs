@@ -28,7 +28,7 @@ namespace Quality.Integration
         [Fact]
         public void PerformLoginFail()
         {
-            PerformLoginRequest requestData = new PerformLoginRequest
+            PerformLoginRequest requestData = new()
             {
                 Identity = "testiong12",
                 Security = "test12",

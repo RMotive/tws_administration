@@ -1,5 +1,4 @@
-﻿using Customer.Contracts.Interfaces;
-using Customer.Services;
+﻿using Customer.Services;
 using Server.Middlewares;
 
 namespace Server;

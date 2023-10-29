@@ -1,16 +1,17 @@
-﻿using Customer.Contracts.Interfaces;
+﻿using System.Text;
+using Customer.Contracts.Interfaces;
 using Customer.Exceptions;
 
 namespace Customer.Transactions.Inputs
 {
     public class PerformLoginInput : InputInterface
     {
-        public byte[] Identity;
-        public byte[] Security;
+        public byte[] Identity { get; }
+        public byte[] Security { get; }
         public PerformLoginInput(string identity, string security)
         {
-            this.Identity = Convert.FromBase64String(identity);
-            this.Security = Convert.FromBase64String(security);
+            this.Identity = Encoding.ASCII.GetBytes(identity);
+            this.Security = Encoding.ASCII.GetBytes(security);
         }
         public PerformLoginInput(byte[] identity, byte[] security)
         {

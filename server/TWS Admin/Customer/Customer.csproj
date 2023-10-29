@@ -15,6 +15,8 @@
     <None Remove="Transactions\Outputs\" />
     <None Remove="Exceptions\" />
     <None Remove="Transactions\Requests\" />
+    <None Remove="Data\" />
+    <None Remove="Data\TWSSecurity\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contracts\" />
@@ -25,5 +27,14 @@
     <Folder Include="Transactions\Outputs\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Transactions\Requests\" />
+    <Folder Include="Data\" />
+    <Folder Include="Data\TWSSecurity\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
   </ItemGroup>
 </Project>

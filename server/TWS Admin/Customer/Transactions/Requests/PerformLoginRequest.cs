@@ -5,8 +5,8 @@ namespace Customer.Transactions.Requests
 {
     public class PerformLoginRequest : RequestInterface<PerformLoginInput>
     {
-        public string Identity;
-        public string Security;
+        public string Identity { get; set; }
+        public string Security { get; set; }
         public PerformLoginRequest() 
         {
             this.Identity = string.Empty;
@@ -14,7 +14,7 @@ namespace Customer.Transactions.Requests
         }
 
         public PerformLoginInput ToInput()
-        => new PerformLoginInput(this.Identity, this.Security);
+        => new(this.Identity, this.Security);
     }
 }
 

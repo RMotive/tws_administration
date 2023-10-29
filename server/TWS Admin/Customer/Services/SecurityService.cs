@@ -1,5 +1,4 @@
-﻿using System;
-using Customer.Contracts.Interfaces;
+﻿using Customer.Contracts.Interfaces;
 using Customer.Transactions.Inputs;
 
 namespace Customer.Services
@@ -13,7 +12,6 @@ namespace Customer.Services
         public dynamic PerformLogin(PerformLoginInput input)
         {
             input.Validate();
-
             return false;
         }
     }

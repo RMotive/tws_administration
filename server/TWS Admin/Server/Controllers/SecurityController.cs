@@ -15,8 +15,8 @@ namespace Server.Controllers
         }
 
         [HttpPost("[Action]")]
-        public IActionResult PerformLogin([FromBody] PerformLoginRequest performLoginRequest)
-        => new OkObjectResult(_service.PerformLogin(performLoginRequest.ToInput()));
+        public IActionResult PerformLogin([FromBody] PerformLoginRequest request)
+        => new OkObjectResult(_service.PerformLogin(request.ToInput()));
     }
 }
 
