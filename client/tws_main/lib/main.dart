@@ -1,10 +1,14 @@
+import 'package:cosmos_foundation/helpers/advisor.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/widgets/hooks/cosmos_app.dart';
 import 'package:cosmos_foundation/widgets/hooks/future_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/routing.dart';
-import 'package:tws_main/config/theme/dark_theme.dart';
+import 'package:tws_main/config/routes/routing.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/constants/theme_constants.dart';
+
+// --> Helpers
+Advisor _advisor = Advisor.instance;
 
 void main() {
   runApp(
@@ -16,7 +20,19 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   Future<ThemeBase> storeThemedCatcher() async {
-    return (await getThemeFromStore<ThemeBase>('theme-no-user')) ?? const DarkTheme();
+    ThemeBase? storedTheme = await getThemeFromStore(
+      themeNoUserStoreKey,
+      forcedThemes: themeCollection,
+    );
+    if (storedTheme != null) return storedTheme;
+
+    ThemeBase themeBase = themeCollection
+        .where(
+          (ThemeBase element) => element.themeIdentifier == defaultThemeIdentifier,
+        )
+        .first;
+    _advisor.adviseSuccess('Stored theme gathered (${themeBase.runtimeType})');
+    return themeBase;
   }
 
   @override
@@ -27,10 +43,10 @@ class MainApp extends StatelessWidget {
         future: storeThemedCatcher(),
         emptyAsError: false,
         successBuilder: (BuildContext context, BoxConstraints constraints, ThemeBase themeBase) {
-
           return CosmosApp<ThemeBase>.router(
             defaultTheme: themeBase,
             routerConfig: Routing(),
+            themes: themeCollection,
             listenFrameSize: true,
             generalBuilder: (BuildContext context, Widget? home) {
               ThemeBase theme = getTheme();

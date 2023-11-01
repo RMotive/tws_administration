@@ -39,28 +39,24 @@ class _TWSTextFieldState extends State<TWSTextField> {
   void initState() {
     super.initState();
     theme = getTheme();
+    listenTheme.addListener(onThemeUpdate);
     focusHandler = FocusNode();
-    focusHandler.addListener(() {
-      if (focusHandler.hasFocus) widget.onWritting?.call();
-    });
-    listenTheme().addListener(
+    focusHandler.addListener(
       () {
-        setState(() {
-          theme = getTheme();
-        });
+        if (focusHandler.hasFocus) widget.onWritting?.call();
       },
     );
   }
 
   @override
-  void didUpdateWidget(covariant TWSTextField oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   void dispose() {
     focusHandler.dispose();
+    listenTheme.removeListener(onThemeUpdate);
     super.dispose();
+  }
+
+  void onThemeUpdate() {
+    if (mounted) setState(() => theme = getTheme());
   }
 
   @override

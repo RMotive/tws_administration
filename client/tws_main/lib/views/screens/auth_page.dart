@@ -1,20 +1,34 @@
+import 'package:cosmos_foundation/contracts/cosmos_page.dart';
+import 'package:cosmos_foundation/contracts/cosmos_screen.dart';
+import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/widgets/simplifiers/separator_row.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/theme/dark_theme.dart';
+import 'package:tws_main/config/routes/routes.dart';
 import 'package:tws_main/config/theme/light_theme.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/constants/theme_constants.dart';
 import 'package:tws_main/views/widgets/tws_button.dart';
 import 'package:tws_main/views/widgets/tws_textfield.dart';
 
-class AccessScreen extends StatefulWidget {
-  const AccessScreen({super.key});
+class AuthPage extends CosmosPage {
+  const AuthPage({super.key})
+      : super(
+          accessRoute,
+        );
 
   @override
-  State<AccessScreen> createState() => _AccessScreenState();
+  Widget build(BuildContext context) => const _AuthPageState();
 }
 
-class _AccessScreenState extends State<AccessScreen> {
+class _AuthPageState extends StatefulWidget {
+  const _AuthPageState();
+
+  @override
+  State<_AuthPageState> createState() => _AuthPageStateState();
+}
+
+class _AuthPageStateState extends State<_AuthPageState> {
   // --> Init resources
   late final TextEditingController identityCtrl;
   late final TextEditingController securityCtrl;
@@ -34,23 +48,23 @@ class _AccessScreenState extends State<AccessScreen> {
     identityError = null;
     passwordError = null;
     tipEnabled = false;
-    listenTheme().addListener(
+    listenTheme.addListener(
       () {
-        setState(() {
-          theme = getTheme();
-        });
+        if (mounted) setState(() => theme = getTheme());
       },
     );
   }
 
   @override
-  void didUpdateWidget(covariant AccessScreen oldWidget) {
+  void didUpdateWidget(covariant _AuthPageState oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
 
   void checkAccess(String identity, String password) {
     if (identity.isEmpty) setState(() => identityError = 'Cannot be empty');
     if (password.isEmpty) setState(() => passwordError = 'Cannot be empty');
+    if (identity.isEmpty || password.isEmpty) return;
+    if (!(identity == 'twtms-admin' && password == 'tws2023&')) return;
   }
 
   String ifToolTip(String tip) {
@@ -169,7 +183,7 @@ class _OptionsRibbonState extends State<_OptionsRibbon> {
   @override
   void initState() {
     super.initState();
-    currentIsLight = false;
+    currentIsLight = getTheme().runtimeType == LightTheme;
     tipEnabled = false;
   }
 
@@ -177,14 +191,18 @@ class _OptionsRibbonState extends State<_OptionsRibbon> {
     setState(() {
       currentIsLight = !currentIsLight;
     });
-    updateTheme(currentIsLight ? const LightTheme() : const DarkTheme());
+    updateTheme(
+      !currentIsLight ? darkThemeIdentifier : lightThemeIdentifier,
+      saveLocalKey: themeNoUserStoreKey,
+    );
   }
 
-  void switchTipOption() {
-    setState(() {
-      tipEnabled = !tipEnabled;
-    });
-    widget.onTipChange(tipEnabled);
+  void switchTipOption() async {
+    /// --> Forcing the await for the Fade Out tooltip animation duration.
+    /// This prevents when the user taps fastly the tooltip enable/disable button
+    /// doesn't got messed up showing a half-faded grey tooltip.
+    await Future<void>.delayed(150.miliseconds);
+    if (mounted) setState(() => tipEnabled = !tipEnabled);
   }
 
   String onTip(String tip) {

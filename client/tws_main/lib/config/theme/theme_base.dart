@@ -7,7 +7,8 @@ class ThemeBase extends CosmosThemeBase {
   final ColorBundle onPrimaryColorFirstControlColor;
   final ColorBundle onPrimaryColorSecondControlColor;
 
-  const ThemeBase({
+  const ThemeBase(
+    super.themeIdentifier, {
     // --> Primary bundle
     required this.primaryColor,
     required this.onPrimaryColorFirstControlColor,
