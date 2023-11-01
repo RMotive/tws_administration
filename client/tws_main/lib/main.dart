@@ -1,7 +1,7 @@
+import 'package:cosmos_foundation/foundation/hooks/cosmos_app.dart';
+import 'package:cosmos_foundation/foundation/hooks/future_widget.dart';
 import 'package:cosmos_foundation/helpers/advisor.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/widgets/hooks/cosmos_app.dart';
-import 'package:cosmos_foundation/widgets/hooks/future_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/config/routes/routing.dart';
 import 'package:tws_main/config/theme/theme_base.dart';

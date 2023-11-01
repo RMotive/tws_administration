@@ -1,8 +1,7 @@
 import 'package:cosmos_foundation/contracts/cosmos_page.dart';
-import 'package:cosmos_foundation/contracts/cosmos_screen.dart';
 import 'package:cosmos_foundation/extensions/int_extension.dart';
+import 'package:cosmos_foundation/foundation/simplifiers/separator_row.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/widgets/simplifiers/separator_row.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/config/routes/routes.dart';
 import 'package:tws_main/config/theme/light_theme.dart';
