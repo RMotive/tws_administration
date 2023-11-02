@@ -11,6 +11,7 @@ class DarkTheme extends ThemeBase {
           primaryColor: const ColorBundle(
             mainColor: Color(0xFF363636),
             textColor: _mainTextExtendedColor,
+            counterColor: Color(0xFFcfcfcf),
           ),
           onPrimaryColorFirstControlColor: const ColorBundle(
             mainColor: Color(0xff575757),

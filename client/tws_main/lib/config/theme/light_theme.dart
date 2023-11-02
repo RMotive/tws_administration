@@ -9,6 +9,7 @@ class LightTheme extends ThemeBase {
           primaryColor: const ColorBundle(
             mainColor: Color(0xFFcfcfcf),
             textColor: Colors.black,
+            counterColor: Color(0xFF363636),
           ),
           onPrimaryColorFirstControlColor: const ColorBundle(
             mainColor: Color(0xffe8f2ff),

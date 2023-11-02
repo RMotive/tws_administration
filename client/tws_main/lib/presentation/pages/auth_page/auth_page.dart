@@ -1,24 +1,33 @@
 import 'package:cosmos_foundation/contracts/cosmos_page.dart';
 import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/foundation/simplifiers/separator_row.dart';
+import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/config/routes/routes.dart';
 import 'package:tws_main/config/theme/light_theme.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
 import 'package:tws_main/constants/theme_constants.dart';
-import 'package:tws_main/views/widgets/tws_button.dart';
-import 'package:tws_main/views/widgets/tws_textfield.dart';
+import 'package:tws_main/presentation/widgets/tws_button.dart';
+import 'package:tws_main/presentation/widgets/tws_textfield.dart';
+import 'package:tws_main/presentation/widgets/tws_toogle_rounded_button.dart';
 
+part 'widgets/options_ribbon.dart';
+
+// --> Helpers
+final RouteDriver _router = RouteDriver.i;
+
+/// UI Page for Auth functionallity.
+/// This UI Page shows the auth functionallity view, where the user can firm his credentials.
 class AuthPage extends CosmosPage {
-  const AuthPage({super.key})
-      : super(
-          accessRoute,
-        );
+  /// New instance of [AuthPage] UI Page configuration.
+  const AuthPage({super.key});
 
   @override
   Widget build(BuildContext context) => const _AuthPageState();
 }
+
+// --> Here is handled the UI Page state control.
 
 class _AuthPageState extends StatefulWidget {
   const _AuthPageState();
@@ -64,6 +73,9 @@ class _AuthPageStateState extends State<_AuthPageState> {
     if (password.isEmpty) setState(() => passwordError = 'Cannot be empty');
     if (identity.isEmpty || password.isEmpty) return;
     if (!(identity == 'twtms-admin' && password == 'tws2023&')) return;
+
+    // --> All validations went succesful. (redirecting to the Main Screen wrapper)
+    _router.driveTo(dashboardRoute);
   }
 
   String ifToolTip(String tip) {
@@ -160,120 +172,6 @@ class _AuthPageStateState extends State<_AuthPageState> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _OptionsRibbon extends StatefulWidget {
-  final void Function(bool isEnable) onTipChange;
-  const _OptionsRibbon({
-    required this.onTipChange,
-  });
-
-  @override
-  State<_OptionsRibbon> createState() => _OptionsRibbonState();
-}
-
-class _OptionsRibbonState extends State<_OptionsRibbon> {
-  // --> State
-  late bool currentIsLight;
-  late bool tipEnabled;
-
-  @override
-  void initState() {
-    super.initState();
-    currentIsLight = getTheme().runtimeType == LightTheme;
-    tipEnabled = false;
-  }
-
-  void switchThemeOption() {
-    setState(() {
-      currentIsLight = !currentIsLight;
-    });
-    updateTheme(
-      !currentIsLight ? darkThemeIdentifier : lightThemeIdentifier,
-      saveLocalKey: themeNoUserStoreKey,
-    );
-  }
-
-  void switchTipOption() async {
-    /// --> Forcing the await for the Fade Out tooltip animation duration.
-    /// This prevents when the user taps fastly the tooltip enable/disable button
-    /// doesn't got messed up showing a half-faded grey tooltip.
-    await Future<void>.delayed(150.miliseconds);
-    if (mounted) setState(() => tipEnabled = !tipEnabled);
-  }
-
-  String onTip(String tip) {
-    if (tipEnabled) return tip;
-    return '';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FittedBox(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: SeparatorRow(
-          spacing: 12,
-          children: <Widget>[
-            // --> Tooltips toogle
-            _ToogleRoundedButton(
-              icon: !currentIsLight ? Icons.light_mode : Icons.dark_mode,
-              onFire: switchThemeOption,
-              toolTip: onTip('Tap to enable ${currentIsLight ? 'dark' : 'light'} theme mode'),
-            ),
-            // --> Theming toogle.
-            _ToogleRoundedButton(
-              icon: Icons.disabled_visible,
-              onFire: switchTipOption,
-              toolTip: onTip('Tap to disable the tooltips'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ToogleRoundedButton extends StatelessWidget {
-  final double _controlReferenceSize;
-  final IconData icon;
-  final void Function() onFire;
-  final String toolTip;
-
-  const _ToogleRoundedButton({
-    required this.onFire,
-    required this.icon,
-    this.toolTip = '',
-  }) : _controlReferenceSize = 45;
-
-  @override
-  Widget build(BuildContext context) {
-    ThemeBase theme = getTheme();
-
-    return Tooltip(
-      message: toolTip,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: onFire,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(_controlReferenceSize),
-            clipBehavior: Clip.hardEdge,
-            child: ColoredBox(
-              color: theme.onPrimaryColorFirstControlColor.mainColor,
-              child: SizedBox.square(
-                dimension: _controlReferenceSize,
-                child: Icon(
-                  icon,
-                  color: theme.onPrimaryColorFirstControlColor.textColor,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

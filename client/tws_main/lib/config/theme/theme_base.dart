@@ -19,8 +19,10 @@ class ThemeBase extends CosmosThemeBase {
 final class ColorBundle {
   final Color mainColor;
   final Color textColor;
+  final Color? counterColor;
   const ColorBundle({
     required this.mainColor,
     required this.textColor,
+    this.counterColor,
   });
 }

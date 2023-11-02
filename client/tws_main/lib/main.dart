@@ -3,14 +3,17 @@ import 'package:cosmos_foundation/foundation/hooks/future_widget.dart';
 import 'package:cosmos_foundation/helpers/advisor.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:tws_main/config/routes/routing.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/config/tws_url_strategy.dart';
 import 'package:tws_main/constants/theme_constants.dart';
 
 // --> Helpers
 Advisor _advisor = Advisor.instance;
 
 void main() {
+  setUrlStrategy(TWSUrlStrategy());
   runApp(
     const MainApp(),
   );
@@ -41,8 +44,7 @@ class MainApp extends StatelessWidget {
       textDirection: TextDirection.ltr,
       child: FutureWidget<ThemeBase>(
         future: storeThemedCatcher(),
-        emptyAsError: false,
-        successBuilder: (BuildContext context, BoxConstraints constraints, ThemeBase themeBase) {
+        successBuilder: (BuildContext context, ThemeBase themeBase) {
           return CosmosApp<ThemeBase>.router(
             defaultTheme: themeBase,
             routerConfig: Routing(),
@@ -55,8 +57,9 @@ class MainApp extends StatelessWidget {
                 color: Colors.white,
                 title: 'TWS Admin Services',
                 child: DefaultTextStyle(
-                  style: const TextStyle(
+                  style: TextStyle(
                     decoration: TextDecoration.none,
+                    color: theme.primaryColor.textColor
                   ),
                   child: ColoredBox(
                     color: theme.primaryColor.mainColor,

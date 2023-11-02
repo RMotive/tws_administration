@@ -46,7 +46,7 @@ packages:
     description:
       path: "package/cosmos_foundation"
       ref: HEAD
-      resolved-ref: "01c9d8f8c590b3cf302fed5be9c40a1fd0bb24c8"
+      resolved-ref: "914ac605793ceeb58452e3e641e6dbb6697a64b0"
       url: "https://github.com/RMotive/CMSF-Cosmos_Foundation"
     source: git
     version: "0.0.1"
@@ -85,7 +85,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_web_plugins:
-    dependency: transitive
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
