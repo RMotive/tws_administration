@@ -8,6 +8,10 @@ class DarkTheme extends ThemeBase {
   const DarkTheme()
       : super(
           darkThemeIdentifier,
+          errorColor: const ColorBundle(
+            mainColor: Color(0xa8a3393d),
+            textColor: Colors.red,
+          ),
           primaryColor: const ColorBundle(
             mainColor: Color(0xFF363636),
             textColor: _mainTextExtendedColor,

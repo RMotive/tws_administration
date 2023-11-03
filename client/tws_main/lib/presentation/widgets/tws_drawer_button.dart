@@ -16,10 +16,14 @@ class TWSDrawerButton extends StatefulWidget {
   /// The displayed icon in the button center.
   final IconData icon;
 
+  /// The event that will fire when the button is clicked.
+  final void Function()? action;
+
   const TWSDrawerButton({
     super.key,
     required this.icon,
     this.selected = false,
+    this.action,
   });
 
   @override
@@ -46,35 +50,38 @@ class _TWSDrawerButtonState extends State<TWSDrawerButton> {
       onEnter: (_) => setState(() => hovered = true),
       onExit: (_) => setState(() => hovered = false),
       hitTestBehavior: HitTestBehavior.opaque,
-      child: ResponsiveView(
-        onLarge: const SizedBox(),
-        onSmall: const SizedBox(),
-        onMedium: Container(
-          decoration: BoxDecoration(
-            color: theme.onPrimaryColorSecondControlColor.mainColor,
-            shape: BoxShape.circle,
-            border: widget.selected
-                ? Border.fromBorderSide(
-                    BorderSide(
-                      color: Colors.purple.shade200,
-                      width: 2,
-                    ),
-                  )
-                : !hovered
-                    ? null
-                    : Border.fromBorderSide(
-                        BorderSide(
-                          color: theme.primaryColor.mainColor,
-                          strokeAlign: BorderSide.strokeAlignOutside,
-                          width: 2,
-                        ),
+      child: GestureDetector(
+        onTap: () => widget.selected ? null : widget.action?.call(),
+        child: ResponsiveView(
+          onLarge: const SizedBox(),
+          onSmall: const SizedBox(),
+          onMedium: Container(
+            decoration: BoxDecoration(
+              color: theme.onPrimaryColorSecondControlColor.mainColor,
+              shape: BoxShape.circle,
+              border: widget.selected
+                  ? Border.fromBorderSide(
+                      BorderSide(
+                        color: Colors.purple.shade200,
+                        width: 1,
                       ),
-          ),
-          child: SizedBox.square(
-            dimension: _buttonRadius,
-            child: Icon(
-              widget.icon,
-              color: theme.onPrimaryColorSecondControlColor.textColor,
+                    )
+                  : !hovered
+                      ? null
+                      : Border.fromBorderSide(
+                          BorderSide(
+                            color: theme.primaryColor.mainColor,
+                            strokeAlign: BorderSide.strokeAlignOutside,
+                            width: 1,
+                          ),
+                        ),
+            ),
+            child: SizedBox.square(
+              dimension: _buttonRadius,
+              child: Icon(
+                widget.icon,
+                color: theme.onPrimaryColorSecondControlColor.textColor,
+              ),
             ),
           ),
         ),

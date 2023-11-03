@@ -1,5 +1,8 @@
 import 'package:cosmos_foundation/contracts/cosmos_page.dart';
+import 'package:cosmos_foundation/foundation/simplifiers/separator_column.dart';
 import 'package:flutter/material.dart';
+import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/presentation/widgets/tws_info_table.dart';
 
 /// UI Page for Business Dashboard functionallity.
 /// This Page is the first one that is introduced when the user authenticates itself.
@@ -10,16 +13,44 @@ class BusinessDashboardPage extends CosmosPage {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.fromBorderSide(
-          BorderSide(
-            color: Colors.teal.shade900,
-            width: 2,
+    final TextStyle headerStyle = twsTheme.headerStyle.title.apply(
+      color: twsTheme.primaryColor.textColor,
+    );
+
+    return SeparatorColumn(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 12,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(32),
+          child: Text(
+            'Active Trips',
+            style: headerStyle,
           ),
         ),
-      ),
-      child: const SizedBox(),
+        const TWSInfoTable(
+          headersLinks: <TableHeaderPropertyOption>[
+            TableHeaderPropertyOption('ID', 'id'),
+            TableHeaderPropertyOption('Status', 'status'),
+            TableHeaderPropertyOption('Customer', 'customer'),
+            TableHeaderPropertyOption('Origin', 'origin'),
+            TableHeaderPropertyOption('Destination', 'destination'),
+            TableHeaderPropertyOption('Truck', 'truck'),
+            TableHeaderPropertyOption('Driver(s)', 'driver'),
+          ],
+          data: <Map<String, dynamic>>[
+            <String, dynamic>{
+              'id': 10001,
+              'status': 'in route to drop off',
+              'customer': 'Coca Cola',
+              'origin': 'Coca 1. El florido, 3377Coca 1. El florido, 3377Coca 1. El florido, 3377Coca 1. El florido, 3377',
+              'destination': 'Coca 3. Los Angeles',
+              'truck': 'TW137',
+              'driver': 'Dev Driver',
+            },
+          ],
+        ),
+      ],
     );
   }
 }

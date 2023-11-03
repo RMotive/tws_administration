@@ -41,20 +41,28 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
       constraints: BoxConstraints(
         minHeight: screenSize.height,
       ),
-      child: ColoredBox(
-        color: theme.primaryColor.counterColor ?? theme.primaryColor.textColor,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: SeparatorColumn(
-            spacing: 8,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              for (_MSMDButtonOption button in widget.buttons)
-                TWSDrawerButton(
-                  icon: button.icon,
-                  selected: widget.buttons.indexOf(button) == currentSelection,
-                ),
-            ],
+      child: ClipRRect(
+        borderRadius: const BorderRadius.horizontal(
+          right: Radius.circular(35),
+        ),
+        child: ColoredBox(
+          color: theme.primaryColor.counterColor ?? theme.primaryColor.textColor,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: SeparatorColumn(
+              spacing: 8,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                for (_MSMDButtonOption button in widget.buttons)
+                  TWSDrawerButton(
+                    icon: button.icon,
+                    selected: widget.buttons.indexOf(button) == currentSelection,
+                    action: () {
+                      if (button.route != null) _router.driveTo(button.route!);
+                    },
+                  ),
+              ],
+            ),
           ),
         ),
       ),

@@ -6,10 +6,14 @@ class LightTheme extends ThemeBase {
   const LightTheme()
       : super(
           lightThemeIdentifier,
+          errorColor: const ColorBundle(
+            mainColor: Color(0x16ff0000),
+            textColor: Color(0xff800101),
+          ),
           primaryColor: const ColorBundle(
-            mainColor: Color(0xFFcfcfcf),
-            textColor: Colors.black,
-            counterColor: Color(0xFF363636),
+            mainColor: Color(0xffe6e3e4),
+            textColor: Colors.black87,
+            counterColor: Color(0xdd363636),
           ),
           onPrimaryColorFirstControlColor: const ColorBundle(
             mainColor: Color(0xffe8f2ff),
