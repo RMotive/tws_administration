@@ -22,16 +22,6 @@ class _OptionsRibbonState extends State<_OptionsRibbon> {
     tipEnabled = false;
   }
 
-  void switchThemeOption() {
-    setState(() {
-      currentIsLight = !currentIsLight;
-    });
-    updateTheme(
-      !currentIsLight ? darkThemeIdentifier : lightThemeIdentifier,
-      saveLocalKey: themeNoUserStoreKey,
-    );
-  }
-
   void switchTipOption() async {
     /// --> Forcing the await for the Fade Out tooltip animation duration.
     /// This prevents when the user taps fastly the tooltip enable/disable button
@@ -54,10 +44,8 @@ class _OptionsRibbonState extends State<_OptionsRibbon> {
           spacing: 12,
           children: <Widget>[
             // --> Tooltips toogle
-            ToogleRoundedButton(
-              icon: !currentIsLight ? Icons.light_mode : Icons.dark_mode,
-              onFire: switchThemeOption,
-              toolTip: onTip('Tap to enable ${currentIsLight ? 'dark' : 'light'} theme mode'),
+            TwsThemeToogler(
+              tooltip: tipEnabled,
             ),
             // --> Theming toogle.
             ToogleRoundedButton(

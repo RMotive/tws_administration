@@ -1,22 +1,23 @@
 import 'package:cosmos_foundation/foundation/hooks/cosmos_app.dart';
 import 'package:cosmos_foundation/foundation/hooks/future_widget.dart';
-import 'package:cosmos_foundation/helpers/advisor.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:tws_main/config/routes/routing.dart';
+import 'package:tws_main/config/routes/tws_routing.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
 import 'package:tws_main/config/tws_url_strategy.dart';
 import 'package:tws_main/constants/theme_constants.dart';
-
-// --> Helpers
-Advisor _advisor = Advisor.instance;
+import 'package:tws_main/utils/helpers.dart';
 
 void main() {
-  setUrlStrategy(TWSUrlStrategy());
-  runApp(
-    const MainApp(),
-  );
+  try {
+    setUrlStrategy(TWSUrlStrategy());
+    runApp(
+      const MainApp(),
+    );
+  } catch (x) {
+    twsAdvisor.adviseWarning(x.toString());
+  }
 }
 
 class MainApp extends StatelessWidget {
@@ -34,7 +35,7 @@ class MainApp extends StatelessWidget {
           (ThemeBase element) => element.themeIdentifier == defaultThemeIdentifier,
         )
         .first;
-    _advisor.adviseSuccess('Stored theme gathered (${themeBase.runtimeType})');
+    twsAdvisor.adviseSuccess('Stored theme gathered (${themeBase.runtimeType})');
     return themeBase;
   }
 
@@ -47,7 +48,7 @@ class MainApp extends StatelessWidget {
         successBuilder: (BuildContext context, ThemeBase themeBase) {
           return CosmosApp<ThemeBase>.router(
             defaultTheme: themeBase,
-            routerConfig: Routing(),
+            routerConfig: TWSRouting(),
             themes: themeCollection,
             listenFrameSize: true,
             generalBuilder: (BuildContext context, Widget? home) {

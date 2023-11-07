@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/foundation/hooks/responsive_view.dart';
+import 'package:cosmos_foundation/foundation/conditionals/responsive_view.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
@@ -33,14 +33,30 @@ class TWSDrawerButton extends StatefulWidget {
 class _TWSDrawerButtonState extends State<TWSDrawerButton> {
   // --> Resources
   static const double _buttonRadius = 45;
-  final ThemeBase theme = getTheme();
   // --> State
   late bool hovered;
+  late ThemeBase theme;
 
   @override
   void initState() {
     super.initState();
     hovered = false;
+    theme = getTheme(
+      updateEfect: updateThemeEffect,
+    );
+  }
+
+  @override
+  void dispose() {
+    disposeGetTheme(updateThemeEffect);
+    super.dispose();
+  }
+
+  /// Update use effect for theming changes on this state compoennt.
+  void updateThemeEffect() {
+    setState(() {
+      theme = getTheme();
+    });
   }
 
   @override

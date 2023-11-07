@@ -1,4 +1,4 @@
-part of '../screens/main_screen/main_screen.dart';
+part of '../../screens/main_screen/main_screen.dart';
 
 class _MSMDButtonOption {
   final IconData icon;

@@ -4,12 +4,12 @@ import 'package:cosmos_foundation/foundation/simplifiers/separator_row.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/routes/routes.dart';
+import 'package:tws_main/config/routes/tws_routes.dart';
 import 'package:tws_main/config/theme/light_theme.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
-import 'package:tws_main/constants/theme_constants.dart';
 import 'package:tws_main/presentation/widgets/tws_button.dart';
 import 'package:tws_main/presentation/widgets/tws_textfield.dart';
+import 'package:tws_main/presentation/widgets/tws_theme_toogler.dart';
 import 'package:tws_main/presentation/widgets/tws_toogle_rounded_button.dart';
 
 part 'widgets/options_ribbon.dart';
@@ -19,9 +19,9 @@ final RouteDriver _router = RouteDriver.i;
 
 /// UI Page for Auth functionallity.
 /// This UI Page shows the auth functionallity view, where the user can firm his credentials.
-class AuthPage extends CosmosPage {
-  /// New instance of [AuthPage] UI Page configuration.
-  const AuthPage({super.key});
+class AccessPage extends CosmosPage {
+  /// New instance of [AccessPage] UI Page configuration.
+  const AccessPage({super.key});
 
   @override
   Widget build(BuildContext context) => const _AuthPageState();
@@ -75,7 +75,7 @@ class _AuthPageStateState extends State<_AuthPageState> {
     if (!(identity == 'twtms-admin' && password == 'tws2023&')) return;
 
     // --> All validations went succesful. (redirecting to the Main Screen wrapper)
-    _router.driveTo(dashboardRoute);
+    _router.driveTo(businessDashboardRoute);
   }
 
   String ifToolTip(String tip) {

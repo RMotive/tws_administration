@@ -19,20 +19,43 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
   // Resources
   late Size screenSize;
   late ThemeBase theme;
+  late List<_MSMDButtonOption> buttons;
   // State
   late int currentSelection;
 
   @override
   void initState() {
     super.initState();
-    theme = getTheme();
+    buttons = widget.buttons;
+    theme = getTheme(
+      updateEfect: updateThemeEffect,
+    );
     currentSelection = 0;
+  }
+
+  @override
+  void didUpdateWidget(covariant _MainScreenMenuDrawer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.buttons != widget.buttons) buttons = widget.buttons;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     screenSize = MediaQuery.sizeOf(context);
+  }
+
+  @override
+  void dispose() {
+    disposeGetTheme(updateThemeEffect);
+    super.dispose();
+  }
+
+  /// Update effect for theme changes
+  void updateThemeEffect() {
+    setState(() {
+      theme = getTheme();
+    });
   }
 
   @override
@@ -53,12 +76,16 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
               spacing: 8,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                for (_MSMDButtonOption button in widget.buttons)
+                for (int buttonPointer = 0; buttonPointer < buttons.length; buttonPointer++)
                   TWSDrawerButton(
-                    icon: button.icon,
-                    selected: widget.buttons.indexOf(button) == currentSelection,
+                    icon: buttons[buttonPointer].icon,
+                    selected: buttonPointer == currentSelection,
                     action: () {
-                      if (button.route != null) _router.driveTo(button.route!);
+                      RouteOptions? buttonRoute = buttons[buttonPointer].route;
+                      if (buttonRoute != null) {
+                        setState(() => currentSelection = buttonPointer);
+                        _router.driveTo(buttonRoute);
+                      }
                     },
                   ),
               ],

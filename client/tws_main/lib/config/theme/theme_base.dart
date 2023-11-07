@@ -3,7 +3,7 @@ import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
 
 /// --> General shortcut access for the business theme
-final ThemeBase twsTheme = getTheme();
+ThemeBase get twsTheme => getTheme();
 
 class ThemeBase extends CosmosThemeBase {
   final ColorBundle errorColor;

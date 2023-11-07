@@ -46,10 +46,10 @@ packages:
     description:
       path: "package/cosmos_foundation"
       ref: HEAD
-      resolved-ref: "914ac605793ceeb58452e3e641e6dbb6697a64b0"
+      resolved-ref: c72364c4a176040da44ea84ae190a864b986f712
       url: "https://github.com/RMotive/CMSF-Cosmos_Foundation"
     source: git
-    version: "0.0.1"
+    version: "1.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -75,10 +75,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_lints
-      sha256: ad76540d21c066228ee3f9d1dad64a9f7e46530e8bb7c85011a88bc1fd874bc5
+      sha256: e2a421b7e59244faef694ba7b30562e489c2b489866e505074eb005cd7060db7
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -93,10 +93,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: e156bc1b2088eb5ece9351bccd48c3e1719a4858eacbd44e59162e98a68205d1
+      sha256: "5098760d7478aabfe682a462bf121d61bc5dbe5df5aac8dad733564a0aee33bc"
       url: "https://pub.dev"
     source: hosted
-    version: "12.0.1"
+    version: "12.1.0"
   lints:
     dependency: transitive
     description:

@@ -1,18 +1,18 @@
 import 'package:cosmos_foundation/contracts/cosmos_screen.dart';
-import 'package:cosmos_foundation/foundation/hooks/responsive_view.dart';
+import 'package:cosmos_foundation/foundation/conditionals/responsive_view.dart';
 import 'package:cosmos_foundation/foundation/simplifiers/separator_column.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/routes/routes.dart';
+import 'package:tws_main/config/routes/tws_routes.dart';
 import 'package:tws_main/config/theme/theme_base.dart';
 import 'package:tws_main/presentation/pages/mobile_disabled_page/mobile_disabled_page.dart';
 import 'package:tws_main/presentation/widgets/tws_drawer_button.dart';
 
 // --> Parts
-part './widgets/menu_drawer.dart';
-part '../../options/msmd_button_option.dart';
+part 'widgets/main_screen_menu_drawer.dart';
+part '../../widgets/widget_options/msmd_button_option.dart';
 // --> Helpers
 final RouteDriver _router = RouteDriver.i;
 
@@ -34,11 +34,11 @@ class MainScreen extends CosmosScreen {
         children: <Widget>[
           const _MainScreenMenuDrawer(
             buttons: <_MSMDButtonOption>[
-              _MSMDButtonOption('', Icons.dashboard, null),
+              _MSMDButtonOption('Business Dashboard', Icons.dashboard, businessDashboardRoute),
               _MSMDButtonOption('', Icons.security, null),
               _MSMDButtonOption('', Icons.business, null),
-              _MSMDButtonOption('', Icons.settings, null),
-              _MSMDButtonOption('', Icons.logout, accessRoute),
+              _MSMDButtonOption('Settings', Icons.settings, applicationSettingsRoute),
+              _MSMDButtonOption('Log out', Icons.logout, accessRoute),
             ],
           ),
           Expanded(
