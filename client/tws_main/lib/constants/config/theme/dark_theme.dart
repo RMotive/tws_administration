@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/constants/config/theme/theme_base.dart';
 import 'package:tws_main/constants/theme_constants.dart';
 
 class DarkTheme extends ThemeBase {

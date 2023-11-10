@@ -1,7 +1,7 @@
 import 'package:cosmos_foundation/contracts/cosmos_page.dart';
 import 'package:cosmos_foundation/foundation/simplifiers/separator_column.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/constants/config/theme/theme_base.dart';
 import 'package:tws_main/presentation/widgets/tws_info_table.dart';
 
 /// UI Page for Business Dashboard functionallity.

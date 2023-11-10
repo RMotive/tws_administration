@@ -46,7 +46,7 @@ packages:
     description:
       path: "package/cosmos_foundation"
       ref: HEAD
-      resolved-ref: c72364c4a176040da44ea84ae190a864b986f712
+      resolved-ref: "075ec0cede18de8e5d0d9901d7d149df69d84dbd"
       url: "https://github.com/RMotive/CMSF-Cosmos_Foundation"
     source: git
     version: "1.0.0"
@@ -106,7 +106,7 @@ packages:
     source: hosted
     version: "3.0.0"
   localstorage:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: localstorage
       sha256: fdff4f717114e992acfd4045dc4a9ab9b987ca57f020965d63e3eb34089c60d8

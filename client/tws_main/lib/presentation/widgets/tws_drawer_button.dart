@@ -1,7 +1,7 @@
 import 'package:cosmos_foundation/foundation/conditionals/responsive_view.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/constants/config/theme/theme_base.dart';
 
 /// Public Widget for TWS Button to Drawers.
 ///

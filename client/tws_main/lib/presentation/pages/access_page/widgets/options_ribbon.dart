@@ -1,4 +1,4 @@
-part of '../auth_page.dart';
+part of '../access_page.dart';
 
 class _OptionsRibbon extends StatefulWidget {
   final void Function(bool isEnable) onTipChange;

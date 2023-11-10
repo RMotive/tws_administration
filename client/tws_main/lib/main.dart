@@ -3,48 +3,40 @@ import 'package:cosmos_foundation/foundation/hooks/future_widget.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:tws_main/config/routes/tws_routing.dart';
-import 'package:tws_main/config/theme/theme_base.dart';
-import 'package:tws_main/config/tws_url_strategy.dart';
+import 'package:tws_main/business/services/client-services/theme_client_service.dart';
+import 'package:tws_main/constants/config/routes/tws_routing.dart';
+import 'package:tws_main/constants/config/theme/theme_base.dart';
+import 'package:tws_main/constants/config/tws_url_strategy.dart';
 import 'package:tws_main/constants/theme_constants.dart';
-import 'package:tws_main/utils/helpers.dart';
 
+/// --> Services
+final ThemeClientService _themeSVC = ThemeClientService.i;
+
+/// This method represents the initial renderization and building for the
+/// application since the framework is instructed to generate all of it.
+///
+/// Here we can set pre-renderization instruction and another complex
+/// pre-render validations and complex behavior listeners.
 void main() {
-  try {
-    setUrlStrategy(TWSUrlStrategy());
-    runApp(
-      const MainApp(),
-    );
-  } catch (x) {
-    twsAdvisor.adviseWarning(x.toString());
-  }
+  /// Setting a custom url strategy to handle over a better way
+  /// the stack remotion of the access page after a success
+  /// credential validation.
+  setUrlStrategy(TWSUrlStrategy());
+  runApp(
+    const TWSAdminApp(),
+  );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  Future<ThemeBase> storeThemedCatcher() async {
-    ThemeBase? storedTheme = await getThemeFromStore(
-      themeNoUserStoreKey,
-      forcedThemes: themeCollection,
-    );
-    if (storedTheme != null) return storedTheme;
-
-    ThemeBase themeBase = themeCollection
-        .where(
-          (ThemeBase element) => element.themeIdentifier == defaultThemeIdentifier,
-        )
-        .first;
-    twsAdvisor.adviseSuccess('Stored theme gathered (${themeBase.runtimeType})');
-    return themeBase;
-  }
+/// Represents the initial application configuration.
+class TWSAdminApp extends StatelessWidget {
+  const TWSAdminApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: FutureWidget<ThemeBase>(
-        future: storeThemedCatcher(),
+        future: _themeSVC.fetchCurrentTheme(),
         successBuilder: (BuildContext context, ThemeBase themeBase) {
           return CosmosApp<ThemeBase>.router(
             defaultTheme: themeBase,
@@ -58,10 +50,7 @@ class MainApp extends StatelessWidget {
                 color: Colors.white,
                 title: 'TWS Admin Services',
                 child: DefaultTextStyle(
-                  style: TextStyle(
-                    decoration: TextDecoration.none,
-                    color: theme.primaryColor.textColor
-                  ),
+                  style: TextStyle(decoration: TextDecoration.none, color: theme.primaryColor.textColor),
                   child: ColoredBox(
                     color: theme.primaryColor.mainColor,
                     child: home,

@@ -1,21 +1,27 @@
 import 'package:cosmos_foundation/contracts/cosmos_page.dart';
 import 'package:cosmos_foundation/extensions/int_extension.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/separator_row.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/routes/tws_routes.dart';
-import 'package:tws_main/config/theme/light_theme.dart';
-import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/business/services/client-services/outputs/session_client_output.dart';
+import 'package:tws_main/business/services/client-services/session_client_service.dart';
+import 'package:tws_main/constants/config/routes/tws_routes.dart';
+import 'package:tws_main/constants/config/theme/light_theme.dart';
+import 'package:tws_main/constants/config/theme/theme_base.dart';
 import 'package:tws_main/presentation/widgets/tws_button.dart';
 import 'package:tws_main/presentation/widgets/tws_textfield.dart';
 import 'package:tws_main/presentation/widgets/tws_theme_toogler.dart';
 import 'package:tws_main/presentation/widgets/tws_toogle_rounded_button.dart';
+import 'package:cosmos_foundation/foundation/simplifiers/separator_row.dart';
 
 part 'widgets/options_ribbon.dart';
 
 // --> Helpers
+/// Internal [RouteDriver] helper reference
 final RouteDriver _router = RouteDriver.i;
+// --> Services
+/// Internal [SessionClientService] service reference.
+final SessionClientService _sessionCS = SessionClientService.i;
 
 /// UI Page for Auth functionallity.
 /// This UI Page shows the auth functionallity view, where the user can firm his credentials.
@@ -26,8 +32,6 @@ class AccessPage extends CosmosPage {
   @override
   Widget build(BuildContext context) => const _AuthPageState();
 }
-
-// --> Here is handled the UI Page state control.
 
 class _AuthPageState extends StatefulWidget {
   const _AuthPageState();
@@ -69,13 +73,19 @@ class _AuthPageStateState extends State<_AuthPageState> {
   }
 
   void checkAccess(String identity, String password) {
-    if (identity.isEmpty) setState(() => identityError = 'Cannot be empty');
-    if (password.isEmpty) setState(() => passwordError = 'Cannot be empty');
-    if (identity.isEmpty || password.isEmpty) return;
+    if (identity.isEmpty || password.isEmpty) {
+      setState(() {
+        identityError = identity.isEmpty ? 'Cannot be empty' : null;
+        passwordError = password.isEmpty ? 'Cannot be empty' : null;
+      });
+      return;
+    }
     if (!(identity == 'twtms-admin' && password == 'tws2023&')) return;
-
-    // --> All validations went succesful. (redirecting to the Main Screen wrapper)
-    _router.driveTo(businessDashboardRoute);
+    _sessionCS.updateStoredSession(SessionClientOutput()).then(
+      (_) {
+        _router.driveTo(businessDashboardRoute);
+      },
+    );
   }
 
   String ifToolTip(String tip) {

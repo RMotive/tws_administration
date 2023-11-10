@@ -5,8 +5,8 @@ import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/routes/tws_routes.dart';
-import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/constants/config/routes/tws_routes.dart';
+import 'package:tws_main/constants/config/theme/theme_base.dart';
 import 'package:tws_main/presentation/pages/mobile_disabled_page/mobile_disabled_page.dart';
 import 'package:tws_main/presentation/widgets/tws_drawer_button.dart';
 

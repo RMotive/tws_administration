@@ -1,6 +1,6 @@
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/config/theme/theme_base.dart';
+import 'package:tws_main/constants/config/theme/theme_base.dart';
 
 class TWSButton extends StatelessWidget {
   final Size? buttonSize;
