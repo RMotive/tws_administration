@@ -30,7 +30,15 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
     theme = getTheme(
       updateEfect: updateThemeEffect,
     );
+    final String currentPath = Uri.base.pathSegments.last;
     currentSelection = 0;
+    for (int p = 0; p < buttons.length; p++) {
+      final _MSMDButtonOption button = buttons[p];
+      final String buttonPath = button.route?.path ?? '';
+      if (buttonPath.contains(currentPath)) {
+        currentSelection = p;
+      }
+    }
   }
 
   @override
@@ -55,7 +63,8 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
   void updateThemeEffect() {
     setState(() {
       theme = getTheme();
-    });
+      },
+    );
   }
 
   @override
