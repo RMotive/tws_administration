@@ -1,7 +1,13 @@
-import 'package:cosmos_foundation/foundation/conditionals/responsive_view.dart';
+import 'package:cosmos_foundation/extensions/int_extension.dart';
+import 'package:cosmos_foundation/helpers/responsive.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
+import 'package:cosmos_foundation/models/options/responsive_property_options.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/constants/config/theme/theme_base.dart';
+
+// --> Helpers
+/// Internal [Responsive] helper reference.
+final Responsive _responsive = Responsive.i;
 
 /// Public Widget for TWS Button to Drawers.
 ///
@@ -16,12 +22,17 @@ class TWSDrawerButton extends StatefulWidget {
   /// The displayed icon in the button center.
   final IconData icon;
 
+  /// The displayed right-side text in the button, indicating the
+  /// routed page name or identifier.
+  final String label;
+
   /// The event that will fire when the button is clicked.
   final void Function()? action;
 
   const TWSDrawerButton({
     super.key,
     required this.icon,
+    required this.label,
     this.selected = false,
     this.action,
   });
@@ -33,6 +44,7 @@ class TWSDrawerButton extends StatefulWidget {
 class _TWSDrawerButtonState extends State<TWSDrawerButton> {
   // --> Resources
   static const double _buttonRadius = 45;
+
   // --> State
   late bool hovered;
   late ThemeBase theme;
@@ -59,8 +71,16 @@ class _TWSDrawerButtonState extends State<TWSDrawerButton> {
     });
   }
 
+  double getButtonSize() {
+    final double screenSize = MediaQuery.sizeOf(context).width;
+    return screenSize * .1;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ColorBundle selectedButtonBundle = theme.primaryColor;
+    final ColorBundle regularButtonBundle = theme.onPrimaryColorSecondControlColor;
+
     return MouseRegion(
       cursor: widget.selected ? SystemMouseCursors.basic : SystemMouseCursors.click,
       onEnter: (_) => setState(() => hovered = true),
@@ -68,37 +88,60 @@ class _TWSDrawerButtonState extends State<TWSDrawerButton> {
       hitTestBehavior: HitTestBehavior.opaque,
       child: GestureDetector(
         onTap: () => widget.selected ? null : widget.action?.call(),
-        child: ResponsiveView(
-          onLarge: const SizedBox(),
-          onSmall: const SizedBox(),
-          onMedium: Container(
-            decoration: BoxDecoration(
-              color: theme.onPrimaryColorSecondControlColor.mainColor,
-              shape: BoxShape.circle,
-              border: widget.selected
-                  ? Border.fromBorderSide(
-                      BorderSide(
-                        color: Colors.purple.shade200,
-                        width: 1,
-                      ),
-                    )
-                  : !hovered
-                      ? null
-                      : Border.fromBorderSide(
-                          BorderSide(
-                            color: theme.primaryColor.mainColor,
-                            strokeAlign: BorderSide.strokeAlignOutside,
-                            width: 1,
-                          ),
-                        ),
-            ),
-            child: SizedBox.square(
-              dimension: _buttonRadius,
-              child: Icon(
-                widget.icon,
-                color: theme.onPrimaryColorSecondControlColor.textColor,
+        child: AnimatedContainer(
+          constraints: const BoxConstraints(
+            maxWidth: 200,
+          ),
+          duration: 200.miliseconds,
+          decoration: BoxDecoration(
+            color: widget.selected ? selectedButtonBundle.mainColor : regularButtonBundle.mainColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                _responsive.propertyFromDefault(
+                  const ResponsivePropertyOptions<double>(100, 100, 0),
+                ),
               ),
             ),
+            border: Border.fromBorderSide(
+              BorderSide(
+                width: 1,
+                strokeAlign: BorderSide.strokeAlignInside,
+                color: (hovered && !widget.selected) ? theme.primaryColor.mainColor : Colors.transparent,
+              ),
+            ),
+          ),
+          width: _responsive.propertyFromDefault(
+            ResponsivePropertyOptions<double>(_buttonRadius + 2, _buttonRadius + 2, getButtonSize()),
+          ),
+          child: Row(
+            children: <Widget>[
+              SizedBox.square(
+                dimension: _buttonRadius,
+                child: Icon(
+                  widget.icon,
+                  color: theme.onPrimaryColorSecondControlColor.textColor,
+                ),
+              ),
+              if (_responsive.isLargeDevice)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 12,
+                    ),
+                    child: Center(
+                      child: Text(
+                        widget.label,
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: widget.selected ? selectedButtonBundle.textColor : regularButtonBundle.textColor,
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

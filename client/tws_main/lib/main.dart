@@ -1,3 +1,4 @@
+import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/foundation/hooks/cosmos_app.dart';
 import 'package:cosmos_foundation/foundation/hooks/future_widget.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
@@ -51,7 +52,8 @@ class TWSAdminApp extends StatelessWidget {
                 title: 'TWS Admin Services',
                 child: DefaultTextStyle(
                   style: TextStyle(decoration: TextDecoration.none, color: theme.primaryColor.textColor),
-                  child: ColoredBox(
+                  child: AnimatedContainer(
+                    duration: 300.miliseconds,
                     color: theme.primaryColor.mainColor,
                     child: home,
                   ),

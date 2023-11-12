@@ -1,4 +1,5 @@
 import 'package:cosmos_foundation/contracts/cosmos_screen.dart';
+import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/foundation/conditionals/responsive_view.dart';
 import 'package:cosmos_foundation/foundation/simplifiers/separator_column.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
@@ -42,19 +43,9 @@ class MainScreen extends CosmosScreen {
             ],
           ),
           Expanded(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.fromBorderSide(
-                  BorderSide(
-                    color: Colors.teal.shade900,
-                    width: 2,
-                  ),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: page,
-              ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: page,
             ),
           ),
         ],

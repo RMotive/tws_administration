@@ -30,15 +30,18 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
     theme = getTheme(
       updateEfect: updateThemeEffect,
     );
-    final String currentPath = Uri.base.pathSegments.last;
+    // --> Finding out if the current page belongs to a different button that has the currentSelection set.
     currentSelection = 0;
-    for (int p = 0; p < buttons.length; p++) {
-      final _MSMDButtonOption button = buttons[p];
-      final String buttonPath = button.route?.path ?? '';
-      if (buttonPath.contains(currentPath)) {
-        currentSelection = p;
+    try {
+      final String currentPath = Uri.base.pathSegments.last;
+      for (int p = 0; p < buttons.length; p++) {
+        final _MSMDButtonOption button = buttons[p];
+        final String buttonPath = button.route?.path ?? '';
+        if (buttonPath.contains(currentPath)) {
+          currentSelection = p;
+        }
       }
-    }
+    } catch (_) {}
   }
 
   @override
@@ -75,9 +78,10 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
       ),
       child: ClipRRect(
         borderRadius: const BorderRadius.horizontal(
-          right: Radius.circular(35),
+          right: Radius.circular(15),
         ),
-        child: ColoredBox(
+        child: AnimatedContainer(
+          duration: 300.miliseconds,
           color: theme.primaryColor.counterColor ?? theme.primaryColor.textColor,
           child: Padding(
             padding: const EdgeInsets.all(10),
@@ -89,6 +93,7 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
                   TWSDrawerButton(
                     icon: buttons[buttonPointer].icon,
                     selected: buttonPointer == currentSelection,
+                    label: buttons[buttonPointer].label,
                     action: () {
                       RouteOptions? buttonRoute = buttons[buttonPointer].route;
                       if (buttonRoute != null) {
