@@ -1,21 +1,21 @@
-part of '../main_screen.dart';
+part of 'app_layout.dart';
 
-/// UI Page Private Component to handle [MainScreen] UI Screen small behavior.
+/// UI Page Private Component to handle [AppLayout] UI Screen small behavior.
 ///
-/// This private component draws a beside buttons drawer to navigate along application pages wrapped in [MainScreen].
-class _MainScreenMenuDrawer extends StatefulWidget {
+/// This private component draws a beside buttons drawer to navigate along application pages wrapped in [AppLayout].
+class _AppLayoutMenuDrawer extends StatefulWidget {
   /// Options for each button that will be drawn in the beside drawer.
   final List<_MSMDButtonOption> buttons;
 
-  const _MainScreenMenuDrawer({
+  const _AppLayoutMenuDrawer({
     required this.buttons,
   });
 
   @override
-  State<_MainScreenMenuDrawer> createState() => _MainScreenMenuDrawerState();
+  State<_AppLayoutMenuDrawer> createState() => _AppLayoutMenuDrawerState();
 }
 
-class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
+class _AppLayoutMenuDrawerState extends State<_AppLayoutMenuDrawer> {
   // Resources
   late Size screenSize;
   late ThemeBase theme;
@@ -45,7 +45,7 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
   }
 
   @override
-  void didUpdateWidget(covariant _MainScreenMenuDrawer oldWidget) {
+  void didUpdateWidget(covariant _AppLayoutMenuDrawer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.buttons != widget.buttons) buttons = widget.buttons;
   }
@@ -64,8 +64,9 @@ class _MainScreenMenuDrawerState extends State<_MainScreenMenuDrawer> {
 
   /// Update effect for theme changes
   void updateThemeEffect() {
-    setState(() {
-      theme = getTheme();
+    setState(
+      () {
+        theme = getTheme();
       },
     );
   }
