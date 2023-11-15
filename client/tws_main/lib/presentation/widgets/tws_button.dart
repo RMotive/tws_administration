@@ -20,7 +20,7 @@ class TWSButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorBundle controlColorBundle = getTheme<ThemeBase>().onPrimaryColorSecondControlColor;
+    ColorBundle controlColorBundle = getTheme<TWSThemeBase>().onPrimaryColorSecondControlColor;
 
     return Padding(
       padding: padding ?? const EdgeInsets.all(0),

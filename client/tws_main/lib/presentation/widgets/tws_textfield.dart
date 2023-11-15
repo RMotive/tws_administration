@@ -32,7 +32,7 @@ class TWSTextField extends StatefulWidget {
 
 class _TWSTextFieldState extends State<TWSTextField> {
   // --> Init resources
-  late ThemeBase theme;
+  late TWSThemeBase theme;
   late final FocusNode focusHandler;
 
   @override

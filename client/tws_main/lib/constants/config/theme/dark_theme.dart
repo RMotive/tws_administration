@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tws_main/constants/config/theme/theme_base.dart';
 import 'package:tws_main/constants/theme_constants.dart';
 
-class DarkTheme extends ThemeBase {
+class TWSDarkTheme extends TWSThemeBase {
   static const Color _mainTextExtendedColor = Colors.white70;
 
-  const DarkTheme()
+  const TWSDarkTheme()
       : super(
           darkThemeIdentifier,
           errorColor: const ColorBundle(

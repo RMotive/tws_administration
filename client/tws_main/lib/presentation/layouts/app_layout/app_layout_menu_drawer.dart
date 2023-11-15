@@ -18,7 +18,7 @@ class _AppLayoutMenuDrawer extends StatefulWidget {
 class _AppLayoutMenuDrawerState extends State<_AppLayoutMenuDrawer> {
   // Resources
   late Size screenSize;
-  late ThemeBase theme;
+  late TWSThemeBase theme;
   late List<_MSMDButtonOption> buttons;
   // State
   late int currentSelection;

@@ -1,6 +1,9 @@
 import 'package:cosmos_foundation/helpers/advisor.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tws_main/business/contracts/client_service_contract.dart';
-import 'package:tws_main/business/services/client-services/outputs/session_client_output.dart';
+import 'package:tws_main/business/services/client/outputs/session_client_output.dart';
+
+export './outputs/session_client_output.dart';
 
 // --> Helpers
 const Advisor _advisor = Advisor('session-csvc');
@@ -31,14 +34,19 @@ class SessionClientService extends ClientServiceContract {
   /// Exceptions:
   ///   - This method only can throw uncaught exceptions.
   Future<SessionClientOutput> fetchStoredSession() async {
-    _advisor.adviseMessage('Starting to fetch the current session (client-side storage)');
-    dynamic absItem = storage.getItem(storageReference);
-    if (absItem == null) {
-      _advisor.adviseWarning('Unable to retrieve a correct session from client-side storage');
+    try {
+      _advisor.adviseMessage('Starting to fetch the current session (client-side storage)');
+      dynamic absItem = storage.getItem(storageReference);
+      if (absItem == null) {
+        _advisor.adviseWarning('Unable to retrieve a correct session from client-side storage');
+        return SessionClientOutput();
+      }
+
+      return absItem as SessionClientOutput;
+    } catch (_) {
+      debugPrint('error');
       return SessionClientOutput();
     }
-
-    return absItem as SessionClientOutput;
   }
 
   Future<SessionClientOutput> updateStoredSession(SessionClientOutput session) async {

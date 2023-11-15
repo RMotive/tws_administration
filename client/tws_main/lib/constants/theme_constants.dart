@@ -7,7 +7,7 @@ const String themeClientReference = 'no-user-theme-storing';
 const String defaultThemeIdentifier = lightThemeIdentifier;
 const String darkThemeIdentifier = 'classic-dark-theme';
 const String lightThemeIdentifier = 'classic-light-theme';
-const List<ThemeBase> themeCollection = <ThemeBase>[
-  DarkTheme(),
-  LightTheme(),
+const List<TWSThemeBase> themeCollection = <TWSThemeBase>[
+  TWSDarkTheme(),
+  TWSLightTheme(),
 ];

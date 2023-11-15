@@ -18,7 +18,7 @@ class _OptionsRibbonState extends State<_OptionsRibbon> {
   @override
   void initState() {
     super.initState();
-    currentIsLight = getTheme().runtimeType == LightTheme;
+    currentIsLight = getTheme().runtimeType == TWSLightTheme;
     tipEnabled = false;
   }
 

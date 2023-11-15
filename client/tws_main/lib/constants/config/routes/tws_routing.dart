@@ -2,11 +2,13 @@ import 'package:cosmos_foundation/contracts/cosmos_route.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_base.dart';
 import 'package:cosmos_foundation/contracts/cosmos_route_shell.dart';
 import 'package:cosmos_foundation/foundation/configurations/cosmos_routing.dart';
+import 'package:tws_main/business/services/client/session_client_service.dart';
 import 'package:tws_main/constants/config/routes/tws_routes.dart';
-import 'package:tws_main/presentation/layouts/app_layout/app_layout.dart';
-import 'package:tws_main/presentation/pages/access_page/access_page.dart';
-import 'package:tws_main/presentation/pages/business_dashboard_page/business_dashboard_page.dart';
-import 'package:tws_main/presentation/pages/settings_page/settings_page.dart';
+import 'package:tws_main/presentation/layouts/layouts_library.dart';
+import 'package:tws_main/presentation/pages/pages_library.dart';
+
+// --> Services
+final SessionClientService _sessionCS = SessionClientService.i;
 
 class TWSRouting extends CosmosRouting {
   TWSRouting()
@@ -27,7 +29,14 @@ class TWSRouting extends CosmosRouting {
                   build: (_, __) => const SettingsPage(),
                 )
               ],
-              layoutBuild: (_, __, ___) => AppLayout(page: ___),
+              layoutBuild: (_, __, ___) {
+                _sessionCS.fetchStoredSession().then(
+                  (SessionClientOutput value) {
+                    print(value.toString());
+                  },
+                );
+                return AppLayout(page: ___);
+              },
             ),
           ],
         );

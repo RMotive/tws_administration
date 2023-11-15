@@ -3,8 +3,7 @@ import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/business/services/client-services/outputs/session_client_output.dart';
-import 'package:tws_main/business/services/client-services/session_client_service.dart';
+import 'package:tws_main/business/services/client/session_client_service.dart';
 import 'package:tws_main/constants/config/routes/tws_routes.dart';
 import 'package:tws_main/constants/config/theme/light_theme.dart';
 import 'package:tws_main/constants/config/theme/theme_base.dart';
@@ -49,7 +48,7 @@ class _AuthPageStateState extends State<_AuthPageState> {
   late String? identityError;
   late String? passwordError;
   late bool tipEnabled;
-  late ThemeBase theme;
+  late TWSThemeBase theme;
 
   @override
   void initState() {

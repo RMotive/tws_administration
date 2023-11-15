@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tws_main/constants/config/theme/theme_base.dart';
 import 'package:tws_main/constants/theme_constants.dart';
 
-class LightTheme extends ThemeBase {
-  const LightTheme()
+class TWSLightTheme extends TWSThemeBase {
+  const TWSLightTheme()
       : super(
           lightThemeIdentifier,
           errorColor: const ColorBundle(

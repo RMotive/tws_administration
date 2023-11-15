@@ -8,7 +8,7 @@ class MobileDisabledPage extends CosmosPage {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBase theme = getTheme();
+    final TWSThemeBase theme = getTheme();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

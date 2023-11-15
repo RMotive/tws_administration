@@ -4,7 +4,7 @@ import 'package:cosmos_foundation/foundation/hooks/future_widget.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:tws_main/business/services/client-services/theme_client_service.dart';
+import 'package:tws_main/business/services/client/theme_client_service.dart';
 import 'package:tws_main/constants/config/routes/tws_routing.dart';
 import 'package:tws_main/constants/config/theme/theme_base.dart';
 import 'package:tws_main/constants/config/tws_url_strategy.dart';
@@ -36,16 +36,16 @@ class TWSAdminApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
-      child: FutureWidget<ThemeBase>(
+      child: FutureWidget<TWSThemeBase>(
         future: _themeSVC.fetchCurrentTheme(),
-        successBuilder: (BuildContext context, ThemeBase themeBase) {
-          return CosmosApp<ThemeBase>.router(
+        successBuilder: (BuildContext context, TWSThemeBase themeBase) {
+          return CosmosApp<TWSThemeBase>.router(
             defaultTheme: themeBase,
             routerConfig: TWSRouting(),
             themes: themeCollection,
             listenFrameSize: true,
             generalBuilder: (BuildContext context, Widget? home) {
-              ThemeBase theme = getTheme();
+              TWSThemeBase theme = getTheme();
 
               return Title(
                 color: Colors.white,

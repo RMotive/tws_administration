@@ -1,6 +1,6 @@
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/business/services/client-services/theme_client_service.dart';
+import 'package:tws_main/business/services/client/theme_client_service.dart';
 import 'package:tws_main/constants/config/theme/light_theme.dart';
 import 'package:tws_main/constants/config/theme/theme_base.dart';
 import 'package:tws_main/constants/theme_constants.dart';
@@ -8,7 +8,7 @@ import 'package:tws_main/presentation/widgets/tws_toogle_rounded_button.dart';
 
 // --> Services
 /// Internal [ThemeClientService] service reference.
-final ThemeClientService _themeCS = ThemeClientService.i; 
+final ThemeClientService _themeCS = ThemeClientService.i;
 
 /// Public Widget to draw a theme toogler button.
 ///
@@ -30,7 +30,7 @@ class TwsThemeToogler extends StatefulWidget {
 class _TwsThemeTooglerState extends State<TwsThemeToogler> {
   // --> State
   late bool currentIsLight;
-  late ThemeBase currentTheme;
+  late TWSThemeBase currentTheme;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _TwsThemeTooglerState extends State<TwsThemeToogler> {
     currentTheme = getTheme(
       updateEfect: updateThemeEffect,
     );
-    currentIsLight = currentTheme.runtimeType == LightTheme;
+    currentIsLight = currentTheme.runtimeType == TWSLightTheme;
   }
 
   @override

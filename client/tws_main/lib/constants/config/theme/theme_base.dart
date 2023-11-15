@@ -2,10 +2,13 @@ import 'package:cosmos_foundation/contracts/cosmos_theme_base.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:flutter/material.dart';
 
-/// --> General shortcut access for the business theme
-ThemeBase get twsTheme => getTheme();
+export './dark_theme.dart';
+export './light_theme.dart';
 
-class ThemeBase extends CosmosThemeBase {
+/// --> General shortcut access for the business theme
+TWSThemeBase get twsTheme => getTheme();
+
+class TWSThemeBase extends CosmosThemeBase {
   final ColorBundle errorColor;
 
   // --> Primary pallette bundle
@@ -16,7 +19,7 @@ class ThemeBase extends CosmosThemeBase {
   // --> Text theming
   final StyleBundle headerStyle;
 
-  const ThemeBase(
+  const TWSThemeBase(
     super.themeIdentifier, {
     required this.errorColor,
     required this.primaryColor,

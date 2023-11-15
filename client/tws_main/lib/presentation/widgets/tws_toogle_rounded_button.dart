@@ -17,7 +17,7 @@ class ToogleRoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeBase theme = getTheme();
+    TWSThemeBase theme = getTheme();
 
     return Tooltip(
       message: toolTip,

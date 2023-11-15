@@ -28,16 +28,16 @@ class ThemeClientService extends ClientServiceContract {
   ///   wasn't found will return with the default theme declared.
   /// Exceptions:
   ///   - This method only can generate uncaught exceptions.
-  Future<ThemeBase> fetchCurrentTheme() async {
-    ThemeBase? storedTheme = await getThemeFromStore(
+  Future<TWSThemeBase> fetchCurrentTheme() async {
+    TWSThemeBase? storedTheme = await getThemeFromStore(
       storageReference,
       forcedThemes: themeCollection,
     );
     if (storedTheme != null) return storedTheme;
 
-    ThemeBase themeBase = themeCollection
+    TWSThemeBase themeBase = themeCollection
         .where(
-          (ThemeBase element) => element.themeIdentifier == defaultThemeIdentifier,
+          (TWSThemeBase element) => element.themeIdentifier == defaultThemeIdentifier,
         )
         .first;
     return themeBase;

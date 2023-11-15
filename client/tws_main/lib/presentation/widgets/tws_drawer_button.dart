@@ -47,7 +47,7 @@ class _TWSDrawerButtonState extends State<TWSDrawerButton> {
 
   // --> State
   late bool hovered;
-  late ThemeBase theme;
+  late TWSThemeBase theme;
 
   @override
   void initState() {
