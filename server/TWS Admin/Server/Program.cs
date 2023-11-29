@@ -1,6 +1,4 @@
-﻿using Customer.Services;
-using Server.Middlewares;
-
+﻿
 namespace Server;
 
 public class Program
@@ -17,13 +15,10 @@ public class Program
         });
 
         // Add services to the container.
-        builder.Services.AddSingleton(new SecurityService());
 
         builder.Services.AddControllers();
 
         WebApplication app = builder.Build();
-
-        app.UseMiddleware<ExceptionCatcherMiddleware>();
 
         app.UseHttpsRedirection();
 
