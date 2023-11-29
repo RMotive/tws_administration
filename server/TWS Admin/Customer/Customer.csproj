@@ -7,28 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Contracts\" />
-    <None Remove="Contracts\Interfaces\" />
     <None Remove="Services\" />
     <None Remove="Transactions\" />
-    <None Remove="Transactions\Inputs\" />
-    <None Remove="Transactions\Outputs\" />
     <None Remove="Exceptions\" />
-    <None Remove="Transactions\Requests\" />
     <None Remove="Data\" />
-    <None Remove="Data\TWSSecurity\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Contracts\Interfaces\" />
-    <Folder Include="Services\" />
-    <Folder Include="Transactions\" />
-    <Folder Include="Transactions\Inputs\" />
-    <Folder Include="Transactions\Outputs\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Transactions\Requests\" />
-    <Folder Include="Data\" />
-    <Folder Include="Data\TWSSecurity\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">

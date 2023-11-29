@@ -12,10 +12,6 @@
     <None Remove="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Middlewares\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Customer\Customer.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
