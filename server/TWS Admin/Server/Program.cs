@@ -3,16 +3,18 @@ namespace Server;
 
 public class Program
 {
+    private static async void Initialize()
+    {
+        // --> Subscribing services
+        await Task.Delay(3000);
+        Console.WriteLine("Running server for (TWS Admin) 🛠🖥");
+    }
+
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
         // --> Initializer
-        Task.Run(async () =>
-        {
-            // --> Subscribing services
-            await Task.Delay(2000);
-            Console.WriteLine("Running services for (TWS Admin)");
-        });
+        Task.Run(Initialize);
 
         // Add services to the container.
 

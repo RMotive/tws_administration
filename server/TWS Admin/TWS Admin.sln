@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customer", "Customer\Custom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quality", "Quality\Quality.csproj", "{901F0370-2ED2-4246-A3D8-B544AF8E73E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWS Security", "TWS Security\TWS Security.csproj", "{2F6D6568-D2D0-48AA-8491-237AEE7C3245}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datasources", "TWS Security\Datasources.csproj", "{2F6D6568-D2D0-48AA-8491-237AEE7C3245}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
