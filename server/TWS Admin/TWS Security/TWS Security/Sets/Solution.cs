@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using TWS_Security.Contracts.Bases;
 
 namespace TWS_Security.Models;
 
-public partial class Solution
+public partial class Solution : BDatasourceSet
 {
     public int Id { get; set; }
 
