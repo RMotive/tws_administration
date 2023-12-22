@@ -16,16 +16,20 @@ public partial class Profile
 
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container)
     {
-        throw new NotImplementedException();
-    }
+        if(String.IsNullOrWhiteSpace(Name))
+            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
 
-    protected override ProfileEntity GenerateEntity()
-    {
-        throw new NotImplementedException();
+        return Container;
     }
+    protected override ProfileEntity GenerateEntity()
+    => new(this);
 
     public override bool EvaluateEntity(ProfileEntity Entity)
     {
-        throw new NotImplementedException();
+        if(Id != Entity.Pointer) return false;
+        if(Name != Entity.Name) return false;
+        if(Description != Entity.Description) return false;
+
+        return true;
     }
 }

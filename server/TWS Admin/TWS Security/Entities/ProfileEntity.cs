@@ -33,21 +33,56 @@ public class ProfileEntity
     ///     A profile is used to store collections of permits and its own information.
     ///     This collection of permits are used to calculate users/employees permissions level.
     /// </summary>
-    public ProfileEntity()
+    /// <param name="Name">
+    ///     Profile identification name
+    /// </param>
+    /// <param name="Description">
+    ///     Context related description.
+    /// </param>
+    public ProfileEntity(string Name, string? Description)
     {
-        Name = string.Empty;
+        this.Name = Name;
+        this.Description = Description;
+    }
+    /// <summary>
+    ///     Creates a new entity of a profile.
+    ///     
+    ///     A profile is used to store collections of permits and its own information.
+    ///     This collection of permits are used to calculate users/employees permissions level.
+    /// </summary>
+    /// <param name="Set">
+    ///     Datasource Profile set representation, will be used to populate this 
+    ///     entity object.
+    /// </param>
+    public ProfileEntity(Profile Set)
+    {
+        Pointer = Set.Id;
+        Name = Set.Name;
+        Description = Set.Description;
     }
 
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container)
     {
-        throw new NotImplementedException();
+        if(String.IsNullOrWhiteSpace(Name)) 
+            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
+
+        return Container;
     }
     protected override Profile GenerateSet()
     {
-        throw new NotImplementedException();
+        return new()
+        {
+            Id = Pointer,
+            Name = Name,
+            Description = Description,
+        };
     }
     public override bool EvaluateSet(Profile Set)
     {
-        throw new NotImplementedException();
+        if(Pointer != Set.Id) return false;
+        if(Name != Set.Name) return false;
+        if(Description != Set.Description) return false;    
+        
+        return true;
     }
 }
