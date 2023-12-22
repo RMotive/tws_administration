@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TWS_Security.Exceptions.Entities;
+﻿namespace TWS_Security.Exceptions.Entities;
 public class XBuildDatasourceSet : Exception
 {
     private const string defaultMessage = "Error building a datasource set from entity";

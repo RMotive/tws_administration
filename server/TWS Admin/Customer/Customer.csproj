@@ -20,7 +20,7 @@
     <None Remove="Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TWS Security\Datasources.csproj" />
+    <ProjectReference Include="..\TWS Security\TWS Security.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contracts\Bases\" />

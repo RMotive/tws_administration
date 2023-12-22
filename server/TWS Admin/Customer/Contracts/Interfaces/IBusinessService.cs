@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Customer.Contracts.Interfaces;
+﻿namespace Customer.Contracts.Interfaces;
 public interface IBusinessService<TEntity>
 {
     /// <summary>
