@@ -2,10 +2,8 @@
 
 namespace Foundation.Exceptions.Servers;
 public class XServerContext
-    : BException
-{
-    public enum Reason
-    {
+    : BException {
+    public enum Reason {
         NotFound,
         Incomplete,
         WrongFormat,
@@ -15,14 +13,12 @@ public class XServerContext
     private readonly DateTime _timemark;
 
     public XServerContext(Reason reason)
-        : base("Exception loading server context")
-    {
+        : base("Exception loading server context") {
         this._reason = reason;
         _timemark = DateTime.UtcNow;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay()
-    {
+    public override Dictionary<string, dynamic> ToDisplay() {
         return new Dictionary<string, dynamic>
         {
             {nameof(Reason), _reason},

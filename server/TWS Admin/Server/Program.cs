@@ -9,22 +9,17 @@ using System.Text.Json;
 
 namespace Server;
 
-public class Program
-{
-    public static ServerPropertiesModel ServerContext
-    {
-        get
-        {
+public class Program {
+    public static ServerPropertiesModel ServerContext {
+        get {
             return ServerContext;
         }
-        private set
-        {
+        private set {
             ServerContext = value;
         }
     }
 
-    private static void LoadServerContext()
-    {
+    private static void LoadServerContext() {
         const string expectation = "\\Properties\\server_properties.json";
         string workingDirectory = Directory.GetCurrentDirectory();
         string fullPath = $"{workingDirectory}{expectation}";
@@ -42,8 +37,7 @@ public class Program
         ServerPropertiesScheme contextScheme
             = JsonSerializer.Deserialize<ServerPropertiesScheme>(fileStream)
             ?? throw new XServerContext(XServerContext.Reason.WrongFormat);
-        try
-        {
+        try {
             ServerContext = contextScheme.GenerateModel();
             Dictionary<string, dynamic> successDetails = new()
             {
@@ -51,21 +45,16 @@ public class Program
                 {"Solution", ServerContext.Solution },
             };
             AdvisorManager.Success("Server context loaded", successDetails);
-        }
-        catch (BException x)
-        {
+        } catch (BException x) {
             AdvisorManager.Exception(x);
             throw;
-        }
-        catch
-        {
+        } catch {
             throw;
         }
     }
 
 
-    public static void Main(string[] args)
-    {
+    public static void Main(string[] args) {
         AdvisorManager.Announce("Loading server dependencies to run...");
         LoadServerContext();
 

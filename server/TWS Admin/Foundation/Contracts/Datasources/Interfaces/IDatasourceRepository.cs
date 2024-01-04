@@ -1,28 +1,33 @@
-﻿namespace Foundation.Contracts.Datasources.Interfaces;
+﻿using Foundation.Contracts.Exceptions;
+using Foundation.Records.Datasources;
+
+namespace Foundation.Contracts.Datasources.Interfaces;
 public interface IDatasourceRepository<TEntity, TSet>
+    : IDatasourceRepository
     where TEntity : IDatasourceEntity
-    where TSet : IDatasourceSet
-{
+    where TSet : IDatasourceSet {
     // --> Create interfaces <--
-    public TEntity Create(TEntity Entity);
-    public List<TEntity> Create(TEntity Entity, int Copies);
-    public List<TEntity> Create(List<TEntity> Entities);
+    public Task<TEntity> Create(TEntity Entity);
+    public Task<CreationResults<TEntity>> Create(TEntity Entity, int Copies);
+    public Task<CreationResults<TEntity>> Create(List<TEntity> Entities);
     // --> Read interfaces <--
-    public TEntity Read(int Pointer);
-    public List<TEntity> Read();
-    public List<TEntity> Read(List<int> Pointers);
-    public List<TEntity> Read(Predicate<TSet> Match, bool FirstOnly = false);
+    public Task<TEntity> Read(int Pointer);
+    public Task<List<TEntity>> Read();
+    public Task<(List<TEntity> Found, List<int> Unfound, List<BException> Corrupted)> Read(List<int> Pointers);
+    public Task<(List<TEntity> Found, List<BException> Corrupted)> Read(Predicate<TSet> Match, bool FirstOnly = false);
     // --> Update interfaces <--
-    public TEntity Update(TEntity Entity);
-    public TEntity Update(int Pointer, TEntity Entity);
-    public List<TEntity> Update(List<TEntity> Entities);
-    public List<TEntity> Update(List<int> Pointers, List<TEntity> Entities);
-    public List<TEntity> Update(List<int> Pointers, TEntity Entity);
-    public List<TEntity> Update(Predicate<TEntity> Match, Func<TEntity, TEntity> Refactor, bool FirstOnlt = false);
+    public Task<TEntity> Update(TEntity Entity);
+    public Task<TEntity> Update(int Pointer, TEntity Entity);
+    public Task<List<TEntity>> Update(List<TEntity> Entities);
+    public Task<List<TEntity>> Update(List<int> Pointers, List<TEntity> Entities);
+    public Task<List<TEntity>> Update(List<int> Pointers, TEntity Entity);
+    public Task<List<TEntity>> Update(Predicate<TEntity> Match, Func<TEntity, TEntity> Refactor, bool FirstOnlt = false);
     // --> Delete interfaces <--
-    public TEntity Delete(TEntity Entity);
-    public TEntity Delete(int Pointer);
-    public List<TEntity> Delete(List<TEntity> Entities);
-    public List<TEntity> Delete(List<int> Entities);
-    public List<TEntity> Delete(Predicate<TEntity> Match, bool FirstOnly = false);
+    public Task<TEntity> Delete(TEntity Entity);
+    public Task<TEntity> Delete(int Pointer);
+    public Task<List<TEntity>> Delete(List<TEntity> Entities);
+    public Task<List<TEntity>> Delete(List<int> Entities);
+    public Task<List<TEntity>> Delete(Predicate<TEntity> Match, bool FirstOnly = false);
 }
+
+public interface IDatasourceRepository { }

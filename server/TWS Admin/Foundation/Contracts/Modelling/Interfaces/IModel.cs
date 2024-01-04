@@ -1,4 +1,3 @@
 ﻿namespace Foundation.Contracts.Modelling.Interfaces;
-public interface IModel
-{
+public interface IModel {
 }

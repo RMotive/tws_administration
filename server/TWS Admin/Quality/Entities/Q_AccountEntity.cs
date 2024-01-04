@@ -1,23 +1,21 @@
 ﻿using System.Text;
+
 using TWS_Security.Entities;
 using TWS_Security.Sets;
 
 using Xunit;
 
 namespace TWS_Security.Quality.Entities;
-public class Q_AccountEntity
-{
+public class Q_AccountEntity {
     private readonly Account _setMock;
     private readonly AccountEntity _entityMock;
     private readonly AccountEntity _entityEmptyMock;
 
-    public Q_AccountEntity()
-    {
+    public Q_AccountEntity() {
         string user = "Testing Account";
         byte[] password = Encoding.UTF8.GetBytes("testingAccount$21");
 
-        _setMock = new()
-        {
+        _setMock = new() {
             Id = 1,
             User = user,
             Password = password
@@ -27,8 +25,7 @@ public class Q_AccountEntity
     }
 
     [Fact]
-    public void EvaluateSet()
-    {
+    public void EvaluateSet() {
         bool testFactSuccess = _entityMock.EvaluateSet(_setMock);
         bool testFactFailure = _entityEmptyMock.EvaluateSet(_setMock);
 
@@ -37,8 +34,7 @@ public class Q_AccountEntity
         Assert.NotEqual(_entityMock, _entityEmptyMock);
     }
     [Fact]
-    public void BuildSet()
-    {
+    public void BuildSet() {
         Account testFact = _entityMock.BuildSet();
 
         Assert.Equal(testFact.Id, _entityMock.Pointer);

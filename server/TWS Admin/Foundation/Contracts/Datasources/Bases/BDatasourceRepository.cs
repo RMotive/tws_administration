@@ -1,105 +1,199 @@
 ﻿using Foundation.Contracts.Datasources.Interfaces;
+using Foundation.Exceptions.Datasources;
+using Foundation.Contracts.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using System.Reflection;
+using Foundation.Attributes.Datasources;
+using Foundation.Records.Datasources;
 
 namespace Foundation.Contracts.Datasources.Bases;
-public abstract class BDatasourceRepository<TEntity, TSet>
+
+/// <summary>
+///     Base contract class that defines the inheritance
+///     of a repository behavior.
+///     
+///     A repository is an object that is responsable of calculate and
+///     resolve business logic related to datasource, entities and sets.
+/// </summary>
+/// <typeparam name="TEntity">
+///     The Entity type that this repository will be related to.
+/// </typeparam>
+/// <typeparam name="TSet">
+///     The Set type related to the Entity that is related to this repository implementation.
+/// </typeparam>
+public abstract class BDatasourceRepository<TRepository, TEntity, TSet, TSource>
     : IDatasourceRepository<TEntity, TSet>
-    where TEntity : IDatasourceEntity
-    where TSet : IDatasourceSet
-{
-    //--> Creat interface <--//
-    public abstract TEntity Create(TEntity Entity);
-    public List<TEntity> Create(TEntity Entity, int Copies)
-    {
-        List<TEntity> Resolutions = [];
-        for (int Point = 0; Point < Copies; Point++)
-        {
-            TEntity Resolution = Create(Entity);
-            Resolutions.Add(Resolution);
+    where TRepository : IDatasourceRepository
+    where TEntity : IDatasourceEntity<TSet>
+    where TSet : class, IDatasourceSet<TEntity>
+    where TSource : DbContext {
+
+    /// <summary>
+    ///     Internal repository datasource context handler
+    /// </summary>
+    protected readonly TSource _Source;
+    /// <summary>
+    ///     Instances the Base repository manager instance.
+    ///        
+    ///     It handles and performs several managing things to implement
+    ///     and resolve a repository implementation functionallity.
+    /// </summary>
+    /// <param name="Source">
+    ///     Datasource handler instance to use in this datasource repository lifetime context.
+    /// </param>
+    protected BDatasourceRepository(TSource Source) {
+        _Source = Source;
+    }
+    /// <summary>
+    ///     Creates a new datasource Set record in the live datasource store.
+    /// </summary>
+    /// <param name="Entity">
+    ///     Entity to store.
+    /// </param>
+    /// <returns>
+    ///     The Entity updated with the new auto-generated and fixed data.
+    /// </returns>
+    /// <exception cref="XUniqueViolation">
+    ///     If the datasource set has unique values on its columns and the Entity requested
+    ///     to be saved violates this unique constraints.
+    /// </exception>
+    public async Task<TEntity> Create(TEntity Entity) {
+        TSet Set = Entity.BuildSet();
+        try {
+            await _Source.AddAsync(Set);
+            await _Source.SaveChangesAsync();
+            TEntity Saved = Set.BuildEntity();
+            return Saved;
+        } catch(DbUpdateException X) 
+            when(X.InnerException is SqlException) {
+
+            _Source.Remove(Set);
+            PropertyInfo[] SetProperties = typeof(TSet).GetProperties();
+            List<TSet> UpSets = await _Source.Set<TSet>().AsNoTracking().ToListAsync();
+            List<PropertyInfo> Violations = [];
+            foreach(PropertyInfo SetProperty in SetProperties) {
+                IEnumerable<CustomAttributeData> CustomAttributes = SetProperty.CustomAttributes;
+                bool IsUnique = CustomAttributes
+                    .Any(i => i.AttributeType == typeof(UniqueAttribute));
+                if (!IsUnique) continue;
+
+                object? SavingSetValue = SetProperty.GetValue(Set);
+                foreach(TSet UpSet in UpSets) {
+                    object? UpSetValue = SetProperty.GetValue(UpSet);
+                    if(SavingSetValue == UpSetValue) {
+                        Violations.Add(SetProperty);
+                        break;
+                    }
+                }
+            }
+
+            throw new XUniqueViolation(typeof(TSet), Violations);
+        }
+    }
+    /// <summary>
+    ///     Tries to save several copies of the same Entity into the live datasource.
+    /// </summary>
+    /// <param name="Entity">
+    ///     The Entity that will be saved.
+    /// </param>
+    /// <param name="Copies">
+    ///     The number of copies to save.
+    /// </param>
+    /// <returns> 
+    ///     <see cref="CreationResults{TEntity}"/>: A bundle of the creation results, it has the collection of success and failures resolved during the creation proccess.
+    /// </returns>
+    public async Task<CreationResults<TEntity>> Create(TEntity Entity, int Copies) {
+        List<TEntity> Successes = [];
+        List<CreationFailure<TEntity>> Failures = [];
+        for(int Pointing = 0; Pointing < Copies; Pointing++) {
+            try {
+                TEntity CreatedEntity = await Create(Entity);
+                Successes.Add(CreatedEntity);
+            } catch (BException X) {
+                CreationFailure<TEntity> Failure = new(Entity, X);
+                Failures.Add(Failure);
+            }
         }
 
-        return Resolutions;
+        CreationResults<TEntity> CreationResults = new(Successes, Failures);
+        return CreationResults;
     }
-    public List<TEntity> Create(List<TEntity> Entities)
-    {
-        int Entries = Entities.Count;
-        List<TEntity> Resolutions = [];
-        for (int Point = 0; Point < Entries; Point++)
-        {
-            TEntity Pointed = Entities[Point];
-            TEntity Resolution = Create(Pointed);
-            Resolutions.Add(Resolution);
+
+    public async Task<CreationResults<TEntity>> Create(List<TEntity> Entities) {
+        List<TEntity> Successes = [];
+        List<CreationFailure<TEntity>> Failures = [];
+
+        foreach(TEntity Entity in Entities) {
+            try {
+                TEntity Success = await Create(Entity);
+                Successes.Add(Success);
+            } catch (BException X) {
+                CreationFailure<TEntity> Failure = new(Entity, X);
+                Failures.Add(Failure);
+            }
         }
-
-        return Resolutions;
+        CreationResults<TEntity> CreationResults = new(Successes, Failures);
+        return CreationResults;
     }
 
-    //--> Read interface <--//
-    public abstract TEntity Read(int Pointer);
-    public abstract List<TEntity> Read();
-    public List<TEntity> Read(List<int> Pointers)
-    {
-        int Entries = Pointers.Count;
-        List<TEntity> Retrieved = [];
-        for (int Point = 0; Point < Entries; Point++)
-        {
-            int Pointed = Pointers[Point];
-            TEntity Found = Read(Pointed);
-            Retrieved.Add(Found);
-        }
-        return Retrieved;
-    }
-    public abstract List<TEntity> Read(Predicate<TSet> Match, bool FirstOnly = false);
-
-    //--> Update interface <--//
-    public abstract TEntity Update(TEntity Entity);
-
-    public TEntity Update(int Pointer, TEntity Entity)
-    {
+    public Task<TEntity> Read(int Pointer) {
         throw new NotImplementedException();
     }
 
-    public List<TEntity> Update(List<TEntity> Entities)
-    {
+    public Task<List<TEntity>> Read() {
         throw new NotImplementedException();
     }
 
-    public List<TEntity> Update(List<int> Pointers, List<TEntity> Entities)
-    {
+    public Task<(List<TEntity> Found, List<int> Unfound, List<BException> Corrupted)> Read(List<int> Pointers) {
         throw new NotImplementedException();
     }
 
-    public List<TEntity> Update(List<int> Pointers, TEntity Entity)
-    {
+    public Task<(List<TEntity> Found, List<BException> Corrupted)> Read(Predicate<TSet> Match, bool FirstOnly = false) {
         throw new NotImplementedException();
     }
 
-    public List<TEntity> Update(Predicate<TEntity> Match, Func<TEntity, TEntity> Refactor, bool FirstOnlt = false)
-    {
+    public Task<TEntity> Update(TEntity Entity) {
         throw new NotImplementedException();
     }
 
-    public TEntity Delete(TEntity Entity)
-    {
+    public Task<TEntity> Update(int Pointer, TEntity Entity) {
         throw new NotImplementedException();
     }
 
-    public TEntity Delete(int Pointer)
-    {
+    public Task<List<TEntity>> Update(List<TEntity> Entities) {
         throw new NotImplementedException();
     }
 
-    public List<TEntity> Delete(List<TEntity> Entities)
-    {
+    public Task<List<TEntity>> Update(List<int> Pointers, List<TEntity> Entities) {
         throw new NotImplementedException();
     }
 
-    public List<TEntity> Delete(List<int> Entities)
-    {
+    public Task<List<TEntity>> Update(List<int> Pointers, TEntity Entity) {
         throw new NotImplementedException();
     }
 
-    public List<TEntity> Delete(Predicate<TEntity> Match, bool FirstOnly = false)
-    {
+    public Task<List<TEntity>> Update(Predicate<TEntity> Match, Func<TEntity, TEntity> Refactor, bool FirstOnlt = false) {
+        throw new NotImplementedException();
+    }
+
+    public Task<TEntity> Delete(TEntity Entity) {
+        throw new NotImplementedException();
+    }
+
+    public Task<TEntity> Delete(int Pointer) {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<TEntity>> Delete(List<TEntity> Entities) {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<TEntity>> Delete(List<int> Entities) {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<TEntity>> Delete(Predicate<TEntity> Match, bool FirstOnly = false) {
         throw new NotImplementedException();
     }
 }

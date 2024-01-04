@@ -1,4 +1,3 @@
 ﻿namespace TWS_Security.Repositories;
-internal class PermitsRepository
-{
+internal class PermitsRepository {
 }

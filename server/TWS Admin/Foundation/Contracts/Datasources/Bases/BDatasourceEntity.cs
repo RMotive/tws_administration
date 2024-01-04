@@ -22,8 +22,7 @@ namespace Foundation.Contracts.Datasources.Bases;
 public abstract class BDatasourceEntity<TSet, TEntity>
     : BObject, IDatasourceEntity<TSet>
     where TSet : IDatasourceSet
-    where TEntity : IDatasourceEntity
-{
+    where TEntity : IDatasourceEntity {
     /// <summary>
     ///     Stores the entity identifier into the datasource that provides this entity.
     ///     The setter can only be handled by the entity operations.
@@ -31,18 +30,16 @@ public abstract class BDatasourceEntity<TSet, TEntity>
     [Required]
     public int Pointer { get; protected set; }
 
-    protected BDatasourceEntity()
-    {
+    protected BDatasourceEntity() {
         Pointer = 0;
     }
 
     protected abstract Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container);
     protected abstract TSet GenerateSet();
     public abstract bool EvaluateSet(TSet Set);
-    public TSet BuildSet()
-    {
+    public TSet BuildSet() {
         Dictionary<string, IntegrityFailureReasons> integrityFailureReasons = ValidateIntegrity([]);
-        if(integrityFailureReasons.Count > 0) 
+        if (integrityFailureReasons.Count > 0)
             throw new XEntityIntegrity<TSet, TEntity>(this, integrityFailureReasons);
 
         return GenerateSet();

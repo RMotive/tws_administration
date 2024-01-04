@@ -5,8 +5,7 @@
 ///     that will represent business entities to work with their data.
 /// </summary>
 public interface IDatasourceEntity<TSet>
-    : IDatasourceEntity
-{
+    : IDatasourceEntity {
     /// <summary>
     ///     Compares the entity with the given datasource set
     /// </summary>
@@ -22,7 +21,6 @@ public interface IDatasourceEntity<TSet>
     public TSet BuildSet();
 }
 
-public interface IDatasourceEntity
-{
+public interface IDatasourceEntity {
 
 }

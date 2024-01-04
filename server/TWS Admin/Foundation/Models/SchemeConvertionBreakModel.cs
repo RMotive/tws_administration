@@ -4,15 +4,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Foundation.Models;
 public class SchemeConvertionBreakModel
-    : BModel
-{
+    : BModel {
     [Required]
     public string Property { get; private set; }
     [Required]
     public string Reason { get; private set; }
 
-    public SchemeConvertionBreakModel(string property, string reason)
-    {
+    public SchemeConvertionBreakModel(string property, string reason) {
         Property = property;
         Reason = reason;
     }

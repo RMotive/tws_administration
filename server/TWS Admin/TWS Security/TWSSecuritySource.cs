@@ -1,4 +1,6 @@
 ﻿using Foundation.Datasources.Sets;
+using Foundation.Managers;
+using Foundation.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -6,15 +8,17 @@ using TWS_Security.Sets;
 
 namespace TWS_Security;
 
-public partial class TWSSecuritySource : DbContext
-{
-    public TWSSecuritySource()
-    {
+public partial class TWSSecuritySource 
+    : DbContext {
+    private readonly DatasourceConnectionModel ConnectionProperties;
+
+    public TWSSecuritySource() {
+        ConnectionProperties = DatasourceConnectionManager.Load();
     }
 
     public TWSSecuritySource(DbContextOptions<TWSSecuritySource> options)
-        : base(options)
-    {
+        : base(options) {
+        ConnectionProperties = DatasourceConnectionManager.Load();
     }
 
     public virtual DbSet<Account> Accounts { get; set; }
@@ -29,14 +33,20 @@ public partial class TWSSecuritySource : DbContext
 
     public virtual DbSet<Solution> Solutions { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        string ConnectionString = 
+            $"Server={ConnectionProperties.Host};" +
+            $"Database={ConnectionProperties.Database};" +
+            $"User={ConnectionProperties.User};" +
+            $"Password={ConnectionProperties.Password};" +
+            $"Encrypt={ConnectionProperties.Encrypted};";
+        
+        
+        optionsBuilder.UseSqlServer(ConnectionString);
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Account>(entity =>
-        {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<Account>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Accounts__3213E83F365E950F");
 
             entity.HasIndex(e => e.User, "UQ__Accounts__7FC76D727B35E61A").IsUnique();
@@ -49,8 +59,7 @@ public partial class TWSSecuritySource : DbContext
                 .HasColumnName("user");
         });
 
-        modelBuilder.Entity<AccountsPermit>(entity =>
-        {
+        modelBuilder.Entity<AccountsPermit>(entity => {
             entity
                 .HasNoKey()
                 .ToTable("Accounts_Permits");
@@ -69,8 +78,7 @@ public partial class TWSSecuritySource : DbContext
                 .HasConstraintName("FK__Accounts___permi__47DBAE45");
         });
 
-        modelBuilder.Entity<Permit>(entity =>
-        {
+        modelBuilder.Entity<Permit>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Permits__3213E83F49C6A78D");
 
             entity.HasIndex(e => e.Name, "UQ__Permits__72E12F1BAEA504F0").IsUnique();
@@ -91,8 +99,7 @@ public partial class TWSSecuritySource : DbContext
                 .HasConstraintName("FK__Permits__solutio__3C69FB99");
         });
 
-        modelBuilder.Entity<Profile>(entity =>
-        {
+        modelBuilder.Entity<Profile>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Profiles__3213E83FC4B7E671");
 
             entity.HasIndex(e => e.Name, "UQ__Profiles__72E12F1B00165EF3").IsUnique();
@@ -107,8 +114,7 @@ public partial class TWSSecuritySource : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<ProfilesPermit>(entity =>
-        {
+        modelBuilder.Entity<ProfilesPermit>(entity => {
             entity
                 .HasNoKey()
                 .ToTable("Profiles_Permits");
@@ -127,8 +133,7 @@ public partial class TWSSecuritySource : DbContext
                 .HasConstraintName("FK__Profiles___profi__4222D4EF");
         });
 
-        modelBuilder.Entity<Solution>(entity =>
-        {
+        modelBuilder.Entity<Solution>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Solution__3213E83F2D355DCB");
 
             entity.HasIndex(e => e.Sign, "UQ__Solution__2F82F0C89DFAB179").IsUnique();

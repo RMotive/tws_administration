@@ -1,10 +1,7 @@
 ﻿using Foundation.Contracts.Datasources.Bases;
 using Foundation.Enumerators.Exceptions;
-using Foundation.Exceptions.Datasources;
 
 using TWS_Security.Sets;
-
-using static Foundation.Exceptions.Servers.XServerContext;
 
 namespace TWS_Security.Entities;
 
@@ -16,8 +13,7 @@ namespace TWS_Security.Entities;
 ///     users to perform them. 
 /// </summary>
 public class PermitEntity
-    : BDatasourceEntity<Permit, PermitEntity>
-{
+    : BDatasourceEntity<Permit, PermitEntity> {
     /// <summary>
     ///     Descriptive permit name identifier
     /// </summary>
@@ -46,8 +42,7 @@ public class PermitEntity
     /// <param name="Solution">
     ///     The solution where this permit effects.
     /// </param>
-    public PermitEntity(string Name, string? Description, uint Solution)
-    {
+    public PermitEntity(string Name, string? Description, uint Solution) {
         this.Name = Name;
         this.Description = Description;
         this.Solution = Solution;
@@ -62,16 +57,14 @@ public class PermitEntity
     ///     Permit set database representation, will be used to populate this
     ///     entity object data.
     /// </param>
-    public PermitEntity(Permit Set)
-    {
+    public PermitEntity(Permit Set) {
         this.Pointer = Set.Id;
         this.Name = Set.Name;
         this.Description = Set.Description;
         this.Solution = (uint)Set.Solution;
     }
 
-    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container)
-    {
+    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (String.IsNullOrWhiteSpace(Name))
             Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
         if (Solution <= 0)
@@ -79,22 +72,19 @@ public class PermitEntity
 
         return Container;
     }
-    protected override Permit GenerateSet()
-    {
-        return new Permit
-        {
+    protected override Permit GenerateSet() {
+        return new Permit {
             Id = Pointer,
             Name = Name,
             Description = Description,
             Solution = (int)Solution,
         };
     }
-    public override bool EvaluateSet(Permit Set)
-    {
-        if(Pointer != Set.Id) return false;
-        if(Name != Set.Name) return false;
-        if(Description != Set.Description) return false;
-        if(Solution != (uint)Set.Solution) return false;
+    public override bool EvaluateSet(Permit Set) {
+        if (Pointer != Set.Id) return false;
+        if (Name != Set.Name) return false;
+        if (Description != Set.Description) return false;
+        if (Solution != (uint)Set.Solution) return false;
 
         return true;
     }

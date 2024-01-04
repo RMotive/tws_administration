@@ -7,23 +7,19 @@ namespace Foundation.Exceptions.Modelling;
 public class XGenerateModel<TScheme, TModel>
     : BException
     where TScheme : BScheme<TModel>
-    where TModel : IModel
-{
+    where TModel : IModel {
     private readonly Type Scheme;
     private readonly List<SchemeConvertionBreakModel> Breaks;
 
     public XGenerateModel(List<SchemeConvertionBreakModel> breaks)
-        : base("Exception converting a scheme into a model")
-    {
+        : base("Exception converting a scheme into a model") {
         Scheme = typeof(TScheme);
         Breaks = breaks;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay()
-    {
+    public override Dictionary<string, dynamic> ToDisplay() {
         string breaksToDisplay = "";
-        for (int pointer = 0; pointer < Breaks.Count; pointer++)
-        {
+        for (int pointer = 0; pointer < Breaks.Count; pointer++) {
             breaksToDisplay += $"({pointer}) [{Breaks[pointer].Property}]: [{Breaks[pointer].Reason}]";
         }
 

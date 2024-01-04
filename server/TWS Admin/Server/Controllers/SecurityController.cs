@@ -6,13 +6,11 @@ namespace Server.Controllers;
 ///     Represents the controller to perform secutiry operations.
 /// </summary>
 [Controller, Route("[controller]")]
-public class SecurityController : ControllerBase
-{
+public class SecurityController : ControllerBase {
     public SecurityController() { }
 
     [HttpPost("[action]")]
-    public IActionResult Login()
-    {
+    public IActionResult Login() {
         throw new NotImplementedException();
     }
 }

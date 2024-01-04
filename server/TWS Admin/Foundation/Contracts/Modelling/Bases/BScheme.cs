@@ -10,7 +10,6 @@ namespace Foundation.Contracts.Modelling.Bases;
 /// </summary>
 public abstract class BScheme<TModel>
     : BObject, IScheme<TModel>
-    where TModel : IModel
-{
+    where TModel : IModel {
     public abstract TModel GenerateModel();
 }

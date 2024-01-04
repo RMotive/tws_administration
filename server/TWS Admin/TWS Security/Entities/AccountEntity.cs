@@ -1,6 +1,5 @@
 ﻿using Foundation.Contracts.Datasources.Bases;
 using Foundation.Enumerators.Exceptions;
-using Foundation.Exceptions.Datasources;
 
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,8 +17,7 @@ namespace TWS_Security.Entities;
 ///     to use the bussines solution features.
 /// </summary>
 public class AccountEntity
-    : BDatasourceEntity<Account, AccountEntity>
-{
+    : BDatasourceEntity<Account, AccountEntity> {
     /// <summary>
     ///     Account user identification.
     /// </summary>
@@ -45,8 +43,7 @@ public class AccountEntity
     /// <param name="Password">
     ///     Account password sign 
     /// </param>
-    public AccountEntity(string User, byte[] Password)
-    {
+    public AccountEntity(string User, byte[] Password) {
         this.User = User;
         this.Password = Password;
     }
@@ -60,15 +57,13 @@ public class AccountEntity
     /// <param name="Set">
     ///     Set that represents this entity. The data will be populated from it.
     /// </param>
-    public AccountEntity(Account Set)
-    {
+    public AccountEntity(Account Set) {
         this.Pointer = Set.Id;
         this.User = Set.User;
         this.Password = Set.Password;
     }
 
-    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container)
-    {
+    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (String.IsNullOrWhiteSpace(User))
             Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmptyValue);
         if (Password.IsNullOrEmpty())
@@ -76,23 +71,20 @@ public class AccountEntity
         return Container;
     }
 
-    protected override Account GenerateSet()
-    {
-        return new()
-        {
+    protected override Account GenerateSet() {
+        return new() {
             Id = Pointer,
             User = User,
             Password = Password,
         };
     }
 
-    public override bool EvaluateSet(Account Set)
-    {
+    public override bool EvaluateSet(Account Set) {
         if (Pointer != Set.Id)
             return false;
         if (User != Set.User)
             return false;
-        if (Password != Set.Password)
+        if (!Password.SequenceEqual(Set.Password))
             return false;
 
         return true;

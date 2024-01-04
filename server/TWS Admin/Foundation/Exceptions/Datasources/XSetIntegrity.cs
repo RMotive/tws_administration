@@ -7,24 +7,21 @@ namespace Foundation.Exceptions.Datasources;
 public class XSetIntegrity<TSet, TEntity>
     : BException
     where TSet : IDatasourceSet
-    where TEntity : IDatasourceEntity
-{
+    where TEntity : IDatasourceEntity {
     private readonly Type SetType;
     private readonly Type EntityType;
     private readonly BDatasourceSet<TSet, TEntity> Set;
     private readonly Dictionary<string, IntegrityFailureReasons> Reasons;
 
     public XSetIntegrity(BDatasourceSet<TSet, TEntity> Set, Dictionary<string, IntegrityFailureReasons> Reasons)
-        : base($"Data handling integrity fail from: {typeof(TSet)} to: {typeof(TEntity)}")
-    {
+        : base($"Data handling integrity fail from: {typeof(TSet)} to: {typeof(TEntity)}") {
         SetType = typeof(TSet);
         EntityType = typeof(TEntity);
         this.Set = Set;
         this.Reasons = Reasons;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay()
-    {
+    public override Dictionary<string, dynamic> ToDisplay() {
         return new Dictionary<string, dynamic>()
         {
             {"Set Type", SetType },

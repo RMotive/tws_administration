@@ -12,8 +12,7 @@ namespace TWS_Security.Entities;
 ///     Stores all the relevant information of a solution.
 /// </summary>
 public class SolutionEntity
-    : BDatasourceEntity<Solution, SolutionEntity>
-{
+    : BDatasourceEntity<Solution, SolutionEntity> {
     /// <summary>
     ///     Simplified way to identiy the solution into the business context.
     /// </summary>
@@ -26,8 +25,7 @@ public class SolutionEntity
     ///     It will always be converted to Upper Case
     /// </summary>
     [Required]
-    public string Sign
-    {
+    public string Sign {
         get => _Sign;
         private set => _Sign = value.ToUpper();
     }
@@ -55,8 +53,7 @@ public class SolutionEntity
     /// <param name="Description">
     ///     A brief description about the solution, its scope, functions and features, etc.
     /// </param>
-    public SolutionEntity(string Name, string Sign, string? Description)
-    {
+    public SolutionEntity(string Name, string Sign, string? Description) {
         _Sign = String.Empty;
         this.Name = Name;
         this.Sign = Sign;
@@ -74,8 +71,7 @@ public class SolutionEntity
     ///     The Set representation of this entity, the data of the set will be
     ///     used to populate the entity object.
     /// </param>
-    public SolutionEntity(Solution Set)
-    {
+    public SolutionEntity(Solution Set) {
         _Sign = String.Empty;
         this.Pointer = Set.Id;
         this.Name = Set.Name;
@@ -83,8 +79,7 @@ public class SolutionEntity
         this.Description = Set.Description;
     }
 
-    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container)
-    {
+    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (String.IsNullOrWhiteSpace(Name))
             Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
         if (String.IsNullOrWhiteSpace(Sign))
@@ -92,23 +87,20 @@ public class SolutionEntity
 
         return Container;
     }
-    protected override Solution GenerateSet()
-    {
-        return new()
-        {
+    protected override Solution GenerateSet() {
+        return new() {
             Id = Pointer,
             Name = Name,
             Sign = Sign,
             Description = Description,
         };
     }
-    public override bool EvaluateSet(Solution Set)
-    {
-        if(Pointer != Set.Id) return false;
-        if(Name != Set.Name) return false;
-        if(!Sign.Equals(Set.Sign, StringComparison.CurrentCultureIgnoreCase)) 
+    public override bool EvaluateSet(Solution Set) {
+        if (Pointer != Set.Id) return false;
+        if (Name != Set.Name) return false;
+        if (!Sign.Equals(Set.Sign, StringComparison.CurrentCultureIgnoreCase))
             return false;
-        if(Description != Set.Description) return false;
+        if (Description != Set.Description) return false;
 
         return true;
     }

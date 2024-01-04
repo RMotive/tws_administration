@@ -1,6 +1,5 @@
 ﻿namespace Customer.Contracts.Interfaces;
-public interface IBusinessService<TEntity>
-{
+public interface IBusinessService<TEntity> {
     /// <summary>
     ///     Fetches all entities related with the service
     /// </summary>

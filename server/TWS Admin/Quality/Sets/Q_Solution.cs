@@ -4,19 +4,16 @@ using TWS_Security.Sets;
 using Xunit;
 
 namespace TWS_Security.Quality.Sets;
-public class Q_Solution
-{
+public class Q_Solution {
     private readonly Solution _setMock;
     private readonly SolutionEntity _entityMock;
     private readonly SolutionEntity _entityEmptyMock;
 
-    public Q_Solution()
-    {
+    public Q_Solution() {
         string name = "solution test name";
         string sign = "stn";
 
-        _setMock = new()
-        {
+        _setMock = new() {
             Id = 1,
             Name = name,
             Sign = sign,
@@ -26,8 +23,7 @@ public class Q_Solution
     }
 
     [Fact]
-    public void BuildEntity()
-    {
+    public void BuildEntity() {
         SolutionEntity testFact = _setMock.BuildEntity();
 
         Assert.Equal(testFact.Pointer, _setMock.Id);
@@ -37,8 +33,7 @@ public class Q_Solution
     }
 
     [Fact]
-    public void EvaluateEntity()
-    {
+    public void EvaluateEntity() {
         bool testFactSuccess = _setMock.EvaluateEntity(_entityMock);
         bool testFactFailure = _setMock.EvaluateEntity(_entityEmptyMock);
 

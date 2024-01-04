@@ -6,16 +6,13 @@ using TWS_Security.Sets;
 using Xunit;
 
 namespace TWS_Security.Quality.Entities;
-public class Q_ProfileEntity
-{
+public class Q_ProfileEntity {
     private readonly Profile _setMock;
     private readonly ProfileEntity _entityMock;
     private readonly ProfileEntity _entityEmptyMock;
 
-    public Q_ProfileEntity()
-    {
-        _setMock = new()
-        {
+    public Q_ProfileEntity() {
+        _setMock = new() {
             Id = 1,
             Name = "testing profile name",
             Description = "testing profile description",
@@ -24,8 +21,7 @@ public class Q_ProfileEntity
         _entityEmptyMock = new("", null);
     }
     [Fact]
-    public void BuildSet()
-    {
+    public void BuildSet() {
         Profile testFact = _entityMock.BuildSet();
 
         Assert.Equal(testFact.Id, _entityMock.Pointer);
@@ -34,8 +30,7 @@ public class Q_ProfileEntity
         Assert.Throws<XEntityIntegrity<Profile, ProfileEntity>>(new ProfileEntity("", null).BuildSet);
     }
     [Fact]
-    public void EvaluateSet()
-    {
+    public void EvaluateSet() {
         bool testFactSuccess = _entityMock.EvaluateSet(_setMock);
         bool testFactFailure = _entityEmptyMock.EvaluateSet(_setMock);
 

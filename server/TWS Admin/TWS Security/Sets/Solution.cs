@@ -1,14 +1,12 @@
 ﻿using Foundation.Contracts.Datasources.Bases;
 using Foundation.Enumerators.Exceptions;
-using Foundation.Exceptions.Datasources;
 
 using TWS_Security.Entities;
 
 namespace TWS_Security.Sets;
 
 public partial class Solution
-    : BDatasourceSet<Solution, SolutionEntity>
-{
+    : BDatasourceSet<Solution, SolutionEntity> {
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
@@ -19,8 +17,7 @@ public partial class Solution
 
     public virtual ICollection<Permit> Permits { get; set; } = new List<Permit>();
 
-    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container)
-    {
+    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (Id <= 0)
             Container.Add(nameof(Id), IntegrityFailureReasons.LessOrEqualZero);
         if (String.IsNullOrEmpty(Name))
@@ -32,8 +29,7 @@ public partial class Solution
     }
     protected override SolutionEntity GenerateEntity()
     => new(this);
-    public override bool EvaluateEntity(SolutionEntity Entity)
-    {
+    public override bool EvaluateEntity(SolutionEntity Entity) {
         if (Id != Entity.Pointer) return false;
         if (Name != Entity.Name) return false;
         if (!Sign.Equals(Entity.Sign, StringComparison.CurrentCultureIgnoreCase)) return false;

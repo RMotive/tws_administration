@@ -1,6 +1,5 @@
 ﻿namespace Foundation.Contracts.Modelling.Interfaces;
 public interface IScheme<TModel>
-    where TModel : IModel
-{
+    where TModel : IModel {
     public TModel GenerateModel();
 }

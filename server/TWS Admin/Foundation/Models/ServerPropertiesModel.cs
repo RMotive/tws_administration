@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Foundation.Models;
 public class ServerPropertiesModel
-    : BModel
-{
+    : BModel {
     [Required]
     public string Tenant { get; private set; }
     [Required]
@@ -14,8 +13,7 @@ public class ServerPropertiesModel
     public string? Scope { get; private set; }
     public int? Pointer { get; private set; }
 
-    public ServerPropertiesModel(string tenant, string solution, string? sign, string? scope, int? pointer)
-    {
+    public ServerPropertiesModel(string tenant, string solution, string? sign, string? scope, int? pointer) {
         Tenant = tenant;
         Solution = solution;
         Sign = sign;

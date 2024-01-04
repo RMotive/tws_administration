@@ -11,15 +11,13 @@ namespace Foundation.Contracts.Datasources.Bases;
 public abstract class BDatasourceSet<TSet, TEntity>
     : BObject, IDatasourceSet<TEntity>
     where TEntity : IDatasourceEntity
-    where TSet : IDatasourceSet
-{
+    where TSet : IDatasourceSet {
     protected abstract Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container);
     protected abstract TEntity GenerateEntity();
     public abstract bool EvaluateEntity(TEntity Entity);
-    public TEntity BuildEntity()
-    {
+    public TEntity BuildEntity() {
         Dictionary<string, IntegrityFailureReasons> integrityFailureReasons = ValidateIntegrity([]);
-        if(integrityFailureReasons.Count > 0) 
+        if (integrityFailureReasons.Count > 0)
             throw new XSetIntegrity<TSet, TEntity>(this, integrityFailureReasons);
 
         return GenerateEntity();

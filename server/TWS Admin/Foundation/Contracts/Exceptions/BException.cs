@@ -1,10 +1,8 @@
 ﻿namespace Foundation.Contracts.Exceptions;
 public abstract class BException
-    : Exception
-{
+    : Exception {
     public BException(string Message)
-        : base(Message)
-    { }
+        : base(Message) { }
 
     public abstract Dictionary<string, dynamic> ToDisplay();
 }

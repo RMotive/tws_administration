@@ -6,15 +6,12 @@ using TWS_Security.Sets;
 using Xunit;
 
 namespace TWS_Security.Quality.Sets;
-public class Q_Permit
-{
+public class Q_Permit {
     private readonly Permit _setMock;
     private readonly PermitEntity _entityMock;
     private readonly PermitEntity _entityEmptyMock;
-    public Q_Permit()
-    {
-        _setMock = new()
-        {
+    public Q_Permit() {
+        _setMock = new() {
             Id = 1,
             Name = "testing permit name",
             Description = "testing permit description",
@@ -25,8 +22,7 @@ public class Q_Permit
     }
 
     [Fact]
-    public void EvaluateEntity()
-    {
+    public void EvaluateEntity() {
         bool testFactSuccess = _setMock.EvaluateEntity(_entityMock);
         bool testFactFailure = _setMock.EvaluateEntity(_entityEmptyMock);
 
@@ -35,8 +31,7 @@ public class Q_Permit
         Assert.NotEqual(_entityMock, _entityEmptyMock);
     }
     [Fact]
-    public void BuildEntity()
-    {
+    public void BuildEntity() {
         PermitEntity testFact = _setMock.BuildEntity();
 
         Assert.Equal(testFact.Pointer, _setMock.Id);

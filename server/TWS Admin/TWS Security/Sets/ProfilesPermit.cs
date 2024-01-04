@@ -2,8 +2,7 @@
 
 namespace Foundation.Datasources.Sets;
 
-public partial class ProfilesPermit
-{
+public partial class ProfilesPermit {
     public int Permit { get; set; }
 
     public int Profile { get; set; }

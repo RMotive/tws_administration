@@ -15,8 +15,7 @@ namespace TWS_Security.Entities;
 ///     To determine and override their permissions level about the solution features.
 /// </summary>
 public class ProfileEntity
-    : BDatasourceEntity<Profile, ProfileEntity>
-{
+    : BDatasourceEntity<Profile, ProfileEntity> {
     /// <summary>
     ///     Profile name, used to identify it into the solution.
     /// </summary>
@@ -39,8 +38,7 @@ public class ProfileEntity
     /// <param name="Description">
     ///     Context related description.
     /// </param>
-    public ProfileEntity(string Name, string? Description)
-    {
+    public ProfileEntity(string Name, string? Description) {
         this.Name = Name;
         this.Description = Description;
     }
@@ -54,35 +52,30 @@ public class ProfileEntity
     ///     Datasource Profile set representation, will be used to populate this 
     ///     entity object.
     /// </param>
-    public ProfileEntity(Profile Set)
-    {
+    public ProfileEntity(Profile Set) {
         Pointer = Set.Id;
         Name = Set.Name;
         Description = Set.Description;
     }
 
-    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container)
-    {
-        if(String.IsNullOrWhiteSpace(Name)) 
+    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
+        if (String.IsNullOrWhiteSpace(Name))
             Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
 
         return Container;
     }
-    protected override Profile GenerateSet()
-    {
-        return new()
-        {
+    protected override Profile GenerateSet() {
+        return new() {
             Id = Pointer,
             Name = Name,
             Description = Description,
         };
     }
-    public override bool EvaluateSet(Profile Set)
-    {
-        if(Pointer != Set.Id) return false;
-        if(Name != Set.Name) return false;
-        if(Description != Set.Description) return false;    
-        
+    public override bool EvaluateSet(Profile Set) {
+        if (Pointer != Set.Id) return false;
+        if (Name != Set.Name) return false;
+        if (Description != Set.Description) return false;
+
         return true;
     }
 }
