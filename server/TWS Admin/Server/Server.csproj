@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'dev' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'development' " />
   <ItemGroup>
     <None Remove="Controllers\" />
     <None Remove="Middlewares\" />
