@@ -1,14 +1,17 @@
-﻿using Foundation.Contracts.Datasources.Interfaces;
-using Foundation.Exceptions.Datasources;
-using Foundation.Contracts.Exceptions;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
-using System.Reflection;
+﻿using System.Reflection;
+
 using Foundation.Attributes.Datasources;
+using Foundation.Contracts.Datasources.Interfaces;
+using Foundation.Contracts.Exceptions;
+using Foundation.Exceptions.Datasources;
 using Foundation.Records.Datasources;
 
-namespace Foundation.Contracts.Datasources.Bases;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
+using OCriteria = Foundation.Enumerators.Records.OperationFailureCriterias;
+
+namespace Foundation.Contracts.Datasources.Bases;
 /// <summary>
 ///     Base contract class that defines the inheritance
 ///     of a repository behavior.
@@ -28,7 +31,6 @@ public abstract class BDatasourceRepository<TRepository, TEntity, TSet, TSource>
     where TEntity : IDatasourceEntity<TSet>
     where TSet : class, IDatasourceSet<TEntity>
     where TSource : DbContext {
-
     /// <summary>
     ///     Internal repository datasource context handler
     /// </summary>
@@ -65,23 +67,23 @@ public abstract class BDatasourceRepository<TRepository, TEntity, TSet, TSource>
             await _Source.SaveChangesAsync();
             TEntity Saved = Set.BuildEntity();
             return Saved;
-        } catch(DbUpdateException X) 
-            when(X.InnerException is SqlException) {
+        } catch (DbUpdateException X)
+            when (X.InnerException is SqlException) {
 
             _Source.Remove(Set);
             PropertyInfo[] SetProperties = typeof(TSet).GetProperties();
             List<TSet> UpSets = await _Source.Set<TSet>().AsNoTracking().ToListAsync();
             List<PropertyInfo> Violations = [];
-            foreach(PropertyInfo SetProperty in SetProperties) {
+            foreach (PropertyInfo SetProperty in SetProperties) {
                 IEnumerable<CustomAttributeData> CustomAttributes = SetProperty.CustomAttributes;
                 bool IsUnique = CustomAttributes
                     .Any(i => i.AttributeType == typeof(UniqueAttribute));
                 if (!IsUnique) continue;
 
                 object? SavingSetValue = SetProperty.GetValue(Set);
-                foreach(TSet UpSet in UpSets) {
+                foreach (TSet UpSet in UpSets) {
                     object? UpSetValue = SetProperty.GetValue(UpSet);
-                    if(SavingSetValue == UpSetValue) {
+                    if (SavingSetValue == UpSetValue) {
                         Violations.Add(SetProperty);
                         break;
                     }
@@ -101,39 +103,47 @@ public abstract class BDatasourceRepository<TRepository, TEntity, TSet, TSource>
     ///     The number of copies to save.
     /// </param>
     /// <returns> 
-    ///     <see cref="CreationResults{TEntity}"/>: A bundle of the creation results, it has the collection of success and failures resolved during the creation proccess.
+    ///     <see cref="OperationResultsEntity{TEntity}"/>: A bundle of the creation results, it has the collection of success and failures resolved during the creation proccess.
     /// </returns>
-    public async Task<CreationResults<TEntity>> Create(TEntity Entity, int Copies) {
+    public async Task<OperationResults<TEntity, TEntity>> Create(TEntity Entity, int Copies) {
         List<TEntity> Successes = [];
-        List<CreationFailure<TEntity>> Failures = [];
-        for(int Pointing = 0; Pointing < Copies; Pointing++) {
+        List<OperationFailure<TEntity>> Failures = [];
+        for (int Pointing = 0; Pointing < Copies; Pointing++) {
             try {
                 TEntity CreatedEntity = await Create(Entity);
                 Successes.Add(CreatedEntity);
             } catch (BException X) {
-                CreationFailure<TEntity> Failure = new(Entity, X);
+                OperationFailure<TEntity> Failure = new(Entity, X, OCriteria.Entity);
                 Failures.Add(Failure);
             }
         }
 
-        CreationResults<TEntity> CreationResults = new(Successes, Failures);
+        OperationResults<TEntity, TEntity> CreationResults = new(Successes, Failures);
         return CreationResults;
     }
-
-    public async Task<CreationResults<TEntity>> Create(List<TEntity> Entities) {
+    /// <summary>
+    ///     Tries to save every given Entity.
+    /// </summary>
+    /// <param name="Entities">
+    ///     Collection of Entities to Create.
+    /// </param>
+    /// <returns>
+    ///     <see cref="OperationResultsEntity{TEntity}"/>: That contains the collection of Entities successfuly saved and Failures caught during the creation proccess.
+    /// </returns>
+    public async Task<OperationResults<TEntity, TEntity>> Create(List<TEntity> Entities) {
         List<TEntity> Successes = [];
-        List<CreationFailure<TEntity>> Failures = [];
+        List<OperationFailure<TEntity>> Failures = [];
 
-        foreach(TEntity Entity in Entities) {
+        foreach (TEntity Entity in Entities) {
             try {
                 TEntity Success = await Create(Entity);
                 Successes.Add(Success);
             } catch (BException X) {
-                CreationFailure<TEntity> Failure = new(Entity, X);
+                OperationFailure<TEntity> Failure = new(Entity, X, OCriteria.Entity);
                 Failures.Add(Failure);
             }
         }
-        CreationResults<TEntity> CreationResults = new(Successes, Failures);
+        OperationResults<TEntity, TEntity> CreationResults = new(Successes, Failures);
         return CreationResults;
     }
 
@@ -145,11 +155,11 @@ public abstract class BDatasourceRepository<TRepository, TEntity, TSet, TSource>
         throw new NotImplementedException();
     }
 
-    public Task<(List<TEntity> Found, List<int> Unfound, List<BException> Corrupted)> Read(List<int> Pointers) {
+    public Task<OperationResults<TEntity, int>> Read(List<int> Pointers) {
         throw new NotImplementedException();
     }
 
-    public Task<(List<TEntity> Found, List<BException> Corrupted)> Read(Predicate<TSet> Match, bool FirstOnly = false) {
+    public Task<OperationResults<TEntity, Predicate<TSet>>> Read(Predicate<TSet> Match, bool FirstOnly = false) {
         throw new NotImplementedException();
     }
 

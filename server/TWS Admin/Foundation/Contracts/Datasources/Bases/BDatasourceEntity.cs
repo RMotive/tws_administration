@@ -1,9 +1,9 @@
-﻿using Foundation.Contracts.Datasources.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Foundation.Contracts.Datasources.Interfaces;
 using Foundation.Contracts.Modelling.Bases;
 using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Datasources;
-
-using System.ComponentModel.DataAnnotations;
 
 namespace Foundation.Contracts.Datasources.Bases;
 

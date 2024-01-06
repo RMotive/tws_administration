@@ -1,13 +1,12 @@
 ﻿using Foundation.Contracts.Datasources.Interfaces;
 
 namespace Foundation.Records.Datasources;
-public record CreationResults<TEntity>
+public record OperationResults<TEntity, TReference>
     where TEntity : IDatasourceEntity {
     public List<TEntity> Successes { get; set; }
+    public List<OperationFailure<TReference>> Failures { get; set; }
 
-    public List<CreationFailure<TEntity>> Failures { get; set; }
-
-    public CreationResults(List<TEntity> successes, List<CreationFailure<TEntity>> failures) {
+    public OperationResults(List<TEntity> successes, List<OperationFailure<TReference>> failures) {
         Successes = successes;
         Failures = failures;
     }

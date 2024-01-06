@@ -8,7 +8,7 @@ using TWS_Security.Sets;
 
 namespace TWS_Security;
 
-public partial class TWSSecuritySource 
+public partial class TWSSecuritySource
     : DbContext {
     private readonly DatasourceConnectionModel ConnectionProperties;
 
@@ -34,14 +34,14 @@ public partial class TWSSecuritySource
     public virtual DbSet<Solution> Solutions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        string ConnectionString = 
+        string ConnectionString =
             $"Server={ConnectionProperties.Host};" +
             $"Database={ConnectionProperties.Database};" +
             $"User={ConnectionProperties.User};" +
             $"Password={ConnectionProperties.Password};" +
             $"Encrypt={ConnectionProperties.Encrypted};";
-        
-        
+
+
         optionsBuilder.UseSqlServer(ConnectionString);
     }
 

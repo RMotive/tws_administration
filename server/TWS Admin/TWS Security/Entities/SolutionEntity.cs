@@ -1,7 +1,7 @@
-﻿using Foundation.Contracts.Datasources.Bases;
-using Foundation.Enumerators.Exceptions;
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
+using Foundation.Contracts.Datasources.Bases;
+using Foundation.Enumerators.Exceptions;
 
 using TWS_Security.Sets;
 

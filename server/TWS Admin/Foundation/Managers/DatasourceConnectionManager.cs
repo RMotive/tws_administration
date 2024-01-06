@@ -1,10 +1,10 @@
-﻿using Foundation.Enumerators.Exceptions;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
+
+using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Managers;
 using Foundation.Models;
 using Foundation.Models.Schemes;
-
-using System.Runtime.CompilerServices;
-using System.Text.Json;
 
 namespace Foundation.Managers;
 public class DatasourceConnectionManager {
@@ -42,18 +42,18 @@ public class DatasourceConnectionManager {
         };
         string propertiesFileName = $"{prefix}connection.json";
 
-        if (callerPath is null) 
+        if (callerPath is null)
             throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.CallerPathEmpty, propertiesFileName);
 
         DirectoryInfo? parentProjectDirInfo = Directory.GetParent(callerPath);
-        if(parentProjectDirInfo is null)
+        if (parentProjectDirInfo is null)
             throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.ParentProjectPathEmpty, propertiesFileName);
 
         IEnumerable<DirectoryInfo> projectDirectories = parentProjectDirInfo.EnumerateDirectories();
         DirectoryInfo? connectionPropertiesDirectory = projectDirectories
             .Where(i => i.Name == DirectoryName)
             .FirstOrDefault();
-        if(connectionPropertiesDirectory is null)
+        if (connectionPropertiesDirectory is null)
             throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.ConnectionDirectoryUnfound, propertiesFileName);
 
         FileInfo? connectionPropertiesFileInfo = connectionPropertiesDirectory.GetFiles()
@@ -70,7 +70,7 @@ public class DatasourceConnectionManager {
 
             if (Scheme is null)
                 throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.WrongPropertiesFileFormat, propertiesFileName);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.IOCriticalException, propertiesFileName, ex);
         }
 

@@ -1,11 +1,11 @@
 ﻿
+using System.Text.Json;
+
 using Foundation.Contracts.Exceptions;
 using Foundation.Exceptions.Servers;
 using Foundation.Managers;
 using Foundation.Models;
 using Foundation.Models.Schemes;
-
-using System.Text.Json;
 
 namespace Server;
 

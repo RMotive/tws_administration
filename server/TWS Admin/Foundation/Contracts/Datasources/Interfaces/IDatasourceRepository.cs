@@ -1,5 +1,4 @@
-﻿using Foundation.Contracts.Exceptions;
-using Foundation.Records.Datasources;
+﻿using Foundation.Records.Datasources;
 
 namespace Foundation.Contracts.Datasources.Interfaces;
 public interface IDatasourceRepository<TEntity, TSet>
@@ -8,13 +7,13 @@ public interface IDatasourceRepository<TEntity, TSet>
     where TSet : IDatasourceSet {
     // --> Create interfaces <--
     public Task<TEntity> Create(TEntity Entity);
-    public Task<CreationResults<TEntity>> Create(TEntity Entity, int Copies);
-    public Task<CreationResults<TEntity>> Create(List<TEntity> Entities);
+    public Task<OperationResults<TEntity, TEntity>> Create(TEntity Entity, int Copies);
+    public Task<OperationResults<TEntity, TEntity>> Create(List<TEntity> Entities);
     // --> Read interfaces <--
     public Task<TEntity> Read(int Pointer);
     public Task<List<TEntity>> Read();
-    public Task<(List<TEntity> Found, List<int> Unfound, List<BException> Corrupted)> Read(List<int> Pointers);
-    public Task<(List<TEntity> Found, List<BException> Corrupted)> Read(Predicate<TSet> Match, bool FirstOnly = false);
+    public Task<OperationResults<TEntity, int>> Read(List<int> Pointers);
+    public Task<OperationResults<TEntity, Predicate<TSet>>> Read(Predicate<TSet> Match, bool FirstOnly = false);
     // --> Update interfaces <--
     public Task<TEntity> Update(TEntity Entity);
     public Task<TEntity> Update(int Pointer, TEntity Entity);

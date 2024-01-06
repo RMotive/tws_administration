@@ -9,19 +9,19 @@ namespace Foundation.Exceptions.Datasources;
 ///     
 ///     Used when a record is request from a datasource repository, and it isn't found.
 /// </summary>
-public class XRecordUnfound<TRepository> 
+public class XRecordUnfound<TRepository>
     : BException
     where TRepository : IDatasourceRepository {
     new const string Message = "Unable to found the requested record";
 
-    private Type Repository {  get; set; }
-    private string Method {  get; set; }
-    private dynamic Reference {  get; set; }
+    private Type Repository { get; set; }
+    private string Method { get; set; }
+    private dynamic Reference { get; set; }
     private RecordSearchMode Mode { get; set; }
 
-    public XRecordUnfound(string Method, dynamic Reference, RecordSearchMode Mode) 
+    public XRecordUnfound(string Method, dynamic Reference, RecordSearchMode Mode)
         : base($"{Message} on ({typeof(TRepository)}) : ({Method}) | with ({Reference})") {
-        Repository = typeof (TRepository);
+        Repository = typeof(TRepository);
         this.Method = Method;
         this.Reference = Reference;
         this.Mode = Mode;

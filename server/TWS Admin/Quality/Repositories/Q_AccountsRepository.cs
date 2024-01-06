@@ -1,52 +1,53 @@
-﻿using Foundation.Exceptions.Datasources;
+﻿using System.Text;
+
+using Foundation.Exceptions.Datasources;
 using Foundation.Managers;
-using Foundation.Records.Datasources;
 
 using Microsoft.EntityFrameworkCore;
-
-using System.Text;
 
 using TWS_Security.Entities;
 using TWS_Security.Repositories;
 using TWS_Security.Sets;
+using Foundation.Enumerators.Records;
 
 using Xunit;
 
-namespace TWS_Security.Quality.Repositories;
+using EntityReferenceResults = Foundation.Records.Datasources.OperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Entities.AccountEntity>;
 
+namespace TWS_Security.Quality.Repositories;
 public class Q_AccountsRepository {
-    private readonly TWSSecuritySource _source;
-    private readonly AccountsRepository _repo;
-    private readonly AccountEntity[] _mocks = [];
+    private readonly TWSSecuritySource Source;
+    private readonly AccountsRepository Repo;
+    private readonly AccountEntity[] Mocks = [];
 
     public Q_AccountsRepository() {
-        _source = new TWSSecuritySource();
-        _repo = new();
+        Source = new TWSSecuritySource();
+        Repo = new();
 
-        for(int p = 0; p < 5; p++) {
+        for (int p = 0; p < 5; p++) {
             byte[] rp = Encoding.Unicode.GetBytes(RandomManager.String(8));
             string ru = RandomManager.String(7);
 
             AccountEntity re = new(ru, rp);
-            _mocks = [.._mocks, re];
+            Mocks = [.. Mocks, re];
         }
     }
 
     [Fact]
     public async void Create() {
-        AccountEntity FirstFact = await _repo.Create(_mocks[0]);
-        CreationResults<AccountEntity> SecondFact = await _repo.Create(_mocks[1], 3);
-        CreationResults<AccountEntity> ThirdFact = await _repo.Create([_mocks[2], _mocks[3], _mocks[4], _mocks[2], _mocks[3]]);
+        AccountEntity FirstFact = await Repo.Create(Mocks[0]);
+        EntityReferenceResults SecondFact = await Repo.Create(Mocks[1], 3);
+        EntityReferenceResults ThirdFact = await Repo.Create([Mocks[2], Mocks[3], Mocks[4], Mocks[2], Mocks[3]]);
 
-        #region First Fact Asserts
+        #region First Fact Asserts (Creating a single entity)
         Assert.Multiple([
             () => Assert.True(FirstFact.Pointer > 0),
-            () => Assert.ThrowsAsync<XUniqueViolation>(() => _repo.Create(_mocks[0])),
+            () => Assert.ThrowsAsync<XUniqueViolation>(() => Repo.Create(Mocks[0])),
             () => {
                 AccountEntity Entity = FirstFact;
-                Account Set = _source.Accounts
+                Account Set = Source.Accounts
                     .Where(i => i.Id == Entity.Pointer)
-                    .FirstOrDefault() 
+                    .FirstOrDefault()
                     ?? throw new Exception($"Item wasn't saved correctly {nameof(FirstFact)}");
 
                 Assert.Equal(Entity.Pointer, Set.Id);
@@ -55,20 +56,26 @@ public class Q_AccountsRepository {
 
                 Assert.True(Entity.EvaluateSet(Set));
 
-                _source.Remove(Set);
-                _source.SaveChanges();
+                Source.Remove(Set);
+                Source.SaveChanges();
             },
         ]);
-        #endregion 
+        #endregion  
 
-        #region Second Fact Asserts
+        #region Second Fact Asserts (Creating copies of a Entity)
         Assert.Multiple([
             () => Assert.Single(SecondFact.Successes),
             () => Assert.Equal(2, SecondFact.Failures.Count),
             () => Assert.True(SecondFact.Successes[0].Pointer > 0),
             () => {
+                Assert.All(SecondFact.Failures, 
+                    (I) => {
+                    Assert.Equal(OperationFailureCriterias.Entity, I.Criteria);
+                });
+            },
+            () => {
                 AccountEntity Entity = SecondFact.Successes[0];
-                Account Set = _source.Accounts
+                Account Set = Source.Accounts
                     .Where(i => i.Id == Entity.Pointer)
                     .AsNoTracking()
                     .FirstOrDefault()
@@ -80,22 +87,28 @@ public class Q_AccountsRepository {
 
                 Assert.True(Entity.EvaluateSet(Set));
 
-                _source.Remove(Set);
-                _source.SaveChanges();
+                Source.Remove(Set);
+                Source.SaveChanges();
             },
         ]);
-        #endregion 
+        #endregion  
 
-        #region Third Fact Asserts
+        #region Third Fact Asserts (Creating a collection of Entities) 
         Assert.Multiple([
             () => Assert.Equal(3, ThirdFact.Successes.Count),
             () => Assert.Equal(2, ThirdFact.Failures.Count),
             () => {
-                Assert.All(ThirdFact.Successes, 
+                Assert.All(ThirdFact.Failures, 
+                    (I) => {
+                        Assert.Equal(OperationFailureCriterias.Entity, I.Criteria);
+                });
+            },
+            () => {
+                Assert.All(ThirdFact.Successes,
                     (I) => {
                         Assert.True(I.Pointer > 0);
 
-                        Account Set = _source.Accounts
+                        Account Set = Source.Accounts
                             .Where(T => T.Id == I.Pointer)
                             .AsNoTracking()
                             .FirstOrDefault()
@@ -107,11 +120,40 @@ public class Q_AccountsRepository {
 
                         Assert.True(I.EvaluateSet(Set));
 
-                        _source.Remove(Set);
-                        _source.SaveChanges();
-                });
+                        Source.Remove(Set);
+                        Source.SaveChanges();
+                    });
             }
         ]);
         #endregion
+    } 
+
+    [Fact]
+    public async void Read() {
+        #region Pre-Tests 
+        Account Set = Mocks[0].BuildSet();
+        await Source.AddAsync(Set);
+        await Source.SaveChangesAsync();
+        #endregion 
+
+        try {
+            List<AccountEntity> FirstFact = await Repo.Read();
+
+            #region First Fact Asserts (Reading all the Accounts in the repository) 
+            Assert.Multiple([
+                () => Assert.NotEmpty(FirstFact),
+                () => Assert.Contains(Mocks[0], FirstFact),
+            ]);
+            #endregion
+
+            #region After-Tests 
+            Source.Remove(Set);
+            Source.SaveChanges();
+            #endregion
+        } catch {
+            Source.Remove(Set);
+            Source.SaveChanges();
+            throw;
+        }
     }
 }

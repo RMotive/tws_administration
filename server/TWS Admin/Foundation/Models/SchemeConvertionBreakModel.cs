@@ -1,6 +1,6 @@
-﻿using Foundation.Contracts.Modelling.Bases;
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
+using Foundation.Contracts.Modelling.Bases;
 
 namespace Foundation.Models;
 public class SchemeConvertionBreakModel

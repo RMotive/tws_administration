@@ -1,9 +1,9 @@
-﻿using Foundation.Contracts.Datasources.Bases;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Foundation.Contracts.Datasources.Bases;
 using Foundation.Enumerators.Exceptions;
 
 using Microsoft.IdentityModel.Tokens;
-
-using System.ComponentModel.DataAnnotations;
 
 using TWS_Security.Sets;
 
