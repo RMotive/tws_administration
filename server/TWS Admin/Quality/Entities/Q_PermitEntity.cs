@@ -26,8 +26,8 @@ public class Q_PermitEntity {
 
     [Fact]
     public void EvaluateSet() {
-        bool testFactSuccess = _entityMock.EvaluateSet(_setMock);
-        bool testFactFailure = _entityEmptyMock.EvaluateSet(_setMock);
+        bool testFactSuccess = _entityMock.EqualsSet(_setMock);
+        bool testFactFailure = _entityEmptyMock.EqualsSet(_setMock);
 
         Assert.True(testFactSuccess);
         Assert.False(testFactFailure);
@@ -36,7 +36,7 @@ public class Q_PermitEntity {
 
     [Fact]
     public void BuildSet() {
-        Permit testFactSet = _entityMock.BuildSet();
+        Permit testFactSet = _entityMock.GenerateSet();
         PermitEntity eM = _entityMock;
 
         Assert.Equal(testFactSet.Id, eM.Pointer);

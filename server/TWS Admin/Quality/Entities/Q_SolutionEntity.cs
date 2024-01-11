@@ -26,8 +26,8 @@ public class Q_SolutionEntity {
 
     [Fact]
     public void EvaluateSet() {
-        bool testFactSuccess = _entityMock.EvaluateSet(_setMock);
-        bool testFactFailure = _entityEmptyMock.EvaluateSet(_setMock);
+        bool testFactSuccess = _entityMock.EqualsSet(_setMock);
+        bool testFactFailure = _entityEmptyMock.EqualsSet(_setMock);
 
         Assert.True(testFactSuccess);
         Assert.False(testFactFailure);
@@ -35,7 +35,7 @@ public class Q_SolutionEntity {
     }
     [Fact]
     public void BuildSet() {
-        Solution testFact = _entityMock.BuildSet();
+        Solution testFact = _entityMock.GenerateSet();
 
         Assert.Equal(testFact.Id, _entityMock.Pointer);
         Assert.Equal(testFact.Name, _entityMock.Name);

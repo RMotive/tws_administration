@@ -23,8 +23,8 @@ public class Q_Permit {
 
     [Fact]
     public void EvaluateEntity() {
-        bool testFactSuccess = _setMock.EvaluateEntity(_entityMock);
-        bool testFactFailure = _setMock.EvaluateEntity(_entityEmptyMock);
+        bool testFactSuccess = _setMock.EqualsEntity(_entityMock);
+        bool testFactFailure = _setMock.EqualsEntity(_entityEmptyMock);
 
         Assert.True(testFactSuccess);
         Assert.False(testFactFailure);
@@ -32,12 +32,12 @@ public class Q_Permit {
     }
     [Fact]
     public void BuildEntity() {
-        PermitEntity testFact = _setMock.BuildEntity();
+        PermitEntity testFact = _setMock.GenerateEntity();
 
         Assert.Equal(testFact.Pointer, _setMock.Id);
         Assert.Equal(testFact.Name, _setMock.Name);
         Assert.Equal(testFact.Description, _setMock.Description);
         Assert.Equal(testFact.Solution, (uint)_setMock.Solution);
-        Assert.Throws<XSetIntegrity<Permit, PermitEntity>>(new Permit().BuildEntity);
+        Assert.Throws<XSetIntegrity<Permit, PermitEntity>>(new Permit().GenerateEntity);
     }
 }

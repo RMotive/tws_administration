@@ -13,7 +13,7 @@ namespace TWS_Security.Entities;
 ///     users to perform them. 
 /// </summary>
 public class PermitEntity
-    : BDatasourceEntity<Permit, PermitEntity> {
+    : BEntity<Permit, PermitEntity> {
     /// <summary>
     ///     Descriptive permit name identifier
     /// </summary>
@@ -72,7 +72,7 @@ public class PermitEntity
 
         return Container;
     }
-    protected override Permit GenerateSet() {
+    protected override Permit Generate() {
         return new Permit {
             Id = Pointer,
             Name = Name,
@@ -80,7 +80,7 @@ public class PermitEntity
             Solution = (int)Solution,
         };
     }
-    public override bool EvaluateSet(Permit Set) {
+    public override bool EqualsSet(Permit Set) {
         if (Pointer != Set.Id) return false;
         if (Name != Set.Name) return false;
         if (Description != Set.Description) return false;

@@ -15,7 +15,7 @@ namespace TWS_Security.Entities;
 ///     To determine and override their permissions level about the solution features.
 /// </summary>
 public class ProfileEntity
-    : BDatasourceEntity<Profile, ProfileEntity> {
+    : BEntity<Profile, ProfileEntity> {
     /// <summary>
     ///     Profile name, used to identify it into the solution.
     /// </summary>
@@ -64,14 +64,14 @@ public class ProfileEntity
 
         return Container;
     }
-    protected override Profile GenerateSet() {
+    protected override Profile Generate() {
         return new() {
             Id = Pointer,
             Name = Name,
             Description = Description,
         };
     }
-    public override bool EvaluateSet(Profile Set) {
+    public override bool EqualsSet(Profile Set) {
         if (Pointer != Set.Id) return false;
         if (Name != Set.Name) return false;
         if (Description != Set.Description) return false;

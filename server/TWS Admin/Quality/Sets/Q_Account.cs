@@ -27,7 +27,7 @@ public class Q_Account {
 
     [Fact]
     public void BuildEntityTest() {
-        AccountEntity testFact = _setMock.BuildEntity();
+        AccountEntity testFact = _setMock.GenerateEntity();
 
         Assert.Equal(testFact.Pointer, _setMock.Id);
         Assert.Equal(testFact.User, _setMock.User);
@@ -36,8 +36,8 @@ public class Q_Account {
 
     [Fact]
     public void EvaluateEntityTest() {
-        bool testFactSuccess = _setMock.EvaluateEntity(_entityMock);
-        bool testFactFailure = _setMock.EvaluateEntity(_emptyEntityMock);
+        bool testFactSuccess = _setMock.EqualsEntity(_entityMock);
+        bool testFactFailure = _setMock.EqualsEntity(_emptyEntityMock);
 
         Assert.True(testFactSuccess);
         Assert.False(testFactFailure);

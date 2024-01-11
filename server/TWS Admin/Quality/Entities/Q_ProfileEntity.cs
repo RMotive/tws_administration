@@ -22,17 +22,17 @@ public class Q_ProfileEntity {
     }
     [Fact]
     public void BuildSet() {
-        Profile testFact = _entityMock.BuildSet();
+        Profile testFact = _entityMock.GenerateSet();
 
         Assert.Equal(testFact.Id, _entityMock.Pointer);
         Assert.Equal(testFact.Name, _entityMock.Name);
         Assert.Equal(testFact.Description, _entityMock.Description);
-        Assert.Throws<XEntityIntegrity<Profile, ProfileEntity>>(new ProfileEntity("", null).BuildSet);
+        Assert.Throws<XEntityIntegrity<Profile, ProfileEntity>>(new ProfileEntity("", null).GenerateSet);
     }
     [Fact]
     public void EvaluateSet() {
-        bool testFactSuccess = _entityMock.EvaluateSet(_setMock);
-        bool testFactFailure = _entityEmptyMock.EvaluateSet(_setMock);
+        bool testFactSuccess = _entityMock.EqualsSet(_setMock);
+        bool testFactFailure = _entityEmptyMock.EqualsSet(_setMock);
 
         Assert.True(testFactSuccess);
         Assert.False(testFactFailure);

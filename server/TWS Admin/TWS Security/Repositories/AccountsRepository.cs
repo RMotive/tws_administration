@@ -5,7 +5,7 @@ using TWS_Security.Sets;
 
 namespace TWS_Security.Repositories;
 public class AccountsRepository
-    : BDatasourceRepository<AccountsRepository, AccountEntity, Account, TWSSecuritySource> {
+    : BRepository<TWSSecuritySource, AccountsRepository, AccountEntity, Account> {
 
     public AccountsRepository()
         : base(new()) { }

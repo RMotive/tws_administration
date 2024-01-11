@@ -6,8 +6,8 @@ using TWS_Security.Entities;
 namespace TWS_Security.Sets;
 
 public partial class Solution
-    : BDatasourceSet<Solution, SolutionEntity> {
-    public int Id { get; set; }
+    : BSet<Solution, SolutionEntity> {
+    public override int Id { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -27,9 +27,9 @@ public partial class Solution
 
         return Container;
     }
-    protected override SolutionEntity GenerateEntity()
+    protected override SolutionEntity Generate()
     => new(this);
-    public override bool EvaluateEntity(SolutionEntity Entity) {
+    public override bool EqualsEntity(SolutionEntity Entity) {
         if (Id != Entity.Pointer) return false;
         if (Name != Entity.Name) return false;
         if (!Sign.Equals(Entity.Sign, StringComparison.CurrentCultureIgnoreCase)) return false;

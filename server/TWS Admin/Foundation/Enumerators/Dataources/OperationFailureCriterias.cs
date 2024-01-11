@@ -2,4 +2,5 @@
 public enum OperationFailureCriterias {
     Entity,
     Pointer,
+    Set,
 }

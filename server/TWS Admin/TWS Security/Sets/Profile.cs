@@ -6,8 +6,8 @@ using TWS_Security.Entities;
 namespace TWS_Security.Sets;
 
 public partial class Profile
-    : BDatasourceSet<Profile, ProfileEntity> {
-    public int Id { get; set; }
+    : BSet<Profile, ProfileEntity> {
+    public override int Id { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -19,10 +19,10 @@ public partial class Profile
 
         return Container;
     }
-    protected override ProfileEntity GenerateEntity()
+    protected override ProfileEntity Generate()
     => new(this);
 
-    public override bool EvaluateEntity(ProfileEntity Entity) {
+    public override bool EqualsEntity(ProfileEntity Entity) {
         if (Id != Entity.Pointer) return false;
         if (Name != Entity.Name) return false;
         if (Description != Entity.Description) return false;

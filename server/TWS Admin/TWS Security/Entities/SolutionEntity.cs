@@ -12,7 +12,7 @@ namespace TWS_Security.Entities;
 ///     Stores all the relevant information of a solution.
 /// </summary>
 public class SolutionEntity
-    : BDatasourceEntity<Solution, SolutionEntity> {
+    : BEntity<Solution, SolutionEntity> {
     /// <summary>
     ///     Simplified way to identiy the solution into the business context.
     /// </summary>
@@ -87,7 +87,7 @@ public class SolutionEntity
 
         return Container;
     }
-    protected override Solution GenerateSet() {
+    protected override Solution Generate() {
         return new() {
             Id = Pointer,
             Name = Name,
@@ -95,7 +95,7 @@ public class SolutionEntity
             Description = Description,
         };
     }
-    public override bool EvaluateSet(Solution Set) {
+    public override bool EqualsSet(Solution Set) {
         if (Pointer != Set.Id) return false;
         if (Name != Set.Name) return false;
         if (!Sign.Equals(Set.Sign, StringComparison.CurrentCultureIgnoreCase))

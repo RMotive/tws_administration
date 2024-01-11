@@ -17,7 +17,7 @@ namespace TWS_Security.Entities;
 ///     to use the bussines solution features.
 /// </summary>
 public class AccountEntity
-    : BDatasourceEntity<Account, AccountEntity> {
+    : BEntity<Account, AccountEntity> {
     /// <summary>
     ///     Account user identification.
     /// </summary>
@@ -71,7 +71,7 @@ public class AccountEntity
         return Container;
     }
 
-    protected override Account GenerateSet() {
+    protected override Account Generate() {
         return new() {
             Id = Pointer,
             User = User,
@@ -79,7 +79,7 @@ public class AccountEntity
         };
     }
 
-    public override bool EvaluateSet(Account Set) {
+    public override bool EqualsSet(Account Set) {
         if (Pointer != Set.Id)
             return false;
         if (User != Set.User)

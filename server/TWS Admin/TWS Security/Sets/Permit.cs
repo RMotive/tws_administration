@@ -6,8 +6,8 @@ using TWS_Security.Entities;
 namespace TWS_Security.Sets;
 
 public partial class Permit
-    : BDatasourceSet<Permit, PermitEntity> {
-    public int Id { get; set; }
+    : BSet<Permit, PermitEntity> {
+    public override int Id { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -25,9 +25,9 @@ public partial class Permit
 
         return Container;
     }
-    protected override PermitEntity GenerateEntity()
+    protected override PermitEntity Generate()
     => new(this);
-    public override bool EvaluateEntity(PermitEntity Entity) {
+    public override bool EqualsEntity(PermitEntity Entity) {
         if (Id != Entity.Pointer) return false;
         if (Name != Entity.Name) return false;
         if (Description != Entity.Description) return false;

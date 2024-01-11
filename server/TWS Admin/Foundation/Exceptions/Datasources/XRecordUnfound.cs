@@ -11,7 +11,7 @@ namespace Foundation.Exceptions.Datasources;
 /// </summary>
 public class XRecordUnfound<TRepository>
     : BException
-    where TRepository : IDatasourceRepository {
+    where TRepository : IRepository {
     new const string Message = "Unable to found the requested record";
 
     private Type Repository { get; set; }

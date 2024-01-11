@@ -1,6 +1,4 @@
 ﻿using System.Text;
-
-using Foundation.Exceptions.Datasources;
 using Foundation.Managers;
 
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +11,9 @@ using Foundation.Enumerators.Records;
 using Xunit;
 
 using EntityReferenceResults = Foundation.Records.Datasources.OperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Entities.AccountEntity>;
+using CriticalOperationResults = Foundation.Records.Datasources.CriticalOperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Sets.Account>;
+using Foundation;
+using Foundation.Exceptions.Datasources;
 
 namespace TWS_Security.Quality.Repositories;
 public class Q_AccountsRepository {
@@ -40,9 +41,9 @@ public class Q_AccountsRepository {
         EntityReferenceResults ThirdFact = await Repo.Create([Mocks[2], Mocks[3], Mocks[4], Mocks[2], Mocks[3]]);
 
         #region First Fact Asserts (Creating a single entity)
-        Assert.Multiple([
+        Assert.Multiple((Action[])([
             () => Assert.True(FirstFact.Pointer > 0),
-            () => Assert.ThrowsAsync<XUniqueViolation>(() => Repo.Create(Mocks[0])),
+            () => Assert.ThrowsAsync<XUniqueViolation<Account>>(() => Repo.Create(Mocks[0])),
             () => {
                 AccountEntity Entity = FirstFact;
                 Account Set = Source.Accounts
@@ -54,12 +55,12 @@ public class Q_AccountsRepository {
                 Assert.Equal(Entity.User, Set.User);
                 Assert.True(Entity.Password.SequenceEqual(Set.Password));
 
-                Assert.True(Entity.EvaluateSet(Set));
+                Assert.True(Entity.EqualsSet(Set));
 
                 Source.Remove(Set);
                 Source.SaveChanges();
             },
-        ]);
+        ]));
         #endregion  
 
         #region Second Fact Asserts (Creating copies of a Entity)
@@ -85,7 +86,7 @@ public class Q_AccountsRepository {
                 Assert.Equal(Entity.User, Set.User);
                 Assert.True(Entity.Password.SequenceEqual(Set.Password));
 
-                Assert.True(Entity.EvaluateSet(Set));
+                Assert.True(Entity.EqualsSet(Set));
 
                 Source.Remove(Set);
                 Source.SaveChanges();
@@ -118,7 +119,7 @@ public class Q_AccountsRepository {
                         Assert.Equal(I.User, Set.User);
                         Assert.True(I.Password.SequenceEqual(Set.Password));
 
-                        Assert.True(I.EvaluateSet(Set));
+                        Assert.True(I.EqualsSet(Set));
 
                         Source.Remove(Set);
                         Source.SaveChanges();
@@ -131,29 +132,86 @@ public class Q_AccountsRepository {
     [Fact]
     public async void Read() {
         #region Pre-Tests 
-        Account Set = Mocks[0].BuildSet();
+        Account Set = Mocks[0].GenerateSet();
         await Source.AddAsync(Set);
         await Source.SaveChangesAsync();
+        AccountEntity mockEntity = Set.GenerateEntity();
         #endregion 
 
         try {
-            List<AccountEntity> FirstFact = await Repo.Read();
+            CriticalOperationResults FirstFact = await Repo.Read();
+            CriticalOperationResults SecondFact = await Repo.Read(Behavior: ReadingBehavior.First);
+            CriticalOperationResults ThirdFact = await Repo.Read(Behavior: ReadingBehavior.Last);
 
-            #region First Fact Asserts (Reading all the Accounts in the repository) 
+            AccountEntity FourthFact = await Repo.Read(mockEntity.Pointer);
+
+            #region First Fact Asserts (Reading all no filter) 
             Assert.Multiple([
-                () => Assert.NotEmpty(FirstFact),
-                () => Assert.Contains(Mocks[0], FirstFact),
+                () => Assert.NotEmpty(FirstFact.Successes),
+                () => Assert.Contains(mockEntity, FirstFact.Successes),
+                () => Assert.Empty(FirstFact.Failures),
             ]);
             #endregion
+            #region Second Fact Asserts (Reading first no filter) 
+            Assert.Multiple([
+                () => Assert.NotEmpty(SecondFact.Successes),
+                () => Assert.Empty(SecondFact.Failures),
+                () => Assert.Equal(1, SecondFact.Succeeded),
+                () => Assert.Equal(0, SecondFact.Failed),
+                () => Assert.Equal(1, SecondFact.Results),
+                () => {
+                    try {
+                        Account FirstRecord = Source.Accounts.ToArray()[0];
+                        AccountEntity FirstEntity = FirstRecord.GenerateEntity();
 
-            #region After-Tests 
-            Source.Remove(Set);
-            Source.SaveChanges();
+                        Assert.Equal(FirstEntity, SecondFact.Successes[0]);
+                    } catch {
+                        // --> This means that the first record in the live database set
+                        // is an invalid one and should be debugged.
+                        // DEVELOPER NOTE.
+                        Assert.NotEmpty(SecondFact.Failures);
+                        Assert.Empty(SecondFact.Successes);
+                        Assert.Equal(1, SecondFact.Failed);
+                        Assert.Equal(0, SecondFact.Succeeded);
+                        Assert.Equal(1, SecondFact.Results);
+                    }
+                }
+            ]);
             #endregion
-        } catch {
+            #region Third Fact Asserts (Reading last no filter)
+            Assert.Multiple([
+                () => Assert.Empty(ThirdFact.Failures),
+                () => Assert.NotEmpty(ThirdFact.Successes),
+                () => Assert.Equal(1, ThirdFact.Results),
+                () => Assert.Equal(1, ThirdFact.Succeeded),
+                () => Assert.Equal(0, ThirdFact.Failed),
+                () => {
+                    try {
+                        Account Record = Source.Accounts.ToArray()[^1];
+                        AccountEntity RecordEntity = Record.GenerateEntity();
+
+                        Assert.Equal(RecordEntity, ThirdFact.Successes[0]);
+                    } catch {
+                        Assert.Empty(ThirdFact.Successes);
+                        Assert.NotEmpty(ThirdFact.Failures);
+                        Assert.Equal(1, ThirdFact.Results);
+                        Assert.Equal(1, ThirdFact.Failed);
+                        Assert.Equal(0, ThirdFact.Succeeded);
+                    }
+                }
+            ]);
+            #endregion
+            
+            #region  Fourth Fact Asserts (Reading by pointer)
+            Assert.Multiple([
+                () => Assert.True(FourthFact.Pointer > 0),
+                () => Assert.Equal(mockEntity, FourthFact),
+                () => Assert.ThrowsAsync<XRecordUnfound<AccountsRepository>>(async () => await Repo.Read(1000000000)),
+            ]);
+            #endregion
+        } finally {
             Source.Remove(Set);
             Source.SaveChanges();
-            throw;
         }
     }
 }

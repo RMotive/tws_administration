@@ -23,8 +23,23 @@ public abstract class BObject {
 
             if (rProperty.Name != cProperty.Name) return false;
             if (rProperty.PropertyType != cProperty.PropertyType) return false;
-            string? rReferenceValue = rProperty.GetValue(this)?.ToString();
-            string? cReferenceValue = cProperty.GetValue(Comparer)?.ToString();
+            dynamic? rReferenceValue = rProperty.GetValue(this);
+            dynamic? cReferenceValue = cProperty.GetValue(Comparer);
+
+            #region Specific struct types equality validations.
+            bool ReferenceValuesNotNull = rReferenceValue != null && cReferenceValue != null;
+            
+            #region Byte Array Equality
+            bool isByteArray = rProperty.PropertyType == typeof(byte[]);
+            if(isByteArray && ReferenceValuesNotNull) {
+                byte[] currentReferenceValue = (byte[])rReferenceValue!;
+                byte[] comparerReferenceValue = (byte[])cReferenceValue!;
+                return currentReferenceValue.SequenceEqual(comparerReferenceValue);
+            }
+            #endregion
+
+            #endregion
+
             if (rReferenceValue != cReferenceValue) return false;
         }
         return true;

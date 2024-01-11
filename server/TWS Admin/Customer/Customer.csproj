@@ -7,22 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\**" />
-    <EmbeddedResource Remove="Data\**" />
-    <None Remove="Data\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Contracts\" />
-    <None Remove="Services\" />
-    <None Remove="Transactions\" />
-    <None Remove="Exceptions\" />
-    <None Remove="Data\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\TWS Security\TWS Security.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\Bases\" />
   </ItemGroup>
 </Project>
