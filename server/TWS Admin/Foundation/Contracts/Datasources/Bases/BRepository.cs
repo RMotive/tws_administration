@@ -30,7 +30,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     : IRepository<TEntity, TSet>
     where TRepository : IRepository
     where TEntity : BEntity<TSet, TEntity>
-    where TSet : BSet<TSet, TEntity>, ISet 
+    where TSet : BSet<TSet, TEntity>, ISet, new() 
     where TSource : DbContext {
     /// <summary>
     ///     Internal repository datasource context handler
@@ -53,7 +53,29 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
         this.Live = Live;
         Set = this.Live.Set<TSet>();
     }
-    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TReference"></typeparam>
+    /// <param name="References"></param>
+    /// <param name="Delegator"></param>
+    /// <param name="Criteria"></param>
+    /// <returns></returns>
+    private static async Task<OperationResults<TEntity, TReference>> IterateOperation<TReference>(IEnumerable<TReference> References, Func<TReference, Task<TEntity>> Delegator, OCriteria Criteria = OCriteria.Pointer) {
+        List<TEntity> Successes = [];
+        List<OperationFailure<TReference>> Failures = [];
+        foreach(TReference Ref in References) {
+            try {
+                TEntity Success =  await Delegator(Ref);
+                Successes.Add(Success);
+            } catch (BException X) {
+                OperationFailure<TReference> Failure = new(Ref, X, Criteria);
+                Failures.Add(Failure);
+            } 
+        }
+        OperationResults<TEntity, TReference> Results = new(Successes, Failures);
+        return Results;
+    }
     /// <summary>
     ///     Creates a new datasource Set record in the live datasource store.
     /// </summary>
@@ -109,7 +131,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     ///     Collection of Entities to Create.
     /// </param>
     /// <returns>
-    ///     <see cref="OperationResultsEntity{TEntity}"/>: That contains the collection of Entities successfuly saved and Failures caught during the creation proccess.
+    ///     <see cref="OperationResults{TEntity, TEntity}"/>: That contains the collection of Entities successfuly saved and Failures caught during the creation proccess.
     /// </returns>
     public async Task<OperationResults<TEntity, TEntity>> Create(List<TEntity> Entities)
     => await IterateOperation(Entities, Create, OCriteria.Entity);
@@ -123,7 +145,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     ///     The number of copies to save.
     /// </param>
     /// <returns> 
-    ///     <see cref="OperationResultsEntity{TEntity}"/>: A bundle of the creation results, it has the collection of success and failures resolved during the creation proccess.
+    ///     <see cref="OperationResults{TEntity, TEntity}"/>: A bundle of the creation results, it has the collection of success and failures resolved during the creation proccess.
     /// </returns>
     public async Task<OperationResults<TEntity, TEntity>> Create(TEntity Entity, int Copies) 
     => await IterateOperation(Enumerable.Repeat(Entity, Copies), Create, OCriteria.Entity);
@@ -148,8 +170,34 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
         TEntity Entity = Record.GenerateEntity();
         return Entity;
     }
-    public Task<CriticalOperationResults<TEntity, TSet>> Read(IEnumerable<int> Pointers) {
-        throw new NotImplementedException();
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Pointers"></param>
+    /// <returns></returns>
+    public async Task<CriticalOperationResults<TEntity, TSet>> Read(IEnumerable<int> Pointers) {
+        List<TEntity> Successes = [];
+        List<OperationFailure<TSet>> Failures = [];
+        foreach(int Pointer in Pointers) {
+            try {
+                TEntity Success = await Read(Pointer);
+                Successes.Add(Success);
+            } catch(XRecordUnfound<TRepository> X) {
+                TSet UnfoundRecords = new() {
+                    Id = Pointer,
+                };
+                OperationFailure<TSet> Failure = new(UnfoundRecords, X);
+                Failures.Add(Failure);
+            } catch(BException X) {
+                TSet FoundRecord = await Set
+                    .Where(I => I.Id == Pointer)
+                    .FirstAsync();
+                OperationFailure<TSet> Failure = new(FoundRecord, X);
+                Failures.Add(Failure);
+            }
+        }
+        CriticalOperationResults<TEntity, TSet> Results = new(Successes, Failures);
+        return Results;
     }
     /// <summary>
     ///     Fetches all the records into the live database set, after that they will get 
@@ -206,29 +254,6 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
             }
         }
         CriticalOperationResults<TEntity, TSet> Results = new(Successes, Failures);
-        return Results;
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="TReference"></typeparam>
-    /// <param name="References"></param>
-    /// <param name="Delegator"></param>
-    /// <param name="Criteria"></param>
-    /// <returns></returns>
-    private static async Task<OperationResults<TEntity, TReference>> IterateOperation<TReference>(IEnumerable<TReference> References, Func<TReference, Task<TEntity>> Delegator, OCriteria Criteria = OCriteria.Pointer) {
-        List<TEntity> Successes = [];
-        List<OperationFailure<TReference>> Failures = [];
-        foreach(TReference Ref in References) {
-            try {
-                TEntity Success =  await Delegator(Ref);
-                Successes.Add(Success);
-            } catch (BException X) {
-                OperationFailure<TReference> Failure = new(Ref, X, Criteria);
-                Failures.Add(Failure);
-            } 
-        }
-        OperationResults<TEntity, TReference> Results = new(Successes, Failures);
         return Results;
     }
 }

@@ -14,6 +14,8 @@ using EntityReferenceResults = Foundation.Records.Datasources.OperationResults<T
 using CriticalOperationResults = Foundation.Records.Datasources.CriticalOperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Sets.Account>;
 using Foundation;
 using Foundation.Exceptions.Datasources;
+using Foundation.Contracts.Exceptions;
+using Foundation.Records.Datasources;
 
 namespace TWS_Security.Quality.Repositories;
 public class Q_AccountsRepository {
@@ -143,6 +145,8 @@ public class Q_AccountsRepository {
             CriticalOperationResults SecondFact = await Repo.Read(Behavior: ReadingBehavior.First);
             CriticalOperationResults ThirdFact = await Repo.Read(Behavior: ReadingBehavior.Last);
 
+            CriticalOperationResults FifthFact = await Repo.Read([mockEntity.Pointer, 1000000000]);
+
             AccountEntity FourthFact = await Repo.Read(mockEntity.Pointer);
 
             #region First Fact Asserts (Reading all no filter) 
@@ -202,13 +206,36 @@ public class Q_AccountsRepository {
             ]);
             #endregion
             
-            #region  Fourth Fact Asserts (Reading by pointer)
+            #region Fourth Fact Asserts (Reading by pointer)
             Assert.Multiple([
                 () => Assert.True(FourthFact.Pointer > 0),
                 () => Assert.Equal(mockEntity, FourthFact),
                 () => Assert.ThrowsAsync<XRecordUnfound<AccountsRepository>>(async () => await Repo.Read(1000000000)),
             ]);
             #endregion
+
+            #region Fifth Fact Asserts (Reading pointer collection)
+            Assert.Multiple([
+                () => Assert.NotEmpty(FifthFact.Failures),
+                () => Assert.NotEmpty(FifthFact.Successes),
+                () => Assert.Equal(2, FifthFact.Results),
+                () => Assert.Equal(1, FifthFact.Failed),
+                () => Assert.Equal(1, FifthFact.Succeeded),
+                () => {
+                    AccountEntity Successed = FifthFact.Successes[0];
+                    Assert.True(Successed.Pointer > 0);
+                    Assert.Equal(mockEntity, Successed);
+                },
+                () => {
+                    OperationFailure<Account> Failed = FifthFact.Failures[0];
+                    Assert.Equal(typeof(Account), Failed.Type);
+                    Assert.Equal(1000000000, Failed.Reference.Id);
+                    Assert.Equal(OperationFailureCriterias.Pointer, Failed.Criteria);
+                    Assert.IsType<XRecordUnfound<AccountsRepository>>(Failed.Failure);
+                }
+            ]);
+            #endregion
+
         } finally {
             Source.Remove(Set);
             Source.SaveChanges();
