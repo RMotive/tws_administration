@@ -10,5 +10,5 @@ namespace Foundation.Contracts.Modelling.Bases;
 ///     handle data objects integrity.
 /// </summary>
 public abstract class BModel
-    : BObject, IModel {
+    : BObject<BModel>, IModel {
 }

@@ -9,7 +9,8 @@ namespace Foundation.Contracts.Modelling.Bases;
 ///     objects building, is just a representation of a json raw data package.
 /// </summary>
 public abstract class BScheme<TModel>
-    : BObject, IScheme<TModel>
+    : BObject<IModel>, 
+        IScheme<TModel>
     where TModel : IModel {
     public abstract TModel GenerateModel();
 }

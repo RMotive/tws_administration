@@ -7,7 +7,7 @@ namespace Foundation.Contracts.Modelling.Bases;
 ///     Represents an inheritance link between datasource objects
 ///     that need specific equality comparisson between their properties.
 /// </summary>
-public abstract class BObject {
+public abstract class BObject<TObject> {
     public override bool Equals(object? Comparer) {
         if (this is null && Comparer is null) return true;
         if (this is not null && Comparer is null) return false;
@@ -44,7 +44,6 @@ public abstract class BObject {
         }
         return true;
     }
-
     public override string ToString() {
         Dictionary<string, dynamic?> jsonReference = [];
         PropertyInfo[] propReferences = GetType().GetProperties();
@@ -54,5 +53,24 @@ public abstract class BObject {
 
         return JsonSerializer.Serialize(jsonReference);
     }
-    public override int GetHashCode() => GetHashCode();
+    public override int GetHashCode() => base.GetHashCode();
+    
+    public TObject Clone() {
+        Type ObjectType = typeof(TObject);
+
+        TObject? Cloned = (TObject?)Activator.CreateInstance(ObjectType);
+        if(Cloned is null)
+            throw new Exception("PENDING WRONG ACTIVATION");
+
+        PropertyInfo[] ObjectPropertiesInfo = ObjectType.GetProperties();
+        foreach(PropertyInfo PropertyInfo in ObjectPropertiesInfo) {
+            object? OriginalValue = PropertyInfo.GetValue(this);
+            PropertyInfo.SetValue(Cloned, OriginalValue);
+        }
+
+        if(Cloned.GetHashCode() == GetHashCode())
+            throw new Exception("PEDNING SAME HASH");
+
+        return Cloned;
+    }
 }

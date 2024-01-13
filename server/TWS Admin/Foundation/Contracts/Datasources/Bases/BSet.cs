@@ -9,7 +9,8 @@ namespace Foundation.Contracts.Datasources.Bases;
 ///     handle their shared properties and operations.
 /// </summary>
 public abstract class BSet<TSet, TEntity>
-    : BObject, Interfaces.ISet<TEntity>
+    : BObject<TSet>, 
+        Interfaces.ISet<TEntity>
     where TEntity : IEntity
     where TSet : ISet {
     public abstract int Id { get; set; }

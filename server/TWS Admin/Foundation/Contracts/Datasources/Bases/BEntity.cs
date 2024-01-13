@@ -20,7 +20,7 @@ namespace Foundation.Contracts.Datasources.Bases;
 ///     Datasource set entity based.
 /// </typeparam>
 public abstract class BEntity<TSet, TEntity>
-    : BObject, IEntity<TSet>
+    : BObject<TEntity>, IEntity<TSet>
     where TSet : ISet
     where TEntity : IEntity {
     /// <summary>

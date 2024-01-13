@@ -14,7 +14,6 @@ using EntityReferenceResults = Foundation.Records.Datasources.OperationResults<T
 using CriticalOperationResults = Foundation.Records.Datasources.CriticalOperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Sets.Account>;
 using Foundation;
 using Foundation.Exceptions.Datasources;
-using Foundation.Contracts.Exceptions;
 using Foundation.Records.Datasources;
 
 namespace TWS_Security.Quality.Repositories;
@@ -34,6 +33,47 @@ public class Q_AccountsRepository {
             AccountEntity re = new(ru, rp);
             Mocks = [.. Mocks, re];
         }
+    }
+
+    private async Task<(Account[], AccountEntity[])> GenerateMocks(int Q) {
+        AccountEntity[] GeneratedEntities = new AccountEntity[Q];
+        Account[] GeneratedRecords = new Account[Q];
+        for(int P = 0; P < Q; P++) {
+            string Randomed = RandomManager.String(7);
+            Account Record = new() {
+                User = Randomed,
+                Password = Encoding.ASCII.GetBytes(Randomed),
+            };
+
+            await Source.AddAsync(Record);
+            await Source.SaveChangesAsync();
+            Source.ChangeTracker.Clear();
+            GeneratedRecords[P] = Record;
+            GeneratedEntities[P] = Record.GenerateEntity();
+        }
+        return (GeneratedRecords, GeneratedEntities);
+    }
+    private static (Account[], AccountEntity[]) GenerateFakeMock(int Q) {
+        AccountEntity[] FakeEtys = new AccountEntity[Q];
+        Account[] FakeRecs = new Account[Q];
+        
+        for(int P = 0; P < Q; P++) {
+            string RandomtString = RandomManager.String(12);
+            Account RecMock = new() {
+                Id = int.MaxValue - P,
+                User = RandomtString,
+                Password = Encoding.Unicode.GetBytes(RandomtString),
+            };
+            FakeRecs[P] = RecMock;
+            FakeEtys[P] = RecMock.GenerateEntity();
+        }
+
+        return (FakeRecs, FakeEtys);
+    }
+    private void RemoveMocks(IEnumerable<Account> setMocks) {
+        Source.ChangeTracker.Clear();
+        Source.RemoveRange(setMocks);
+        Source.SaveChanges();
     }
 
     [Fact]
@@ -195,7 +235,7 @@ public class Q_AccountsRepository {
                         AccountEntity RecordEntity = Record.GenerateEntity();
 
                         Assert.Equal(RecordEntity, ThirdFact.Successes[0]);
-                    } catch {
+                    } catch(Exception X) {
                         Assert.Empty(ThirdFact.Successes);
                         Assert.NotEmpty(ThirdFact.Failures);
                         Assert.Equal(1, ThirdFact.Results);
@@ -239,6 +279,72 @@ public class Q_AccountsRepository {
         } finally {
             Source.Remove(Set);
             Source.SaveChanges();
+        }
+    }
+
+    [Fact]
+    public async void Update() {
+        List<Account> LiveMocks = [];
+        try {
+            #region Pre-Tests
+            (Account[] RecMocks, AccountEntity[] EtyMocks) = await GenerateMocks(2);
+            (Account[] FakeRecMocks, AccountEntity[] FakeEtyMocks) = GenerateFakeMock(2);
+            LiveMocks = [..RecMocks];
+            #endregion
+
+            #region  First Fact (Pre-test) 
+            Account FirstFactSet = RecMocks[0].Clone();
+            FirstFactSet.User = RandomManager.String(9);
+            AccountEntity FirstFactEty = FirstFactSet.GenerateEntity();
+            #endregion 
+
+            AccountEntity FirstFact = await Repo.Update(FirstFactEty);
+            AccountEntity SecondFact = await Repo.Update(FakeEtyMocks[0], true);
+        
+            #region First Fact (Asserts) [Updating an existing record no fallback]
+            Assert.Multiple([
+                () => Assert.NotEqual(FirstFactSet, RecMocks[0]),
+                () => RecMocks[0] = FirstFactSet,
+                () => Assert.True(FirstFact.Pointer > 0), 
+                () => Assert.True(FirstFact.EqualsSet(FirstFactSet)),
+                () => Assert.ThrowsAsync<XRecordUnfound<AccountsRepository>>(async () => await Repo.Update(FakeEtyMocks[0])),
+            ]);
+            #endregion
+
+            #region Second Fact (Asserts) [Updating an unexisting record with fallback] 
+            Assert.Multiple([
+                () => LiveMocks.Add(SecondFact.GenerateSet()),
+                () => Assert.True(SecondFact.Pointer > 0),
+                () => Assert.Equal(SecondFact.User, FakeEtyMocks[0].User),
+                () => Assert.True(SecondFact.Password.SequenceEqual(FakeEtyMocks[0].Password)),
+            ]);
+            #endregion
+        
+            /*
+                Actually is unnecessary to test the case when updating an unexsting record with no fallback
+                cause that simple assertion is being checked up in the fifth assert line of the First Fact Asserts region
+            */ 
+        } finally {
+            RemoveMocks(LiveMocks);
+        }
+    }
+
+    [Fact]
+    public async void Delete() {
+        #region Pre-Tests
+        (Account[] RecMocks, AccountEntity[] EtyMocks) = await GenerateMocks(1);
+        #endregion
+
+        try {
+            AccountEntity FirstFact = await Repo.Delete(EtyMocks[0]);
+
+            #region First Fact (Asserts) [Deleting an existing record]
+            Assert.Null(Source.Accounts.Find(RecMocks[0].Id));
+            #endregion
+        } finally {
+            if(Source.Accounts.Find(RecMocks[0].Id) is not null) {
+                RemoveMocks(RecMocks);    
+            }
         }
     }
 }

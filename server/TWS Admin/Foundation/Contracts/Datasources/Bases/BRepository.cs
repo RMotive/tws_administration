@@ -190,8 +190,8 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
                 Failures.Add(Failure);
             } catch(BException X) {
                 TSet FoundRecord = await Set
-                    .Where(I => I.Id == Pointer)
-                    .FirstAsync();
+                    .AsNoTracking()
+                    .Where(I => I.Id == Pointer).FirstAsync();
                 OperationFailure<TSet> Failure = new(FoundRecord, X);
                 Failures.Add(Failure);
             }
@@ -232,6 +232,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
             Records = await Set.ToListAsync();
         else 
             Records = await Set
+                .AsNoTracking()
                 .Where((I) => Filter(I)).ToListAsync(); 
 
         // --> Reading behavior
@@ -255,5 +256,55 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
         }
         CriticalOperationResults<TEntity, TSet> Results = new(Successes, Failures);
         return Results;
+    }
+    /// <summary>
+    ///     Tries to update an existing live database set records based on the given 
+    ///     Entity properties. 
+    ///     It will search if there exist a record with the given Entity pointr and only
+    ///     will update it if the records already exist (To avoid this behavior set <see cref="Fallback"/> property to true).
+    /// </summary>
+    /// <param name="TEntity">
+    ///     The Entity properties to handle the updating.
+    /// </param>
+    /// <param name="Fallback">
+    ///     Indicates wheter the operation should use its fallback or not.
+    ///     true: If the record isn't found then it will be saved with a auto-generated Pointer.
+    ///     false: If the record isn't found then the operation will be cancelled and will throw an exception.
+    /// </param>
+    /// <returns>
+    ///     The full-integrity validated Entity with the most recent and validated live datasource set record data.
+    /// </returns>
+    /// <exception cref="XRecordUnfound{TRepository}">
+    ///     When the record to update doesn't exist.
+    /// </exception>
+    public async Task<TEntity> Update(TEntity TEntity, bool Fallback = false) {
+        TSet Rec = TEntity.GenerateSet();
+        bool Exist = await Set
+            .AsNoTracking()
+            .Where(I => I.Id == Rec.Id).AnyAsync();
+
+        if(!Exist && !Fallback) 
+            throw new XRecordUnfound<TRepository>(nameof(Update), TEntity, RecordSearchMode.ByPointer);
+        if(!Exist && Fallback) {
+            Rec.Id = 0;
+            await Set.AddAsync(Rec);
+        }
+        else 
+            Set.Update(Rec);
+
+        await Live.SaveChangesAsync();
+        TEntity Ety = Rec.GenerateEntity();
+        Live.ChangeTracker.Clear();
+        return Ety;
+    }
+    
+    public async Task<TEntity> Delete(TEntity Entity) {
+        TSet Rec = Entity.GenerateSet();
+        
+        Live.Remove(Rec);
+        await Live.SaveChangesAsync();
+        Live.ChangeTracker.Clear(); 
+
+        return Entity;
     }
 }
