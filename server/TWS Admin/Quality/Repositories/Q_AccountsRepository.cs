@@ -235,7 +235,7 @@ public class Q_AccountsRepository {
                         AccountEntity RecordEntity = Record.GenerateEntity();
 
                         Assert.Equal(RecordEntity, ThirdFact.Successes[0]);
-                    } catch(Exception X) {
+                    } catch {
                         Assert.Empty(ThirdFact.Successes);
                         Assert.NotEmpty(ThirdFact.Failures);
                         Assert.Equal(1, ThirdFact.Results);
