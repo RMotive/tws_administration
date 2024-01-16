@@ -13,11 +13,12 @@ dependencies:
     git:
       url: https://github.com/RMotive/CMSF-Cosmos_Foundation
       path: package/cosmos_foundation/
+  go_router: ^13.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 flutter:
   uses-material-design: true
