@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Customer;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Server.Controllers;
 
@@ -7,10 +8,13 @@ namespace Server.Controllers;
 /// </summary>
 [Controller, Route("[controller]")]
 public class SecurityController : ControllerBase {
-    public SecurityController() { }
+    private readonly ISecurityService Service;
+
+    public SecurityController(ISecurityService service) { 
+        Service = service;
+    }
 
     [HttpPost("[action]")]
-    public IActionResult Login() {
-        throw new NotImplementedException();
-    }
+    public IActionResult Login() 
+    => new OkObjectResult(Service.InitSession());
 }

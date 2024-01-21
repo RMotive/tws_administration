@@ -1,5 +1,6 @@
 include: package:flutter_lints/flutter.yaml
 
-linter:
+linter:  
   rules:
-    - always_specify_types
+    avoid_print: false
+    always_specify_types: true

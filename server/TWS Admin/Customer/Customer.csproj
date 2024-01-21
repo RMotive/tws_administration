@@ -9,4 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\TWS Security\TWS Security.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Responses/" />
+  </ItemGroup>
 </Project>

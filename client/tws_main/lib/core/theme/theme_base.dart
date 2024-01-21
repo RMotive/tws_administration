@@ -1,11 +1,13 @@
 import 'package:cosmos_foundation/contracts/cosmos_theme_base.dart';
-import 'package:flutter/material.dart';
-
+import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
 abstract class ThemeBase extends CosmosThemeBase {
-  final Color backgroundColor;
+  final ThemeColorStruct pageColorStruct;
+  final ThemeColorStruct primaryControlColorStruct;
 
   const ThemeBase(
-    String themeIdentifier, {
-    this.backgroundColor = Colors.black,
-  }) : super(themeIdentifier);
+    super.themeIdentifier, {
+    super.frameListenerColor,
+    required this.pageColorStruct,
+    required this.primaryControlColorStruct,
+  });
 }

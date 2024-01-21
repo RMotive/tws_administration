@@ -1,5 +1,6 @@
 ﻿
 using System.Text.Json;
+using Customer;
 
 using Foundation.Contracts.Exceptions;
 using Foundation.Exceptions.Servers;
@@ -53,7 +54,6 @@ public class Program {
         }
     }
 
-
     public static void Main(string[] args) {
         AdvisorManager.Announce("Loading server dependencies to run...");
         LoadServerContext();
@@ -63,6 +63,11 @@ public class Program {
         // Add services to the container.
 
         builder.Services.AddControllers();
+
+        // --> Adding customer services
+        {
+            builder.Services.AddSingleton<ISecurityService>(new SecurityService());
+        }
 
         WebApplication app = builder.Build();
 
