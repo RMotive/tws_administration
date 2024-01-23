@@ -1,5 +1,7 @@
-﻿namespace Customer;
+﻿using Customer.Models;
+
+namespace Customer;
 
 public interface ISecurityService {
-    public String InitSession();
+    public ForeignSessionModel InitSession();
 }

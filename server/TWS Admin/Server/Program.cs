@@ -1,4 +1,5 @@
 ﻿
+using System.Net;
 using System.Text.Json;
 using Customer;
 
@@ -11,14 +12,7 @@ using Foundation.Models.Schemes;
 namespace Server;
 
 public class Program {
-    public static ServerPropertiesModel ServerContext {
-        get {
-            return ServerContext;
-        }
-        private set {
-            ServerContext = value;
-        }
-    }
+    public static ServerPropertiesModel? ServerContext { get; private set; }
 
     private static void LoadServerContext() {
         const string expectation = "\\Properties\\server_properties.json";
@@ -39,11 +33,16 @@ public class Program {
             = JsonSerializer.Deserialize<ServerPropertiesScheme>(fileStream)
             ?? throw new XServerContext(XServerContext.Reason.WrongFormat);
         try {
+            string HostName = Dns.GetHostName();
+            IPAddress[] Addresses = Dns.GetHostAddresses(HostName);
+            contextScheme.IPv4 = Addresses.ToList().Where(I => I.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).FirstOrDefault()?.ToString() ?? "";
+
             ServerContext = contextScheme.GenerateModel();
             Dictionary<string, dynamic> successDetails = new()
             {
                 {"Tenant", ServerContext.Tenant },
                 {"Solution", ServerContext.Solution },
+                {"IPv4", ServerContext.IPv4 }
             };
             AdvisorManager.Success("Server context loaded", successDetails);
         } catch (BException x) {

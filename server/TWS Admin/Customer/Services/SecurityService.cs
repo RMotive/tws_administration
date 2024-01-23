@@ -1,8 +1,13 @@
-﻿namespace Customer;
+﻿using Customer.Managers;
+using Customer.Models;
+
+namespace Customer;
 
 public class SecurityService
     : ISecurityService {
-    public String InitSession() {
-        throw new NotImplementedException();
+    public ForeignSessionModel InitSession() {
+        SessionManager sManager = SessionManager.Int;
+
+        return new ForeignSessionModel("", []);
     }
 }

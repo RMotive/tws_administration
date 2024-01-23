@@ -6,24 +6,26 @@ public class ServerPropertiesScheme
     : BScheme<ServerPropertiesModel> {
     public string Tenant { get; set; }
     public string Solution { get; set; }
+    public string IPv4 { get; set; }
     public string? Sign { get; set; }
     public string? Scope { get; set; }
     public int? Pointer { get; set; }
 
     public ServerPropertiesScheme() {
+        IPv4 = String.Empty;
         Tenant = String.Empty;
         Solution = String.Empty;
     }
 
     public override ServerPropertiesModel GenerateModel() {
         List<SchemeConvertionBreakModel> breaks = [];
-        if (String.IsNullOrEmpty(Tenant))
+        if (String.IsNullOrWhiteSpace(Tenant))
             breaks.Add(new(nameof(Tenant), "is null or empty"));
-        if (String.IsNullOrEmpty(Solution))
-            breaks.Add(new(nameof(Tenant), "is null or empty"));
+        if (String.IsNullOrWhiteSpace(Solution))
+            breaks.Add(new(nameof(Solution), "is null or empty"));
 
         if (breaks.Count > 0)
             throw new XGenerateModel<ServerPropertiesScheme, ServerPropertiesModel>(breaks);
-        return new ServerPropertiesModel(Tenant, Solution, Sign, Scope, Pointer);
+        return new ServerPropertiesModel(Tenant, Solution, IPv4, Sign, Scope, Pointer);
     }
 }

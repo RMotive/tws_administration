@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TWS Security\TWS Security.csproj" />
+    <Compile Remove="Responses\**" />
+    <EmbeddedResource Remove="Responses\**" />
+    <None Remove="Responses\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Responses/" />
+    <ProjectReference Include="..\TWS Security\TWS Security.csproj" />
   </ItemGroup>
 </Project>
