@@ -8,7 +8,7 @@ class _LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<_LoginForm> {
-  late final TWSASecurityService service;
+  late final TWSASecurityServiceBase service;
 
   @override
   void initState() {

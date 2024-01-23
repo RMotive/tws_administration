@@ -1,6 +1,6 @@
 import 'package:cosmos_foundation/foundation/simplifiers/separator_column.dart';
 import 'package:tws_main/domain/repositories/repositories.dart';
-import 'package:tws_main/domain/repositories/tws_administration/services/twsa_security_service.dart';
+import 'package:tws_main/domain/repositories/tws_administration/contracts/twsa_security_service_base.dart';
 import 'package:tws_main/presentation/components/tws_button_flat.dart';
 import 'package:tws_main/presentation/components/tws_input_text.dart';
 import 'package:cosmos_foundation/contracts/cosmos_page.dart';
