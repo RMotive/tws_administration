@@ -14,7 +14,7 @@ public class SecurityController : ControllerBase {
         Service = service;
     }
 
-    [HttpGet("[action]")]
-    public IActionResult Login() 
-    => new OkObjectResult(Service.InitSession());
+    [HttpPost("[action]")]
+    public IActionResult Login([FromBody] AccountIdentityScheme Identity) 
+    => new OkObjectResult(Service.InitSession(Identity.GenerateModel()));
 }

@@ -3,7 +3,7 @@ using Foundation.Exceptions.Modelling;
 
 namespace Foundation.Models.Schemes;
 public class ServerPropertiesScheme
-    : BScheme<ServerPropertiesModel> {
+    : BScheme<ServerPropertiesScheme, ServerPropertiesModel> {
     public string Tenant { get; set; }
     public string Solution { get; set; }
     public string IPv4 { get; set; }
@@ -17,7 +17,7 @@ public class ServerPropertiesScheme
         Solution = String.Empty;
     }
 
-    public override ServerPropertiesModel GenerateModel() {
+    protected override ServerPropertiesModel Generate() {
         List<SchemeConvertionBreakModel> breaks = [];
         if (String.IsNullOrWhiteSpace(Tenant))
             breaks.Add(new(nameof(Tenant), "is null or empty"));

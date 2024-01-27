@@ -3,5 +3,5 @@
 namespace Customer;
 
 public interface ISecurityService {
-    public ForeignSessionModel InitSession();
+    public ForeignSessionModel InitSession(AccountIdentityModel Identity);
 }

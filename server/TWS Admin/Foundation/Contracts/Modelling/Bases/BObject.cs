@@ -55,6 +55,14 @@ public abstract class BObject<TObject> {
     }
     public override int GetHashCode() => base.GetHashCode();
     
+    public PropertyInfo HookProperty(string name) {
+        Type reflection = GetType();
+        PropertyInfo tracedProperty 
+        = reflection.GetProperty(name)
+            ?? throw new XHookProperty(reflection, name);
+
+        return tracedProperty;
+    }
     public TObject Clone() {
         Type ObjectType = typeof(TObject);
 
