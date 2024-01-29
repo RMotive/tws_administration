@@ -6,12 +6,13 @@ public class SessionManager {
         private set => _int = value;
     }
 
-    private readonly List<int> _sessions = [];
+    private readonly List<int> Sessions = [];
     private SessionManager() {
 
     }
 
-    public dynamic InitSession() {
+    public dynamic InitSession(AccountIdentityModel Identity) {
+        Sessions.Add(1);
         return "";
     }
 }

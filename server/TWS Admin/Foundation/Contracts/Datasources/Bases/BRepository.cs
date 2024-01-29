@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq.Expressions;
+using System.Reflection;
 
 using Foundation.Attributes.Datasources;
 using Foundation.Contracts.Datasources.Interfaces;
@@ -225,16 +226,20 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     ///     into entities and a collection of all records that failed during validations, with the Exception
     ///     catched and the Set retrieved from the live database.
     /// </returns>
-    public async Task<CriticalOperationResults<TEntity, TSet>> Read(Predicate<TSet>? Filter = null, ReadingBehavior Behavior = ReadingBehavior.All) {
+    public async Task<CriticalOperationResults<TEntity, TSet>> Read(Expression<Predicate<TSet>>? Filter = null, ReadingBehavior Behavior = ReadingBehavior.All) {
         List<TSet> Records = [];
         // --> Filter behavior
         if(Filter is null) 
             Records = await Set.ToListAsync();
         else 
-            Records = await Set
+            Records = Set
                 .AsNoTracking()
-                .Where((I) => Filter(I)).ToListAsync(); 
+                .AsEnumerable()
+                .Where((I) => Filter.Compile().Invoke(I))
+                .ToList(); 
 
+        if(Records.Count == 0)
+            throw new XRecordUnfound<TRepository>(nameof(Read), Behavior, RecordSearchMode.ByMatch);
         // --> Reading behavior
         Records = Behavior switch {
             ReadingBehavior.First => [Records[0]],

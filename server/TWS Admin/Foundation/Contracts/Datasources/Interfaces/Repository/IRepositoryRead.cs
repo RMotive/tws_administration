@@ -1,4 +1,6 @@
-﻿using Foundation.Contracts.Datasources.Interfaces;
+﻿using System.Linq.Expressions;
+
+using Foundation.Contracts.Datasources.Interfaces;
 using Foundation.Records.Datasources;
 
 namespace Foundation;
@@ -8,5 +10,5 @@ public interface IRepositoryRead<TEntity, TSet>
     where TSet : Contracts.Datasources.Interfaces.ISet<TEntity> {
     public Task<TEntity> Read(int Pointer);
     public Task<CriticalOperationResults<TEntity, TSet>> Read(IEnumerable<int> Pointers);
-    public Task<CriticalOperationResults<TEntity, TSet>> Read(Predicate<TSet>? Filter = null, ReadingBehavior Behavior = ReadingBehavior.All);
+    public Task<CriticalOperationResults<TEntity, TSet>> Read(Expression<Predicate<TSet>>? Filter = null, ReadingBehavior Behavior = ReadingBehavior.All);
 }

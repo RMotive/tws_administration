@@ -6,8 +6,9 @@ namespace Server.Controllers;
 /// <summary>
 ///     Represents the controller to perform secutiry operations.
 /// </summary>
-[Controller, Route("[controller]")]
-public class SecurityController : ControllerBase {
+[ApiController, Route("[controller]")]
+public class SecurityController 
+    : ControllerBase {
     private readonly ISecurityService Service;
 
     public SecurityController(ISecurityService service) { 
@@ -15,6 +16,6 @@ public class SecurityController : ControllerBase {
     }
 
     [HttpPost("[action]")]
-    public IActionResult Login([FromBody] AccountIdentityScheme Identity) 
-    => new OkObjectResult(Service.InitSession(Identity.GenerateModel()));
+    public async Task<IActionResult> LoginAsync([FromBody] AccountIdentityScheme accountIdentity)
+    => Ok(await Service.InitSession(accountIdentity.GenerateModel()));
 }

@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Immutable;
 using System.Net;
 using System.Text.Json;
 using Customer;
@@ -8,6 +9,10 @@ using Foundation.Exceptions.Servers;
 using Foundation.Managers;
 using Foundation.Models;
 using Foundation.Models.Schemes;
+
+using Microsoft.AspNetCore.Mvc;
+
+using TWS_Security.Repositories;
 
 namespace Server;
 
@@ -61,11 +66,16 @@ public class Program {
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options => {
+                options.JsonSerializerOptions.IncludeFields = true;
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
 
         // --> Adding customer services
         {
-            builder.Services.AddSingleton<ISecurityService>(new SecurityService());
+
+            builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
         }
 
         WebApplication app = builder.Build();
