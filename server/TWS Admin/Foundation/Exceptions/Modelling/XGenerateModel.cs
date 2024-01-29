@@ -17,7 +17,7 @@ public class XGenerateModel<TScheme, TModel>
         Breaks = breaks;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         string breaksToDisplay = "";
         for (int pointer = 0; pointer < Breaks.Count; pointer++) {
             breaksToDisplay += $"({pointer}) [{Breaks[pointer].Property}]: [{Breaks[pointer].Reason}]";

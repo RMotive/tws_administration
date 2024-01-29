@@ -4,5 +4,5 @@ public abstract class BException
     public BException(string Message)
         : base(Message) { }
 
-    public abstract Dictionary<string, dynamic> ToDisplay();
+    public abstract Dictionary<string, dynamic> GenerateFailure();
 }

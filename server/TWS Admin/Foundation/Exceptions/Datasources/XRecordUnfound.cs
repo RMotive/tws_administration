@@ -27,7 +27,7 @@ public class XRecordUnfound<TRepository>
         this.Mode = Mode;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         return new() {
             { nameof(Repository), Repository },
             { nameof(Method), Method},

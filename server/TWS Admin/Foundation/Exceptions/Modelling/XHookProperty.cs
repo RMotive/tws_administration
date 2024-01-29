@@ -17,7 +17,7 @@ public class XHookProperty
             PropertyName = name;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         return new Dictionary<string, dynamic>{
             {nameof(Reflection), Reflection},
             {nameof(PropertyName), PropertyName},

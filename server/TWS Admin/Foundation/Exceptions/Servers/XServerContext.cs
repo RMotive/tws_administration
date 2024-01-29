@@ -18,7 +18,7 @@ public class XServerContext
         _timemark = DateTime.UtcNow;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         return new Dictionary<string, dynamic>
         {
             {nameof(Reason), _reason},

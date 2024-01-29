@@ -21,7 +21,7 @@ public class XEntityIntegrity<TSet, TEntity>
         this.Reasons = Reasons;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         return new()
         {
             {"Entity Type", EntityType },

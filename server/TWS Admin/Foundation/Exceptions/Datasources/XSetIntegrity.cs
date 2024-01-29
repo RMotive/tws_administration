@@ -21,7 +21,7 @@ public class XSetIntegrity<TSet, TEntity>
         this.Reasons = Reasons;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         return new Dictionary<string, dynamic>()
         {
             {"Set Type", SetType },

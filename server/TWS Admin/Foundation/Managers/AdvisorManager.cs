@@ -29,7 +29,7 @@ public class AdvisorManager {
     public static void Success(string Subject, Dictionary<string, dynamic>? Details = null)
     => Write("Success", ConsoleColor.DarkGreen, Subject, Details);
     public static void Exception(BException Exception) {
-        Dictionary<string, dynamic> Details = Exception.ToDisplay();
+        Dictionary<string, dynamic> Details = Exception.GenerateFailure();
         Write("Exception", ConsoleColor.Red, Exception.Message, Details);
     }
 }

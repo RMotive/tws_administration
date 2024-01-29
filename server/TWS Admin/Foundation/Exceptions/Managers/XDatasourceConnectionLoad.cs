@@ -17,7 +17,7 @@ public class XDatasourceConnectionLoad
         this.IOCritical = IOCritical;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         return new() {
             {nameof(Reason), Reason},
             {nameof(PropertiesFileName), PropertiesFileName},

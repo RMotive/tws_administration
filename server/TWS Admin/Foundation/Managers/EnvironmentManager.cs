@@ -4,9 +4,6 @@ using Foundation.Enumerators.Managers;
 
 namespace Foundation.Managers;
 public class EnvironmentManager {
-    const string EnvvarName = "ASPNETCORE_ENVIRONMENT";
-
-
     private static EnvironmentModes? _Mode;
 
     public static EnvironmentModes Mode {

@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 
+using Foundation.Contracts.Exceptions;
 using Foundation.Exceptions.Servers;
 
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +19,7 @@ public class Q_FailuresMiddleware {
     const string UNCGHT_EXCEPTION_ENDPOINT = "uncaugth";
     const string BASE_EXCEPTION_ENDPOINT = "base";
 
-    IHostBuilder Host;
+    readonly IHostBuilder Host;
 
     public Q_FailuresMiddleware() {
         Host = new HostBuilder()
@@ -41,7 +42,7 @@ public class Q_FailuresMiddleware {
                             throw new ArgumentException("TESTED ARGUMENTED EXCEPTION");
                         });
                         endPoints.MapGet(BASE_EXCEPTION_ENDPOINT, () => {
-
+                            throw new XServerContext(XServerContext.Reason.NotFound);
                         });
                     });
                 });
@@ -63,13 +64,20 @@ public class Q_FailuresMiddleware {
         Assert.NotNull(FailureResponse);
     }
     /// <summary>
-    /// 
+    ///     Tests if the <seealso cref="FailuresMiddleware"/> can successfully catch and parse caugth exceptions converted to BException
+    ///     and return the cosmetic way.
     /// </summary>
     [Fact]
-    public void BaseMiddleware() {
-        using (Host.StartAsync()) {
-            // --> Here we are inside the test hoster context
+    public async void BaseMiddleware() {
+        using HttpClient Server = (await Host.StartAsync()).GetTestClient();
 
-        }
+        HttpResponseMessage Response = await Server.GetAsync(BASE_EXCEPTION_ENDPOINT);
+
+        FailureTemplateScheme<BException>? FailureResponse = await Response.Content.ReadFromJsonAsync<FailureTemplateScheme<BException>>();
+
+        Assert.Equal(System.Net.HttpStatusCode.BadRequest, Response.StatusCode);
+        Assert.NotNull(FailureResponse);
+        Assert.IsNotType<FailureTemplateScheme<XServerFailure>>(FailureResponse);
+        Assert.IsAssignableFrom<BException>(FailureResponse);
     }
 }

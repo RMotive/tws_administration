@@ -37,7 +37,7 @@ public class XValidateRule
             PropertyInfo = propertyInfo;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         return new Dictionary<string, dynamic> {
             {"Property Name", PropertyInfo.Name},
             {"Reflectection Type", PropertyInfo.ReflectedType!},

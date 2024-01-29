@@ -19,7 +19,7 @@ public class XUniqueViolation<TSet>
         this.Reflex = Reflex;
     }
 
-    public override Dictionary<string, dynamic> ToDisplay() {
+    public override Dictionary<string, dynamic> GenerateFailure() {
         return new() {
             {nameof(Set), Set},
             {nameof(Violations), Violations},
