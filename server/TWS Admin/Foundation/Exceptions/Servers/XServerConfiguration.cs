@@ -1,7 +1,7 @@
 ﻿using Foundation.Contracts.Exceptions.Bases;
 
 namespace Foundation.Exceptions.Servers;
-public class XServerContext
+public class XServerConfiguration
     : BException {
     public enum Reason {
         NotFound,
@@ -12,7 +12,7 @@ public class XServerContext
     private readonly Reason _reason;
     private readonly DateTime _timemark;
 
-    public XServerContext(Reason reason)
+    public XServerConfiguration(Reason reason)
         : base("Exception loading server context") {
         this._reason = reason;
         _timemark = DateTime.UtcNow;

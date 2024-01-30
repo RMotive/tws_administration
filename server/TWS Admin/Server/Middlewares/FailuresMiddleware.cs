@@ -1,5 +1,6 @@
 ﻿
 using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Exceptions.Servers;
 
 using Server.Templates;
@@ -12,16 +13,9 @@ public class FailuresMiddleware
         try {
             await next.Invoke(context);
         } catch(BException CX) {
-            FailureTemplate<BException> FailureTemplate = new(CX);
 
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(FailureTemplate);
         } catch (Exception UX) {
-            XServerFailure ServerFailure = new(UX);
-            FailureTemplate<XServerFailure> FailureTemplate = new(ServerFailure);
 
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(FailureTemplate);
         }
     }
 }

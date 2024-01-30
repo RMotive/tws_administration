@@ -1,4 +1,5 @@
 ﻿using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 
 namespace Foundation;
 
@@ -15,12 +16,5 @@ public class XHookProperty
         : base($"{MESSAGE}({name}) on ({reflection})") {
             Reflection = reflection;
             PropertyName = name;
-    }
-
-    public override Dictionary<string, dynamic> GenerateFailure() {
-        return new Dictionary<string, dynamic>{
-            {nameof(Reflection), Reflection},
-            {nameof(PropertyName), PropertyName},
-        };
     }
 }

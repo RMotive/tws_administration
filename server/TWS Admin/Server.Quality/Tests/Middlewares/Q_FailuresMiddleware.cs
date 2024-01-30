@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 
-using Foundation.Contracts.Exceptions;
-using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Contracts.Exceptions.Interfaces;
+using Foundation.Contracts.Server.Interfaces;
 using Foundation.Exceptions.Servers;
 
 using Microsoft.AspNetCore.Builder;
@@ -9,13 +9,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using Server.Middlewares;
-using Server.Quality.Schemes;
+using Server.Templates.Exposures;
 
 using Xunit;
 
-namespace Server.Quality.Middlewares;
+namespace Server.Quality.Tests.Middlewares;
 public class Q_FailuresMiddleware {
     const string UNCGHT_EXCEPTION_ENDPOINT = "uncaugth";
     const string BASE_EXCEPTION_ENDPOINT = "base";
@@ -34,16 +33,16 @@ public class Q_FailuresMiddleware {
                     services.AddRouting();
                     services.AddSingleton<FailuresMiddleware>();
                 });
-                webBuilder.Configure(app => {  
+                webBuilder.Configure(app => {
                     app.UseRouting();
                     app.UseMiddleware<FailuresMiddleware>();
                     app.UseEndpoints(endPoints => {
-                        
+
                         endPoints.MapGet(UNCGHT_EXCEPTION_ENDPOINT, () => {
                             throw new ArgumentException("TESTED ARGUMENTED EXCEPTION");
                         });
                         endPoints.MapGet(BASE_EXCEPTION_ENDPOINT, () => {
-                            throw new XServerContext(XServerContext.Reason.NotFound);
+                            throw new XServerConfiguration(XServerConfiguration.Reason.NotFound);
                         });
                     });
                 });
@@ -59,7 +58,7 @@ public class Q_FailuresMiddleware {
 
         HttpResponseMessage Response = await Server.GetAsync(UNCGHT_EXCEPTION_ENDPOINT);
 
-        FailureTemplateScheme<XServerFailure>? FailureResponse = await Response.Content.ReadFromJsonAsync<FailureTemplateScheme<XServerFailure>>();
+        FailureExposure<IFailure>? FailureResponse = await Response.Content.ReadFromJsonAsync<FailureExposure<IFailure>>();
 
         Assert.Equal(System.Net.HttpStatusCode.InternalServerError, Response.StatusCode);
         Assert.NotNull(FailureResponse);
@@ -74,11 +73,11 @@ public class Q_FailuresMiddleware {
 
         HttpResponseMessage Response = await Server.GetAsync(BASE_EXCEPTION_ENDPOINT);
 
-        FailureTemplateScheme<BException>? FailureResponse = await Response.Content.ReadFromJsonAsync<FailureTemplateScheme<BException>>();
+        FailureExposure<IFailure>? FailureResponse = await Response.Content.ReadFromJsonAsync<FailureExposure<IFailure>>();
 
         Assert.Equal(System.Net.HttpStatusCode.BadRequest, Response.StatusCode);
         Assert.NotNull(FailureResponse);
-        Assert.IsNotType<FailureTemplateScheme<XServerFailure>>(FailureResponse);
-        Assert.IsAssignableFrom<BException>(FailureResponse);
+        Assert.IsNotType<FailureExposure<IFailure>>(FailureResponse);
+        Assert.IsAssignableFrom<IExposure>(FailureResponse);
     }
 }

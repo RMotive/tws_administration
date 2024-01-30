@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 
 using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 
 namespace Foundation.Exceptions.Servers;
 public class XServerFailure
@@ -14,13 +15,5 @@ public class XServerFailure
         : base(MESSAGE) {
         this.Link = Link;
         Invoker = new StackTrace(1);
-    }
-    public XServerFailure() 
-        : base(MESSAGE) {
-        Invoker = new StackTrace(1);
-    }
-
-    public override Dictionary<string, dynamic> GenerateFailure() {
-        throw new NotImplementedException();
     }
 }

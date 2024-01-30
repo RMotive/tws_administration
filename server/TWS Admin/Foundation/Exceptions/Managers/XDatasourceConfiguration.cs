@@ -2,7 +2,7 @@
 using Foundation.Enumerators.Exceptions;
 
 namespace Foundation.Exceptions.Managers;
-public class XDatasourceConnectionLoad
+public class XDatasourceConfiguration
     : BException {
     new private const string Message = "Unable to load datasource project connection properties";
 
@@ -10,7 +10,7 @@ public class XDatasourceConnectionLoad
     private readonly string PropertiesFileName;
     private readonly Exception? IOCritical;
 
-    public XDatasourceConnectionLoad(ConnectionLoadFailureReasons Reason, string PropertiesFileName, Exception? IOCritical = null)
+    public XDatasourceConfiguration(ConnectionLoadFailureReasons Reason, string PropertiesFileName, Exception? IOCritical = null)
         : base($"{Message} ({Reason})") {
         this.Reason = Reason;
         this.PropertiesFileName = PropertiesFileName;

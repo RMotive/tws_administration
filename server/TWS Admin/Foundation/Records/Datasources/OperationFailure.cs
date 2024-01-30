@@ -1,5 +1,5 @@
-﻿using Foundation.Contracts.Exceptions;
-using Foundation.Contracts.Records;
+﻿using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Contracts.Exceptions.Interfaces;
 using Foundation.Enumerators.Records;
 
 namespace Foundation.Records.Datasources;

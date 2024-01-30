@@ -1,5 +1,6 @@
 ﻿using Foundation.Contracts.Datasources.Interfaces;
 using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 
 namespace Foundation.Exceptions.Datasources;
@@ -25,14 +26,5 @@ public class XRecordUnfound<TRepository>
         this.Method = Method;
         this.Reference = Reference;
         this.Mode = Mode;
-    }
-
-    public override Dictionary<string, dynamic> GenerateFailure() {
-        return new() {
-            { nameof(Repository), Repository },
-            { nameof(Method), Method},
-            { nameof(Reference), Reference },
-            { nameof(Mode), Mode },
-        };
     }
 }

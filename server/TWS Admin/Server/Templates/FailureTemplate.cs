@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 
 using Server.Contracts.Interfaces;
 

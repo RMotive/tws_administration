@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 
 namespace Foundation;
 
@@ -35,12 +36,5 @@ public class XValidateRule
     public XValidateRule(PropertyInfo propertyInfo) 
         : base($"{MESSAGE} on {propertyInfo.Name}:{propertyInfo.ReflectedType}") {
             PropertyInfo = propertyInfo;
-    }
-
-    public override Dictionary<string, dynamic> GenerateFailure() {
-        return new Dictionary<string, dynamic> {
-            {"Property Name", PropertyInfo.Name},
-            {"Reflectection Type", PropertyInfo.ReflectedType!},
-        };
     }
 }

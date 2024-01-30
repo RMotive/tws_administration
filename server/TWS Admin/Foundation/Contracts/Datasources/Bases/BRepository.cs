@@ -4,6 +4,7 @@ using System.Reflection;
 using Foundation.Attributes.Datasources;
 using Foundation.Contracts.Datasources.Interfaces;
 using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Datasources;
 using Foundation.Records.Datasources;

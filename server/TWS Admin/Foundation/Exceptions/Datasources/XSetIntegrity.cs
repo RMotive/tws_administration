@@ -1,6 +1,6 @@
 ﻿using Foundation.Contracts.Datasources.Bases;
 using Foundation.Contracts.Datasources.Interfaces;
-using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 
 namespace Foundation.Exceptions.Datasources;
@@ -19,15 +19,5 @@ public class XSetIntegrity<TSet, TEntity>
         EntityType = typeof(TEntity);
         this.Set = Set;
         this.Reasons = Reasons;
-    }
-
-    public override Dictionary<string, dynamic> GenerateFailure() {
-        return new Dictionary<string, dynamic>()
-        {
-            {"Set Type", SetType },
-            {"EntityType", EntityType },
-            {"Set", Set },
-            {"Reasons", Reasons },
-        };
     }
 }

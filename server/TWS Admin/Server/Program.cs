@@ -5,6 +5,7 @@ using System.Text.Json;
 using Customer;
 
 using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Exceptions.Servers;
 using Foundation.Managers;
 using Foundation.Models;

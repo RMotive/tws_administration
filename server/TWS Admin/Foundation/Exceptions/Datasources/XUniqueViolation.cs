@@ -2,6 +2,7 @@
 using Foundation.Contracts.Datasources.Interfaces;
 
 using Foundation.Contracts.Exceptions;
+using Foundation.Contracts.Exceptions.Bases;
 
 namespace Foundation.Exceptions.Datasources;
 public class XUniqueViolation<TSet>
@@ -17,13 +18,5 @@ public class XUniqueViolation<TSet>
         Set = typeof(TSet);
         this.Violations = Violations;
         this.Reflex = Reflex;
-    }
-
-    public override Dictionary<string, dynamic> GenerateFailure() {
-        return new() {
-            {nameof(Set), Set},
-            {nameof(Violations), Violations},
-            {nameof(Reflex), Reflex?.Message ?? "---"},
-        };
     }
 }
