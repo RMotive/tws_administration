@@ -1,10 +1,9 @@
-﻿using Foundation.Contracts.Exceptions.Interfaces;
+﻿using Foundation;
 using Foundation.Contracts.Server.Interfaces;
-using Foundation.Models;
 
 namespace Server.Quality.Templates;
 public class GenericExposure
-    : ITemplateExposure<IGenericExceptionExposure> {
+    : ITemplateExposure<GenericExceptionExposure> {
     public Guid Tracer { get; set; }
-    public IGenericExceptionExposure Estela { get; set; } = default!;
+    public GenericExceptionExposure Estela { get; set; } = default!;
 }

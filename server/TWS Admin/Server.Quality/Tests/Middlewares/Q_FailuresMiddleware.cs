@@ -17,12 +17,31 @@ using Xunit;
 using SCodes = System.Net.HttpStatusCode;
 
 namespace Server.Quality.Tests.Middlewares;
+/// <summary>
+///     Test class context.
+///     This test class tests the quality of the <seealso cref="FailuresMiddleware"/> implementation inside the server.
+/// </summary>
 public class Q_FailuresMiddleware {
+    /// <summary>
+    ///     Reference for the endpoint configured to test the catching of unspeficied exceptions.
+    /// </summary>
     const string UNCGHT_EXCEPTION_ENDPOINT = "uncaugth";
+    /// <summary>
+    ///     Reference for the endpoint configured to test the catchiing of foundation specified exceptions.
+    /// </summary>
     const string BASE_EXCEPTION_ENDPOINT = "base";
-
+    /// <summary>
+    ///     Contextual test server host manager builder to handle the http calls simulations.
+    /// </summary>
     readonly IHostBuilder Host;
 
+    /// <summary>
+    ///     Quality test constructor for this context.
+    ///     
+    ///     Here we configure the test server to limit the context to the test functions required.
+    /// </summary>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="XServerConfiguration"></exception>
     public Q_FailuresMiddleware() {
         Host = new HostBuilder()
             .ConfigureWebHost(webBuilder => {
@@ -62,10 +81,11 @@ public class Q_FailuresMiddleware {
 
         HttpResponseMessage Response = await Server.GetAsync(UNCGHT_EXCEPTION_ENDPOINT);
 
-        GenericExposure? FailureResponse = await Response.Content.ReadFromJsonAsync<GenericExposure>();
+        GenericExposure? FailureExposure = await Response.Content.ReadFromJsonAsync<GenericExposure>();
 
         Assert.Equal(SCodes.InternalServerError, Response.StatusCode);
-        Assert.NotNull(FailureResponse);
+        Assert.NotNull(FailureExposure);
+        Assert.NotEmpty(FailureExposure.Estela.Failure);
     }
     /// <summary>
     ///     Tests if the <seealso cref="FailuresMiddleware"/> can successfully catch and parse caugth exceptions converted to BException
@@ -77,10 +97,10 @@ public class Q_FailuresMiddleware {
 
         HttpResponseMessage Response = await Server.GetAsync(BASE_EXCEPTION_ENDPOINT);
 
-        GenericExposure? FailureResponse = await Response.Content.ReadFromJsonAsync<GenericExposure>();
+        GenericExposure? FailureExposure = await Response.Content.ReadFromJsonAsync<GenericExposure>();
 
         Assert.Equal(SCodes.BadRequest, Response.StatusCode);
-        Assert.NotNull(FailureResponse);
-
+        Assert.NotNull(FailureExposure);
+        Assert.NotEmpty(FailureExposure.Estela.Failure);
     }
 }
