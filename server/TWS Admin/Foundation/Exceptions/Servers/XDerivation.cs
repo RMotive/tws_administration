@@ -6,11 +6,18 @@ public class XDerivation
     : BException<XFDerivation> {
     const string MESSAGE = "Wrong refelction derivation";
 
-    public XDerivation() 
+    private readonly Exception? Link;
+
+    public XDerivation(Exception? link) 
         : base($"{MESSAGE} FROM[] to[]") {
+        Link = link;
     }
 
-    protected override XFDerivation DesignFailure() {
-        throw new NotImplementedException();
-    }
+    protected override XFDerivation DesignFailure()
+    => new() {
+        Message = MESSAGE,
+        Failure = new() {
+            {"LinkMessage", Link?.Message ?? "Empty Link Message" }
+        }
+    };
 }

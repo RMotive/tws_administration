@@ -19,7 +19,7 @@ public class SessionManager {
             .FirstOrDefault();
         
         Guid Token = GenerateToken();
-        SessionModel Session = new(Token, accountIdentity, new TimeSpan(0, 10, 0));
+        SessionModel Session = new(Token, false, accountIdentity, new TimeSpan(0, 10, 0), []);
         if(SessionAssigned != null)
             Sessions.Remove(SessionAssigned);
         Sessions.Add(Session);

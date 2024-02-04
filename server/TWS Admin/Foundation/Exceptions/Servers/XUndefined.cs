@@ -9,7 +9,7 @@ public class XUndefined
     const string MESSAGE = "Critical server error unrecognized";
 
     public readonly Exception? Link;
-    public readonly StackTrace? Invoker;
+    public readonly StackTrace Invoker;
 
     public XUndefined(Exception Link) 
         : base(MESSAGE) {
@@ -19,5 +19,9 @@ public class XUndefined
 
     protected override XFUndefined DesignFailure() 
     => new() {
+        Message = MESSAGE,
+        Failure = new() {
+            {"LinkMessage", Link?.Message ?? "Empty link message" }
+        }
     };
 }
