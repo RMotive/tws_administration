@@ -15,10 +15,10 @@ public class XRecordUnfound<TRepository>
     where TRepository : IRepository {
     new const string Message = "Unable to found the requested record";
 
-    private Type Repository { get; set; }
-    private string Method { get; set; }
-    private dynamic Reference { get; set; }
-    private RecordSearchMode Mode { get; set; }
+    public Type Repository { get; private set; }
+    public string Method { get; private set; }
+    public dynamic Reference { get; private set; }
+    public RecordSearchMode Mode { get; private set; }
 
     public XRecordUnfound(string Method, dynamic Reference, RecordSearchMode Mode)
         : base($"{Message} on ({typeof(TRepository)}) : ({Method}) | with ({Reference})") {

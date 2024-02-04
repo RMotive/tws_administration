@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Foundation.Contracts.Modelling.Interfaces;
+using Foundation.Contracts.Records;
 using Foundation.Exceptions.Modelling;
 using Foundation.Models;
 
@@ -19,14 +20,14 @@ public abstract class BScheme<TScheme, TModel>
     protected const string NULL_EMPTY_REASON = "is null or empty";        
 
 
-    private readonly List<ISchemeIntegrityRule> Rules;
+    private readonly List<IValidationRule> Rules;
     
     protected BScheme() {
         // --> Rules get generated at the object is buildt to don't regenerate them each Generation request.
         Rules = GenerateRules();
     }
 
-    protected virtual List<ISchemeIntegrityRule> GenerateRules() => [];
+    protected virtual List<IValidationRule> GenerateRules() => [];
     protected abstract TModel Generate();
 
     public TModel GenerateModel() {
@@ -36,7 +37,7 @@ public abstract class BScheme<TScheme, TModel>
         foreach(PropertyInfo prop in schemeProperties) {
              
             SchemeConvertionBreakModel? @break = null;
-            ISchemeIntegrityRule? Rule = Rules.Find(I => I.Property.Name == prop.Name);
+            IValidationRule? Rule = Rules.Find(I => I.Property.Name == prop.Name);
             if(Rule is null)
                 continue;
             Type specifiedPropertyType = Rule.SpecifiedType;

@@ -1,19 +1,23 @@
 ﻿using System.Diagnostics;
 
-using Foundation.Contracts.Exceptions;
 using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Exceptions.Servers.Failures;
 
 namespace Foundation.Exceptions.Servers;
-public class XServerFailure
-    : BException {
+public class XUndefined
+    : BException<XFUndefined> {
     const string MESSAGE = "Critical server error unrecognized";
 
     public readonly Exception? Link;
     public readonly StackTrace? Invoker;
 
-    public XServerFailure(Exception Link) 
+    public XUndefined(Exception Link) 
         : base(MESSAGE) {
         this.Link = Link;
         Invoker = new StackTrace(1);
     }
+
+    protected override XFUndefined DesignFailure() 
+    => new() {
+    };
 }

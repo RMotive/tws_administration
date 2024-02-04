@@ -1,22 +1,29 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using Foundation.Contracts.Exceptions;
-using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Contracts.Exceptions.Interfaces;
+using Foundation.Contracts.Server.Interfaces;
 
-using Server.Contracts.Interfaces;
+using Server.Templates.Exposures;
 
 namespace Server.Templates;
 
-public class FailureTemplate<TFailure>
-    : ITEmplate<TFailure>
-    where TFailure : BException {
+public class FailureTemplate<TException>
+    : ITemplate<TException, FailureExposure<IExceptionExposure>>
+    where TException : IException<IExceptionExposure> {
 
     [Required]
     public Guid Tracer { get; set; }
-    public TFailure Estela { get; set; }
+    public TException Estela { get; set; }
 
-    public FailureTemplate(TFailure Failure) { 
+    public FailureTemplate(TException Failure) { 
         Tracer = Guid.NewGuid();
         Estela = Failure;
+    }
+
+    public FailureExposure<IExceptionExposure> GenerateExposure() {
+        return new FailureExposure<IExceptionExposure>() {
+            Tracer = Tracer,
+            Estela = Estela.GenerateExposure(),
+        };
     }
 }

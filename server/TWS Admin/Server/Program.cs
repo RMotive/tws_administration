@@ -1,19 +1,14 @@
-﻿
-using System.Collections.Immutable;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
+
 using Customer;
 
-using Foundation.Contracts.Exceptions;
 using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Servers;
 using Foundation.Managers;
 using Foundation.Models;
 using Foundation.Models.Schemes;
-
-using Microsoft.AspNetCore.Mvc;
-
-using TWS_Security.Repositories;
 
 namespace Server;
 
@@ -32,12 +27,12 @@ public class Program {
         };
         AdvisorManager.Note("Loading server context", noteDetails);
         if (!File.Exists(fullPath))
-            throw new XServerContext(XServerContext.Reason.NotFound);
+            throw new XServerConfiguration(ServerConfigurationFailureReasons.NotFound);
 
         Stream fileStream = File.OpenRead(fullPath);
         ServerPropertiesScheme contextScheme
             = JsonSerializer.Deserialize<ServerPropertiesScheme>(fileStream)
-            ?? throw new XServerContext(XServerContext.Reason.WrongFormat);
+            ?? throw new XServerConfiguration(ServerConfigurationFailureReasons.WrongFormat);
         try {
             string HostName = Dns.GetHostName();
             IPAddress[] Addresses = Dns.GetHostAddresses(HostName);

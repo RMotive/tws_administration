@@ -8,10 +8,10 @@ public class XSetIntegrity<TSet, TEntity>
     : BException
     where TSet : ISet
     where TEntity : IEntity {
-    private readonly Type SetType;
-    private readonly Type EntityType;
-    private readonly BSet<TSet, TEntity> Set;
-    private readonly Dictionary<string, IntegrityFailureReasons> Reasons;
+    public readonly Type SetType;
+    public readonly Type EntityType;
+    public readonly BSet<TSet, TEntity> Set;
+    public readonly Dictionary<string, IntegrityFailureReasons> Reasons;
 
     public XSetIntegrity(BSet<TSet, TEntity> Set, Dictionary<string, IntegrityFailureReasons> Reasons)
         : base($"Data handling integrity fail from: {typeof(TSet)} to: {typeof(TEntity)}") {

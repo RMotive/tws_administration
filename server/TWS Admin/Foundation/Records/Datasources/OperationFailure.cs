@@ -1,10 +1,11 @@
 ﻿using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Contracts.Exceptions.Interfaces;
+using Foundation.Contracts.Records;
 using Foundation.Enumerators.Records;
 
 namespace Foundation.Records.Datasources;
 public record OperationFailure<TReference>
-    : IFailure {
+    : IOperationFailure {
     public TReference Reference { get; set; }
     public BException Failure { get; set; }
     public OperationFailureCriterias Criteria { get; set; }

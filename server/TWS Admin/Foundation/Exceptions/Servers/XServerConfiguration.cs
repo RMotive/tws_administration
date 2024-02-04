@@ -1,20 +1,24 @@
 ﻿using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Exceptions.Servers.Failures;
+
+using Reason = Foundation.Enumerators.Exceptions.ServerConfigurationFailureReasons;
 
 namespace Foundation.Exceptions.Servers;
 public class XServerConfiguration
-    : BException {
-    public enum Reason {
-        NotFound,
-        Incomplete,
-        WrongFormat,
-    }
+    : BException<XFServerConfiguration> {
 
-    private readonly Reason _reason;
-    private readonly DateTime _timemark;
+    const string MESSAGE = "Exception loading server context";
+
+    private readonly Reason Reason;
+    private readonly DateTime Timemark;
 
     public XServerConfiguration(Reason reason)
-        : base("Exception loading server context") {
-        this._reason = reason;
-        _timemark = DateTime.UtcNow;
+        : base($"{MESSAGE}") {
+        Reason = reason;
+        Timemark = DateTime.UtcNow;
     }
+
+    protected override XFServerConfiguration DesignFailure() 
+    => new() {
+    };
 }

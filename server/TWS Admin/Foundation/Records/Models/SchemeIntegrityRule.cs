@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
 
+using Foundation.Contracts.Records;
+
 namespace Foundation;
 public class SchemeIntegrityRule<TProperty> 
-    : ISchemeIntegrityRule {
+    : IValidationRule {
     public Type SpecifiedType {get; private set;}
     public PropertyInfo Property {get; private set;}
     public Func<TProperty, string?> Validator {get; private set;}
@@ -17,10 +19,4 @@ public class SchemeIntegrityRule<TProperty>
         TProperty specifiedPropertyCast = (TProperty) data!;
         return Validator(specifiedPropertyCast!);
     }
-}
-
-public interface ISchemeIntegrityRule {
-    public PropertyInfo Property {get;}
-    public Type SpecifiedType {get;}
-    public string? ValidateRule(object? data);
 }

@@ -1,6 +1,6 @@
 ﻿namespace Foundation.Contracts.Server.Interfaces;
 
-public interface ITEmplate<TEstela, TExposure> {
+public interface ITemplate<TEstela, TExposure> {
     public Guid Tracer { get; }
     public TEstela Estela { get; }
 

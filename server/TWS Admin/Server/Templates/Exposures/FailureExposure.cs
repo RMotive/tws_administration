@@ -4,8 +4,8 @@ using Foundation.Contracts.Server.Interfaces;
 namespace Server.Templates.Exposures;
 
 public class FailureExposure<TEstela> 
-    : IExposure<TEstela> 
-    where TEstela : IFailure {
+    : ITemplateExposure<TEstela> 
+    where TEstela : IExceptionExposure {
     public Guid Tracer { get; set; }
     public TEstela Estela { get; set; } = default!;
 
