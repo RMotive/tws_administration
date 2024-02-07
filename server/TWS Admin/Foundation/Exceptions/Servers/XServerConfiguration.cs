@@ -20,5 +20,10 @@ public class XServerConfiguration
 
     protected override XFServerConfiguration DesignFailure() 
     => new() {
+        Message = MESSAGE,
+        Failure = new () {
+            {nameof(Reason), Reason },
+            {nameof(Timemark), Timemark},
+        }
     };
 }

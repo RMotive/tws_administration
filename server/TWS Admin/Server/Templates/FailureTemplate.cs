@@ -7,9 +7,10 @@ using Server.Templates.Exposures;
 
 namespace Server.Templates;
 
-public class FailureTemplate<TException>
-    : ITemplate<TException, FailureExposure<IExceptionExposure>>
-    where TException : IException<IExceptionExposure> {
+public class FailureTemplate<TException, TExposure>
+    : ITemplate<TException, FailureExposure<TExposure>>
+    where TException : IException<IExceptionExposure>
+    where TExposure : IExceptionExposure {
 
     [Required]
     public Guid Tracer { get; set; }
@@ -20,10 +21,10 @@ public class FailureTemplate<TException>
         Estela = Failure;
     }
 
-    public FailureExposure<IExceptionExposure> GenerateExposure() {
-        return new FailureExposure<IExceptionExposure>() {
+    public FailureExposure<TExposure> GenerateExposure() {
+        return new FailureExposure<TExposure>() {
             Tracer = Tracer,
-            Estela = Estela.GenerateExposure(),
+            Estela = (TExposure)Estela.GenerateExposure(),
         };
     }
 }

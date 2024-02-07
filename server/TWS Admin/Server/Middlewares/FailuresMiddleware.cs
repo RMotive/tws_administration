@@ -1,45 +1,46 @@
 ﻿using System.Net;
+using System.Text.Json;
 
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Contracts.Exceptions.Interfaces;
 using Foundation.Exceptions.Servers;
-
 using Server.Templates;
 using Server.Templates.Exposures;
 
 namespace Server.Middlewares;
 
-public class FailuresMiddleware 
+public class FailuresMiddleware
     : IMiddleware {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next) {
         int StatusCode = (int)HttpStatusCode.Conflict;
-        FailureTemplate<IException<IExceptionExposure>>? Template = null;
+        FailureTemplate<IException<IExceptionExposure>, IGenericExceptionExposure>? Template = null;
         Exception? CriticalUnderivation = null;
 
         try {
             await next.Invoke(context);
-        } catch(BException DefinedX) when (DefinedX is IException<IExceptionExposure> CastedX) {
+        } catch (BException DefinedX) when (DefinedX is IException<IExceptionExposure> CastedX) {
             StatusCode = (int)HttpStatusCode.BadRequest;
             Template = new(CastedX);
         } catch (Exception UndefinedX) {
-            StatusCode = (int)HttpStatusCode.BadRequest;
+            StatusCode = (int)HttpStatusCode.InternalServerError;
             XUndefined DefinedX = new(UndefinedX);
             IException<IExceptionExposure> CastedX = DefinedX.GenerateDerivation();
-            if(CastedX is null) 
+            if (CastedX is null)
                 CriticalUnderivation = UndefinedX;
-            else 
+            else
                 Template = new(CastedX);
         } finally {
             context.Response.StatusCode = StatusCode;
-            if(Template is null) {
-                XDerivation DerivationException = new();
+            if (Template is null) {
+                XDerivation DerivationException = new(CriticalUnderivation);
                 IException<IExceptionExposure> ExceptionContract = DerivationException.GenerateDerivation();
                 Template = new(ExceptionContract);
             }
 
-            FailureExposure<IExceptionExposure> Exposure = Template.GenerateExposure();
 
-            await context.Response.WriteAsJsonAsync(Exposure);
+            FailureExposure<IGenericExceptionExposure> Exposure = Template.GenerateExposure();
+
+            await context.Response.WriteAsJsonAsync((object)Exposure);
         }
     }
 }

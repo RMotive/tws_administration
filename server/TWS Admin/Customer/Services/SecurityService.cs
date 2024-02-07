@@ -1,4 +1,5 @@
-﻿using Customer.Managers;
+﻿using Customer.Contracts.Services.Interfaces;
+using Customer.Managers;
 using Customer.Models;
 
 using Foundation.Records.Datasources;
@@ -28,8 +29,8 @@ public class SecurityService
 
         // --> The account was found
         AccountEntity Account = SearchAccountResult.Successes[0];
+        SessionModel SessionInited = SessionsManager.InitSession(Identity);
 
-
-        return new ForeignSessionModel("answer", [2, 3, 4]);
+        return SessionInited.GeneratePublicDerivation();
     }
 }

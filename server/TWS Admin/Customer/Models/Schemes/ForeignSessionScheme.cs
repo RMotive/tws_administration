@@ -3,15 +3,12 @@
 namespace Customer.Models.Schemes;
 public class ForeignSessionScheme 
     : IScheme<ForeignSessionModel> {
-    public string Token { get; set; }
-    public List<int> Features { get; set; }
+    public Guid Token { get; set; }
+    public bool IsOwner {  get; set; } = false;
+    public List<int> Features { get; set; } = [];
 
-    public ForeignSessionScheme() {
-        Token = string.Empty;
-        Features = [];
-    }
-
+    public ForeignSessionScheme() { }
     public ForeignSessionModel GenerateModel() {
-        return new ForeignSessionModel(Token, Features);
+        return new ForeignSessionModel(Token, Features, IsOwner);
     }
 }
