@@ -10,6 +10,7 @@ class TWSButtonFlat extends StatelessWidget {
   final double? width;
   final double? height;
   final String label;
+  final bool showLoading;
   final Function() onTap;
 
   const TWSButtonFlat({
@@ -17,6 +18,7 @@ class TWSButtonFlat extends StatelessWidget {
     this.width,
     this.height = 40,
     this.label = 'Hello!',
+    this.showLoading = false,
     required this.onTap,
   });
 
@@ -46,14 +48,29 @@ class TWSButtonFlat extends StatelessWidget {
       height: height,
       child: TextButton(
         style: ButtonStyle(
+          enableFeedback: true,
           backgroundColor: MaterialStateColor.resolveWith(bgStateColorize),
           overlayColor: MaterialStateColor.resolveWith(olStateColorize),
           shape: MaterialStateProperty.all(const LinearBorder()),
         ),
-        onPressed: onTap,
-        child: Text(
-          label,
-          style: TextStyle(color: colorStruct.onColorAlt),
+        onPressed: showLoading ? null : onTap,
+        child: Visibility(
+          visible: !showLoading,
+          replacement: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
+            child: LinearProgressIndicator(
+              backgroundColor: Colors.transparent,
+              color: colorStruct.onColorAlt,
+            ),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: colorStruct.onColorAlt,
+            ),
+          ),
         ),
       ),
     );

@@ -10,9 +10,9 @@ class TWSAdministrationRepository extends CosmosRepository {
   })
       : super(
           const CosmosUriStruct(
-            'localhost',
+            '192.168.100.39',
             '',
-            port: null,
+            port: 5195,
           ),
         ) {
     securityService = securityServiceImpl ?? TWSASecurityService(host);

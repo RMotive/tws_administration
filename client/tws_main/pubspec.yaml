@@ -14,6 +14,7 @@ dependencies:
       url: https://github.com/RMotive/CMSF-Cosmos_Foundation
       path: package/cosmos_foundation/
   go_router: ^13.0.1
+  http: ^1.2.0
 
 dev_dependencies:
   flutter_test:
