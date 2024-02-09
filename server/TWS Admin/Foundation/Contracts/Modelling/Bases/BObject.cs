@@ -28,10 +28,10 @@ public abstract class BObject<TObject> {
 
             #region Specific struct types equality validations.
             bool ReferenceValuesNotNull = rReferenceValue != null && cReferenceValue != null;
-            
+
             #region Byte Array Equality
             bool isByteArray = rProperty.PropertyType == typeof(byte[]);
-            if(isByteArray && ReferenceValuesNotNull) {
+            if (isByteArray && ReferenceValuesNotNull) {
                 byte[] currentReferenceValue = (byte[])rReferenceValue!;
                 byte[] comparerReferenceValue = (byte[])cReferenceValue!;
                 return currentReferenceValue.SequenceEqual(comparerReferenceValue);
@@ -54,12 +54,12 @@ public abstract class BObject<TObject> {
         return JsonSerializer.Serialize(jsonReference);
     }
     public override int GetHashCode() => base.GetHashCode();
-    
+
     public PropertyInfo HookProperty(string name) {
         Type reflection = GetType();
-        PropertyInfo tracedProperty 
+        PropertyInfo tracedProperty
         = reflection.GetProperty(name)
-            ?? throw new XHookProperty(reflection, name);
+            ?? throw new XPropertyHooking(reflection, name);
 
         return tracedProperty;
     }
@@ -67,16 +67,16 @@ public abstract class BObject<TObject> {
         Type ObjectType = typeof(TObject);
 
         TObject? Cloned = (TObject?)Activator.CreateInstance(ObjectType);
-        if(Cloned is null)
+        if (Cloned is null)
             throw new Exception("PENDING WRONG ACTIVATION");
 
         PropertyInfo[] ObjectPropertiesInfo = ObjectType.GetProperties();
-        foreach(PropertyInfo PropertyInfo in ObjectPropertiesInfo) {
+        foreach (PropertyInfo PropertyInfo in ObjectPropertiesInfo) {
             object? OriginalValue = PropertyInfo.GetValue(this);
             PropertyInfo.SetValue(Cloned, OriginalValue);
         }
 
-        if(Cloned.GetHashCode() == GetHashCode())
+        if (Cloned.GetHashCode() == GetHashCode())
             throw new Exception("PEDNING SAME HASH");
 
         return Cloned;

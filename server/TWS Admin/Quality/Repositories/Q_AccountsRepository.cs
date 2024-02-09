@@ -1,20 +1,21 @@
 ﻿using System.Text;
+
+using Foundation;
+using Foundation.Enumerators.Records;
+using Foundation.Exceptions.Datasources;
 using Foundation.Managers;
+using Foundation.Records.Datasources;
 
 using Microsoft.EntityFrameworkCore;
 
 using TWS_Security.Entities;
 using TWS_Security.Repositories;
 using TWS_Security.Sets;
-using Foundation.Enumerators.Records;
 
 using Xunit;
 
-using EntityReferenceResults = Foundation.Records.Datasources.OperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Entities.AccountEntity>;
 using CriticalOperationResults = Foundation.Records.Datasources.CriticalOperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Sets.Account>;
-using Foundation;
-using Foundation.Exceptions.Datasources;
-using Foundation.Records.Datasources;
+using EntityReferenceResults = Foundation.Records.Datasources.OperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Entities.AccountEntity>;
 
 namespace TWS_Security.Quality.Repositories;
 public class Q_AccountsRepository {
@@ -30,7 +31,7 @@ public class Q_AccountsRepository {
             byte[] rp = Encoding.Unicode.GetBytes(RandomManager.String(8));
             string ru = RandomManager.String(7);
 
-            AccountEntity re = new(ru, rp);
+            AccountEntity re = new(ru, rp, false);
             Mocks = [.. Mocks, re];
         }
     }
@@ -38,7 +39,7 @@ public class Q_AccountsRepository {
     private async Task<(Account[], AccountEntity[])> GenerateMocks(int Q) {
         AccountEntity[] GeneratedEntities = new AccountEntity[Q];
         Account[] GeneratedRecords = new Account[Q];
-        for(int P = 0; P < Q; P++) {
+        for (int P = 0; P < Q; P++) {
             string Randomed = RandomManager.String(7);
             Account Record = new() {
                 User = Randomed,
@@ -56,8 +57,8 @@ public class Q_AccountsRepository {
     private static (Account[], AccountEntity[]) GenerateFakeMock(int Q) {
         AccountEntity[] FakeEtys = new AccountEntity[Q];
         Account[] FakeRecs = new Account[Q];
-        
-        for(int P = 0; P < Q; P++) {
+
+        for (int P = 0; P < Q; P++) {
             string RandomtString = RandomManager.String(12);
             Account RecMock = new() {
                 Id = int.MaxValue - P,
@@ -111,10 +112,10 @@ public class Q_AccountsRepository {
             () => Assert.Equal(2, SecondFact.Failures.Count),
             () => Assert.True(SecondFact.Successes[0].Pointer > 0),
             () => {
-                Assert.All(SecondFact.Failures, 
+                Assert.All(SecondFact.Failures,
                     (I) => {
-                    Assert.Equal(OperationFailureCriterias.Entity, I.Criteria);
-                });
+                        Assert.Equal(OperationFailureCriterias.Entity, I.Criteria);
+                    });
             },
             () => {
                 AccountEntity Entity = SecondFact.Successes[0];
@@ -141,10 +142,10 @@ public class Q_AccountsRepository {
             () => Assert.Equal(3, ThirdFact.Successes.Count),
             () => Assert.Equal(2, ThirdFact.Failures.Count),
             () => {
-                Assert.All(ThirdFact.Failures, 
+                Assert.All(ThirdFact.Failures,
                     (I) => {
                         Assert.Equal(OperationFailureCriterias.Entity, I.Criteria);
-                });
+                    });
             },
             () => {
                 Assert.All(ThirdFact.Successes,
@@ -169,7 +170,7 @@ public class Q_AccountsRepository {
             }
         ]);
         #endregion
-    } 
+    }
 
     [Fact]
     public async void Read() {
@@ -245,7 +246,7 @@ public class Q_AccountsRepository {
                 }
             ]);
             #endregion
-            
+
             #region Fourth Fact Asserts (Reading by pointer)
             Assert.Multiple([
                 () => Assert.True(FourthFact.Pointer > 0),
@@ -289,7 +290,7 @@ public class Q_AccountsRepository {
             #region Pre-Tests
             (Account[] RecMocks, AccountEntity[] EtyMocks) = await GenerateMocks(2);
             (Account[] FakeRecMocks, AccountEntity[] FakeEtyMocks) = GenerateFakeMock(2);
-            LiveMocks = [..RecMocks];
+            LiveMocks = [.. RecMocks];
             #endregion
 
             #region  First Fact (Pre-test) 
@@ -300,12 +301,12 @@ public class Q_AccountsRepository {
 
             AccountEntity FirstFact = await Repo.Update(FirstFactEty);
             AccountEntity SecondFact = await Repo.Update(FakeEtyMocks[0], true);
-        
+
             #region First Fact (Asserts) [Updating an existing record no fallback]
             Assert.Multiple([
                 () => Assert.NotEqual(FirstFactSet, RecMocks[0]),
                 () => RecMocks[0] = FirstFactSet,
-                () => Assert.True(FirstFact.Pointer > 0), 
+                () => Assert.True(FirstFact.Pointer > 0),
                 () => Assert.True(FirstFact.EqualsSet(FirstFactSet)),
                 () => Assert.ThrowsAsync<XRecordUnfound<AccountsRepository>>(async () => await Repo.Update(FakeEtyMocks[0])),
             ]);
@@ -319,11 +320,11 @@ public class Q_AccountsRepository {
                 () => Assert.True(SecondFact.Password.SequenceEqual(FakeEtyMocks[0].Password)),
             ]);
             #endregion
-        
+
             /*
                 Actually is unnecessary to test the case when updating an unexsting record with no fallback
                 cause that simple assertion is being checked up in the fifth assert line of the First Fact Asserts region
-            */ 
+            */
         } finally {
             RemoveMocks(LiveMocks);
         }
@@ -342,8 +343,8 @@ public class Q_AccountsRepository {
             Assert.Null(Source.Accounts.Find(RecMocks[0].Id));
             #endregion
         } finally {
-            if(Source.Accounts.Find(RecMocks[0].Id) is not null) {
-                RemoveMocks(RecMocks);    
+            if (Source.Accounts.Find(RecMocks[0].Id) is not null) {
+                RemoveMocks(RecMocks);
             }
         }
     }

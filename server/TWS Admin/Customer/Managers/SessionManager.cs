@@ -1,5 +1,7 @@
 ﻿using Customer.Models;
 
+using TWS_Security.Entities;
+
 namespace Customer.Managers;
 public class SessionManager {
     private static SessionManager? _int;
@@ -13,14 +15,14 @@ public class SessionManager {
     private SessionManager() {
 
     }
-    public SessionModel InitSession(AccountIdentityModel accountIdentity) {
+    public SessionModel InitSession(AccountEntity accountIdentity) {
         SessionModel? SessionAssigned = Sessions
-            .Where(I => I.Identity == accountIdentity)
+            .Where(I => I.Account == accountIdentity)
             .FirstOrDefault();
-        
+
         Guid Token = GenerateToken();
-        SessionModel Session = new(Token, false, accountIdentity, new TimeSpan(0, 10, 0), []);
-        if(SessionAssigned != null)
+        SessionModel Session = new(Token, accountIdentity, new TimeSpan(0, 10, 0), []);
+        if (SessionAssigned != null)
             Sessions.Remove(SessionAssigned);
         Sessions.Add(Session);
         return Session;
@@ -34,8 +36,8 @@ public class SessionManager {
     /// </returns>
     private Guid GenerateToken() {
         Guid Token = Guid.NewGuid();
-        foreach(SessionModel Session in Sessions) {
-            if(Session.Token != Token) continue; 
+        foreach (SessionModel Session in Sessions) {
+            if (Session.Token != Token) continue;
 
             GenerateToken();
             break;

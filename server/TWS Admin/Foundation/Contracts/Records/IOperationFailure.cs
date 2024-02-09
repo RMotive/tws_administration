@@ -3,7 +3,7 @@
 namespace Foundation.Contracts.Records;
 public interface IOperationFailure<TException>
     : IOperationFailure
-    where TException : BException{
+    where TException : BException {
     public TException Exception { get; }
 }
 

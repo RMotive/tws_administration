@@ -53,6 +53,7 @@ public partial class TWSSecuritySource
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Password).HasColumnName("password");
+            entity.Property(e => e.Wildcard).HasColumnName("wildcard");
             entity.Property(e => e.User)
                 .HasMaxLength(50)
                 .IsUnicode(false)

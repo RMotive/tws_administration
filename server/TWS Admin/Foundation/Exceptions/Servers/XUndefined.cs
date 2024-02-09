@@ -11,13 +11,13 @@ public class XUndefined
     public readonly Exception? Link;
     public readonly StackTrace Invoker;
 
-    public XUndefined(Exception Link) 
+    public XUndefined(Exception Link)
         : base(MESSAGE) {
         this.Link = Link;
         Invoker = new StackTrace(1);
     }
 
-    protected override XFUndefined DesignFailure() 
+    protected override XFUndefined DesignFailure()
     => new() {
         Message = MESSAGE,
         Failure = new() {

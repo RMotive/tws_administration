@@ -18,10 +18,10 @@ public class XServerConfiguration
         Timemark = DateTime.UtcNow;
     }
 
-    protected override XFServerConfiguration DesignFailure() 
+    protected override XFServerConfiguration DesignFailure()
     => new() {
         Message = MESSAGE,
-        Failure = new () {
+        Failure = new() {
             {nameof(Reason), Reason },
             {nameof(Timemark), Timemark},
         }

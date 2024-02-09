@@ -1,4 +1,7 @@
 {
   "Tenant": "Transport Won Express (TW Express)",
-  "Solution": "TWS Administration (TWSA)"
+  "Solution": "TWS Administration (TWSA)",
+  "Cors": [
+    "192.168.100.31"
+  ]
 }

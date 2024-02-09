@@ -21,7 +21,7 @@ public class Q_AccountEntity {
             Password = password
         };
         _entityMock = new(_setMock);
-        _entityEmptyMock = new("", []);
+        _entityEmptyMock = new("", [], false);
     }
 
     [Fact]

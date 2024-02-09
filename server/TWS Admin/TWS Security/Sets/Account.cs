@@ -12,9 +12,10 @@ public partial class Account
     : BSet<Account, AccountEntity> {
     public override int Id { get; set; }
     [Unique]
-    public string User { get; set; } = null!;
+    public string User { get; set; } = string.Empty;
+    public byte[] Password { get; set; } = [];
+    public bool Wildcard { get; set; } = false;
 
-    public byte[] Password { get; set; } = null!;
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (Id <= 0)
             Container.Add(nameof(Id), IntegrityFailureReasons.LessOrEqualZero);

@@ -3,7 +3,6 @@ using System.Reflection;
 
 using Foundation.Attributes.Datasources;
 using Foundation.Contracts.Datasources.Interfaces;
-using Foundation.Contracts.Exceptions;
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Datasources;
@@ -32,7 +31,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     : IRepository<TEntity, TSet>
     where TRepository : IRepository
     where TEntity : BEntity<TSet, TEntity>
-    where TSet : BSet<TSet, TEntity>, ISet, new() 
+    where TSet : BSet<TSet, TEntity>, ISet, new()
     where TSource : DbContext {
     /// <summary>
     ///     Internal repository datasource context handler
@@ -66,14 +65,14 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     private static async Task<OperationResults<TEntity, TReference>> IterateOperation<TReference>(IEnumerable<TReference> References, Func<TReference, Task<TEntity>> Delegator, OCriteria Criteria = OCriteria.Pointer) {
         List<TEntity> Successes = [];
         List<OperationFailure<TReference>> Failures = [];
-        foreach(TReference Ref in References) {
+        foreach (TReference Ref in References) {
             try {
-                TEntity Success =  await Delegator(Ref);
+                TEntity Success = await Delegator(Ref);
                 Successes.Add(Success);
             } catch (BException X) {
                 OperationFailure<TReference> Failure = new(Ref, X, Criteria);
                 Failures.Add(Failure);
-            } 
+            }
         }
         OperationResults<TEntity, TReference> Results = new(Successes, Failures);
         return Results;
@@ -98,7 +97,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
             await Live.SaveChangesAsync();
             TEntity Saved = Record.GenerateEntity();
             return Saved;
-        } catch (DbUpdateException X) 
+        } catch (DbUpdateException X)
             // <-- DEV NOTE: Notice that here we're just looking for a specific ORM source manager exception when unique keys conflict, 
             // but not the exceptions that can be thrown by GenerateSet and GenerateEntity, that exceptions should be managed directly 
             // by the middleware or another top-level statement that requires that cause both of them ARE INTEGRITY SAFE PROCESS OPERATION BREAKERS
@@ -149,7 +148,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     /// <returns> 
     ///     <see cref="OperationResults{TEntity, TEntity}"/>: A bundle of the creation results, it has the collection of success and failures resolved during the creation proccess.
     /// </returns>
-    public async Task<OperationResults<TEntity, TEntity>> Create(TEntity Entity, int Copies) 
+    public async Task<OperationResults<TEntity, TEntity>> Create(TEntity Entity, int Copies)
     => await IterateOperation(Enumerable.Repeat(Entity, Copies), Create, OCriteria.Entity);
     /// <summary>
     ///     Reads a specific record from the live database set (<see cref="TSet"/>) on the repository context (<see cref="TRepository"/>).
@@ -180,17 +179,17 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     public async Task<CriticalOperationResults<TEntity, TSet>> Read(IEnumerable<int> Pointers) {
         List<TEntity> Successes = [];
         List<OperationFailure<TSet>> Failures = [];
-        foreach(int Pointer in Pointers) {
+        foreach (int Pointer in Pointers) {
             try {
                 TEntity Success = await Read(Pointer);
                 Successes.Add(Success);
-            } catch(XRecordUnfound<TRepository> X) {
+            } catch (XRecordUnfound<TRepository> X) {
                 TSet UnfoundRecords = new() {
                     Id = Pointer,
                 };
                 OperationFailure<TSet> Failure = new(UnfoundRecords, X);
                 Failures.Add(Failure);
-            } catch(BException X) {
+            } catch (BException X) {
                 TSet FoundRecord = await Set
                     .AsNoTracking()
                     .Where(I => I.Id == Pointer).FirstAsync();
@@ -230,16 +229,16 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     public async Task<CriticalOperationResults<TEntity, TSet>> Read(Expression<Predicate<TSet>>? Filter = null, ReadingBehavior Behavior = ReadingBehavior.All) {
         List<TSet> Records = [];
         // --> Filter behavior
-        if(Filter is null) 
+        if (Filter is null)
             Records = await Set.ToListAsync();
-        else 
+        else
             Records = Set
                 .AsNoTracking()
                 .AsEnumerable()
                 .Where((I) => Filter.Compile().Invoke(I))
-                .ToList(); 
+                .ToList();
 
-        if(Records.Count == 0)
+        if (Records.Count == 0)
             throw new XRecordUnfound<TRepository>(nameof(Read), Behavior, RecordSearchMode.ByMatch);
         // --> Reading behavior
         Records = Behavior switch {
@@ -247,7 +246,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
             ReadingBehavior.Last => [Records[^1]],
             _ => Records
         };
-        
+
         // --> Building resolution
         List<TEntity> Successes = [];
         List<OperationFailure<TSet>> Failures = [];
@@ -255,7 +254,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
             try {
                 TEntity Success = Record.GenerateEntity();
                 Successes.Add(Success);
-            } catch(BException X) {
+            } catch (BException X) {
                 OperationFailure<TSet> Failure = new(Record, X, OCriteria.Set);
                 Failures.Add(Failure);
             }
@@ -289,13 +288,12 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
             .AsNoTracking()
             .Where(I => I.Id == Rec.Id).AnyAsync();
 
-        if(!Exist && !Fallback) 
+        if (!Exist && !Fallback)
             throw new XRecordUnfound<TRepository>(nameof(Update), TEntity, RecordSearchMode.ByPointer);
-        if(!Exist && Fallback) {
+        if (!Exist && Fallback) {
             Rec.Id = 0;
             await Set.AddAsync(Rec);
-        }
-        else 
+        } else
             Set.Update(Rec);
 
         await Live.SaveChangesAsync();
@@ -303,13 +301,13 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
         Live.ChangeTracker.Clear();
         return Ety;
     }
-    
+
     public async Task<TEntity> Delete(TEntity Entity) {
         TSet Rec = Entity.GenerateSet();
-        
+
         Live.Remove(Rec);
         await Live.SaveChangesAsync();
-        Live.ChangeTracker.Clear(); 
+        Live.ChangeTracker.Clear();
 
         return Entity;
     }

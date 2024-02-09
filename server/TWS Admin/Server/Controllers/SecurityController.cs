@@ -20,7 +20,7 @@ public class SecurityController
 
     [HttpPost("[action]")]
     public async Task<IActionResult> InitSession([FromBody] AccountIdentityScheme accountIdentity) {
-        AccountIdentityModel RequestConvertedModel = accountIdentity.GenerateModel(); 
+        AccountIdentityModel RequestConvertedModel = accountIdentity.GenerateModel();
         ForeignSessionModel OperationResult = await Service.InitSession(RequestConvertedModel);
         return Ok(OperationResult);
     }

@@ -16,7 +16,7 @@ public class FailureTemplate<TException, TExposure>
     public Guid Tracer { get; set; }
     public TException Estela { get; set; }
 
-    public FailureTemplate(TException Failure) { 
+    public FailureTemplate(TException Failure) {
         Tracer = Guid.NewGuid();
         Estela = Failure;
     }

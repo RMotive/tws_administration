@@ -1,16 +1,20 @@
 ﻿using Foundation.Contracts.Exceptions.Bases;
-using Foundation.Enumerators.Exceptions;
+
+
+
+// --> Aliases usage
+using Failures = Foundation.Enumerators.Exceptions.DSReadingConfigurationsFailureReasons;
 
 namespace Foundation.Exceptions.Managers;
-public class XDatasourceConfiguration
+public class XDSReadingConfigurations
     : BException {
     new private const string Message = "Unable to load datasource project connection properties";
 
-    public readonly ConnectionLoadFailureReasons Reason;
+    public readonly Failures Reason;
     public readonly string PropertiesFileName;
     public readonly Exception? IOCritical;
 
-    public XDatasourceConfiguration(ConnectionLoadFailureReasons Reason, string PropertiesFileName, Exception? IOCritical = null)
+    public XDSReadingConfigurations(Failures Reason, string PropertiesFileName, Exception? IOCritical = null)
         : base($"{Message} ({Reason})") {
         this.Reason = Reason;
         this.PropertiesFileName = PropertiesFileName;

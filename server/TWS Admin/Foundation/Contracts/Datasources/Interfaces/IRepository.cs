@@ -1,7 +1,7 @@
 ﻿namespace Foundation.Contracts.Datasources.Interfaces;
 public interface IRepository<TEntity, TSet>
     : IRepository,
-        IRepositoryRead<TEntity, TSet>,        
+        IRepositoryRead<TEntity, TSet>,
         IRepositoryCreate<TEntity, TSet>,
         IRepositoryUpdate<TEntity, TSet>,
         IRepositoryDelete<TEntity, TSet>

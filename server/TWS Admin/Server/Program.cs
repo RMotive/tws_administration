@@ -3,6 +3,7 @@ using System.Text.Json;
 
 using Customer;
 using Customer.Contracts.Services.Interfaces;
+
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Servers;
@@ -39,11 +40,13 @@ public class Program {
             contextScheme.IPv4 = Addresses.ToList().Where(I => I.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).FirstOrDefault()?.ToString() ?? "";
 
             ServerContext = contextScheme.GenerateModel();
+            string[] Listeners = ServerContext.Listeners;
             Dictionary<string, dynamic> successDetails = new()
             {
                 {"Tenant", ServerContext.Tenant },
                 {"Solution", ServerContext.Solution },
-                {"IPv4", ServerContext.IPv4 }
+                {"IPv4", ServerContext.IPv4 },
+                {"Listeners", string.Join(", ", Listeners)}
             };
             AdvisorManager.Success("Server context loaded", successDetails);
         } catch (BException x) {
@@ -55,22 +58,30 @@ public class Program {
     }
 
     public static void Main(string[] args) {
-        AdvisorManager.Announce("Loading server dependencies to run...");
+        AdvisorManager.Announce("Running engines (⌐■_■)");
         LoadServerContext();
+
 
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-
+        // Add services and overriding options to the container.
         builder.Services.AddControllers()
             .AddJsonOptions(options => {
                 options.JsonSerializerOptions.IncludeFields = true;
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
+        builder.Services.AddCors(setup => {
+            setup.AddDefaultPolicy(builder => {
+                builder.SetIsOriginAllowed(origin => {
+                    string[] CorsPolicies = ServerContext?.Cors ?? [];
+                    Uri parsedUrl = new(origin);
+                    return CorsPolicies.Contains(parsedUrl.Host);
+                });
+            });
+        }); 
 
         // --> Adding customer services
         {
-
             builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
         }
 

@@ -1,8 +1,8 @@
 ﻿using Foundation.Contracts.Exceptions.Interfaces;
 
-namespace Foundation.Exceptions.Servers.Failures;
-public class XFDerivation
+namespace Foundation.Exceptions.Modelling.Failures;
+public class XFRuleValidation
     : IGenericExceptionExposure {
-    public string Message { get; set; } = string.Empty;
     public Dictionary<string, object> Failure { get; set; } = [];
+    public string Message { get; set; } = string.Empty;
 }

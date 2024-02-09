@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Server.Middlewares;
 using Server.Quality.Templates;
+
 using Xunit;
 
 using SCodes = System.Net.HttpStatusCode;

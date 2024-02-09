@@ -1,9 +1,9 @@
 ﻿using System.Net;
-using System.Text.Json;
 
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Contracts.Exceptions.Interfaces;
 using Foundation.Exceptions.Servers;
+
 using Server.Templates;
 using Server.Templates.Exposures;
 

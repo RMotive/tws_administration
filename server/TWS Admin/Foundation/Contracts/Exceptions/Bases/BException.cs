@@ -4,7 +4,7 @@ namespace Foundation.Contracts.Exceptions.Bases;
 public abstract class BException<TFailure>
     : BException, IException<IExceptionExposure>
     where TFailure : IExceptionExposure {
-    protected BException(string Message) 
+    protected BException(string Message)
         : base(Message) {
 
     }
@@ -15,14 +15,14 @@ public abstract class BException<TFailure>
         return this!;
     }
 
-    public IExceptionExposure GenerateExposure() 
+    public IExceptionExposure GenerateExposure()
     => DesignFailure();
 }
 
-public abstract class BException 
+public abstract class BException
     : Exception {
 
     protected BException(string Message)
-        : base(Message) { 
+        : base(Message) {
     }
 }

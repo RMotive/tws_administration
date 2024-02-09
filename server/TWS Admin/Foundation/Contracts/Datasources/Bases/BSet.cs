@@ -9,12 +9,12 @@ namespace Foundation.Contracts.Datasources.Bases;
 ///     handle their shared properties and operations.
 /// </summary>
 public abstract class BSet<TSet, TEntity>
-    : BObject<TSet>, 
+    : BObject<TSet>,
         Interfaces.ISet<TEntity>
     where TEntity : IEntity
     where TSet : ISet {
     public abstract int Id { get; set; }
-    
+
     protected abstract Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container);
     protected abstract TEntity Generate();
     public abstract bool EqualsEntity(TEntity Entity);

@@ -1,5 +1,4 @@
 ﻿using Foundation.Contracts.Exceptions.Bases;
-using Foundation.Contracts.Exceptions.Interfaces;
 using Foundation.Contracts.Records;
 using Foundation.Enumerators.Records;
 

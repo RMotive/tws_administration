@@ -2,13 +2,13 @@
 using Foundation.Exceptions.Servers.Failures;
 
 namespace Foundation.Exceptions.Servers;
-public class XDerivation 
+public class XDerivation
     : BException<XFDerivation> {
     const string MESSAGE = "Wrong refelction derivation";
 
     private readonly Exception? Link;
 
-    public XDerivation(Exception? link) 
+    public XDerivation(Exception? link)
         : base($"{MESSAGE} FROM[] to[]") {
         Link = link;
     }

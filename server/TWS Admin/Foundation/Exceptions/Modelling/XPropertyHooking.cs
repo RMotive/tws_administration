@@ -1,9 +1,10 @@
 ﻿using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Exceptions.Modelling.Failures;
 
 namespace Foundation;
 
 public class XPropertyHooking
-    : BException {
+    : BException<XFPropertyHooking> {
     /// <summary>
     ///     Constant message template to lead the exception when its thrown.
     /// </summary>
@@ -11,10 +12,18 @@ public class XPropertyHooking
     private readonly string PropertyName;
     private readonly Type Reflection;
 
-    public XPropertyHooking(Type reflection, string name) 
+    public XPropertyHooking(Type reflection, string name)
         : base($"{MESSAGE}({name}) on ({reflection})") {
-            Reflection = reflection;
-            PropertyName = name;
+        Reflection = reflection;
+        PropertyName = name;
     }
 
+    protected override XFPropertyHooking DesignFailure()
+    => new() {
+        Message = MESSAGE,
+        Failure = new() {
+            {nameof(PropertyName), PropertyName},
+            {nameof(Reflection), Reflection},
+        },
+    };
 }

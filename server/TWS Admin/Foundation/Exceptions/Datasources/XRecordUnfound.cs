@@ -1,5 +1,4 @@
 ﻿using Foundation.Contracts.Datasources.Interfaces;
-using Foundation.Contracts.Exceptions;
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 

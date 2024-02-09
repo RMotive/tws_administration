@@ -1,10 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text.Json;
 
-using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Managers;
 using Foundation.Models;
 using Foundation.Models.Schemes;
+
+
+using DSConfigFailures = Foundation.Enumerators.Exceptions.DSReadingConfigurationsFailureReasons;
 
 namespace Foundation.Managers;
 public class DatasourceConnectionManager {
@@ -43,24 +45,24 @@ public class DatasourceConnectionManager {
         string propertiesFileName = $"{prefix}connection.json";
 
         if (callerPath is null)
-            throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.CallerPathEmpty, propertiesFileName);
+            throw new XDSReadingConfigurations(DSConfigFailures.CallerPathEmpty, propertiesFileName);
 
         DirectoryInfo? parentProjectDirInfo = Directory.GetParent(callerPath);
         if (parentProjectDirInfo is null)
-            throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.ParentProjectPathEmpty, propertiesFileName);
+            throw new XDSReadingConfigurations(DSConfigFailures.ParentProjectPathEmpty, propertiesFileName);
 
         IEnumerable<DirectoryInfo> projectDirectories = parentProjectDirInfo.EnumerateDirectories();
         DirectoryInfo? connectionPropertiesDirectory = projectDirectories
             .Where(i => i.Name == DirectoryName)
             .FirstOrDefault();
         if (connectionPropertiesDirectory is null)
-            throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.ConnectionDirectoryUnfound, propertiesFileName);
+            throw new XDSReadingConfigurations(DSConfigFailures.ConnectionDirectoryUnfound, propertiesFileName);
 
         FileInfo? connectionPropertiesFileInfo = connectionPropertiesDirectory.GetFiles()
             .Where(i => i.Name == propertiesFileName)
             .FirstOrDefault();
         if (connectionPropertiesFileInfo is null)
-            throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.ConnectionPropertiesUnfound, propertiesFileName);
+            throw new XDSReadingConfigurations(DSConfigFailures.ConnectionPropertiesUnfound, propertiesFileName);
 
         DatasourceConnectionScheme? Scheme;
         try {
@@ -69,9 +71,9 @@ public class DatasourceConnectionManager {
             propertiesFileStream.Dispose();
 
             if (Scheme is null)
-                throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.WrongPropertiesFileFormat, propertiesFileName);
+                throw new XDSReadingConfigurations(DSConfigFailures.WrongPropertiesFileFormat, propertiesFileName);
         } catch (Exception ex) {
-            throw new XDatasourceConnectionLoad(ConnectionLoadFailureReasons.IOCriticalException, propertiesFileName, ex);
+            throw new XDSReadingConfigurations(DSConfigFailures.IOCriticalException, propertiesFileName, ex);
         }
 
         DatasourceConnectionModel Model = Scheme.GenerateModel();

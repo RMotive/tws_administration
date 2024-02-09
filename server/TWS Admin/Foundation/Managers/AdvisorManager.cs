@@ -1,5 +1,4 @@
-﻿using Foundation.Contracts.Exceptions;
-using Foundation.Contracts.Exceptions.Bases;
+﻿using Foundation.Contracts.Exceptions.Bases;
 
 namespace Foundation.Managers;
 public class AdvisorManager {
@@ -18,7 +17,7 @@ public class AdvisorManager {
         Console.ForegroundColor = color;
         Console.WriteLine($"{label}{Subject}");
         foreach (KeyValuePair<string, dynamic> entry in Details ?? []) {
-            Console.WriteLine($"{label}\t({entry.Key}): [{entry.Value}]");
+            Console.WriteLine($"    \t({entry.Key}): [{entry.Value}]");
         }
         Restore();
     }

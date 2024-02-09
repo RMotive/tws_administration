@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 
 using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Exceptions.Modelling.Failures;
 
 namespace Foundation;
 
@@ -15,7 +16,7 @@ namespace Foundation;
 ///     BObject validator orchestration.
 /// </summary>
 public class XRuleValidation
-    : BException {
+    : BException<XFRuleValidation> {
     /// <summary>
     ///     Constant message template to lead the exception when its thrown.
     /// </summary>
@@ -33,8 +34,16 @@ public class XRuleValidation
     ///     BObject validator orchestration.
     /// </summary>
     /// <param name="propertyInfo"></param>
-    public XRuleValidation(PropertyInfo propertyInfo) 
+    public XRuleValidation(PropertyInfo propertyInfo)
         : base($"{MESSAGE} on {propertyInfo.Name}:{propertyInfo.ReflectedType}") {
-            PropertyInfo = propertyInfo;
+        PropertyInfo = propertyInfo;
     }
+
+    protected override XFRuleValidation DesignFailure()
+    => new() {
+        Message = MESSAGE,
+        Failure = new() {
+            {nameof(PropertyInfo), PropertyInfo}
+        },
+    };
 }

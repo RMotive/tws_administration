@@ -15,7 +15,7 @@ namespace Server.Quality.Tests.Controllers;
 ///     This quality test class ensures the quality and functionallities for all
 ///     the controllers managed by the Security Controller.
 /// </summary>
-public class Q_SecurityController 
+public class Q_SecurityController
     : IClassFixture<WebApplicationFactory<Program>> {
     const string Controller = "security/";
 
@@ -31,12 +31,12 @@ public class Q_SecurityController
     ///     Configurations pre-testing.
     /// </summary>
     /// <param name="hostFactory"></param>
-    public Q_SecurityController(WebApplicationFactory<Program> hostFactory) { 
+    public Q_SecurityController(WebApplicationFactory<Program> hostFactory) {
         HostManager = new QualityHost(hostFactory.CreateClient());
         CorrectScheme = AccountIdentityPrivates.CorrectScheme;
         WrongScheme = new() {
             Identity = "something wrong",
-            Password = [.."somethingwrong"u8],
+            Password = [.. "somethingwrong"u8],
         };
     }
 
@@ -44,9 +44,10 @@ public class Q_SecurityController
     public async void InitSession() {
         const string Service = $"{Controller}initSession";
 
-        (HttpStatusCode ResponseCode, ForeignSessionScheme? ResponseBody) FirstFact = await HostManager.Post<AccountIdentityScheme, ForeignSessionScheme>(Service, CorrectScheme);
+        (HttpStatusCode StatusCode, ForeignSessionScheme? ResponseBody) FirstFact = await HostManager.Post<AccountIdentityScheme, ForeignSessionScheme>(Service, CorrectScheme);
 
-        Assert.Equal(HttpStatusCode.OK, FirstFact.ResponseCode);
+        Assert.Equal(HttpStatusCode.OK, FirstFact.StatusCode);
         Assert.NotNull(FirstFact.ResponseBody);
+        Assert.True(FirstFact.ResponseBody.Wildcard);
     }
 }

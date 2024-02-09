@@ -11,5 +11,5 @@ namespace Foundation.Contracts.Modelling.Bases;
 /// </summary>
 public abstract class BModel
     : BObject<BModel>, IModel {
-        
+
 }

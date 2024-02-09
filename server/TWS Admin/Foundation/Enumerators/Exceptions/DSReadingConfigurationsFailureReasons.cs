@@ -1,5 +1,5 @@
 ﻿namespace Foundation.Enumerators.Exceptions;
-public enum ConnectionLoadFailureReasons {
+public enum DSReadingConfigurationsFailureReasons {
     CallerPathEmpty,
     ParentProjectPathEmpty,
     ConnectionDirectoryUnfound,

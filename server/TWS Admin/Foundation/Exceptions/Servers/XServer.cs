@@ -9,7 +9,7 @@ public class XServer
     public readonly Exception Link;
     public readonly StackTrace Invoker;
 
-    public XServer(Exception Link) 
+    public XServer(Exception Link)
         : base("Critical server error unrecognized") {
         this.Link = Link;
         Invoker = new StackTrace(1);

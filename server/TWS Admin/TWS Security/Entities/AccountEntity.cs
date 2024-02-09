@@ -29,6 +29,11 @@ public class AccountEntity
     /// </summary>
     [Required]
     public byte[] Password { get; private set; }
+    /// <summary>
+    ///     Defines if the account has no-limit access and can use freely all the features.
+    /// </summary>
+    [Required]
+    public bool Wildcard { get; private set; }
 
     /// <summary>
     ///     Creates a new Account entity.
@@ -43,9 +48,10 @@ public class AccountEntity
     /// <param name="Password">
     ///     Account password sign 
     /// </param>
-    public AccountEntity(string User, byte[] Password) {
+    public AccountEntity(string User, byte[] Password, bool Wildcard) {
         this.User = User;
         this.Password = Password;
+        this.Wildcard = Wildcard;
     }
     /// <summary>
     ///     Creates a new Account entity.
@@ -61,6 +67,7 @@ public class AccountEntity
         this.Pointer = Set.Id;
         this.User = Set.User;
         this.Password = Set.Password;
+        this.Wildcard = Set.Wildcard;
     }
 
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {

@@ -24,12 +24,12 @@ public class SecurityService
     public async Task<ForeignSessionModel> InitSession(AccountIdentityModel Identity) {
         CriticalOperationResults<AccountEntity, Account> SearchAccountResult = await AccountsRepository
             .Read(I => I.User == Identity.Identity, Foundation.ReadingBehavior.First);
-        if(SearchAccountResult.Failed > 0) 
+        if (SearchAccountResult.Failed > 0)
             throw SearchAccountResult.Failures[0].Failure;
 
         // --> The account was found
         AccountEntity Account = SearchAccountResult.Successes[0];
-        SessionModel SessionInited = SessionsManager.InitSession(Identity);
+        SessionModel SessionInited = SessionsManager.InitSession(Account);
 
         return SessionInited.GeneratePublicDerivation();
     }
