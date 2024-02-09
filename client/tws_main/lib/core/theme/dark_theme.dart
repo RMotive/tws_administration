@@ -22,5 +22,15 @@ class DarkTheme extends ThemeBase {
             KColors.oceanBlue,
             onColorAlt: KColors.warmWhite,
           ),
+          primaryDisabledControlColorStruct: const ThemeColorStruct(
+            Colors.transparent,
+            KColors.darkGrey,
+            KColors.darkGrey,
+          ),
+          primaryErrorControlColorStruct: const ThemeColorStruct(
+            Colors.transparent,
+            KColors.darkGrey,
+            KColors.deepWine,
+          ),
         );
 }

@@ -22,5 +22,15 @@ class LightTheme extends ThemeBase {
             KColors.oceanBlue,
             onColorAlt: KColors.deepPurple,
           ),
+          primaryDisabledControlColorStruct: const ThemeColorStruct(
+            Colors.transparent,
+            KColors.darkGrey,
+            Colors.red,
+          ),
+          primaryErrorControlColorStruct: const ThemeColorStruct(
+            Colors.transparent,
+            KColors.darkGrey,
+            Colors.red,
+          ),
         );
 }
