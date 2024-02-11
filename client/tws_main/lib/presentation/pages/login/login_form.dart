@@ -8,8 +8,9 @@ class _LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<_LoginForm> {
-  final String inputErrorDisplay = "Can`t be empty";
-  final String serverErrorDisplay = "Can't reach server ⌨️";
+  final String kInputErrorDisplay = "Can`t be empty";
+  final String kServerErrorDisplay = "Can't reach server 🛠️";
+  final String kRequestFailureDisplay = "Wrong server answer, please contact support. 🛠️";
 
   late final GlobalKey<FormState> formKey;
   late final FocusNode ityFocusNode;
@@ -42,12 +43,11 @@ class _LoginFormState extends State<_LoginForm> {
   }
 
   String? validator(String? value) {
-    if (value == null || value.isEmpty) return inputErrorDisplay;
+    if (value == null || value.isEmpty) return kInputErrorDisplay;
     return null;
   }
 
   void initSession() async {
-    print('service loaded ${service.endpoint.generateUri()}');
     if (!formKey.currentState!.validate()) return;
     setState(() {
       communicating = true;
@@ -59,10 +59,14 @@ class _LoginFormState extends State<_LoginForm> {
     ServiceResult<ForeignSessionModel> sResult = await service.initSession(account);
     sResult.resolve(
       (ForeignSessionModel success) {},
-      (JObject failure, int statusCode) {},
+      (JObject failure, int statusCode) {
+        setState(() {
+          errorCard = kRequestFailureDisplay;
+        });
+      },
       (Object exception, StackTrace trace) {
         setState(() {
-          errorCard = serverErrorDisplay;
+          errorCard = kServerErrorDisplay;
         });
         Focuser.focus(ityFocusNode);
       },

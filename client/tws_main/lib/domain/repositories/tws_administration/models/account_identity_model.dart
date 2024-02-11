@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cosmos_foundation/contracts/interfaces/i_model.dart';
@@ -17,7 +18,7 @@ class AccountIdentityModel implements IModel {
   JSON toJson() {
     return <String, dynamic>{
       'Identity': identity,
-      'Password': password,
+      'Password': base64.encode(password),
     };
   }
 }

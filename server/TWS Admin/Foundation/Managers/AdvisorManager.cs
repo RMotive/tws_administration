@@ -31,4 +31,6 @@ public class AdvisorManager {
     => Write("Success", ConsoleColor.DarkGreen, Subject, Details);
     public static void Exception(BException Exception) 
     => Write("Exception", ConsoleColor.DarkRed, Exception.Message, Exception.GenerateAdvising());
+    public static void Warning(string Subject, Dictionary<string, dynamic>? Details = null)
+    => Write("Warning", ConsoleColor.DarkYellow, Subject, Details);
 }

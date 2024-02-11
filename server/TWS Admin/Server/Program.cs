@@ -16,6 +16,7 @@ using Server.Middlewares;
 namespace Server;
 
 public class Program {
+    const string CORS_BLOCK_MESSAGE = "Request blocked by cors, is not part of allowed hosts";
     public static ServerPropertiesModel? ServerContext { get; private set; }
 
     private static void LoadServerContext() {
@@ -76,10 +77,17 @@ public class Program {
                 });
             builder.Services.AddCors(setup => {
                 setup.AddDefaultPolicy(builder => {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
                     builder.SetIsOriginAllowed(origin => {
                         string[] CorsPolicies = ServerContext?.Cors ?? [];
                         Uri parsedUrl = new(origin);
-                        return CorsPolicies.Contains(parsedUrl.Host);
+                        bool isCorsAllowed = CorsPolicies.Contains(parsedUrl.Host);
+                        AdvisorManager.Warning(CORS_BLOCK_MESSAGE, new() {
+                            {nameof(isCorsAllowed), isCorsAllowed},
+                            {nameof(parsedUrl), parsedUrl}
+                        });
+                        return isCorsAllowed;
                     });
                 });
             }); 
@@ -87,21 +95,23 @@ public class Program {
             {
                 builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
             }
-        // --> Adding middleware services
-        {
-            builder.Services.AddSingleton(new FailuresMiddleware());
-            builder.Services.AddSingleton(new AdvisorMiddleware());
-        }
+            // --> Adding middleware services
+            {
+                builder.Services.AddSingleton(new FailuresMiddleware());
+                builder.Services.AddSingleton(new AdvisorMiddleware());
+            }
             WebApplication app = builder.Build();
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
+            app.UseCors(action => {
+                action.AllowAnyMethod();
+                action.AllowAnyHeader();
+                action.AllowAnyOrigin();
+            });
             app.MapControllers();
-        
-        // --> Injecting middlewares to server
-        {
-            app.UseMiddleware<AdvisorMiddleware>();
-            app.UseMiddleware<FailuresMiddleware>();
-        }
+            // --> Injecting middlewares to server
+            {
+                app.UseMiddleware<AdvisorMiddleware>();
+                app.UseMiddleware<FailuresMiddleware>();
+            }
             app.Run(); 
         } catch(BException X) {
             AdvisorManager.Exception(X);

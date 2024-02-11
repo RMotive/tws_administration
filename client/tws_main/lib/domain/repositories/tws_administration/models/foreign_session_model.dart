@@ -6,8 +6,11 @@ class ForeignSessionModel {
   late final List<int> features;
 
   ForeignSessionModel(JObject json) {
+    List<dynamic> dynamicList = json['Features'];
+    List<int> featuresList = dynamicList.isEmpty ? <int>[] : (dynamicList.cast<int>());
+
     token = json['Token'];
     wildcard = json['Wildcard'];
-    features = json['Features'];
+    features = featuresList;
   }
 }

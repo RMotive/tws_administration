@@ -3,6 +3,7 @@
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Contracts.Exceptions.Interfaces;
 using Foundation.Exceptions.Servers;
+using Foundation.Managers;
 
 using Server.Templates;
 using Server.Templates.Exposures;
@@ -23,6 +24,7 @@ public class FailuresMiddleware
             StatusCode = (int)HttpStatusCode.BadRequest;
             Template = new(CastedX);
             isSucceded = true;
+            AdvisorManager.Exception(DefinedX);
         } catch (Exception UndefinedX) {
             StatusCode = (int)HttpStatusCode.InternalServerError;
             XUndefined DefinedX = new(UndefinedX);
@@ -32,7 +34,7 @@ public class FailuresMiddleware
             else
                 Template = new(CastedX);
         } finally {
-            if(!isSucceded) {
+            if(!isSucceded && !context.Response.HasStarted) {
                 context.Response.StatusCode = StatusCode;
                 if (Template is null) {
                     XDerivation DerivationException = new(CriticalUnderivation);
