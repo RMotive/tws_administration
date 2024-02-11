@@ -51,6 +51,7 @@ class _LoginFormState extends State<_LoginForm> {
     if (!formKey.currentState!.validate()) return;
     setState(() {
       communicating = true;
+      errorCard = null;
     });
 
     Uint8List password = Uint8List.fromList(pwdCtrl.text.codeUnits);

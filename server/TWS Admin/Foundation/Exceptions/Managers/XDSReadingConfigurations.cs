@@ -20,4 +20,11 @@ public class XDSReadingConfigurations
         this.PropertiesFileName = PropertiesFileName;
         this.IOCritical = IOCritical;
     }
+
+    public override Dictionary<string, dynamic> GenerateAdvising()
+    => new () {
+        {nameof(Reason), Reason.ToString()},
+        {nameof(PropertiesFileName), PropertiesFileName},
+        {nameof(IOCritical), IOCritical?.Message ?? "None"}
+    };
 }

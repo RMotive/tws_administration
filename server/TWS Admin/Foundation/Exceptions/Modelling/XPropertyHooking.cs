@@ -18,6 +18,11 @@ public class XPropertyHooking
         PropertyName = name;
     }
 
+    public override Dictionary<string, dynamic> GenerateAdvising()
+    => new() {
+        {nameof(PropertyName), PropertyName},
+        {nameof(Reflection), Reflection},
+    };
     protected override XFPropertyHooking DesignFailure()
     => new() {
         Message = MESSAGE,

@@ -1,4 +1,5 @@
-﻿using Foundation.Contracts.Exceptions.Interfaces;
+﻿using System.Runtime.InteropServices;
+using Foundation.Contracts.Exceptions.Interfaces;
 
 namespace Foundation.Contracts.Exceptions.Bases;
 public abstract class BException<TFailure>
@@ -25,4 +26,7 @@ public abstract class BException
     protected BException(string Message)
         : base(Message) {
     }
+
+    public virtual Dictionary<string, dynamic> GenerateAdvising()
+    => [];
 }

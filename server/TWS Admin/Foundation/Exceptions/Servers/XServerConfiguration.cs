@@ -10,12 +10,9 @@ public class XServerConfiguration
     const string MESSAGE = "Exception loading server context";
 
     private readonly Reason Reason;
-    private readonly DateTime Timemark;
-
     public XServerConfiguration(Reason reason)
         : base($"{MESSAGE}") {
         Reason = reason;
-        Timemark = DateTime.UtcNow;
     }
 
     protected override XFServerConfiguration DesignFailure()
@@ -23,7 +20,10 @@ public class XServerConfiguration
         Message = MESSAGE,
         Failure = new() {
             {nameof(Reason), Reason },
-            {nameof(Timemark), Timemark},
         }
+    };
+    public override Dictionary<string, dynamic> GenerateAdvising() 
+    => new() {
+        {nameof(Reason), Reason},
     };
 }

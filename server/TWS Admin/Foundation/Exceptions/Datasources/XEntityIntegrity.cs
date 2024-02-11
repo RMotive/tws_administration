@@ -20,4 +20,12 @@ public class XEntityIntegrity<TSet, TEntity>
         this.SetType = typeof(TEntity);
         this.Reasons = Reasons;
     }
+
+    public override Dictionary<string, dynamic> GenerateAdvising()
+    => new() {
+        {nameof(Entity), Entity},
+        {nameof(EntityType), EntityType},
+        {nameof(SetType), SetType},
+        {nameof(Reasons), Reasons},
+    };
 }

@@ -1,4 +1,5 @@
 ﻿using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Contracts.Exceptions.Interfaces;
 
 namespace Foundation.Managers;
 public class AdvisorManager {
@@ -28,7 +29,6 @@ public class AdvisorManager {
     => Write("Note", ConsoleColor.Blue, Subject, Details);
     public static void Success(string Subject, Dictionary<string, dynamic>? Details = null)
     => Write("Success", ConsoleColor.DarkGreen, Subject, Details);
-    public static void Exception(BException Exception) {
-        throw new NotImplementedException();
-    }
+    public static void Exception(BException Exception) 
+    => Write("Exception", ConsoleColor.DarkRed, Exception.Message, Exception.GenerateAdvising());
 }

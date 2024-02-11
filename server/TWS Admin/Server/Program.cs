@@ -17,8 +17,12 @@ public class Program {
     public static ServerPropertiesModel? ServerContext { get; private set; }
 
     private static void LoadServerContext() {
-        const string expectation = "\\Properties\\server_properties.json";
+        string expectation = "\\Properties\\server_properties.json";
         string workingDirectory = Directory.GetCurrentDirectory();
+        // --> When you`re using Unix based file system.
+        if(workingDirectory.Contains('/')) {
+            expectation = expectation.Replace("\\", "/");
+        } 
         string fullPath = $"{workingDirectory}{expectation}";
 
         Dictionary<string, dynamic> noteDetails = new()
@@ -59,41 +63,38 @@ public class Program {
 
     public static void Main(string[] args) {
         AdvisorManager.Announce("Running engines (⌐■_■)");
-        LoadServerContext();
-
-
-        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-        // Add services and overriding options to the container.
-        builder.Services.AddControllers()
-            .AddJsonOptions(options => {
-                options.JsonSerializerOptions.IncludeFields = true;
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-            });
-        builder.Services.AddCors(setup => {
-            setup.AddDefaultPolicy(builder => {
-                builder.SetIsOriginAllowed(origin => {
-                    string[] CorsPolicies = ServerContext?.Cors ?? [];
-                    Uri parsedUrl = new(origin);
-                    return CorsPolicies.Contains(parsedUrl.Host);
+        try {
+            LoadServerContext();
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            // Add services and overriding options to the container.
+            builder.Services.AddControllers()
+                .AddJsonOptions(options => {
+                    options.JsonSerializerOptions.IncludeFields = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 });
-            });
-        }); 
-
-        // --> Adding customer services
-        {
-            builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
+            builder.Services.AddCors(setup => {
+                setup.AddDefaultPolicy(builder => {
+                    builder.SetIsOriginAllowed(origin => {
+                        string[] CorsPolicies = ServerContext?.Cors ?? [];
+                        Uri parsedUrl = new(origin);
+                        return CorsPolicies.Contains(parsedUrl.Host);
+                    });
+                });
+            }); 
+            // --> Adding customer services
+            {
+                builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
+            }
+            WebApplication app = builder.Build();
+            app.UseHttpsRedirection();
+            app.UseAuthorization();
+            app.MapControllers();
+            app.Run(); 
+        } catch(BException X) {
+            AdvisorManager.Exception(X);
+            Console.WriteLine("Press any key to close...");
+            Console.ReadKey();
         }
-
-        WebApplication app = builder.Build();
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        app.Run();
     }
 }
 

@@ -5,23 +5,21 @@ class _BusinessDecorator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeBase theme = getTheme<ThemeBase>();
+
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(
           minWidth: 200,
           maxWidth: 350,
         ),
-        child: const AspectRatio(
+        child: AspectRatio(
           aspectRatio: 1 / .75,
-          child: Placeholder(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  'Placeholder for business decorator',
-                  textAlign: TextAlign.center,
-                ),
-              ),
+          child: Image(
+            isAntiAlias: true,
+            filterQuality: FilterQuality.high,
+            image: AssetImage(
+              theme.fullLogoLocation,
             ),
           ),
         ),

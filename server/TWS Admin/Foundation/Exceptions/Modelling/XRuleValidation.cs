@@ -39,6 +39,10 @@ public class XRuleValidation
         PropertyInfo = propertyInfo;
     }
 
+    public override Dictionary<string, dynamic> GenerateAdvising()
+    => new() {
+        {nameof(PropertyInfo), PropertyInfo},
+    };
     protected override XFRuleValidation DesignFailure()
     => new() {
         Message = MESSAGE,
