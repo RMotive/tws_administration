@@ -24,4 +24,9 @@ public class XUndefined
             {"LinkMessage", Link?.Message ?? "Empty link message" }
         }
     };
+    public override Dictionary<string, dynamic> GenerateAdvising()
+    => new() {
+        {nameof(Link), Link?.Message ?? "None"},
+        {nameof(Invoker), StackTrace?.ToString()[..25] ?? "None"}
+    };
 }
