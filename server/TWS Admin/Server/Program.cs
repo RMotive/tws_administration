@@ -11,6 +11,8 @@ using Foundation.Managers;
 using Foundation.Models;
 using Foundation.Models.Schemes;
 
+using Server.Middlewares;
+
 namespace Server;
 
 public class Program {
@@ -85,10 +87,21 @@ public class Program {
             {
                 builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
             }
+        // --> Adding middleware services
+        {
+            builder.Services.AddSingleton(new FailuresMiddleware());
+            builder.Services.AddSingleton(new AdvisorMiddleware());
+        }
             WebApplication app = builder.Build();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
+        
+        // --> Injecting middlewares to server
+        {
+            app.UseMiddleware<AdvisorMiddleware>();
+            app.UseMiddleware<FailuresMiddleware>();
+        }
             app.Run(); 
         } catch(BException X) {
             AdvisorManager.Exception(X);
