@@ -122,7 +122,7 @@ packages:
     source: hosted
     version: "3.0.0"
   localstorage:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: localstorage
       sha256: fdff4f717114e992acfd4045dc4a9ab9b987ca57f020965d63e3eb34089c60d8
