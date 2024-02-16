@@ -3,8 +3,8 @@ import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/router/router_base.dart';
-import 'package:tws_main/core/theme/theme_base.dart';
 import 'package:tws_main/core/theme/dark_theme.dart';
+import 'package:tws_main/core/theme/theme_base.dart';
 
 /// --> Flutter entry point.
 void main() {

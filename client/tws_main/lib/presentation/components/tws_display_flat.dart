@@ -3,14 +3,14 @@ import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/theme_base.dart';
 
-class TwsDisplayFlat extends StatelessWidget {
+class TWSDisplayFlat extends StatelessWidget {
   final String display;
   final double? height;
   final double? width;
   final double? verticalPadding;
   final double? maxHeight;
 
-  const TwsDisplayFlat({
+  const TWSDisplayFlat({
     super.key,
     this.width,
     this.height,
@@ -47,7 +47,10 @@ class TwsDisplayFlat extends StatelessWidget {
             ),
             child: SingleChildScrollView(
               child: Center(
-                child: Text(display),
+                child: Text(
+                  display,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),

@@ -1,12 +1,12 @@
 import 'package:cosmos_foundation/alias/aliases.dart';
 import 'package:cosmos_foundation/foundation/services/operation_result.dart';
-import 'package:cosmos_foundation/foundation/services/service_result.dart';
 import 'package:cosmos_foundation/models/structs/cosmos_uri_struct.dart';
 import 'package:tws_main/domain/repositories/tws_administration/contracts/twsa_security_service_base.dart';
-import 'package:tws_main/domain/repositories/tws_administration/models/account_identity_model.dart';
-import 'package:tws_main/domain/repositories/tws_administration/models/foreign_session_model.dart';
+import 'package:tws_main/domain/repositories/tws_administration/services/inputs/init_session_input.dart';
+import 'package:tws_main/domain/repositories/tws_administration/services/outputs/init_session_output.dart';
+import 'package:tws_main/domain/resolvers/twsa_resolver.dart';
 
-typedef SResult<T> = Future<ServiceResult<T>>;
+typedef SResult<T> = Future<TWSAResolver<T>>;
 
 class TWSASecurityService extends TWSASecurityServiceBase {
   TWSASecurityService(CosmosUriStruct host)
@@ -16,13 +16,13 @@ class TWSASecurityService extends TWSASecurityServiceBase {
         );
         
   @override
-  SResult<ForeignSessionModel> initSession(
-    AccountIdentityModel account,
+  SResult<InitSessionOutput> initSession(
+    InitSessionInput account,
   ) async {
     OperationResult oResult = await post('initSession', account);
-    return ServiceResult<ForeignSessionModel>(
+    return TWSAResolver<InitSessionOutput>(
       oResult,
-      (JObject json) => ForeignSessionModel(json),
+      factory: (JObject json) => InitSessionOutput.fromJson(json),
     );
   }
 }
