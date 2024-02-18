@@ -5,11 +5,9 @@ namespace Server.Templates.Exposures;
 
 public class FailureExposure<TEstela>
     : ITemplateExposure<TEstela>
-    where TEstela : IExceptionExposure {
+    where TEstela : IXFailure {
     public Guid Tracer { get; set; }
     public TEstela Estela { get; set; } = default!;
 
-    public FailureExposure() {
-
-    }
+    public FailureExposure() { }
 }

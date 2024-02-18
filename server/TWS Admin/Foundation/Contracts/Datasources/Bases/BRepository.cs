@@ -205,12 +205,14 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     ///     validated about all the specific properties boundries specified and all the
     ///     successes and failures will be stored to resolve.
     ///     
-    ///     Why is this a critical operation? 
-    ///     R: This is considerer as a critical operation cause the live database can have
-    ///     a DBA that could be inserting data directly through queries to the live database sets,
-    ///     and to avoid misstake one of them to be validated, the Read operation passes all of the
-    ///     fetched records throughout a validation step and detect all of that records are not valid
-    ///     to be used and proccesses along the user and system interaction. :)
+    ///     <para>
+    ///         <para> Why is this a critical operation?  </para>
+    ///         R: This is considerer as a critical operation cause the live database can have
+    ///         a DBA that could be inserting data directly through queries to the live database sets,
+    ///         and to avoid misstake one of them to be validated, the Read operation passes all of the
+    ///         fetched records throughout a validation step and detect all of that records are not valid
+    ///         to be used and proccesses along the user and system interaction. :) 
+    ///     </para>
     /// </summary>
     /// <param name="Filter">
     ///     Indicates a specific matching patter that the Set must match to be considered as the
@@ -226,6 +228,9 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
     ///     into entities and a collection of all records that failed during validations, with the Exception
     ///     catched and the Set retrieved from the live database.
     /// </returns>
+    /// <exception cref="XRecordUnfound{TRepository}">
+    ///     Thrown when the operation can't found any record.
+    /// </exception>
     public async Task<CriticalOperationResults<TEntity, TSet>> Read(Expression<Predicate<TSet>>? Filter = null, ReadingBehavior Behavior = ReadingBehavior.All) {
         List<TSet> Records = [];
         // --> Filter behavior
@@ -239,7 +244,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
                 .ToList();
 
         if (Records.Count == 0)
-            throw new XRecordUnfound<TRepository>(nameof(Read), Behavior, RecordSearchMode.ByMatch);
+            throw new XRecordUnfound<TRepository>(nameof(Read), $"{Filter?.Body} | {Behavior}", RecordSearchMode.ByMatch);
         // --> Reading behavior
         Records = Behavior switch {
             ReadingBehavior.First => [Records[0]],

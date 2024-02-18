@@ -9,15 +9,14 @@ namespace Server.Templates;
 
 public class FailureTemplate<TException, TExposure>
     : ITemplate<TException, FailureExposure<TExposure>>
-    where TException : IException<IExceptionExposure>
-    where TExposure : IExceptionExposure {
+    where TException : IException<IXFailure>
+    where TExposure : IXFailure {
 
     [Required]
-    public Guid Tracer { get; set; }
-    public TException Estela { get; set; }
+    public Guid Tracer { get; init; }
+    public TException Estela { get; }
 
     public FailureTemplate(TException Failure) {
-        Tracer = Guid.NewGuid();
         Estela = Failure;
     }
 

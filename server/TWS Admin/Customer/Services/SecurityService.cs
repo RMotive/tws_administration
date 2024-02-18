@@ -1,14 +1,17 @@
 ﻿using Customer.Contracts.Services.Interfaces;
+using Customer.Exceptions.Services.Security;
 using Customer.Managers;
 using Customer.Models;
 
+using Foundation.Contracts.Exceptions.Bases;
+using Foundation.Exceptions.Datasources;
 using Foundation.Records.Datasources;
 
 using TWS_Security.Entities;
 using TWS_Security.Repositories;
 using TWS_Security.Sets;
 
-namespace Customer;
+namespace Customer.Services;
 
 public class SecurityService
     : ISecurityService {
@@ -22,15 +25,20 @@ public class SecurityService
     }
 
     public async Task<ForeignSessionModel> InitSession(AccountIdentityModel Identity) {
-        CriticalOperationResults<AccountEntity, Account> SearchAccountResult = await AccountsRepository
-            .Read(I => I.User == Identity.Identity, Foundation.ReadingBehavior.First);
-        if (SearchAccountResult.Failed > 0)
-            throw SearchAccountResult.Failures[0].Failure;
+        CriticalOperationResults<AccountEntity, Account> SearchAccountResult;
+        try {
+            SearchAccountResult = await AccountsRepository
+                .Read(I => I.User == Identity.Identity, Foundation.ReadingBehavior.First);
+        } catch(XRecordUnfound<AccountsRepository> X) {
+            throw new XUnfoundUser(X);
+        }
 
         // --> The account was found
         AccountEntity Account = SearchAccountResult.Successes[0];
-        SessionModel SessionInited = SessionsManager.InitSession(Account);
+        if (!Account.Password.SequenceEqual(Identity.Password)) 
+            throw new XWrongPassword(Account, Identity.Password);
 
+        SessionModel SessionInited = SessionsManager.InitSession(Account);
         return SessionInited.GeneratePublicDerivation();
     }
 }
