@@ -15,6 +15,7 @@ dependencies:
       path: package/cosmos_foundation/
   go_router: ^13.0.1
   http: ^1.2.0
+  localstorage: ^4.0.1+4
 
 dev_dependencies:
   flutter_test:

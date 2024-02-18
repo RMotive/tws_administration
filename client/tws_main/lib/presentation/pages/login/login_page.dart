@@ -1,25 +1,30 @@
 import 'dart:typed_data';
 
-import 'package:cosmos_foundation/alias/aliases.dart';
+import 'package:cosmos_foundation/contracts/cosmos_page.dart';
 import 'package:cosmos_foundation/extensions/int_extension.dart';
-import 'package:cosmos_foundation/foundation/services/service_result.dart';
+import 'package:cosmos_foundation/extensions/string_extension.dart';
+import 'package:cosmos_foundation/foundation/simplifiers/colored_sizedbox.dart';
 import 'package:cosmos_foundation/foundation/simplifiers/separator_column.dart';
-import 'package:cosmos_foundation/helpers/focuser.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
+import 'package:cosmos_foundation/models/structs/control_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:tws_main/core/constants/k_common_displays.dart';
 import 'package:tws_main/core/theme/theme_base.dart';
 import 'package:tws_main/domain/repositories/repositories.dart';
 import 'package:tws_main/domain/repositories/tws_administration/contracts/twsa_security_service_base.dart';
-import 'package:tws_main/domain/repositories/tws_administration/models/account_identity_model.dart';
-import 'package:tws_main/domain/repositories/tws_administration/models/foreign_session_model.dart';
+import 'package:tws_main/domain/repositories/tws_administration/services/inputs/init_session_input.dart';
+import 'package:tws_main/domain/repositories/tws_administration/services/outputs/init_session_output.dart';
+import 'package:tws_main/domain/repositories/tws_administration/structures/situation.dart';
+import 'package:tws_main/domain/repositories/tws_administration/templates/twsa_failure.dart';
+import 'package:tws_main/domain/repositories/tws_administration/templates/twsa_template.dart';
+import 'package:tws_main/domain/resolvers/twsa_resolver.dart';
 import 'package:tws_main/presentation/components/tws_button_flat.dart';
 import 'package:tws_main/presentation/components/tws_display_flat.dart';
 import 'package:tws_main/presentation/components/tws_input_text.dart';
-import 'package:cosmos_foundation/contracts/cosmos_page.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/colored_sizedbox.dart';
-import 'package:flutter/material.dart';
 
-part './business_decorator.dart';
-part './login_form.dart';
+part 'business_decorator.dart';
+part 'login_form/login_form.dart';
+part 'login_form/login_form_state.dart';
 
 class LoginPage extends CosmosPage {
   const LoginPage({super.key});
