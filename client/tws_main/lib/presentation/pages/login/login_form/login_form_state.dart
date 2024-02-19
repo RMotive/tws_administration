@@ -11,6 +11,12 @@ class _LoginFormState extends ChangeNotifier {
   /// Specifies the max amount of width that all controls in the form will take.
   final double maxControlsWidth = 275;
 
+  /// Service to handle local session storage.
+  final SessionStorage _sessionStorage = SessionStorage.instance;
+
+  /// Service to handle route driving.
+  final RouteDriver _router = RouteDriver.i;
+
   /// Service to handle [Security] operations with the business network services provider.
   final TWSASecurityServiceBase _service = twsaRepo.securityService;
 
@@ -123,7 +129,19 @@ class _LoginFormState extends ChangeNotifier {
             _failureDisplay = KCommonDisplays.kUnhandledFailureCode;
         }
       },
-      onSuccess: (TWSATemplate<InitSessionOutput> success) {},
+      onSuccess: (TWSATemplate<InitSessionOutput> success) {
+        Session session = Session.fromOutput(success.estela);
+        try {
+          _sessionStorage.storeSession(session);
+          if (_sessionStorage.isSession) {
+            _router.driveTo(KRoutes.loginPage);
+          } else {
+            _failureDisplay = "Invalid session to store";
+          }
+        } catch (_) {
+          _failureDisplay = "Modelling management exception";
+        }
+      },
       onFinally: () => _finishRequest(),
     );
   }

@@ -11,7 +11,7 @@ class TWSAdministrationRepository extends CosmosRepository {
   })
       : super(
           const CosmosUriStruct(
-            '192.168.100.36',
+            '192.168.100.38',
             '',
             port: 5196,
             protocol: CosmosProtocols.http,
