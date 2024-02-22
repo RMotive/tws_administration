@@ -2,6 +2,7 @@ import 'package:cosmos_foundation/foundation/hooks/cosmos_app.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:tws_main/core/router/routing_options.dart';
 import 'package:tws_main/core/theme/dark_theme.dart';
 import 'package:tws_main/core/theme/theme_base.dart';
@@ -9,6 +10,7 @@ import 'package:tws_main/domain/storage/session_storage.dart';
 
 /// --> Flutter entry point.
 void main() {
+  usePathUrlStrategy();  
   runApp(
     const TWSAdministration(),
   );
@@ -20,6 +22,7 @@ class TWSAdministration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CosmosApp<ThemeBase>(
+      listenFrameSize: false,
       defaultTheme: const DarkTheme(),
       routerConfig: RoutingOptions(),
       generalBuilder: (BuildContext context, Widget? home) {

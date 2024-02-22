@@ -10,7 +10,8 @@ class LightTheme extends ThemeBase {
   const LightTheme()
       : super(
           identifier,
-          fullLogoLocation: KAssets.fullLogoBlackWebp,
+          loginLogo: KAssets.fullLogoBlackWebp,
+          masterLayoutMenuLogo: KAssets.wideLogoWhiteWebp,
           frameListenerColor: KColors.deepPurple,
           pageColorStruct: const ThemeColorStruct(
             KColors.warmWhite,

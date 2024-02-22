@@ -129,11 +129,11 @@ class _LoginFormState extends ChangeNotifier {
             _failureDisplay = KCommonDisplays.kUnhandledFailureCode;
         }
       },
-      onSuccess: (TWSATemplate<InitSessionOutput> success) {
+      onSuccess: (TWSATemplate<InitSessionOutput> success) async {
         Session session = Session.fromOutput(success.estela);
         try {
           _sessionStorage.storeSession(session);
-          if (_sessionStorage.isSession) {
+          if (await _sessionStorage.isSession) {
             _router.driveTo(KRoutes.loginPage);
           } else {
             _failureDisplay = "Invalid session to store";

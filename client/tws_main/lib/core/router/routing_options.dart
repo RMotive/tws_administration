@@ -15,16 +15,17 @@ final SessionStorage _sessionStorage = SessionStorage.instance;
 class RoutingOptions extends CosmosRouting {
   RoutingOptions()
       : super(
-          redirect: (BuildContext ctx, RouteOutput output) {
-            if (!_sessionStorage.isSession) return KRoutes.loginPage;
+          developmentRoute: KRoutes.landingPage,
+          redirect: (BuildContext ctx, RouteOutput output) async {
+            if (!await _sessionStorage.isSession) return KRoutes.loginPage;
             return null;
           },
           routes: <CosmosRouteBase>[
             // --> [Login Page]
             CosmosRouteNode(
               KRoutes.loginPage,
-              redirect: (BuildContext ctx, RouteOutput output) {
-                if (_sessionStorage.isSession) return KRoutes.landingPage;
+              redirect: (BuildContext ctx, RouteOutput output) async {
+                if (await _sessionStorage.isSession) return KRoutes.landingPage;
                 return null;
               },
               build: (_, __) => const LoginPage(),

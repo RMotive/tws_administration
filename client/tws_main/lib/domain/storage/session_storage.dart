@@ -32,7 +32,7 @@ class SessionStorage {
   Session? get session => _session;
 
   /// Wheter the application context has an active session
-  bool get isSession => _session != null;
+  late Future<bool> isSession;
 
   /// When the singleton is created it first will look if the browser already has a stored session.
   SessionStorage._() {
@@ -40,22 +40,29 @@ class SessionStorage {
     _storage = LocalStorage(_kStorageKey);
     _advisor.adviseMessage('Starting engines for [SessionStorage]');
 
-    _storage.ready.then(
-      (bool value) {
-        if (!value) throw 'local storage manager session isn\'t ready';
-        JObject? stored = _storage.getItem(_kSessionItemStoreKey);
-        if (stored == null) {
-          _advisor.adviseWarning('No session found');
-          return;
-        }
-        Session sessionObject = Session.fromJson(stored);
-        DateTime expiration = sessionObject.expiration;
-        if (expiration.isBefore(DateTime.now())) {
-          _advisor.adviseWarning('Session expired', info: stored);
-          _storage.deleteItem(_kSessionItemStoreKey);
-        }
-        _advisor.adviseSuccess('Session currently valid', info: stored);
-        _session = sessionObject;
+    isSession = Future<bool>(
+      () async {
+        if (_session != null) return true;
+        bool result = await _storage.ready.then(
+          (bool value) {
+            if (!value) throw 'local storage manager session isn\'t ready';
+            JObject? stored = _storage.getItem(_kSessionItemStoreKey);
+            if (stored == null) {
+              _advisor.adviseWarning('No session found');
+              return false;
+            }
+            Session sessionObject = Session.fromJson(stored);
+            DateTime expiration = sessionObject.expiration;
+            if (expiration.isBefore(DateTime.now())) {
+              _advisor.adviseWarning('Session expired', info: stored);
+              _storage.deleteItem(_kSessionItemStoreKey);
+            }
+            _advisor.adviseSuccess('Session currently valid', info: stored);
+            _session = sessionObject;
+            return true;
+          },
+        );
+        return result;
       },
     );
   }

@@ -6,8 +6,6 @@ class LandingPage extends CosmosPage {
 
   @override
   Widget compose(BuildContext ctx, Size window) {
-    return const ColoredBox(
-      color: Colors.red,
-    );
+    return Container();
   }
 }

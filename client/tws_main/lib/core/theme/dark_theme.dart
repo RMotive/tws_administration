@@ -10,7 +10,8 @@ class DarkTheme extends ThemeBase {
   const DarkTheme()
       : super(
           identifier,
-          fullLogoLocation: KAssets.fullLogoWhiteWebp,
+          loginLogo: KAssets.fullLogoWhiteWebp,
+          masterLayoutMenuLogo: KAssets.wideLogoBlackWebp,
           frameListenerColor: KColors.warmWhite,
           pageColorStruct: const ThemeColorStruct(
             KColors.deepPurple,

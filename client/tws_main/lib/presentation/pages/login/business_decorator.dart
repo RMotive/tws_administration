@@ -19,7 +19,7 @@ class _BusinessDecorator extends StatelessWidget {
             isAntiAlias: true,
             filterQuality: FilterQuality.high,
             image: AssetImage(
-              theme.fullLogoLocation,
+              theme.loginLogo,
             ),
           ),
         ),
