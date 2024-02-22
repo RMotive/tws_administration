@@ -1,3 +1,5 @@
+import 'package:cosmos_foundation/models/structs/control_theme_struct.dart';
+import 'package:cosmos_foundation/models/structs/standard_theme_struct.dart';
 import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/constants/k_assets.dart';
@@ -13,6 +15,12 @@ class LightTheme extends ThemeBase {
           loginLogo: KAssets.fullLogoBlackWebp,
           masterLayoutMenuLogo: KAssets.wideLogoWhiteWebp,
           frameListenerColor: KColors.deepPurple,
+          masterLayoutMenuButtonStruct: const StateControlThemeStruct(
+            mainStruct: StandardThemeStruct(
+              background: Colors.transparent,
+              foreground: KColors.warmWhite,
+            ),
+          ),
           pageColorStruct: const ThemeColorStruct(
             KColors.warmWhite,
             KColors.deepPurple,

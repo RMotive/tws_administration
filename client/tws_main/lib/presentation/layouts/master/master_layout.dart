@@ -3,7 +3,7 @@ import 'package:cosmos_foundation/contracts/cosmos_layout.dart';
 import 'package:cosmos_foundation/enumerators/cosmos_control_states.dart';
 import 'package:cosmos_foundation/enumerators/evaluators/cosmos_control_states_evaluator.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:flutter/gestures.dart';
+import 'package:cosmos_foundation/models/structs/states_control_theme_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/theme_base.dart';
 

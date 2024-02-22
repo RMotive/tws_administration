@@ -13,11 +13,14 @@ class _MasterLayoutMenuButton extends StatefulWidget {
 }
 
 class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
+  // --> Resources
+  late StateControlThemeStruct theme;
+
+  // --> State management
   CosmosControlStates controlState = CosmosControlStates.none;
-  late ThemeBase theme;
 
   void listenTheme() {
-    theme = getTheme();
+    theme = getTheme<ThemeBase>().masterLayoutMenuButtonStruct;
   }
 
   void changeState(CosmosControlStates state) {
@@ -31,7 +34,7 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
     super.initState();
     theme = getTheme<ThemeBase>(
       updateEfect: listenTheme,
-    );
+    ).masterLayoutMenuButtonStruct;
   }
 
   @override
@@ -42,6 +45,10 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
 
   @override
   Widget build(BuildContext context) {
+    assert(theme.hoverStruct != null, 'This component requires the theme for hover state');
+    assert(theme.selectStruct != null, 'This component required the theme for select state');
+
+
     return MouseRegion(
       onEnter: (_) => changeState(CosmosControlStates.hovered),
       onExit: (_) => changeState(CosmosControlStates.none),
@@ -49,32 +56,32 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
       child: ColoredBox(
         color: evaluateControlState(
           controlState,
-          onIdle: () => Colors.transparent,
+          onIdle: () => theme.mainStruct.background,
+          onHover: () => theme.hoverStruct!.background,
+          onSelect: () => theme.selectStruct!.background,
         ),
-        child: SizedBox(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.dashboard,
-                    color: theme.pageColorStruct.onColor,
-                    size: 40,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Row(
+              children: <Widget>[
+                const Icon(
+                  Icons.dashboard,
+                  color: Colors.transparent,
+                  size: 40,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 4,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 4,
-                    ),
-                    child: Text(
-                      widget.display,
-                      style: TextStyle(
-                        color: theme.pageColorStruct.onColor,
-                      ),
+                  child: Text(
+                    widget.display,
+                    style: const TextStyle(
+                      color: Colors.transparent,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
