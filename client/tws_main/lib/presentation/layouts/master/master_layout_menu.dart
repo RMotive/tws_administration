@@ -5,18 +5,19 @@ class _MasterLayoutMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBase theme = getTheme<ThemeBase>();
+    final ThemeBase theme = getTheme();
+    final ThemeColorStruct themeStruct = theme.masterLayoutStruct;
     final Size screen = MediaQuery.sizeOf(context);
 
     return ConstrainedBox(
       constraints: const BoxConstraints(
-        minWidth: 250,
-        maxWidth: 350,
+        minWidth: 200,
+        maxWidth: 250,
       ),
       child: ColoredBox(
-        color: theme.pageColorStruct.hlightColor,
+        color: themeStruct.mainColor,
         child: SizedBox(
-          width: screen.width * .3,
+          width: screen.width * .25,
           child: Column(
             children: <Widget>[
               LayoutBuilder(

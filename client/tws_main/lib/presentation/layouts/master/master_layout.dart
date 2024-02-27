@@ -1,9 +1,10 @@
-
 import 'package:cosmos_foundation/contracts/cosmos_layout.dart';
 import 'package:cosmos_foundation/enumerators/cosmos_control_states.dart';
-import 'package:cosmos_foundation/enumerators/evaluators/cosmos_control_states_evaluator.dart';
+import "package:cosmos_foundation/enumerators/evaluators/cosmos_control_states_evaluator.dart";
 import 'package:cosmos_foundation/helpers/theme.dart';
+import 'package:cosmos_foundation/models/structs/standard_theme_struct.dart';
 import 'package:cosmos_foundation/models/structs/states_control_theme_struct.dart';
+import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/theme_base.dart';
 
@@ -19,10 +20,10 @@ class MasterLayout extends CosmosLayout {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBase theme = getTheme<ThemeBase>();
+    final ThemeColorStruct theme = getTheme<ThemeBase>().masterLayoutStruct;
 
     return ColoredBox(
-      color: theme.pageColorStruct.mainColor,
+      color: theme.hlightColor,
       child: Row(
         children: <Widget>[
           const _MasterLayoutMenu(),
@@ -30,7 +31,9 @@ class MasterLayout extends CosmosLayout {
             child: Column(
               children: <Widget>[
                 const _MsaterLayoutHeader(),
-                Expanded(child: page),
+                Expanded(
+                  child: page,
+                ),
               ],
             ),
           ),

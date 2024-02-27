@@ -5,9 +5,11 @@ class _MsaterLayoutHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeColorStruct themeStruct = getTheme<ThemeBase>().masterLayoutStruct;
+
     return Container(
-      height: 60,
-      color: Colors.white,
+      color: themeStruct.mainColor,
+      height: 50,
     );
   }
 }

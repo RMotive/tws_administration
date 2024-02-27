@@ -5,7 +5,7 @@ class _MasterLayoutMenuButton extends StatefulWidget {
   final bool isCurrent;
   const _MasterLayoutMenuButton({
     required this.display,
-    this.isCurrent = false,
+    this.isCurrent = true,
   });
 
   @override
@@ -15,17 +15,22 @@ class _MasterLayoutMenuButton extends StatefulWidget {
 class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
   // --> Resources
   late StateControlThemeStruct theme;
+  late StandardThemeStruct stateTheme;
 
   // --> State management
   CosmosControlStates controlState = CosmosControlStates.none;
 
   void listenTheme() {
     theme = getTheme<ThemeBase>().masterLayoutMenuButtonStruct;
+    assert(theme.hoverStruct != null, 'Uses hover state');
+    assert(theme.selectStruct != null, 'Uses select state');
+    stateTheme = evaluateThemeState(controlState, theme);
   }
 
   void changeState(CosmosControlStates state) {
     setState(() {
       controlState = state;
+      stateTheme = evaluateThemeState(controlState, theme);
     });
   }
 
@@ -35,6 +40,13 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
     theme = getTheme<ThemeBase>(
       updateEfect: listenTheme,
     ).masterLayoutMenuButtonStruct;
+    assert(theme.hoverStruct != null, 'Uses hover state');
+    assert(theme.selectStruct != null, 'Uses select state');
+
+    if (widget.isCurrent) {
+      controlState = CosmosControlStates.selected;
+    }
+    stateTheme = evaluateThemeState(controlState, theme);
   }
 
   @override
@@ -45,40 +57,29 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
 
   @override
   Widget build(BuildContext context) {
-    assert(theme.hoverStruct != null, 'This component requires the theme for hover state');
-    assert(theme.selectStruct != null, 'This component required the theme for select state');
-
-
     return MouseRegion(
       onEnter: (_) => changeState(CosmosControlStates.hovered),
-      onExit: (_) => changeState(CosmosControlStates.none),
-      cursor: SystemMouseCursors.click,
+      onExit: (_) => changeState(widget.isCurrent ? CosmosControlStates.selected : CosmosControlStates.none),
+      cursor: widget.isCurrent ? MouseCursor.defer : SystemMouseCursors.click,
       child: ColoredBox(
-        color: evaluateControlState(
-          controlState,
-          onIdle: () => theme.mainStruct.background,
-          onHover: () => theme.hoverStruct!.background,
-          onSelect: () => theme.selectStruct!.background,
-        ),
+        color: stateTheme.background as Color,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Row(
               children: <Widget>[
-                const Icon(
+                Icon(
                   Icons.dashboard,
-                  color: Colors.transparent,
-                  size: 40,
+                  color: stateTheme.iconColor,
+                  size: 35,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                    left: 4,
+                    left: 10,
                   ),
                   child: Text(
                     widget.display,
-                    style: const TextStyle(
-                      color: Colors.transparent,
-                    ),
+                    style: stateTheme.textStyle,
                   ),
                 ),
               ],

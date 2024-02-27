@@ -15,17 +15,21 @@ class DarkTheme extends ThemeBase {
           loginLogo: KAssets.fullLogoWhiteWebp,
           masterLayoutMenuLogo: KAssets.wideLogoBlackWebp,
           frameListenerColor: KColors.warmWhite,
+          masterLayoutStruct: const ThemeColorStruct(
+            KColors.oceanBlue,
+            Colors.transparent,
+            Colors.transparent,
+          ),
           masterLayoutMenuButtonStruct: const StateControlThemeStruct(
             mainStruct: StandardThemeStruct(
               background: Colors.transparent,
               foreground: KColors.warmWhite,
             ),
             hoverStruct: StandardThemeStruct(
-              background: Colors.transparent,
-              foreground: KColors.warmWhite,
+              background: Colors.white10
             ),
             selectStruct: StandardThemeStruct(
-              background: Colors.transparent,
+              background: Colors.white10,
               foreground: KColors.warmWhite,
             ),
           ),
