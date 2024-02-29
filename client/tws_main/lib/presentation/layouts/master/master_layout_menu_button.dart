@@ -57,6 +57,8 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
 
   @override
   Widget build(BuildContext context) {
+    final double foregroundSize = stateTheme.textStyle?.fontSize ?? 16;
+    
     return MouseRegion(
       onEnter: (_) => changeState(CosmosControlStates.hovered),
       onExit: (_) => changeState(widget.isCurrent ? CosmosControlStates.selected : CosmosControlStates.none),
@@ -71,7 +73,7 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
                 Icon(
                   Icons.dashboard,
                   color: stateTheme.iconColor,
-                  size: 35,
+                  size: foregroundSize * 2,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -79,7 +81,11 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
                   ),
                   child: Text(
                     widget.display,
-                    style: stateTheme.textStyle,
+                    style: stateTheme.textStyle ??
+                        TextStyle(
+                          fontSize: foregroundSize,
+                          color: stateTheme.foreground,
+                        ),
                   ),
                 ),
               ],

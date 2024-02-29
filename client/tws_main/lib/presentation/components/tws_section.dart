@@ -51,8 +51,7 @@ class TWSSection extends StatelessWidget {
         ),
         child: SizedBox(
           width: double.maxFinite,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -67,7 +66,7 @@ class TWSSection extends StatelessWidget {
                         style: sectionStruct?.titleStyle ??
                             TextStyle(
                               color: pageStruct.onColor,
-                              fontSize: 20,
+                              fontSize: 18,
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w600,
                             ),
@@ -76,7 +75,10 @@ class TWSSection extends StatelessWidget {
                   ),
                 ),
               ),
-              content,
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: content,
+              ),
             ],
           ),
         ),

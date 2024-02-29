@@ -1,33 +1,40 @@
 part of '../landing_page.dart';
 
 class _CurrentDriversSection extends StatelessWidget {
-  final double width;
-
-  const _CurrentDriversSection({
-    required this.width,
-  });
+  const _CurrentDriversSection();
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minWidth: _minSectionsWidht,
-      ),
-      child: SizedBox(
-        width: width,
-        child: const Column(
+    return LayoutBuilder(
+      builder: (_, BoxConstraints constrains) {
+        double? tableSize;
+        if (constrains.hasBoundedHeight) {
+          tableSize = constrains.maxHeight * .5;
+        }
+
+        return Column(
           children: <Widget>[
-            TWSSection(
-              title: 'Working Drivers',
-              content: Column(),
+            SizedBox(
+              height: tableSize,
+              child: const TWSSection(
+                title: 'Working Drivers',
+                content: _DriversTrackingTable(
+                  samples: <dynamic>[],
+                ),
+              ),
             ),
-            TWSSection(
-              title: 'Idling Drivers',
-              content: Column(),
+            SizedBox(
+              height: tableSize,
+              child: const TWSSection(
+                title: 'Idling Drivers',
+                content: _DriversTrackingTable(
+                  samples: <dynamic>[],
+                ),
+              ),
             )
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

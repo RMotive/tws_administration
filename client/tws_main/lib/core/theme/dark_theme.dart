@@ -24,6 +24,9 @@ class DarkTheme extends ThemeBase {
             mainStruct: StandardThemeStruct(
               background: Colors.transparent,
               foreground: KColors.warmWhite,
+              textStyle: TextStyle(
+                fontSize: 14,
+              ),
             ),
             hoverStruct: StandardThemeStruct(
               background: Colors.white10
@@ -34,7 +37,7 @@ class DarkTheme extends ThemeBase {
             ),
           ),
           pageColorStruct: const ThemeColorStruct(
-            KColors.deepPurple,
+            KColors.lightDark,
             KColors.warmWhite,
             KColors.oceanBlue,
             onColorAlt: KColors.darkGrey,
