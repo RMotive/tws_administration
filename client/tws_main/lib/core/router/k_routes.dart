@@ -9,4 +9,5 @@ import 'package:cosmos_foundation/models/options/route_options.dart';
 class KRoutes {
   static const RouteOptions loginPage = RouteOptions('/');
   static const RouteOptions landingPage = RouteOptions('landing');
+  static const RouteOptions securityPage = RouteOptions('security');
 }

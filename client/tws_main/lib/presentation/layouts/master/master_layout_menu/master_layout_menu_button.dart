@@ -1,11 +1,13 @@
-part of 'master_layout.dart';
+part of '../master_layout.dart';
+
+final RouteDriver _routeDriver = RouteDriver.i;
 
 class _MasterLayoutMenuButton extends StatefulWidget {
-  final String display;
+  final _MasterLayoutMenuButtonOptions options;
   final bool isCurrent;
   const _MasterLayoutMenuButton({
-    required this.display,
-    this.isCurrent = true,
+    required this.options,
+    this.isCurrent = false,
   });
 
   @override
@@ -58,37 +60,45 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
   @override
   Widget build(BuildContext context) {
     final double foregroundSize = stateTheme.textStyle?.fontSize ?? 16;
-    
+
     return MouseRegion(
       onEnter: (_) => changeState(CosmosControlStates.hovered),
       onExit: (_) => changeState(widget.isCurrent ? CosmosControlStates.selected : CosmosControlStates.none),
       cursor: widget.isCurrent ? MouseCursor.defer : SystemMouseCursors.click,
-      child: ColoredBox(
-        color: stateTheme.background as Color,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.dashboard,
-                  color: stateTheme.iconColor,
-                  size: foregroundSize * 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 10,
+      child: GestureDetector(
+        onTap: widget.isCurrent
+            ? null
+            : () {
+                _routeDriver.driveTo(widget.options.route);
+              },
+        child: ColoredBox(
+          color: stateTheme.background as Color,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    widget.options.icon,
+                    color: stateTheme.iconColor,
+                    size: foregroundSize * 1.75,
                   ),
-                  child: Text(
-                    widget.display,
-                    style: stateTheme.textStyle ??
-                        TextStyle(
-                          fontSize: foregroundSize,
-                          color: stateTheme.foreground,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10,
+                    ),
+                    child: Text(
+                      widget.options.label,
+                      style: stateTheme.textStyle ??
+                          TextStyle(
+                            fontSize: foregroundSize,
+                            color: stateTheme.foreground,
+                          ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

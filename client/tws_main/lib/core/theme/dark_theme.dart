@@ -17,7 +17,7 @@ class DarkTheme extends ThemeBase {
           frameListenerColor: KColors.warmWhite,
           masterLayoutStruct: const ThemeColorStruct(
             KColors.oceanBlue,
-            Colors.transparent,
+            KColors.warmWhite,
             Colors.transparent,
           ),
           masterLayoutMenuButtonStruct: const StateControlThemeStruct(

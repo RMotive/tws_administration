@@ -9,6 +9,7 @@ import 'package:tws_main/domain/storage/session_storage.dart';
 import 'package:tws_main/presentation/layouts/master/master_layout.dart';
 import 'package:tws_main/presentation/pages/landing/landing_page.dart';
 import 'package:tws_main/presentation/pages/login/login_page.dart';
+import 'package:tws_main/presentation/pages/security/security_page.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.instance;
 
@@ -38,8 +39,15 @@ class RoutingOptions extends CosmosRouting {
                   KRoutes.landingPage,
                   build: (BuildContext _, RouteOutput __) => const LandingPage(),
                 ),
+                CosmosRouteNode(
+                  KRoutes.securityPage,
+                  build: (BuildContext _, RouteOutput __) => const SecurityPage(),
+                )
               ],
-              layoutBuild: (BuildContext _, RouteOutput __, Widget page) => MasterLayout(page: page),
+              layoutBuild: (BuildContext _, RouteOutput routeOutput, Widget page) => MasterLayout(
+                page: page,
+                routeOutput: routeOutput,
+              ),
             ),
           ],
         );
