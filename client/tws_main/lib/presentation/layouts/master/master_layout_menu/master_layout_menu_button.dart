@@ -58,6 +58,14 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
   }
 
   @override
+  void didUpdateWidget(covariant _MasterLayoutMenuButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isCurrent != widget.isCurrent && !widget.isCurrent) {
+      changeState(CosmosControlStates.none);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double foregroundSize = stateTheme.textStyle?.fontSize ?? 16;
 
