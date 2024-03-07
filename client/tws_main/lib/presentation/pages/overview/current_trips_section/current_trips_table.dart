@@ -1,4 +1,4 @@
-part of '../landing_page.dart';
+part of '../overvoew_page.dart';
 
 /// Theme Struct:
 ///   - required[primaryControlColorStruct]

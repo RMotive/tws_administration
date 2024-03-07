@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:tws_main/core/router/k_routes.dart';
 import 'package:tws_main/domain/storage/session_storage.dart';
 import 'package:tws_main/presentation/layouts/master/master_layout.dart';
-import 'package:tws_main/presentation/pages/landing/landing_page.dart';
 import 'package:tws_main/presentation/pages/login/login_page.dart';
+import 'package:tws_main/presentation/pages/overview/overvoew_page.dart';
 import 'package:tws_main/presentation/pages/security/security_page.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.instance;
@@ -16,7 +16,7 @@ final SessionStorage _sessionStorage = SessionStorage.instance;
 class RoutingOptions extends CosmosRouting {
   RoutingOptions()
       : super(
-          developmentRoute: KRoutes.landingPage,
+          developmentRoute: KRoutes.overviewPage,
           redirect: (BuildContext ctx, RouteOutput output) async {
             if (!await _sessionStorage.isSession) return KRoutes.loginPage;
             return null;
@@ -26,18 +26,18 @@ class RoutingOptions extends CosmosRouting {
             CosmosRouteNode(
               KRoutes.loginPage,
               redirect: (BuildContext ctx, RouteOutput output) async {
-                if (await _sessionStorage.isSession) return KRoutes.landingPage;
+                if (await _sessionStorage.isSession) return KRoutes.overviewPage;
                 return null;
               },
               build: (_, __) => const LoginPage(),
             ),
-            // --> [Master Layout]
-            //    --> [Landing Page]
+            // --> [MasterLayout]
+            //    --> [OverviewPage]
             CosmosRouteLayout(
               routes: <CosmosRouteBase>[
                 CosmosRouteNode(
-                  KRoutes.landingPage,
-                  build: (BuildContext _, RouteOutput __) => const LandingPage(),
+                  KRoutes.overviewPage,
+                  build: (BuildContext _, RouteOutput __) => const OverviewPage(),
                 ),
                 CosmosRouteNode(
                   KRoutes.securityPage,

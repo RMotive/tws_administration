@@ -1,4 +1,4 @@
-part of '../landing_page.dart';
+part of '../overvoew_page.dart';
 
 class _CurrentTripsSection extends StatelessWidget {
   const _CurrentTripsSection();

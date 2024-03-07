@@ -40,9 +40,9 @@ class MasterLayout extends CosmosLayout {
   Widget build(BuildContext context) {
     const List<_MasterLayoutMenuButtonOptions> buttons = <_MasterLayoutMenuButtonOptions>[
       _MasterLayoutMenuButtonOptions(
-        label: 'Home',
-        icon: Icons.home,
-        route: KRoutes.landingPage,
+        label: 'Overview',
+        icon: Icons.dashboard_outlined,
+        route: KRoutes.overviewPage,
       ),
       _MasterLayoutMenuButtonOptions(
         label: 'Security',
