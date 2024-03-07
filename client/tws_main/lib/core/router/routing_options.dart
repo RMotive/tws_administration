@@ -8,7 +8,7 @@ import 'package:tws_main/core/router/k_routes.dart';
 import 'package:tws_main/domain/storage/session_storage.dart';
 import 'package:tws_main/presentation/layouts/master/master_layout.dart';
 import 'package:tws_main/presentation/pages/login/login_page.dart';
-import 'package:tws_main/presentation/pages/overview/overvoew_page.dart';
+import 'package:tws_main/presentation/pages/overview/overview_page.dart';
 import 'package:tws_main/presentation/pages/security/security_page.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.instance;

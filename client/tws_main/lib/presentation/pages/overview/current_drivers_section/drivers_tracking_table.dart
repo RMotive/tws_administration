@@ -1,4 +1,4 @@
-part of '../overvoew_page.dart';
+part of '../overview_page.dart';
 
 class _DriversTrackingTable extends StatelessWidget {
   final List<dynamic> samples;

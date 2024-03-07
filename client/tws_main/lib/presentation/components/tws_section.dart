@@ -27,7 +27,10 @@ class TWSSection extends StatelessWidget {
   ///   - optional[twsSectionStruct]
   const TWSSection({
     super.key,
-    this.padding = const EdgeInsets.all(20),
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: 15,
+      vertical: 35,
+    ),
     required this.title,
     required this.content,
   });
@@ -44,8 +47,9 @@ class TWSSection extends StatelessWidget {
         decoration: const BoxDecoration(
           border: Border.fromBorderSide(
             BorderSide(
-              width: .3,
+              width: 1,
               color: Colors.white,
+              strokeAlign: BorderSide.strokeAlignCenter
             ),
           ),
         ),

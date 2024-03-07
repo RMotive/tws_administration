@@ -14,7 +14,7 @@ part 'current_drivers_section/drivers_tracking_table.dart';
 
 const double _kLargeViewMinTablesHeight = 450;
 const double _maxFloatSectionWidth = 400;
-const double _minFocusSectionWidth = 450;
+const double _kMinFocusSectionWidth = 450;
 const BoxConstraints _floatSectionConstrains = BoxConstraints(
   maxWidth: _maxFloatSectionWidth,
   minWidth: _maxFloatSectionWidth - 100,
@@ -28,21 +28,22 @@ class OverviewPage extends CosmosPage {
     return LayoutBuilder(
       builder: (_, BoxConstraints constraints) {
         final double availableWidth = constraints.maxWidth;
-        final bool hasPassedThreshold = availableWidth < (_maxFloatSectionWidth + _minFocusSectionWidth);
+        final bool hasPassedThreshold = availableWidth < (_maxFloatSectionWidth + _kMinFocusSectionWidth);
         double? sectionsSharedHeight = hasPassedThreshold ? null : constraints.smallest.height;
         if ((sectionsSharedHeight ?? _kLargeViewMinTablesHeight) < _kLargeViewMinTablesHeight) {
           sectionsSharedHeight = _kLargeViewMinTablesHeight;
         }
 
         final double floatSectionSupposedWidth = availableWidth * .25;
-        final double floatSectionWidth = hasPassedThreshold ? double.maxFinite : _floatSectionConstrains.constrainWidth(floatSectionSupposedWidth);
-        final double focusSectionWidth = hasPassedThreshold ? double.maxFinite : availableWidth - floatSectionWidth;
+        final double floatSectionWidth = hasPassedThreshold ? constraints.maxWidth : _floatSectionConstrains.constrainWidth(floatSectionSupposedWidth);
+        final double focusSectionWidth = hasPassedThreshold ? constraints.maxWidth : availableWidth - floatSectionWidth;
+        final double minFocusSectionWidth = hasPassedThreshold ? constraints.maxWidth : _kMinFocusSectionWidth;
 
         return Wrap(
           children: <Widget>[
             ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: _minFocusSectionWidth,
+              constraints: BoxConstraints(
+                minWidth: minFocusSectionWidth,
               ),
               child: SizedBox(
                 height: sectionsSharedHeight,
