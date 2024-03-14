@@ -11,7 +11,7 @@ class _MasterLayoutHeader extends StatelessWidget {
     return ColoredBox(
       color: themeStruct.mainColor,
       child: SizedBox(
-        height: 60,
+        height: 50,
         child: Row(
           children: <Widget>[
             Visibility(

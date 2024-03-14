@@ -46,7 +46,7 @@ packages:
     description:
       path: "package/cosmos_foundation"
       ref: HEAD
-      resolved-ref: d3cf1935be53810547b22c6f733af22b4819ee99
+      resolved-ref: "4c2ff6aa29e57d3a584d412ea57bca50b81c8fcb"
       url: "https://github.com/RMotive/CMSF-Cosmos_Foundation"
     source: git
     version: "1.0.0"
@@ -346,10 +346,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "464f5674532865248444b4c3daca12bd9bf2d7c47f759ce2617986e7229494a8"
+      sha256: "8cb58b45c47dcb42ab3651533626161d6b67a2921917d8d429791f76972b3480"
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.0"
+    version: "5.3.0"
   xdg_directories:
     dependency: transitive
     description:

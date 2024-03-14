@@ -5,11 +5,13 @@ import 'package:cosmos_foundation/enumerators/cosmos_control_states.dart';
 import "package:cosmos_foundation/enumerators/evaluators/cosmos_control_states_evaluator.dart";
 import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/foundation/conditionals/responsive_view.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/separator_column.dart';
+import 'package:cosmos_foundation/foundation/simplifiers/spacing_column.dart';
+import 'package:cosmos_foundation/helpers/responsive.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/models/options/route_options.dart';
 import 'package:cosmos_foundation/models/outputs/route_output.dart';
+import 'package:cosmos_foundation/models/structs/clamp_ratio_constraints.dart';
 import 'package:cosmos_foundation/models/structs/standard_theme_struct.dart';
 import 'package:cosmos_foundation/models/structs/states_control_theme_struct.dart';
 import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
@@ -26,6 +28,9 @@ part 'master_layout_header/master_layout_header.dart';
 
 part 'master_layout_small.dart';
 part 'master_layout_large.dart';
+
+const double _minMenuWidth = 175;
+const double _maxMenuWidth = 250;
 
 class MasterLayout extends CosmosLayout {
   final RouteOutput routeOutput;
@@ -56,6 +61,11 @@ class MasterLayout extends CosmosLayout {
         buttons: buttons,
         currentRoute: routeOutput.absolutePath,
         page: page,
+      ),
+      onMedium: _MasterLayoutSmall(
+        page: page,
+        currentRoute: routeOutput.absolutePath,
+        buttons: buttons,
       ),
       onSmall: _MasterLayoutSmall(
         page: page,

@@ -21,12 +21,6 @@ class LightTheme extends ThemeBase {
             Colors.transparent,
             Colors.transparent,
           ),
-          masterLayoutMenuButtonStruct: const StateControlThemeStruct(
-            mainStruct: StandardThemeStruct(
-              background: Colors.transparent,
-              foreground: KColors.warmWhite,
-            ),
-          ),
           pageColorStruct: const ThemeColorStruct(
             KColors.warmWhite,
             KColors.deepPurple,
@@ -48,6 +42,15 @@ class LightTheme extends ThemeBase {
             Colors.transparent,
             KColors.darkGrey,
             Colors.red,
+          ),
+          articlesLayoutSelectorButtonStruct: const StateControlThemeStruct(
+            mainStruct: StandardThemeStruct(),
+          ),
+          masterLayoutMenuButtonStruct: const StateControlThemeStruct(
+            mainStruct: StandardThemeStruct(
+              background: Colors.transparent,
+              foreground: KColors.warmWhite,
+            ),
           ),
         );
 }

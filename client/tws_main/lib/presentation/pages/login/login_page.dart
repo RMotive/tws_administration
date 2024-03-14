@@ -4,7 +4,7 @@ import 'package:cosmos_foundation/contracts/cosmos_page.dart';
 import 'package:cosmos_foundation/extensions/int_extension.dart';
 import 'package:cosmos_foundation/extensions/string_extension.dart';
 import 'package:cosmos_foundation/foundation/simplifiers/colored_sizedbox.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/separator_column.dart';
+import 'package:cosmos_foundation/foundation/simplifiers/spacing_column.dart';
 import 'package:cosmos_foundation/helpers/route_driver.dart';
 import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/models/structs/control_controller.dart';

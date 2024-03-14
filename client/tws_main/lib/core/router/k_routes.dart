@@ -10,4 +10,5 @@ class KRoutes {
   static const RouteOptions loginPage = RouteOptions('/');
   static const RouteOptions overviewPage = RouteOptions('landing');
   static const RouteOptions securityPage = RouteOptions('security');
+  static const RouteOptions securityPageFeaturesArticle = RouteOptions('articles');
 }

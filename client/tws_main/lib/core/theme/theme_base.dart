@@ -6,12 +6,13 @@ import 'package:tws_main/core/theme/structs/section_theme_struct.dart';
 abstract class ThemeBase extends CosmosThemeBase {
   final String loginLogo;
   final String masterLayoutMenuLogo;
-  final StateControlThemeStruct masterLayoutMenuButtonStruct;
   final ThemeColorStruct pageColorStruct;
   final ThemeColorStruct masterLayoutStruct;
   final ThemeColorStruct primaryControlColorStruct;
   final ThemeColorStruct primaryDisabledControlColorStruct;
   final ThemeColorStruct primaryErrorControlColorStruct;
+  final StateControlThemeStruct masterLayoutMenuButtonStruct;
+  final StateControlThemeStruct articlesLayoutSelectorButtonStruct;
 
   /// [Optional] Custom theme struct for a Section component.
   final SectionThemeStruct? twsSectionStruct;
@@ -20,13 +21,14 @@ abstract class ThemeBase extends CosmosThemeBase {
     super.themeIdentifier, {
     super.frameListenerColor,
     this.twsSectionStruct,
-    required this.masterLayoutStruct,
-    required this.masterLayoutMenuButtonStruct,
     required this.loginLogo,
-    required this.masterLayoutMenuLogo,
     required this.pageColorStruct,
+    required this.masterLayoutStruct,
+    required this.masterLayoutMenuLogo,
     required this.primaryControlColorStruct,
-    required this.primaryDisabledControlColorStruct,
+    required this.masterLayoutMenuButtonStruct,
     required this.primaryErrorControlColorStruct,
+    required this.primaryDisabledControlColorStruct,
+    required this.articlesLayoutSelectorButtonStruct,
   });
 }

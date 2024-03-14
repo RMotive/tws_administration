@@ -20,6 +20,38 @@ class DarkTheme extends ThemeBase {
             KColors.warmWhite,
             Colors.transparent,
           ),
+          pageColorStruct: const ThemeColorStruct(
+            KColors.lightDark,
+            KColors.warmWhite,
+            KColors.oceanBlue,
+            onColorAlt: KColors.darkGrey,
+          ),
+          primaryControlColorStruct: const ThemeColorStruct(
+            KColors.oceanBlue,
+            KColors.darkGrey,
+            KColors.oceanBlue,
+            onColorAlt: KColors.warmWhite,
+          ),
+          primaryDisabledControlColorStruct: const ThemeColorStruct(
+            KColors.darkGrey,
+            KColors.darkGrey,
+            KColors.darkGrey,
+            onColorAlt: KColors.warmWhite,
+          ),
+          primaryErrorControlColorStruct: const ThemeColorStruct(
+            Colors.transparent,
+            KColors.darkGrey,
+            KColors.deepWine,
+          ),
+          articlesLayoutSelectorButtonStruct: const StateControlThemeStruct(
+            mainStruct: StandardThemeStruct(
+              background: KColors.oceanBlue,
+              foreground: KColors.warmWhite,
+            ),
+            hoverStruct: StandardThemeStruct(
+              background: KColors.oceanBlueH,
+            ),
+          ),
           masterLayoutMenuButtonStruct: const StateControlThemeStruct(
             mainStruct: StandardThemeStruct(
               background: Colors.transparent,
@@ -28,35 +60,11 @@ class DarkTheme extends ThemeBase {
                 fontSize: 14,
               ),
             ),
-            hoverStruct: StandardThemeStruct(
-              background: Colors.white10
-            ),
+            hoverStruct: StandardThemeStruct(background: Colors.white10),
             selectStruct: StandardThemeStruct(
               background: Colors.white10,
               foreground: KColors.warmWhite,
             ),
-          ),
-          pageColorStruct: const ThemeColorStruct(
-            KColors.lightDark,
-            KColors.warmWhite,
-            KColors.oceanBlue,
-            onColorAlt: KColors.darkGrey,
-          ),
-          primaryControlColorStruct: const ThemeColorStruct(
-            Colors.transparent,
-            KColors.darkGrey,
-            KColors.oceanBlue,
-            onColorAlt: KColors.warmWhite,
-          ),
-          primaryDisabledControlColorStruct: const ThemeColorStruct(
-            Colors.transparent,
-            KColors.darkGrey,
-            KColors.darkGrey,
-          ),
-          primaryErrorControlColorStruct: const ThemeColorStruct(
-            Colors.transparent,
-            KColors.darkGrey,
-            KColors.deepWine,
           ),
         );
 }

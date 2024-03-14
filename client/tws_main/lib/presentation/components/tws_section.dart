@@ -29,7 +29,7 @@ class TWSSection extends StatelessWidget {
     super.key,
     this.padding = const EdgeInsets.symmetric(
       horizontal: 15,
-      vertical: 35,
+      vertical: 20,
     ),
     required this.title,
     required this.content,

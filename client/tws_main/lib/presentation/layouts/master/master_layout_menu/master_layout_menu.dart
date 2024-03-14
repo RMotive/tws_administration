@@ -11,19 +11,23 @@ class _MasterLayoutMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const ClampRatioConstraints ratioCts = ClampRatioConstraints(1024, 1400, _minMenuWidth, _maxMenuWidth);
+
     final ThemeBase theme = getTheme();
-    final ThemeColorStruct themeStruct = theme.masterLayoutStruct;
     final Size screen = MediaQuery.sizeOf(context);
+    final ThemeColorStruct themeStruct = theme.masterLayoutStruct;
+
+    final double currentMenuWidth = Responsive.clampRatio(screen.width, ratioCts);
 
     return ConstrainedBox(
       constraints: const BoxConstraints(
-        minWidth: 200,
-        maxWidth: 250,
+        minWidth: _minMenuWidth,
+        maxWidth: _maxMenuWidth,
       ),
       child: ColoredBox(
         color: themeStruct.mainColor,
         child: SizedBox(
-          width: screen.width * .25,
+          width: currentMenuWidth,
           child: Column(
             children: <Widget>[
               LayoutBuilder(
@@ -46,7 +50,7 @@ class _MasterLayoutMenu extends StatelessWidget {
                   vertical: 8,
                   horizontal: 4,
                 ),
-                child: CosmosSeparatedColumn(
+                child: SpacingColumn(
                   spacing: 8,
                   children: <Widget>[
                     for (_MasterLayoutMenuButtonOptions options in buttonsoptions)
