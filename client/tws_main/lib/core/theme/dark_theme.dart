@@ -51,6 +51,9 @@ class DarkTheme extends ThemeBase {
             hoverStruct: StandardThemeStruct(
               background: KColors.oceanBlueH,
             ),
+            selectStruct: StandardThemeStruct(
+              background: KColors.oceanBlueH,
+            ),
           ),
           masterLayoutMenuButtonStruct: const StateControlThemeStruct(
             mainStruct: StandardThemeStruct(
@@ -60,7 +63,9 @@ class DarkTheme extends ThemeBase {
                 fontSize: 14,
               ),
             ),
-            hoverStruct: StandardThemeStruct(background: Colors.white10),
+            hoverStruct: StandardThemeStruct(
+              background: Colors.white10,
+            ),
             selectStruct: StandardThemeStruct(
               background: Colors.white10,
               foreground: KColors.warmWhite,

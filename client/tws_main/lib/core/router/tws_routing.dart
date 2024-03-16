@@ -4,7 +4,6 @@ import 'package:cosmos_foundation/contracts/cosmos_route_node.dart';
 import 'package:cosmos_foundation/foundation/configurations/cosmos_routing.dart';
 import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tws_main/core/router/k_routes.dart';
 import 'package:tws_main/domain/storage/session_storage.dart';
 import 'package:tws_main/presentation/articles/features/features_page.dart';
@@ -18,7 +17,7 @@ final SessionStorage _sessionStorage = SessionStorage.instance;
 class TWSRouting extends CosmosRouting {
   TWSRouting()
       : super(
-          developmentRoute: KRoutes.securityPage,
+          developmentRoute: KRoutes.securityPageFeaturesArticle,
           redirect: (_, __) async {
             if (!await _sessionStorage.isSession) return KRoutes.loginPage;
             return null;
@@ -34,28 +33,29 @@ class TWSRouting extends CosmosRouting {
               pageBuild: (_, __) => const LoginPage(),
             ),
             // --> [MasterLayout]
-            //    --> [OverviewPage]
             CosmosRouteLayout(
+              layoutBuild: (_, RouteOutput output, Widget page) {
+                return MasterLayout(
+                  page: page,
+                  routeOutput: output,
+                );
+              },
               routes: <CosmosRouteBase>[
+                // --> [Overview Page]
                 CosmosRouteNode(
                   KRoutes.overviewPage,
                   pageBuild: (_, __) => const OverviewPage(),
                 ),
+                // --> [Security Page]
                 CosmosRouteNode(
                   KRoutes.securityPage,
-                  redirect: (_, RouteOutput routeOutput) {
-                    return null;
-                  },
-                  pageBuild: (BuildContext ctx, RouteOutput output) => const SecurityPage(currentRoute: KRoutes.securityPage),
-                  pageTransitionBuild: (BuildContext ctx, __) {
-                    return buildPageWithoutAnimation(
-                      context: ctx,
-                      child: const SecurityPage(
-                        currentRoute: KRoutes.securityPage,
-                      ),
+                  pageBuild: (_, __) {
+                    return const SecurityPage(
+                      currentRoute: KRoutes.securityPage,
                     );
                   },
                   routes: <CosmosRouteBase>[
+                    // --> [Features]
                     CosmosRouteNode(
                       KRoutes.securityPageFeaturesArticle,
                       pageBuild: (_, __) {
@@ -64,28 +64,11 @@ class TWSRouting extends CosmosRouting {
                           article: FeaturesArticle(),
                         );
                       },
-                    )
+                    ),
                   ],
                 )
               ],
-              layoutBuild: (_, RouteOutput routeOutput, Widget page) => MasterLayout(
-                page: page,
-                routeOutput: routeOutput,
-              ),
-              layoutTransitionBuild: (BuildContext ctx, RouteOutput output, Widget page) {
-                return buildPageWithoutAnimation(context: ctx, child: page);
-              },
             ),
           ],
         );
-}
-
-CustomTransitionPage<dynamic> buildPageWithoutAnimation({
-  required BuildContext context,
-  required Widget child,
-}) {
-  return CustomTransitionPage<dynamic>(
-    child: child,
-    transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) => child,
-  );
 }

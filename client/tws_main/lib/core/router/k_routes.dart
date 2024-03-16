@@ -8,7 +8,7 @@ import 'package:cosmos_foundation/models/options/route_options.dart';
 /// to generate absolute pathing and another behaviors.
 class KRoutes {
   static const RouteOptions loginPage = RouteOptions('/');
-  static const RouteOptions overviewPage = RouteOptions('landing');
+  static const RouteOptions overviewPage = RouteOptions('overview');
   static const RouteOptions securityPage = RouteOptions('security');
-  static const RouteOptions securityPageFeaturesArticle = RouteOptions('articles');
+  static const RouteOptions securityPageFeaturesArticle = RouteOptions('features');
 }

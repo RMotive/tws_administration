@@ -25,14 +25,23 @@ class _ArticlesSelectorButton extends StatefulWidget {
 }
 
 class __ArticlesSelectorButtonState extends State<_ArticlesSelectorButton> {
-  States currentState = States.none;
+  late States currentState;
   Color? background = Colors.transparent;
   Color? foreground = Colors.transparent;
 
   @override
   void initState() {
     super.initState();
+    currentState = widget.isCurrent ? States.selected : States.none; 
     gatColors();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (widget.isCurrent) {
+      currentState = States.selected;
+    }
   }
 
   void gatColors() {
