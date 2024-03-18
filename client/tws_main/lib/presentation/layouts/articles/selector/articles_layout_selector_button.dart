@@ -76,7 +76,7 @@ class __ArticlesSelectorButtonState extends State<_ArticlesSelectorButton> {
     return GestureDetector(
       onTap: () {
         if (canInteract() && widget.options.route != null) {
-          _routeDriver.driveTo(widget.options.route!);
+          _routeDriver.drive(widget.options.route!);
         }
       },
       child: MouseRegion(

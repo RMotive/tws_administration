@@ -46,7 +46,7 @@ packages:
     description:
       path: "package/cosmos_foundation"
       ref: HEAD
-      resolved-ref: b395d642442fe526753a0136487f44a216600d88
+      resolved-ref: "2451c2d0da218430daf6d32293c81eab8a21e792"
       url: "https://github.com/RMotive/CMSF-Cosmos_Foundation"
     source: git
     version: "1.0.0"

@@ -77,7 +77,7 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
         onTap: widget.isCurrent
             ? null
             : () {
-                _routeDriver.driveTo(widget.options.route);
+                _routeDriver.drive(widget.options.route);
               },
         child: ColoredBox(
           color: stateTheme.background as Color,

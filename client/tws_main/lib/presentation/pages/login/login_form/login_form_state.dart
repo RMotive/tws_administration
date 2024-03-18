@@ -134,7 +134,7 @@ class _LoginFormState extends ChangeNotifier {
         try {
           _sessionStorage.storeSession(session);
           if (await _sessionStorage.isSession) {
-            _router.driveTo(KRoutes.loginPage);
+            _router.drive(KRoutes.loginPage);
           } else {
             _failureDisplay = "Invalid session to store";
           }
