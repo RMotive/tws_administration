@@ -22,6 +22,7 @@ class TWSDisplayFlat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeColorStruct errorStruct = getTheme<ThemeBase>().primaryErrorControlColorStruct;
+    Color baseColor = errorStruct.hlightColor;
 
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -29,9 +30,10 @@ class TWSDisplayFlat extends StatelessWidget {
       ),
       child: DecoratedBox(
         decoration: BoxDecoration(
+          color: baseColor.withOpacity(.3),
           border: Border.fromBorderSide(
             BorderSide(
-              color: errorStruct.hlightColor,
+              color: baseColor,
               width: 2,
             ),
           ),
@@ -50,6 +52,10 @@ class TWSDisplayFlat extends StatelessWidget {
                 child: Text(
                   display,
                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: errorStruct.onColor,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),

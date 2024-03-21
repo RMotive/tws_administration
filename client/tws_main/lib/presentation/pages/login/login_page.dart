@@ -71,6 +71,7 @@ class LoginPage extends CosmosPage {
                     alignment: isFullView ? WrapAlignment.spaceEvenly : WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: <Widget>[
+                      // --> Business decorator.
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: isFullView ? 0 : (itemSeparation + separatorDecoratorWidth),
@@ -79,6 +80,7 @@ class LoginPage extends CosmosPage {
                           child: _BusinessDecorator(),
                         ),
                       ),
+                      // --> Separator bar.
                       Visibility(
                         visible: isFullView,
                         child: const CosmosColorBox(

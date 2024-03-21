@@ -40,7 +40,7 @@ class DarkTheme extends ThemeBase {
           ),
           primaryErrorControlColorStruct: const ThemeColorStruct(
             Colors.transparent,
-            KColors.darkGrey,
+            KColors.smoothWine,
             KColors.deepWine,
           ),
           articlesLayoutSelectorButtonStruct: const StateControlThemeStruct(

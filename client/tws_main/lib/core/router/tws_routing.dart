@@ -17,6 +17,7 @@ final SessionStorage _sessionStorage = SessionStorage.instance;
 class TWSRouting extends CosmosRouting {
   TWSRouting()
       : super(
+          devRoute: KRoutes.securityPageFeaturesArticle,
           redirect: (_, __) async {
             if (!await _sessionStorage.isSession) return KRoutes.loginPage;
             return null;

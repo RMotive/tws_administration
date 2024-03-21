@@ -10,4 +10,5 @@ class KColors {
   static const Color oceanBlueH = Color(0x8804548c);
 
   static const Color deepWine = Color(0xff731015);
+  static const Color smoothWine = Color(0xffca524a);
 }
