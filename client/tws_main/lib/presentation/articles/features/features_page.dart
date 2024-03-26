@@ -7,32 +7,10 @@ class FeaturesArticle extends CosmosPage {
 
   @override
   Widget compose(BuildContext ctx, Size window) {
-    return LayoutBuilder(
-      builder: (_, BoxConstraints constraints) {
-        BoxConstraints pageBounds = constraints.tighten(height: constraints.minHeight);
-
-        return Row(
-          children: <Widget>[
-            Expanded(
-              child: SizedBox(
-                height: pageBounds.maxHeight,
-                child: const TWSArticleTable<void>(
-                  fields: <String>[
-                    'Name',
-                  ],
-                ),
-              ),
-            ),
-            ColoredBox(
-              color: Colors.green.shade900.withOpacity(.7),
-              child: SizedBox(
-                height: pageBounds.maxHeight,
-                width: 400,
-              ),
-            ),
-          ],
-        );
-      },
+    return const TWSArticleTable<void>(
+      fields: <String>[
+        'Name',
+      ],
     );
   }
 }

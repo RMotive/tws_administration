@@ -16,6 +16,9 @@ import 'package:tws_main/presentation/layouts/articles/article_options.dart';
 part 'selector/articles_layout_selector.dart';
 part 'selector/articles_layout_selector_button.dart';
 
+part 'actions_ribbon/actions_ribbon.dart';
+part 'actions_ribbon/action_ribbon_group.dart';
+
 part 'articles_layout_display.dart';
 
 typedef _CStruct = ThemeColorStruct;
@@ -57,7 +60,20 @@ class ArticlesLayout extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 /// --> Articles selection ribbon
-                _ArticlesSelector(articles, currentRoute),
+                SizedBox(
+                  height: 75,
+                  child: SpacingRow(
+                    spacing: 8,
+                    children: <Widget>[
+                      const Expanded(
+                        child: _ActionsRibbon(),
+                      ),
+                      Expanded(
+                        child: _ArticlesSelector(articles, currentRoute),
+                      ),
+                    ],
+                  ),
+                ),
 
                 /// --> Articles display section.
                 Expanded(
