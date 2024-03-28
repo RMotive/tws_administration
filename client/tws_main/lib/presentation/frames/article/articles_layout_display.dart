@@ -1,4 +1,4 @@
-part of 'articles_layout.dart';
+part of 'article_frame.dart';
 
 /// [Private] component.
 ///

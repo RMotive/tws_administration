@@ -6,7 +6,7 @@ import 'package:cosmos_foundation/models/outputs/route_output.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/router/k_routes.dart';
 import 'package:tws_main/domain/storage/session_storage.dart';
-import 'package:tws_main/presentation/articles/features/features_page.dart';
+import 'package:tws_main/presentation/articles/features/features_article.dart';
 import 'package:tws_main/presentation/layouts/master/master_layout.dart';
 import 'package:tws_main/presentation/pages/login/login_page.dart';
 import 'package:tws_main/presentation/pages/overview/overview_page.dart';
@@ -59,10 +59,7 @@ class TWSRouting extends CosmosRouting {
                     CosmosRouteNode(
                       KRoutes.securityPageFeaturesArticle,
                       pageBuild: (_, __) {
-                        return const SecurityPage(
-                          currentRoute: KRoutes.securityPageFeaturesArticle,
-                          article: FeaturesArticle(),
-                        );
+                        return const FeaturesArticle();
                       },
                     ),
                   ],

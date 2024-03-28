@@ -22,9 +22,9 @@ import 'package:tws_main/domain/repositories/tws_administration/templates/twsa_t
 import 'package:tws_main/domain/resolvers/twsa_resolver.dart';
 import 'package:tws_main/domain/storage/session_storage.dart';
 import 'package:tws_main/domain/storage/structures/session.dart';
-import 'package:tws_main/presentation/components/tws_button_flat.dart';
-import 'package:tws_main/presentation/components/tws_display_flat.dart';
-import 'package:tws_main/presentation/components/tws_input_text.dart';
+import 'package:tws_main/presentation/widgets/tws_button_flat.dart';
+import 'package:tws_main/presentation/widgets/tws_display_flat.dart';
+import 'package:tws_main/presentation/widgets/tws_input_text.dart';
 
 part 'business_decorator.dart';
 part 'login_form/login_form.dart';

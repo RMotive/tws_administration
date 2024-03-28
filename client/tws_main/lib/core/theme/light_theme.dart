@@ -52,5 +52,8 @@ class LightTheme extends ThemeBase {
               foreground: KColors.warmWhite,
             ),
           ),
+          articlesLayoutActionButtonStruct: const StateControlThemeStruct(
+            mainStruct: StandardThemeStruct(),
+          ),
         );
 }

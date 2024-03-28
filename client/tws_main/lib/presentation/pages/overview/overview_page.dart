@@ -3,8 +3,8 @@ import 'package:cosmos_foundation/foundation/components/cosmos_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tws_main/presentation/components/tws_display_flat.dart';
-import 'package:tws_main/presentation/components/tws_section.dart';
+import 'package:tws_main/presentation/widgets/tws_display_flat.dart';
+import 'package:tws_main/presentation/widgets/tws_section.dart';
 
 part 'current_trips_section/current_trips_section.dart';
 part 'current_trips_section/current_trips_table.dart';

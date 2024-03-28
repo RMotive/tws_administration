@@ -1,4 +1,4 @@
-part of '../articles_layout.dart';
+part of '../article_frame.dart';
 
 typedef States = CosmosControlStates;
 
@@ -32,7 +32,7 @@ class __ArticlesSelectorButtonState extends State<_ArticlesSelectorButton> {
   @override
   void initState() {
     super.initState();
-    currentState = widget.isCurrent ? States.selected : States.none; 
+    currentState = widget.isCurrent ? States.selected : States.none;
     gatColors();
   }
 

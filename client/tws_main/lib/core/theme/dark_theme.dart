@@ -71,5 +71,18 @@ class DarkTheme extends ThemeBase {
               foreground: KColors.warmWhite,
             ),
           ),
+          articlesLayoutActionButtonStruct: const StateControlThemeStruct(
+            mainStruct: StandardThemeStruct(
+              background: KColors.oceanBlue,
+              foreground: KColors.warmWhite,
+            ),
+            hoverStruct: StandardThemeStruct(
+              background: KColors.oceanBlueH,
+              foreground: Colors.white60,
+            ),
+            selectStruct: StandardThemeStruct(
+              background: KColors.oceanBlueH,
+            ),
+          ),
         );
 }

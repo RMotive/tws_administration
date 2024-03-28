@@ -13,6 +13,7 @@ abstract class ThemeBase extends CosmosThemeBase {
   final ThemeColorStruct primaryErrorControlColorStruct;
   final StateControlThemeStruct masterLayoutMenuButtonStruct;
   final StateControlThemeStruct articlesLayoutSelectorButtonStruct;
+  final StateControlThemeStruct articlesLayoutActionButtonStruct;
 
   /// [Optional] Custom theme struct for a Section component.
   final SectionThemeStruct? twsSectionStruct;
@@ -28,6 +29,7 @@ abstract class ThemeBase extends CosmosThemeBase {
     required this.primaryControlColorStruct,
     required this.masterLayoutMenuButtonStruct,
     required this.primaryErrorControlColorStruct,
+    required this.articlesLayoutActionButtonStruct,
     required this.primaryDisabledControlColorStruct,
     required this.articlesLayoutSelectorButtonStruct,
   });

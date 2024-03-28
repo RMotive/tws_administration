@@ -1,6 +1,6 @@
 import 'package:cosmos_foundation/foundation/simplifiers/colored_sizedbox.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/presentation/components/tws_display_flat.dart';
+import 'package:tws_main/presentation/widgets/tws_display_flat.dart';
 
 class TWSArticleTable<TArticle> extends StatefulWidget {
   final List<String> fields;
@@ -23,9 +23,12 @@ class _TWSArticleTableState<TArticle> extends State<TWSArticleTable<TArticle>> {
     return LayoutBuilder(
       builder: (_, BoxConstraints constrains) {
         final double detailsWidth = sltItem != null ? 400 : 0;
-        final BoxConstraints pageBounds = constrains.tighten(
-          height: constrains.minHeight,
-        );
+        BoxConstraints pageBounds = constrains;
+        if (!constrains.hasBoundedHeight) {
+          pageBounds = constrains.tighten(
+            height: constrains.minHeight,
+          );
+        }
 
         return Stack(
           children: <Widget>[
