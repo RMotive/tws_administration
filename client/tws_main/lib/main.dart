@@ -3,10 +3,10 @@ import 'package:cosmos_foundation/helpers/theme.dart';
 import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:tws_main/core/router/tws_routing.dart';
-import 'package:tws_main/core/theme/dark_theme.dart';
-import 'package:tws_main/core/theme/theme_base.dart';
-import 'package:tws_main/domain/storage/session_storage.dart';
+import 'package:tws_main/core/routes/tws_routing.dart';
+import 'package:tws_main/core/themes/dark_theme.dart';
+import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/data/storage/session_storage.dart';
 
 /// --> Flutter entry point.
 void main() {
