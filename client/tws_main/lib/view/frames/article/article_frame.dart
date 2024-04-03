@@ -1,17 +1,13 @@
-import 'package:cosmos_foundation/enumerators/cosmos_control_states.dart';
-import 'package:cosmos_foundation/enumerators/evaluators/cosmos_control_states_evaluator.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/colored_sizedbox.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/control_handler.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/spacing_row.dart';
-import 'package:cosmos_foundation/helpers/route_driver.dart';
-import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/models/options/route_options.dart';
-import 'package:cosmos_foundation/models/structs/standard_theme_struct.dart';
-import 'package:cosmos_foundation/models/structs/states_control_theme_struct.dart';
-import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
+import 'package:cosmos_foundation/common/common_module.dart';
+import 'package:cosmos_foundation/router/router_module.dart';
+import 'package:cosmos_foundation/theme/theme_module.dart';
+import 'package:cosmos_foundation/widgets/csm_color_box.dart';
+import 'package:cosmos_foundation/widgets/csm_pointer_handler.dart';
+import 'package:cosmos_foundation/widgets/csm_spacing_row.dart';
+import 'package:cosmos_foundation/widgets/enums/csm_states.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/constants/k_assets.dart';
-import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/actions/article_frame_actions_options.dart';
 import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
@@ -26,15 +22,15 @@ part 'actions/article_frame_actions_button.dart';
 
 part 'articles_layout_display.dart';
 
-typedef _CStruct = ThemeColorStruct;
-typedef _SCStruct = StateControlThemeStruct;
+typedef _CStruct = CSMColorThemeOptions;
+typedef _SCStruct = CSMStateThemeOptions;
 typedef _DrawEval = ({bool bar, bool actions, bool selector});
 
-final RouteDriver _routeDriver = RouteDriver.i;
+final CSMRouter _routeDriver = CSMRouter.i;
 
 class ArticleFrame extends StatelessWidget {
   final Widget? article;
-  final RouteOptions currentRoute;
+  final CSMRouteOptions currentRoute;
   final List<ArticleOptions> articlesOptions;
   final ActionRibbonOptions? actionsOptions;
 
@@ -90,7 +86,7 @@ class ArticleFrame extends StatelessWidget {
                   visible: drawEvaluation.bar,
                   child: SizedBox(
                     height: 75,
-                    child: SpacingRow(
+                    child: CSMSpacingRow(
                       spacing: 8,
                       children: <Widget>[
                         if (drawEvaluation.actions)

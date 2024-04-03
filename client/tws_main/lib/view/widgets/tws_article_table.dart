@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/foundation/simplifiers/colored_sizedbox.dart';
+import 'package:cosmos_foundation/widgets/csm_color_box.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/view/widgets/tws_display_flat.dart';
 
@@ -93,9 +93,9 @@ class _TWSArticleTableState<TArticle> extends State<TWSArticleTable<TArticle>> {
             Positioned(
               left: pageBounds.maxWidth - detailsWidth,
               child: Visibility(
-                child: CosmosColorBox(
+                child: CSMColorBox(
                   size: Size(detailsWidth, pageBounds.maxHeight),
-                  color: Colors.purple.withOpacity(.2),
+                  background: Colors.purple.withOpacity(.2),
                 ),
               ),
             ),

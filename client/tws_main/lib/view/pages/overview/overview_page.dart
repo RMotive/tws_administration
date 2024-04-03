@@ -1,5 +1,5 @@
-import 'package:cosmos_foundation/contracts/cosmos_page.dart';
-import 'package:cosmos_foundation/foundation/components/cosmos_table.dart';
+import 'package:cosmos_foundation/router/router_module.dart';
+import 'package:cosmos_foundation/widgets/csm_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -20,7 +20,7 @@ const BoxConstraints _floatSectionConstrains = BoxConstraints(
   minWidth: _maxFloatSectionWidth - 100,
 );
 
-class OverviewPage extends CosmosPage {
+class OverviewPage extends CSMPageBase {
   const OverviewPage({super.key});
 
   @override

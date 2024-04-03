@@ -5,7 +5,7 @@ part of '../article_frame.dart';
 /// Draws the article selection ribbon, that allows the user to select another article
 /// to work on.
 class _ArticlesSelector extends StatelessWidget {
-  final RouteOptions currentRoute;
+  final CSMRouteOptions currentRoute;
   final List<ArticleOptions> articles;
 
   /// [Private] component.
@@ -26,15 +26,15 @@ class _ArticlesSelector extends StatelessWidget {
   const _ArticlesSelector(this.articles, this.currentRoute);
 
   /// Asserts the disabled control theme color struct to ensure dependencies.
-  _CStruct asrDisabledStruct(ThemeBase theme) {
+  _CStruct asrDisabledStruct(TWSAThemeBase theme) {
     _CStruct struct = theme.primaryDisabledControlColorStruct;
 
-    assert(struct.onColorAlt != null, 'required theme prop');
+    assert(struct.foreAlt != null, 'required theme prop');
     return struct;
   }
 
   /// Asserts the primary control theme color struct to ensure dependencies.
-  _SCStruct asrStruct(ThemeBase theme) {
+  _SCStruct asrStruct(TWSAThemeBase theme) {
     _SCStruct struct = theme.articlesLayoutSelectorButtonStruct;
 
     return struct;
@@ -47,13 +47,13 @@ class _ArticlesSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBase theme = getTheme();
+    final TWSAThemeBase theme = getTheme();
     final _SCStruct struct = asrStruct(theme);
     final _CStruct disableStruct = asrDisabledStruct(theme);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: SpacingRow(
+      child: CSMSpacingRow(
         spacing: 8,
         children: <Widget>[
           for (ArticleOptions article in articles)

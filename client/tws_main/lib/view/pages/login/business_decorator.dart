@@ -5,7 +5,7 @@ class _BusinessDecorator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBase theme = getTheme<ThemeBase>();
+    final TWSAThemeBase theme = getTheme<TWSAThemeBase>();
 
     return Center(
       child: ConstrainedBox(

@@ -1,6 +1,6 @@
 part of '../master_layout.dart';
 
-final RouteDriver _routeDriver = RouteDriver.i;
+final CSMRouter _routeDriver = CSMRouter.i;
 
 class _MasterLayoutMenuButton extends StatefulWidget {
   final _MasterLayoutMenuButtonOptions options;
@@ -16,44 +16,44 @@ class _MasterLayoutMenuButton extends StatefulWidget {
 
 class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
   // --> Resources
-  late StateControlThemeStruct theme;
-  late StandardThemeStruct stateTheme;
+  late CSMStateThemeOptions theme;
+  late CSMGenericThemeOptions stateTheme;
 
   // --> State management
-  CosmosControlStates controlState = CosmosControlStates.none;
+  CSMStates controlState = CSMStates.none;
 
   void listenTheme() {
-    theme = getTheme<ThemeBase>().masterLayoutMenuButtonStruct;
-    assert(theme.hoverStruct != null, 'Uses hover state');
-    assert(theme.selectStruct != null, 'Uses select state');
-    stateTheme = evaluateThemeState(controlState, theme);
+    theme = getTheme<TWSAThemeBase>().masterLayoutMenuButtonStruct;
+    assert(theme.hovered != null, 'Uses hover state');
+    assert(theme.selected != null, 'Uses select state');
+    stateTheme = controlState.evaluateTheme(theme);
   }
 
-  void changeState(CosmosControlStates state) {
+  void changeState(CSMStates state) {
     setState(() {
       controlState = state;
-      stateTheme = evaluateThemeState(controlState, theme);
+      stateTheme = state.evaluateTheme(theme);
     });
   }
 
   @override
   void initState() {
     super.initState();
-    theme = getTheme<ThemeBase>(
+    theme = getTheme<TWSAThemeBase>(
       updateEfect: listenTheme,
     ).masterLayoutMenuButtonStruct;
-    assert(theme.hoverStruct != null, 'Uses hover state');
-    assert(theme.selectStruct != null, 'Uses select state');
+    assert(theme.hovered != null, 'Uses hover state');
+    assert(theme.selected != null, 'Uses select state');
 
     if (widget.isCurrent) {
-      controlState = CosmosControlStates.selected;
+      controlState = CSMStates.selected;
     }
-    stateTheme = evaluateThemeState(controlState, theme);
+    stateTheme = controlState.evaluateTheme(theme);
   }
 
   @override
   void dispose() {
-    disposeGetTheme(listenTheme);
+    disposeEffect(listenTheme);
     super.dispose();
   }
 
@@ -61,7 +61,7 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
   void didUpdateWidget(covariant _MasterLayoutMenuButton oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.isCurrent != widget.isCurrent && !widget.isCurrent) {
-      changeState(CosmosControlStates.none);
+      changeState(CSMStates.none);
     }
   }
 
@@ -70,8 +70,8 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
     final double foregroundSize = stateTheme.textStyle?.fontSize ?? 16;
 
     return MouseRegion(
-      onEnter: (_) => changeState(CosmosControlStates.hovered),
-      onExit: (_) => changeState(widget.isCurrent ? CosmosControlStates.selected : CosmosControlStates.none),
+      onEnter: (_) => changeState(CSMStates.hovered),
+      onExit: (_) => changeState(widget.isCurrent ? CSMStates.selected : CSMStates.none),
       cursor: widget.isCurrent ? MouseCursor.defer : SystemMouseCursors.click,
       child: GestureDetector(
         onTap: widget.isCurrent

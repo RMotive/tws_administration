@@ -1,11 +1,10 @@
-import 'package:cosmos_foundation/foundation/hooks/cosmos_app.dart';
-import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
+import 'package:cosmos_foundation/csm_application.dart';
+import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:tws_main/core/routes/tws_routing.dart';
-import 'package:tws_main/core/themes/dark_theme.dart';
-import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/core/router/tws_routing.dart';
+import 'package:tws_main/core/theme/twsa_theme_dark.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/data/storage/session_storage.dart';
 
 /// --> Flutter entry point.
@@ -23,12 +22,12 @@ class TWSAdministration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CosmosApp<ThemeBase>(
-      listenFrameSize: false,
-      defaultTheme: const DarkTheme(),
+    return CSMApplication<CSMThemeBase>(
+      listenFrame: false,
+      defaultTheme: const TWSAThemeDark(),
       routerConfig: TWSRouting(),
-      generalBuilder: (BuildContext context, Widget? home) {
-        ThemeColorStruct theme = getTheme<ThemeBase>().pageColorStruct;
+      builder: (BuildContext context, Widget? home) {
+        CSMColorThemeOptions theme = getTheme<TWSAThemeBase>().pageColorStruct;
         
         return DefaultTextStyle(
           style: const TextStyle(
@@ -36,7 +35,7 @@ class TWSAdministration extends StatelessWidget {
             fontSize: 16,
           ),
           child: ColoredBox(
-            color: theme.mainColor,
+            color: theme.main,
             child: home,
           ),
         );

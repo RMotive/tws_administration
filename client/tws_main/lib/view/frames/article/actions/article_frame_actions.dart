@@ -30,7 +30,7 @@ class _ArticleActions extends StatelessWidget {
                 horizontal: 8,
                 vertical: 4,
               ),
-              child: SpacingRow(
+              child: CSMSpacingRow(
                 spacing: 8,
                 children: <Widget>[
                   if (mtnOptions != null)

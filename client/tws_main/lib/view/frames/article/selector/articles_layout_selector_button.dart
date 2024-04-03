@@ -1,6 +1,6 @@
 part of '../article_frame.dart';
 
-typedef States = CosmosControlStates;
+typedef States = CSMStates;
 
 /// [Private] component.
 ///
@@ -45,7 +45,7 @@ class __ArticlesSelectorButtonState extends State<_ArticlesSelectorButton> {
   }
 
   void gatColors() {
-    StandardThemeStruct struct = evaluateThemeState(currentState, widget.stateStruct);
+    CSMGenericThemeOptions struct = currentState.evaluateTheme(widget.stateStruct);
     if (widget.enabled) {
       background = struct.background;
       foreground = struct.foreground;
@@ -53,8 +53,8 @@ class __ArticlesSelectorButtonState extends State<_ArticlesSelectorButton> {
       background = struct.background;
       foreground = struct.foreground;
     } else {
-      foreground = widget.disabledStruct.onColorAlt;
-      background = widget.disabledStruct.mainColor;
+      foreground = widget.disabledStruct.foreAlt;
+      background = widget.disabledStruct.main;
     }
   }
 
@@ -83,9 +83,9 @@ class __ArticlesSelectorButtonState extends State<_ArticlesSelectorButton> {
         cursor: canInteract() ? SystemMouseCursors.click : MouseCursor.defer,
         onEnter: (_) => changeState(States.hovered),
         onExit: (_) => changeState(States.none),
-        child: CosmosColorBox(
+        child: CSMColorBox(
           size: const Size(75, 75),
-          color: background ?? Colors.blueGrey.shade700,
+          background: background ?? Colors.blueGrey.shade700,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

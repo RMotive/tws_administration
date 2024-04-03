@@ -1,23 +1,14 @@
 import 'dart:ui';
-
-import 'package:cosmos_foundation/contracts/cosmos_layout.dart';
-import 'package:cosmos_foundation/enumerators/cosmos_control_states.dart';
-import "package:cosmos_foundation/enumerators/evaluators/cosmos_control_states_evaluator.dart";
-import 'package:cosmos_foundation/extensions/int_extension.dart';
-import 'package:cosmos_foundation/foundation/conditionals/responsive_view.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/spacing_column.dart';
-import 'package:cosmos_foundation/helpers/responsive.dart';
-import 'package:cosmos_foundation/helpers/route_driver.dart';
-import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/models/options/route_options.dart';
-import 'package:cosmos_foundation/models/outputs/route_output.dart';
-import 'package:cosmos_foundation/models/structs/clamp_ratio_constraints.dart';
-import 'package:cosmos_foundation/models/structs/standard_theme_struct.dart';
-import 'package:cosmos_foundation/models/structs/states_control_theme_struct.dart';
-import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
+import 'package:cosmos_foundation/common/common_module.dart';
+import 'package:cosmos_foundation/common/tools/csm_responsive.dart';
+import 'package:cosmos_foundation/router/router_module.dart';
+import 'package:cosmos_foundation/theme/theme_module.dart';
+import 'package:cosmos_foundation/widgets/csm_responsive_view.dart';
+import 'package:cosmos_foundation/widgets/csm_spacing_column.dart';
+import 'package:cosmos_foundation/widgets/enums/csm_states.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/routes/k_routes.dart';
-import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/core/router/twsa_k_routes.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/view/layouts/master/master_layout_menu/master_layout_menu_state.dart';
 
 part 'master_layout_menu/master_layout_menu.dart';
@@ -32,13 +23,13 @@ part 'master_layout_large.dart';
 const double _minMenuWidth = 175;
 const double _maxMenuWidth = 250;
 
-class MasterLayout extends CosmosLayout {
-  final RouteOutput routeOutput;
+class MasterLayout extends CSMLayoutBase {
+  final CSMRouterOutput rOutput;
 
   const MasterLayout({
     super.key,
     required super.page,
-    required this.routeOutput,
+    required this.rOutput,
   });
 
   @override
@@ -47,29 +38,29 @@ class MasterLayout extends CosmosLayout {
       _MasterLayoutMenuButtonOptions(
         label: 'Overview',
         icon: Icons.dashboard_outlined,
-        route: KRoutes.overviewPage,
+        route: TWSAKRoutes.overviewPage,
       ),
       _MasterLayoutMenuButtonOptions(
         label: 'Security',
         icon: Icons.security_outlined,
-        route: KRoutes.securityPage,
+        route: TWSAKRoutes.securityPage,
       )
     ];
 
-    return ResponsiveView(
+    return CSMResponsiveView(
       onLarge: _MasterLayoutLarge(
         buttons: buttons,
-        currentRoute: routeOutput.absolutePath,
+        currentRoute: rOutput.absolutePath,
         page: page,
       ),
       onMedium: _MasterLayoutSmall(
         page: page,
-        currentRoute: routeOutput.absolutePath,
+        currentRoute: rOutput.absolutePath,
         buttons: buttons,
       ),
       onSmall: _MasterLayoutSmall(
         page: page,
-        currentRoute: routeOutput.absolutePath,
+        currentRoute: rOutput.absolutePath,
         buttons: buttons,
       ),
     );

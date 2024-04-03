@@ -1,13 +1,13 @@
-import 'package:cosmos_foundation/models/options/route_options.dart';
+import 'package:cosmos_foundation/router/router_module.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/routes/k_routes.dart';
+import 'package:tws_main/core/router/twsa_k_routes.dart';
 import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/article_frame.dart';
 import 'package:tws_main/view/frames/article/article_options.dart';
 
 class SecurityFrame extends StatelessWidget {
   final Widget? article;
-  final RouteOptions currentRoute;
+  final CSMRouteOptions currentRoute;
   final ActionRibbonOptions? actionsOptions;
 
   const SecurityFrame({
@@ -27,7 +27,7 @@ class SecurityFrame extends StatelessWidget {
           color: stateColor,
         );
       },
-      route: KRoutes.securityPageFeaturesArticle,
+      route: TWSAKRoutes.securityPageFeaturesArticle,
       title: 'Features',
     ),
   ];

@@ -9,8 +9,8 @@ class _DriversTrackingTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CosmosTable<dynamic>(
-      samples: samples,
+    return CSMTable<dynamic>(
+      data: samples,
       buildHeaderCell: (String header) {
         return Text(
           header,

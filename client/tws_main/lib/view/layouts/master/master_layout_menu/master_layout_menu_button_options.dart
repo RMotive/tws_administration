@@ -3,7 +3,7 @@ part of '../master_layout.dart';
 class _MasterLayoutMenuButtonOptions {
   final String label;
   final IconData icon;
-  final RouteOptions route;
+  final CSMRouteOptions route;
 
   const _MasterLayoutMenuButtonOptions({
     required this.label,

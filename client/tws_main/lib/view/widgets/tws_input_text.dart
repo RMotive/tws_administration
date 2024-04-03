@@ -1,7 +1,6 @@
-import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
+import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
 /// TWS Business dedicated component
 ///
@@ -42,10 +41,10 @@ class _TWSInputTextState extends State<TWSInputText> {
   final double borderWidth = 2;
   late final TextEditingController ctrl;
   late final FocusNode fNode;
-  late final ThemeBase theme;
-  late final ThemeColorStruct colorStruct;
-  late final ThemeColorStruct disabledColorStruct;
-  late final ThemeColorStruct errorColorStruct;
+  late final TWSAThemeBase theme;
+  late final CSMColorThemeOptions colorStruct;
+  late final CSMColorThemeOptions disabledColorStruct;
+  late final CSMColorThemeOptions errorColorStruct;
 
   @override
   void initState() {
@@ -85,10 +84,10 @@ class _TWSInputTextState extends State<TWSInputText> {
           focusNode: fNode,
           cursorOpacityAnimates: true,
           cursorWidth: 3,
-          cursorColor: colorStruct.onColorAlt,
+          cursorColor: colorStruct.foreAlt,
           enabled: widget.isEnabled,
           style: TextStyle(
-            color: colorStruct.onColorAlt?.withOpacity(.7),
+            color: colorStruct.foreAlt?.withOpacity(.7),
           ),
           decoration: InputDecoration(
             hintText: widget.hint,
@@ -96,41 +95,41 @@ class _TWSInputTextState extends State<TWSInputText> {
             errorText: widget.errorText,
             isDense: true,
             labelStyle: TextStyle(
-              color: colorStruct.onColorAlt,
+              color: colorStruct.foreAlt,
             ),
             errorStyle: TextStyle(
-              color: errorColorStruct.onColor,
+              color: errorColorStruct.fore,
             ),
             hintStyle: TextStyle(
-              color: colorStruct.onColor,
+              color: colorStruct.fore,
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: colorStruct.hlightColor.withOpacity(.6),
+                color: colorStruct.highlight.withOpacity(.6),
                 width: borderWidth,
               ),
             ),
             disabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: disabledColorStruct.hlightColor,
+                color: disabledColorStruct.highlight,
                 width: borderWidth,
               ),
             ),
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: errorColorStruct.hlightColor.withOpacity(.7),
+                color: errorColorStruct.highlight.withOpacity(.7),
                 width: borderWidth,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: errorColorStruct.hlightColor,
+                color: errorColorStruct.highlight,
                 width: borderWidth,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: colorStruct.hlightColor,
+                color: colorStruct.highlight,
                 width: borderWidth,
               ),
             ),

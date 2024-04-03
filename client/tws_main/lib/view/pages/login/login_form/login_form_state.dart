@@ -15,7 +15,7 @@ class _LoginFormState extends ChangeNotifier {
   final SessionStorage _sessionStorage = SessionStorage.instance;
 
   /// Service to handle route driving.
-  final RouteDriver _router = RouteDriver.i;
+  final CSMRouter _router = CSMRouter.i;
 
   /// Service to handle [Security] operations with the business network services provider.
   final TWSASecurityServiceBase _service = twsaRepo.securityService;
@@ -24,10 +24,10 @@ class _LoginFormState extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey();
 
   /// Stores a control controllers struct to manage [Identity] control behavior
-  final ControlController identityControl = ControlController.genAll('login-form-identity-control');
+  final CSMInputHandlerOptions identityControl = CSMInputHandlerOptions.auto('login-form-identity-control');
 
   /// Stores a control controllers struct to manage [Password] control behavior
-  final ControlController passwordControl = ControlController.genAll('login-form-password-control');
+  final CSMInputHandlerOptions passwordControl = CSMInputHandlerOptions.auto('login-form-password-control');
 
   //* --> UI States <-- Properties used to indicate states
   /// Stores wheter the form is requesting to remote service.
@@ -135,7 +135,7 @@ class _LoginFormState extends ChangeNotifier {
         try {
           _sessionStorage.storeSession(session);
           if (await _sessionStorage.isSession) {
-            _router.drive(KRoutes.loginPage);
+            _router.drive(TWSAKRoutes.loginPage);
           } else {
             _failureDisplay = "Invalid session to store";
           }

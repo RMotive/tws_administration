@@ -1,8 +1,7 @@
-import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
+import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/themes/structs/section_theme_struct.dart';
-import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_main/core/theme/structs/section_theme_struct.dart';
 
 /// TWS Business component.
 ///
@@ -37,8 +36,8 @@ class TWSSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeBase theme = getTheme();
-    final ThemeColorStruct pageStruct = theme.pageColorStruct;
+    final TWSAThemeBase theme = getTheme();
+    final CSMColorThemeOptions pageStruct = theme.pageColorStruct;
     final SectionThemeStruct? sectionStruct = theme.twsSectionStruct;
 
     return Padding(
@@ -62,14 +61,14 @@ class TWSSection extends StatelessWidget {
                 child: Transform.translate(
                   offset: const Offset(0, -35),
                   child: ColoredBox(
-                    color: pageStruct.mainColor,
+                    color: pageStruct.main,
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Text(
                         title,
                         style: sectionStruct?.titleStyle ??
                             TextStyle(
-                              color: pageStruct.onColor,
+                              color: pageStruct.fore,
                               fontSize: 18,
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w600,

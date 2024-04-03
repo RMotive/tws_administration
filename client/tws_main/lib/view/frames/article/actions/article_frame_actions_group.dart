@@ -11,7 +11,7 @@ class _ArticleActionsGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final StateControlThemeStruct actionStruct = getTheme<ThemeBase>().articlesLayoutActionButtonStruct;
+    final CSMStateThemeOptions actionStruct = getTheme<TWSAThemeBase>().articlesLayoutActionButtonStruct;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,9 +25,9 @@ class _ArticleActionsGroup extends StatelessWidget {
               }
 
               final double actionSize = actionBounds.maxHeight - 4;
-              return SpacingRow(
+              return CSMSpacingRow(
                 spacing: 8,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   for (ArticleFrameActionsOptions action in actions)
                     _ArticleFrameActionsButton(

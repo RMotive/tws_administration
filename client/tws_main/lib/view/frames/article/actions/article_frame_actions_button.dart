@@ -1,7 +1,7 @@
 part of '../article_frame.dart';
 
 class _ArticleFrameActionsButton extends StatefulWidget {
-  final StateControlThemeStruct struct;
+  final CSMStateThemeOptions struct;
   final ArticleFrameActionsOptions options;
   final double size;
   const _ArticleFrameActionsButton({
@@ -21,9 +21,9 @@ class _ArticleFrameActionsButtonState extends State<_ArticleFrameActionsButton> 
   // --> State resources
   late Color background;
   late Color foreground;
-  CosmosControlStates controlState = CosmosControlStates.none;
+  CSMStates controlState = CSMStates.none;
 
-  void changeState(CosmosControlStates state) {
+  void changeState(CSMStates state) {
     setState(() {
       controlState = state;
       evaluateTheme();
@@ -31,7 +31,7 @@ class _ArticleFrameActionsButtonState extends State<_ArticleFrameActionsButton> 
   }
 
   void evaluateTheme() {
-    StandardThemeStruct evalStruct = evaluateThemeState(controlState, widget.struct);
+    CSMGenericThemeOptions evalStruct = controlState.evaluateTheme(widget.struct);
     background = evalStruct.background ?? _kBackground;
     foreground = evalStruct.foreground ?? _kForeground;
   }
@@ -56,15 +56,15 @@ class _ArticleFrameActionsButtonState extends State<_ArticleFrameActionsButton> 
   Widget build(BuildContext context) {
     return Tooltip(
       message: widget.options.tooltip,
-      child: ControlHandler(
-        cursor: controlState == CosmosControlStates.hovered ? SystemMouseCursors.click : MouseCursor.defer,
+      child: CSMPointerHandler(
+        cursor: controlState == CSMStates.hovered ? SystemMouseCursors.click : MouseCursor.defer,
         onHover: (bool hover) {
-          changeState(controlState = hover ? CosmosControlStates.hovered : CosmosControlStates.none);
+          changeState(controlState = hover ? CSMStates.hovered : CSMStates.none);
         },
         onClick: widget.options.action,
-        child: CosmosColorBox(
+        child: CSMColorBox(
           size: Size.square(widget.size),
-          color: background,
+          background: background,
           child: Center(
             child: SizedBox(
               height: widget.size,

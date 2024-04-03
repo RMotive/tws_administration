@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/models/options/route_options.dart';
+import 'package:cosmos_foundation/router/router_module.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/view/frames/article/article_frame.dart';
 import 'package:tws_main/view/frames/article/article_options.dart';
@@ -16,7 +16,7 @@ class IntroductionFrame extends StatelessWidget {
   Widget build(BuildContext context) {
     return ArticleFrame(
       articlesOptions: articles,
-      currentRoute: const RouteOptions(''),
+      currentRoute: const CSMRouteOptions(''),
       article: content,
     );
   }

@@ -1,17 +1,14 @@
 import 'dart:typed_data';
 
-import 'package:cosmos_foundation/contracts/cosmos_page.dart';
-import 'package:cosmos_foundation/extensions/int_extension.dart';
-import 'package:cosmos_foundation/extensions/string_extension.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/colored_sizedbox.dart';
-import 'package:cosmos_foundation/foundation/simplifiers/spacing_column.dart';
-import 'package:cosmos_foundation/helpers/route_driver.dart';
-import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/models/structs/control_controller.dart';
+import 'package:cosmos_foundation/common/common_module.dart';
+import 'package:cosmos_foundation/router/router_module.dart';
+import 'package:cosmos_foundation/theme/theme_module.dart';
+import 'package:cosmos_foundation/widgets/csm_color_box.dart';
+import 'package:cosmos_foundation/widgets/csm_spacing_row.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/constants/k_common_displays.dart';
-import 'package:tws_main/core/routes/k_routes.dart';
-import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/core/router/twsa_k_routes.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/data/repositories/repositories.dart';
 import 'package:tws_main/data/repositories/tws_administration/contracts/twsa_security_service_base.dart';
 import 'package:tws_main/data/repositories/tws_administration/services/inputs/init_session_input.dart';
@@ -30,7 +27,7 @@ part 'business_decorator.dart';
 part 'login_form/login_form.dart';
 part 'login_form/login_form_state.dart';
 
-class LoginPage extends CosmosPage {
+class LoginPage extends CSMPageBase {
   const LoginPage({super.key});
 
   @override
@@ -83,9 +80,9 @@ class LoginPage extends CosmosPage {
                       // --> Separator bar.
                       Visibility(
                         visible: isFullView,
-                        child: const CosmosColorBox(
+                        child: const CSMColorBox(
                           size: Size(separatorDecoratorWidth, separatorHeight),
-                          color: Colors.grey,
+                          background: Colors.grey,
                         ),
                       ),
                       Padding(

@@ -1,7 +1,6 @@
-import 'package:cosmos_foundation/helpers/theme.dart';
-import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
+import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
 class TWSDisplayFlat extends StatelessWidget {
   final String display;
@@ -21,8 +20,8 @@ class TWSDisplayFlat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeColorStruct errorStruct = getTheme<ThemeBase>().primaryErrorControlColorStruct;
-    Color baseColor = errorStruct.hlightColor;
+    CSMColorThemeOptions errorStruct = getTheme<TWSAThemeBase>().primaryErrorControlColorStruct;
+    Color baseColor = errorStruct.highlight;
 
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -53,7 +52,7 @@ class TWSDisplayFlat extends StatelessWidget {
                   display,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: errorStruct.onColor,
+                    color: errorStruct.fore,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

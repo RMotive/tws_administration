@@ -5,11 +5,11 @@ class _MasterLayoutHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeColorStruct themeStruct = getTheme<ThemeBase>().masterLayoutStruct;
+    final CSMColorThemeOptions themeStruct = getTheme<TWSAThemeBase>().masterLayoutStruct;
     final MasterLayoutMenuState masterLayoutMenu = masterLayoutMenuState;
 
     return ColoredBox(
-      color: themeStruct.mainColor,
+      color: themeStruct.main,
       child: SizedBox(
         height: 50,
         child: Row(
@@ -28,7 +28,7 @@ class _MasterLayoutHeader extends StatelessWidget {
                     },
                     child: Icon(
                       Icons.menu,
-                      color: themeStruct.onColor,
+                      color: themeStruct.fore,
                     ),
                   ),
                 ),

@@ -1,86 +1,84 @@
-import 'package:cosmos_foundation/models/structs/standard_theme_struct.dart';
-import 'package:cosmos_foundation/models/structs/states_control_theme_struct.dart';
-import 'package:cosmos_foundation/models/structs/theme_color_struct.dart';
+import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/constants/k_assets.dart';
 import 'package:tws_main/core/constants/k_colors.dart';
-import 'package:tws_main/core/themes/theme_base.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
-class DarkTheme extends ThemeBase {
-  static const String identifier = 'dark-flat-theme';
+final class TWSAThemeDark extends TWSAThemeBase {
+  static const String kIdentifier = 'dark-flat-theme';
 
-  const DarkTheme()
+  const TWSAThemeDark()
       : super(
-          identifier,
+          kIdentifier,
           loginLogo: KAssets.fullLogoWhiteWebp,
           masterLayoutMenuLogo: KAssets.wideLogoBlackWebp,
-          frameListenerColor: KColors.warmWhite,
-          masterLayoutStruct: const ThemeColorStruct(
+          frame: KColors.warmWhite,
+          masterLayoutStruct: const CSMColorThemeOptions(
             KColors.oceanBlue,
             KColors.warmWhite,
             Colors.transparent,
           ),
-          pageColorStruct: const ThemeColorStruct(
+          pageColorStruct: const CSMColorThemeOptions(
             KColors.lightDark,
             KColors.warmWhite,
             KColors.oceanBlue,
-            onColorAlt: KColors.darkGrey,
+            foreAlt: KColors.darkGrey,
           ),
-          primaryControlColorStruct: const ThemeColorStruct(
+          primaryControlColorStruct: const CSMColorThemeOptions(
             KColors.oceanBlue,
             KColors.darkGrey,
             KColors.oceanBlue,
-            onColorAlt: KColors.warmWhite,
+            foreAlt: KColors.warmWhite,
           ),
-          primaryDisabledControlColorStruct: const ThemeColorStruct(
+          primaryDisabledControlColorStruct: const CSMColorThemeOptions(
             KColors.darkGrey,
             KColors.darkGrey,
             KColors.darkGrey,
-            onColorAlt: KColors.warmWhite,
+            foreAlt: KColors.warmWhite,
           ),
-          primaryErrorControlColorStruct: const ThemeColorStruct(
+          primaryErrorControlColorStruct: const CSMColorThemeOptions(
             Colors.transparent,
             Color.fromARGB(255, 208, 136, 130),
             KColors.smoothWine,
           ),
-          articlesLayoutSelectorButtonStruct: const StateControlThemeStruct(
-            mainStruct: StandardThemeStruct(
+          articlesLayoutSelectorButtonStruct: const CSMStateThemeOptions(
+            main: CSMGenericThemeOptions(
               background: KColors.oceanBlue,
               foreground: KColors.warmWhite,
             ),
-            hoverStruct: StandardThemeStruct(
+            hoverStruct: CSMGenericThemeOptions(
               background: KColors.oceanBlueH,
             ),
-            selectStruct: StandardThemeStruct(
+            selectStruct: CSMGenericThemeOptions(
               background: KColors.oceanBlueH,
             ),
           ),
-          masterLayoutMenuButtonStruct: const StateControlThemeStruct(
-            mainStruct: StandardThemeStruct(
+          masterLayoutMenuButtonStruct: const CSMStateThemeOptions(
+            main: CSMGenericThemeOptions(
               background: Colors.transparent,
               foreground: KColors.warmWhite,
               textStyle: TextStyle(
                 fontSize: 14,
               ),
             ),
-            hoverStruct: StandardThemeStruct(
+            hoverStruct: CSMGenericThemeOptions(
               background: Colors.white10,
             ),
-            selectStruct: StandardThemeStruct(
+            selectStruct: CSMGenericThemeOptions(
               background: Colors.white10,
               foreground: KColors.warmWhite,
             ),
           ),
-          articlesLayoutActionButtonStruct: const StateControlThemeStruct(
-            mainStruct: StandardThemeStruct(
+          articlesLayoutActionButtonStruct: const CSMStateThemeOptions(
+            main: CSMGenericThemeOptions(
               background: KColors.oceanBlue,
               foreground: KColors.warmWhite,
             ),
-            hoverStruct: StandardThemeStruct(
+            hoverStruct: CSMGenericThemeOptions(
               background: KColors.oceanBlueH,
               foreground: Colors.white60,
             ),
-            selectStruct: StandardThemeStruct(
+            selectStruct: CSMGenericThemeOptions(
               background: KColors.oceanBlueH,
             ),
           ),

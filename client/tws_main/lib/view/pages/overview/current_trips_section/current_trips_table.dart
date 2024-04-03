@@ -7,7 +7,7 @@ class _CurrentTripsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CosmosTable<dynamic>(
+    return CSMTable<dynamic>(
       headers: const <String>[
         'Customer',
         'Origin',
