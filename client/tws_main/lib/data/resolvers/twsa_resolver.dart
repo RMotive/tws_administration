@@ -1,11 +1,10 @@
-import 'package:cosmos_foundation/alias/aliases.dart';
-import 'package:cosmos_foundation/contracts/bases/service_resolver_base.dart';
-import 'package:cosmos_foundation/helpers/advisor.dart';
+import 'package:cosmos_foundation/common/common_module.dart';
+import 'package:cosmos_foundation/server/bases/csm_service_resolver_base.dart';
 import 'package:http/http.dart';
 import 'package:tws_main/data/repositories/tws_administration/templates/twsa_failure.dart';
 import 'package:tws_main/data/repositories/tws_administration/templates/twsa_template.dart';
 
-class TWSAResolver<TSuccess> extends ServiceResolverBase<TSuccess> {
+class TWSAResolver<TSuccess> extends CSMServiceResolverBase<TSuccess> {
   TWSAResolver(super.operationResult, {required super.factory});
 
   void resolve(
@@ -16,11 +15,11 @@ class TWSAResolver<TSuccess> extends ServiceResolverBase<TSuccess> {
     required void Function(TWSATemplate<TSuccess> success) onSuccess,
     void Function()? onFinally,
   }) {
-    const Advisor advisor = Advisor("twsa resolver");
+    const CSMAdvisor advisor = CSMAdvisor("twsa resolver");
 
-    operationResult.resolve(
+    result.resolve(
       (JObject jSuccess) {
-        advisor.adviseSuccess(
+        advisor.success(
           'Communication success',
           info: jSuccess,
         );
@@ -32,7 +31,7 @@ class TWSAResolver<TSuccess> extends ServiceResolverBase<TSuccess> {
         onSuccess(templateWithSuccess);
       },
       (JObject jFailure, int statusCode) {
-        advisor.adviseWarning(
+        advisor.warning(
           'Communication failure',
           info: jFailure,
         );
@@ -44,7 +43,7 @@ class TWSAResolver<TSuccess> extends ServiceResolverBase<TSuccess> {
         onFailure(templateWithFailure, statusCode);
       },
       (Object exception, StackTrace trace) {
-        advisor.adviseException(
+        advisor.exception(
           'Communication critical exception',
           exception as Exception,
           trace,

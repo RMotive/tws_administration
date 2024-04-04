@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cosmos_foundation/contracts/bases/model_base.dart';
 
 typedef JSON = Map<String, dynamic>;
 
-class InitSessionInput extends ModelBase {
+class InitSessionInput {
   final String identity;
   final Uint8List password;
 
@@ -14,7 +13,6 @@ class InitSessionInput extends ModelBase {
     return InitSessionInput(json['Identity'], json['Password']);
   }
 
-  @override
   JSON toJson() {
     return <String, dynamic>{
       'Identity': identity,

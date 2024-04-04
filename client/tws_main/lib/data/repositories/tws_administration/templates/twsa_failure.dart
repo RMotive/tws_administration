@@ -1,9 +1,7 @@
-import 'package:cosmos_foundation/alias/aliases.dart';
-import 'package:cosmos_foundation/contracts/bases/model_base.dart';
-import 'package:cosmos_foundation/extensions/jobject.dart';
+import 'package:cosmos_foundation/common/common_module.dart';
 import 'package:tws_main/data/repositories/tws_administration/structures/situation.dart';
 
-class TWSAFailure extends ModelBase {
+class TWSAFailure {
   final String message;
   final JObject failure;
   final Situation situation;
@@ -20,7 +18,6 @@ class TWSAFailure extends ModelBase {
     return TWSAFailure(message, failure, situation);
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{};
   }

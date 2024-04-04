@@ -1,9 +1,7 @@
-import 'package:cosmos_foundation/alias/aliases.dart';
-import 'package:cosmos_foundation/contracts/bases/model_base.dart';
-import 'package:cosmos_foundation/extensions/jobject.dart';
+import 'package:cosmos_foundation/common/common_module.dart';
 import 'package:tws_main/data/repositories/tws_administration/services/outputs/init_session_output.dart';
 
-class Session implements ModelBase {
+class Session {
   final String token;
   final bool wildcard;
   final List<int> features;
@@ -28,8 +26,7 @@ class Session implements ModelBase {
     DateTime expiration = output.expiration;
     return Session(token, wildcard, features, expiration, output.expirationLocal);
   }
-
-  @override
+  
   JObject toJson() {
     return <String, dynamic>{
       'token': token,

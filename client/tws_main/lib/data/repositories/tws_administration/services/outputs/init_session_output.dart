@@ -1,5 +1,4 @@
-import 'package:cosmos_foundation/alias/aliases.dart';
-import 'package:cosmos_foundation/extensions/jobject.dart';
+import 'package:cosmos_foundation/common/common_module.dart';
 
 class InitSessionOutput {
   final String token;

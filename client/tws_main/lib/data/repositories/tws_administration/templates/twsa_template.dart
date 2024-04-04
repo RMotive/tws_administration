@@ -1,8 +1,6 @@
-import 'package:cosmos_foundation/alias/aliases.dart';
-import 'package:cosmos_foundation/contracts/bases/model_base.dart';
-import 'package:cosmos_foundation/extensions/jobject.dart';
+import 'package:cosmos_foundation/common/common_module.dart';
 
-class TWSATemplate<T> extends ModelBase {
+class TWSATemplate<T> {
   final String tracer;
   final T estela;
 
@@ -14,7 +12,6 @@ class TWSATemplate<T> extends ModelBase {
     return TWSATemplate<T>(tracer, factory(estela));
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{};
   }
