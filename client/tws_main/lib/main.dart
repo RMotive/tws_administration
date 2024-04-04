@@ -3,8 +3,8 @@ import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:tws_main/core/router/tws_routing.dart';
-import 'package:tws_main/core/theme/twsa_theme_dark.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_main/core/theme/twsa_theme_dark.dart';
 import 'package:tws_main/data/storage/session_storage.dart';
 
 /// --> Flutter entry point.
