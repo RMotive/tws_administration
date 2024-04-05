@@ -10,11 +10,13 @@ class TWSButtonFlat extends StatelessWidget {
   final double? height;
   final String label;
   final bool showLoading;
+  final CSMColorThemeOptions? themeOptions;
   final Function() onTap;
 
   const TWSButtonFlat({
     super.key,
     this.width,
+    this.themeOptions,
     this.height = 40,
     this.label = 'Hello!',
     this.showLoading = false,
@@ -23,7 +25,7 @@ class TWSButtonFlat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CSMColorThemeOptions colorStruct = getTheme<TWSAThemeBase>().primaryControlColorStruct;
+    final CSMColorThemeOptions colorStruct = themeOptions ?? getTheme<TWSAThemeBase>().primaryControlColorStruct;
 
     Color bgStateColorize(StatesSet currentStates) {
       final Color hlightColor = colorStruct.highlight;

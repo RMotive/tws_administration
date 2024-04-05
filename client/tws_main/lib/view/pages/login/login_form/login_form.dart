@@ -12,7 +12,7 @@ class _LoginForm extends StatelessWidget {
         builder: (BuildContext ctx, Widget? widget) {
           return Form(
             key: state.formKey,
-            child: CSMSpacingRow(
+            child: CSMSpacingColumn(
               crossAlignment: CrossAxisAlignment.center,
               spacing: 24,
               children: <Widget>[

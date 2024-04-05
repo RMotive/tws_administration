@@ -27,7 +27,7 @@ class SecurityFrame extends StatelessWidget {
           color: stateColor,
         );
       },
-      route: TWSAKRoutes.securityPageFeaturesArticle,
+      route: TWSAKRoutes.featuresArticle,
       title: 'Features',
     ),
   ];

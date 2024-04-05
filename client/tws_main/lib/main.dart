@@ -2,15 +2,17 @@ import 'package:cosmos_foundation/csm_application.dart';
 import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:tws_main/core/router/tws_routing.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:tws_main/core/router/twsa_route_tree.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/core/theme/twsa_theme_dark.dart';
 import 'package:tws_main/data/storage/session_storage.dart';
 
 /// --> Flutter entry point.
-void main() {
+void main() async {
   usePathUrlStrategy();  
   /// --> Service initialize
+  await initLocalStorage();
   SessionStorage.instance;
   runApp(
     const TWSAdministration(),
@@ -25,7 +27,7 @@ class TWSAdministration extends StatelessWidget {
     return CSMApplication<CSMThemeBase>(
       listenFrame: false,
       defaultTheme: const TWSAThemeDark(),
-      routerConfig: TWSRouting(),
+      routerConfig: TWSARouteTree(),
       builder: (BuildContext context, Widget? home) {
         CSMColorThemeOptions theme = getTheme<TWSAThemeBase>().pageColorStruct;
         

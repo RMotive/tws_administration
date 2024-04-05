@@ -10,6 +10,6 @@ class TWSAKRoutes {
   static const CSMRouteOptions loginPage = CSMRouteOptions('/');
   static const CSMRouteOptions overviewPage = CSMRouteOptions('overview');
   static const CSMRouteOptions securityPage = CSMRouteOptions('security');
-  static const CSMRouteOptions securityPageFeaturesArticle = CSMRouteOptions('features');
-  static const CSMRouteOptions featuresCreateDialogTest = CSMRouteOptions('create');
+  static const CSMRouteOptions featuresArticle = CSMRouteOptions('features');
+  static const CSMRouteOptions featuresCreateWhisper = CSMRouteOptions('create');
 }

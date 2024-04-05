@@ -1,7 +1,7 @@
 import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/constants/k_assets.dart';
-import 'package:tws_main/core/constants/k_colors.dart';
+import 'package:tws_main/core/constants/twsa_assets.dart';
+import 'package:tws_main/core/constants/twsa_colors.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
 final class TWSAThemeDark extends TWSAThemeBase {
@@ -10,53 +10,53 @@ final class TWSAThemeDark extends TWSAThemeBase {
   const TWSAThemeDark()
       : super(
           kIdentifier,
-          loginLogo: KAssets.fullLogoWhiteWebp,
-          masterLayoutMenuLogo: KAssets.wideLogoBlackWebp,
-          frame: KColors.warmWhite,
+          loginLogo: TWSAAssets.fullLogoWhiteWebp,
+          masterLayoutMenuLogo: TWSAAssets.wideLogoBlackWebp,
+          frame: TWSAColors.warmWhite,
           masterLayoutStruct: const CSMColorThemeOptions(
-            KColors.oceanBlue,
-            KColors.warmWhite,
+            TWSAColors.oceanBlue,
+            TWSAColors.warmWhite,
             Colors.transparent,
           ),
           pageColorStruct: const CSMColorThemeOptions(
-            KColors.lightDark,
-            KColors.warmWhite,
-            KColors.oceanBlue,
-            foreAlt: KColors.darkGrey,
+            TWSAColors.lightDark,
+            TWSAColors.warmWhite,
+            TWSAColors.oceanBlue,
+            foreAlt: TWSAColors.darkGrey,
           ),
           primaryControlColorStruct: const CSMColorThemeOptions(
-            KColors.oceanBlue,
-            KColors.darkGrey,
-            KColors.oceanBlue,
-            foreAlt: KColors.warmWhite,
+            TWSAColors.oceanBlue,
+            TWSAColors.darkGrey,
+            TWSAColors.oceanBlue,
+            foreAlt: TWSAColors.warmWhite,
           ),
           primaryDisabledControlColorStruct: const CSMColorThemeOptions(
-            KColors.darkGrey,
-            KColors.darkGrey,
-            KColors.darkGrey,
-            foreAlt: KColors.warmWhite,
+            TWSAColors.darkGrey,
+            TWSAColors.darkGrey,
+            TWSAColors.darkGrey,
+            foreAlt: TWSAColors.warmWhite,
           ),
           primaryErrorControlColorStruct: const CSMColorThemeOptions(
             Colors.transparent,
             Color.fromARGB(255, 208, 136, 130),
-            KColors.smoothWine,
+            TWSAColors.smoothWine,
           ),
           articlesLayoutSelectorButtonStruct: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
-              background: KColors.oceanBlue,
-              foreground: KColors.warmWhite,
+              background: TWSAColors.oceanBlue,
+              foreground: TWSAColors.warmWhite,
             ),
             hoverStruct: CSMGenericThemeOptions(
-              background: KColors.oceanBlueH,
+              background: TWSAColors.oceanBlueH,
             ),
             selectStruct: CSMGenericThemeOptions(
-              background: KColors.oceanBlueH,
+              background: TWSAColors.oceanBlueH,
             ),
           ),
           masterLayoutMenuButtonStruct: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
               background: Colors.transparent,
-              foreground: KColors.warmWhite,
+              foreground: TWSAColors.warmWhite,
               textStyle: TextStyle(
                 fontSize: 14,
               ),
@@ -66,20 +66,20 @@ final class TWSAThemeDark extends TWSAThemeBase {
             ),
             selectStruct: CSMGenericThemeOptions(
               background: Colors.white10,
-              foreground: KColors.warmWhite,
+              foreground: TWSAColors.warmWhite,
             ),
           ),
           articlesLayoutActionButtonStruct: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
-              background: KColors.oceanBlue,
-              foreground: KColors.warmWhite,
+              background: TWSAColors.oceanBlue,
+              foreground: TWSAColors.warmWhite,
             ),
             hoverStruct: CSMGenericThemeOptions(
-              background: KColors.oceanBlueH,
+              background: TWSAColors.oceanBlueH,
               foreground: Colors.white60,
             ),
             selectStruct: CSMGenericThemeOptions(
-              background: KColors.oceanBlueH,
+              background: TWSAColors.oceanBlueH,
             ),
           ),
         );

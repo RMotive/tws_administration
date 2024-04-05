@@ -1,4 +1,4 @@
-final class KCommonDisplays {
+final class TWSAMessages {
   static const String kUnhandledFailureCode = "Unhandled failure code, please contact support";
   static const String kConnectionFailureDisplay = "Communication error, please contact support";
   static const String kUnexpectedErrorDisplay = "Critical unexpected error, please contact support";

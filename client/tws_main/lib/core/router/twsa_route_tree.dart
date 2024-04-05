@@ -3,26 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:tws_main/core/router/twsa_k_routes.dart';
 import 'package:tws_main/data/storage/session_storage.dart';
 import 'package:tws_main/view/articles/features/features_article.dart';
+import 'package:tws_main/view/articles/features/whispers/features_create_whisper.dart';
 import 'package:tws_main/view/layouts/master/master_layout.dart';
 import 'package:tws_main/view/pages/login/login_page.dart';
 import 'package:tws_main/view/pages/overview/overview_page.dart';
 import 'package:tws_main/view/pages/security/security_page.dart';
 
+typedef Routes = TWSAKRoutes;
+
 final SessionStorage _sessionStorage = SessionStorage.instance;
 
-class TWSRouting extends CSMRouterTreeBase {
-  TWSRouting()
+class TWSARouteTree extends CSMRouterTreeBase {
+  TWSARouteTree()
       : super(
+          devRoute: Routes.featuresCreateWhisper,
           redirect: (_, __) async {
-            if (!await _sessionStorage.isSession) return TWSAKRoutes.loginPage;
+            if (!await _sessionStorage.isSession) return Routes.loginPage;
             return null;
           },
           routes: <CSMRouteBase>[
             // --> [Login Page]
             CSMRouteNode(
-              TWSAKRoutes.loginPage,
+              Routes.loginPage,
               redirect: (_, __) async {
-                if (await _sessionStorage.isSession) return TWSAKRoutes.overviewPage;
+                if (await _sessionStorage.isSession) return Routes.overviewPage;
                 return null;
               },
               pageBuild: (_, __) => const LoginPage(),
@@ -38,25 +42,31 @@ class TWSRouting extends CSMRouterTreeBase {
               routes: <CSMRouteBase>[
                 // --> [Overview Page]
                 CSMRouteNode(
-                  TWSAKRoutes.overviewPage,
+                  Routes.overviewPage,
                   pageBuild: (_, __) => const OverviewPage(),
                 ),
                 // --> [Security Page]
                 CSMRouteNode(
-                  TWSAKRoutes.securityPage,
+                  Routes.securityPage,
                   pageBuild: (_, __) {
                     return const SecurityPage(
-                      currentRoute: TWSAKRoutes.securityPage,
+                      currentRoute: Routes.securityPage,
                     );
                   },
                   routes: <CSMRouteBase>[
                     // --> [Features]
                     CSMRouteNode(
-                      TWSAKRoutes.securityPageFeaturesArticle,
+                      Routes.featuresArticle,
                       pageBuild: (_, __) {
                         return const FeaturesArticle();
                       },
-                      routes: <CSMRouteBase>[],
+                      routes: <CSMRouteBase>[
+                        CSMRouteWhisper<Object>(
+                          Routes.featuresCreateWhisper,
+                          whisperOptions: const CSMRouteWhisperOptions(),
+                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const FeaturesCreateWhisper(),
+                        ),
+                      ],
                     ),
                   ],
                 )

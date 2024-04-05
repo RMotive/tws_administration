@@ -12,19 +12,11 @@ class FeaturesArticle extends CSMPageBase {
   @override
   Widget compose(BuildContext ctx, Size window) {
     return SecurityFrame(
-      currentRoute: TWSAKRoutes.securityPageFeaturesArticle,
+      currentRoute: TWSAKRoutes.featuresArticle,
       actionsOptions: ActionRibbonOptions(
         maintenanceGroupConfig: MaintenanceGroupOptions(
           onCreate: () {
-            showDialog(
-              context: ctx,
-              builder: (BuildContext context) {
-                return const ColoredBox(
-                  color: Colors.red,
-                  child: SizedBox(),
-                );
-              },
-            );
+            
           },
         ),
       ),

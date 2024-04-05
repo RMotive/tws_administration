@@ -1,4 +1,4 @@
-class KAssets {
+class TWSAAssets {
   static const String _dirAssets = "assets/";
   static const String _dirBusinessAssets = "$_dirAssets/business";
 

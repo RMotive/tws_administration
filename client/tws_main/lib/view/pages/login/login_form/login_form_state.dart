@@ -79,7 +79,7 @@ class _LoginFormState extends ChangeNotifier {
   /// (Render) Indicates the UI to display a failure related with state management and ends the request.
   void _wrongStateFailure() {
     _isRequesting = false;
-    _failureDisplay = KCommonDisplays.kStateManagementErrorDisplay;
+    _failureDisplay = TWSAMessages.kStateManagementErrorDisplay;
     notifyListeners();
   }
 
@@ -88,7 +88,7 @@ class _LoginFormState extends ChangeNotifier {
   /// Used to validate if the identity input is valid
   String? validateIdentityInput(String? content) {
     content ??= "";
-    if (content.isEmpty) return KCommonDisplays.kEmptyInputDisplay;
+    if (content.isEmpty) return TWSAMessages.kEmptyInputDisplay;
     return null;
   }
 
@@ -96,7 +96,7 @@ class _LoginFormState extends ChangeNotifier {
   /// Used to validate if the password input.
   String? validatePasswordInput(String? content) {
     content ??= "";
-    if (content.isEmpty) return KCommonDisplays.kEmptyInputDisplay;
+    if (content.isEmpty) return TWSAMessages.kEmptyInputDisplay;
     return null;
   }
 
@@ -115,8 +115,8 @@ class _LoginFormState extends ChangeNotifier {
     final TWSAResolver<InitSessionOutput> serviceResolver = await _service.initSession(operationInput);
     serviceResolver.resolve(
       InitSessionOutput.def(),
-      onConnectionFailure: () => _failureDisplay = KCommonDisplays.kConnectionFailureDisplay,
-      onException: (Object _, StackTrace __) => _failureDisplay = KCommonDisplays.kUnexpectedErrorDisplay,
+      onConnectionFailure: () => _failureDisplay = TWSAMessages.kConnectionFailureDisplay,
+      onException: (Object _, StackTrace __) => _failureDisplay = TWSAMessages.kUnexpectedErrorDisplay,
       onFailure: (TWSATemplate<TWSAFailure> failure, int status) {
         Situation situation = failure.estela.situation;
         switch (situation.code) {
@@ -127,7 +127,7 @@ class _LoginFormState extends ChangeNotifier {
           case 2: // --> Here we know represents password error
             _passwordFailure = situation.display;
           default:
-            _failureDisplay = KCommonDisplays.kUnhandledFailureCode;
+            _failureDisplay = TWSAMessages.kUnhandledFailureCode;
         }
       },
       onSuccess: (TWSATemplate<InitSessionOutput> success) async {

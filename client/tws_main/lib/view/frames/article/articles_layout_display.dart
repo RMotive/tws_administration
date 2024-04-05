@@ -33,7 +33,7 @@ class _ArticlesDisplay extends StatelessWidget {
                   opacity: .2,
                   child: Image(
                     image: AssetImage(
-                      KAssets.fullLogoWhitePng,
+                      TWSAAssets.fullLogoWhitePng,
                     ),
                     width: 325,
                   ),

@@ -40,7 +40,10 @@ class SessionStorage {
     isSession = Future<bool>(
       () async {
         if (_session != null) return true;
-        JObject? stored = jsonDecode(_storage.getItem(_kSessionItemStoreKey) ?? '');
+        String? storedValue = _storage.getItem(_kSessionItemStoreKey);
+        if (storedValue == null) return false;
+
+        JObject? stored = jsonDecode(storedValue);
         if (stored == null) {
           _advisor.warning('No session found');
           return false;

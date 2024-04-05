@@ -1,7 +1,7 @@
 import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/constants/k_assets.dart';
-import 'package:tws_main/core/constants/k_colors.dart';
+import 'package:tws_main/core/constants/twsa_assets.dart';
+import 'package:tws_main/core/constants/twsa_colors.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
 class TWSAThemeLight extends TWSAThemeBase {
@@ -10,34 +10,34 @@ class TWSAThemeLight extends TWSAThemeBase {
   const TWSAThemeLight()
       : super(
           kIdentifier,
-          loginLogo: KAssets.fullLogoBlackWebp,
-          masterLayoutMenuLogo: KAssets.wideLogoWhiteWebp,
-          frame: KColors.deepPurple,
+          loginLogo: TWSAAssets.fullLogoBlackWebp,
+          masterLayoutMenuLogo: TWSAAssets.wideLogoWhiteWebp,
+          frame: TWSAColors.deepPurple,
           masterLayoutStruct: const CSMColorThemeOptions(
             Colors.transparent,
             Colors.transparent,
             Colors.transparent,
           ),
           pageColorStruct: const CSMColorThemeOptions(
-            KColors.warmWhite,
-            KColors.deepPurple,
-            KColors.oceanBlue,
-            foreAlt: KColors.darkGrey,
+            TWSAColors.warmWhite,
+            TWSAColors.deepPurple,
+            TWSAColors.oceanBlue,
+            foreAlt: TWSAColors.darkGrey,
           ),
           primaryControlColorStruct: const CSMColorThemeOptions(
             Colors.transparent,
-            KColors.darkGrey,
-            KColors.oceanBlue,
-            foreAlt: KColors.deepPurple,
+            TWSAColors.darkGrey,
+            TWSAColors.oceanBlue,
+            foreAlt: TWSAColors.deepPurple,
           ),
           primaryDisabledControlColorStruct: const CSMColorThemeOptions(
             Colors.transparent,
-            KColors.darkGrey,
+            TWSAColors.darkGrey,
             Colors.red,
           ),
           primaryErrorControlColorStruct: const CSMColorThemeOptions(
             Colors.transparent,
-            KColors.darkGrey,
+            TWSAColors.darkGrey,
             Colors.red,
           ),
           articlesLayoutSelectorButtonStruct: const CSMStateThemeOptions(
@@ -46,7 +46,7 @@ class TWSAThemeLight extends TWSAThemeBase {
           masterLayoutMenuButtonStruct: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
               background: Colors.transparent,
-              foreground: KColors.warmWhite,
+              foreground: TWSAColors.warmWhite,
             ),
           ),
           articlesLayoutActionButtonStruct: const CSMStateThemeOptions(
