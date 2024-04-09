@@ -4,13 +4,13 @@ class _WhisperFooter extends StatelessWidget {
   static const double _actionsWidth = 125;
 
   final CSMColorThemeOptions pageTheme;
-  final bool trigger;
+  final VoidCallback? trigger;
   final bool closer;
   final VoidCallback? onClose;
   const _WhisperFooter({
     this.onClose,
+    this.trigger,
     required this.closer,
-    required this.trigger,
     required this.pageTheme,
   });
 
@@ -45,11 +45,11 @@ class _WhisperFooter extends StatelessWidget {
                 },
               ),
             // --> Trigger action button
-            if (trigger)
+            if (trigger != null)
               TWSButtonFlat(
                 label: 'Finish',
                 width: _actionsWidth,
-                onTap: () {},
+                onTap: () => trigger?.call(),
               ),
           ],
         ),

@@ -1,5 +1,7 @@
 part of '../login_page.dart';
 
+// TODO: Change this to the new feature from csm_foundation (V2.0.3) [CSMState] and [CSMStateHandler] and [CSMForm] with [CSMFormOptions]
+
 /// A class that handles and notifies state changes when is needed.
 ///
 /// State classes handles all behaviors and elements that are used by te UI but aren't explicit

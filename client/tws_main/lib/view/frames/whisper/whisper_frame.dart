@@ -2,11 +2,9 @@ import 'dart:ui';
 
 import 'package:cosmos_foundation/common/common_module.dart';
 import 'package:cosmos_foundation/common/tools/csm_responsive.dart';
-import 'package:cosmos_foundation/router/csm_router.dart';
 import 'package:cosmos_foundation/theme/theme_module.dart';
 import 'package:cosmos_foundation/widgets/csm_spacing_row.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/view/frames/whisper/options/whisper_frame_action_options.dart';
 import 'package:tws_main/view/widgets/tws_button_flat.dart';
@@ -19,7 +17,7 @@ typedef _ActionOptions = WhisperFrameActionOptions;
 class WhisperFrame extends StatelessWidget {
   final String title;
   final Widget child;
-  final bool trigger;
+  final void Function()? trigger;
   final bool closer;
   final VoidCallback? onClose;
   final List<WhisperFrameActionOptions> actions;
@@ -27,10 +25,10 @@ class WhisperFrame extends StatelessWidget {
   const WhisperFrame({
     super.key,
     this.onClose,
+    this.trigger,
     required this.title,
     required this.child,
     this.closer = true,
-    this.trigger = true,
     this.actions = const <_ActionOptions>[],
   });
 
@@ -73,13 +71,13 @@ class WhisperFrame extends StatelessWidget {
                             title: title,
                             pageTheme: pageTheme,
                           ),
+                          // --> Whisper content
+                          child,
                         ],
                       ),
                     ),
-                    // --> Whisper content
-
                     // --> Whisper footer
-                    if (actions.isNotEmpty || closer || !trigger)
+                    if (actions.isNotEmpty || closer || (trigger != null))
                       _WhisperFooter(
                         closer: closer,
                         trigger: trigger,

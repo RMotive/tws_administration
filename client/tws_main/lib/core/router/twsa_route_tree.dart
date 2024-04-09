@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tws_main/core/router/twsa_k_routes.dart';
 import 'package:tws_main/data/storage/session_storage.dart';
 import 'package:tws_main/view/articles/features/features_article.dart';
-import 'package:tws_main/view/articles/features/whispers/features_create_whisper.dart';
+import 'package:tws_main/view/articles/features/whispers/create/features_create_whisper.dart';
 import 'package:tws_main/view/layouts/master/master_layout.dart';
 import 'package:tws_main/view/pages/login/login_page.dart';
 import 'package:tws_main/view/pages/overview/overview_page.dart';
