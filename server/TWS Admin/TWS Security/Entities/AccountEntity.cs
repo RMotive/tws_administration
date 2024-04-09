@@ -1,0 +1,99 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+using Foundation.Contracts.Datasources.Bases;
+using Foundation.Enumerators.Exceptions;
+
+using Microsoft.IdentityModel.Tokens;
+
+using TWS_Security.Sets;
+
+namespace TWS_Security.Entities;
+/// <summary>
+///     Represents an Account entity based on a datasource set, works as an interface
+///     between bussines and datasource to create a soft validation entity.
+///     
+///     The account is used to represent a solution user, it is the mirror representation 
+///     of a logical solutions user, anything that have their own permits and information
+///     to use the bussines solution features.
+/// </summary>
+public class AccountEntity
+    : BEntity<Account, AccountEntity> {
+    /// <summary>
+    ///     Account user identification.
+    /// </summary>
+    /// 
+    [Required]
+    public string User { get; private set; }
+    /// <summary>
+    ///     CRITICAL Security key to identify the account
+    /// </summary>
+    [Required]
+    public byte[] Password { get; private set; }
+    /// <summary>
+    ///     Defines if the account has no-limit access and can use freely all the features.
+    /// </summary>
+    [Required]
+    public bool Wildcard { get; private set; }
+
+    /// <summary>
+    ///     Creates a new Account entity.
+    ///     
+    ///     The account entity repersents a data object with information 
+    ///     related to a solution account and with this validate permissions
+    ///     along the solutions.
+    /// </summary>
+    /// <param name="User">
+    ///     Account user identifier
+    /// </param>
+    /// <param name="Password">
+    ///     Account password sign 
+    /// </param>
+    public AccountEntity(string User, byte[] Password, bool Wildcard) {
+        this.User = User;
+        this.Password = Password;
+        this.Wildcard = Wildcard;
+    }
+    /// <summary>
+    ///     Creates a new Account entity.
+    ///     
+    ///     The account entity repersents a data object with information 
+    ///     related to a solution account and with this validate permissions
+    ///     along the solutions.
+    /// </summary>
+    /// <param name="Set">
+    ///     Set that represents this entity. The data will be populated from it.
+    /// </param>
+    public AccountEntity(Account Set) {
+        this.Pointer = Set.Id;
+        this.User = Set.User;
+        this.Password = Set.Password;
+        this.Wildcard = Set.Wildcard;
+    }
+
+    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
+        if (String.IsNullOrWhiteSpace(User))
+            Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmptyValue);
+        if (Password.IsNullOrEmpty())
+            Container.Add(nameof(Password), IntegrityFailureReasons.NullOrEmptyValue);
+        return Container;
+    }
+
+    protected override Account Generate() {
+        return new() {
+            Id = Pointer,
+            User = User,
+            Password = Password,
+        };
+    }
+
+    public override bool EqualsSet(Account Set) {
+        if (Pointer != Set.Id)
+            return false;
+        if (User != Set.User)
+            return false;
+        if (!Password.SequenceEqual(Set.Password))
+            return false;
+
+        return true;
+    }
+}

@@ -1,22 +1,27 @@
-﻿using Customer.Services;
-using Customer.Transactions.Requests;
+﻿using Customer;
+using Customer.Contracts.Services.Interfaces;
+using Customer.Models;
+
 using Microsoft.AspNetCore.Mvc;
 
-namespace Server.Controllers
-{
-    [Controller, Route("[Controller]")]
-    public class SecurityController : ControllerBase
-    {
-        private readonly SecurityService _service;
+namespace Server.Controllers;
 
-        public SecurityController(SecurityService service)
-        {
-            _service = service;
-        }
+/// <summary>
+///     Represents the controller to perform secutiry operations.
+/// </summary>
+[ApiController, Route("[controller]")]
+public class SecurityController
+    : ControllerBase {
+    private readonly ISecurityService Service;
 
-        [HttpPost("[Action]")]
-        public IActionResult PerformLogin([FromBody] PerformLoginRequest request)
-        => new OkObjectResult(_service.PerformLogin(request.ToInput()));
+    public SecurityController(ISecurityService service) {
+        Service = service;
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> InitSession([FromBody] AccountIdentityScheme accountIdentity) {
+        AccountIdentityModel RequestConvertedModel = accountIdentity.GenerateModel();
+        ForeignSessionModel OperationResult = await Service.InitSession(RequestConvertedModel);
+        return Ok(OperationResult);
     }
 }
-
