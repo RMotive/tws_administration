@@ -19,7 +19,7 @@ using SCodes = System.Net.HttpStatusCode;
 namespace Server.Quality.Tests.Middlewares;
 /// <summary>
 ///     Test class context.
-///     This test class tests the quality of the <seealso cref="FailuresMiddleware"/> implementation inside the server.
+///     This test class tests the quality of the <seealso cref="TemplatesMiddleware"/> implementation inside the server.
 /// </summary>
 public class Q_FailuresMiddleware {
     /// <summary>
@@ -54,11 +54,11 @@ public class Q_FailuresMiddleware {
                         jOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
                     });
                     services.AddRouting();
-                    services.AddSingleton<FailuresMiddleware>();
+                    services.AddSingleton<TemplatesMiddleware>();
                 });
                 webBuilder.Configure(app => {
                     app.UseRouting();
-                    app.UseMiddleware<FailuresMiddleware>();
+                    app.UseMiddleware<TemplatesMiddleware>();
                     app.UseEndpoints(endPoints => {
 
                         endPoints.MapGet(UNCGHT_EXCEPTION_ENDPOINT, () => {
@@ -72,7 +72,7 @@ public class Q_FailuresMiddleware {
             });
     }
     /// <summary>
-    ///     Tests if the <seealso cref="FailuresMiddleware"/> can successfully catch and parse uncaught system exceptions 
+    ///     Tests if the <seealso cref="TemplatesMiddleware"/> can successfully catch and parse uncaught system exceptions 
     ///     and return a cosmetic exception error.
     /// </summary>
     [Fact]
@@ -88,7 +88,7 @@ public class Q_FailuresMiddleware {
         Assert.NotEmpty(FailureExposure.Estela.Failure);
     }
     /// <summary>
-    ///     Tests if the <seealso cref="FailuresMiddleware"/> can successfully catch and parse caugth exceptions converted to BException
+    ///     Tests if the <seealso cref="TemplatesMiddleware"/> can successfully catch and parse caugth exceptions converted to BException
     ///     and return the cosmetic way.
     /// </summary>
     [Fact]

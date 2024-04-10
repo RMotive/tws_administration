@@ -1,17 +1,16 @@
 ﻿using Foundation.Exceptions.Datasources;
-
 using TWS_Security.Entities;
 using TWS_Security.Sets;
 
 using Xunit;
 
-namespace TWS_Security.Quality.Entities;
-public class Q_ProfileEntity {
+namespace TWS_Security.Quality.Unit.Sets;
+public class Q_Profile {
     private readonly Profile _setMock;
     private readonly ProfileEntity _entityMock;
     private readonly ProfileEntity _entityEmptyMock;
 
-    public Q_ProfileEntity() {
+    public Q_Profile() {
         _setMock = new() {
             Id = 1,
             Name = "testing profile name",
@@ -20,19 +19,20 @@ public class Q_ProfileEntity {
         _entityMock = new(_setMock);
         _entityEmptyMock = new("", null);
     }
-    [Fact]
-    public void BuildSet() {
-        Profile testFact = _entityMock.GenerateSet();
 
-        Assert.Equal(testFact.Id, _entityMock.Pointer);
-        Assert.Equal(testFact.Name, _entityMock.Name);
-        Assert.Equal(testFact.Description, _entityMock.Description);
-        Assert.Throws<XEntityIntegrity<Profile, ProfileEntity>>(new ProfileEntity("", null).GenerateSet);
+    [Fact]
+    public void BuildEntity() {
+        ProfileEntity testFact = _setMock.GenerateEntity();
+
+        Assert.Equal(testFact.Pointer, _setMock.Id);
+        Assert.Equal(testFact.Name, _setMock.Name);
+        Assert.Equal(testFact.Description, _setMock.Description);
+        Assert.Throws<XSetIntegrity<Profile, ProfileEntity>>(new Profile().GenerateEntity);
     }
     [Fact]
-    public void EvaluateSet() {
-        bool testFactSuccess = _entityMock.EqualsSet(_setMock);
-        bool testFactFailure = _entityEmptyMock.EqualsSet(_setMock);
+    public void EvaluateEntity() {
+        bool testFactSuccess = _setMock.EqualsEntity(_entityMock);
+        bool testFactFailure = _setMock.EqualsEntity(_entityEmptyMock);
 
         Assert.True(testFactSuccess);
         Assert.False(testFactFailure);

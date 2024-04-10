@@ -27,5 +27,5 @@ public class SessionModel
     }
 
     public ForeignSessionModel GeneratePublicDerivation()
-    => new(Token, Features, Account.Wildcard);
+    => new(Token, Features, Account.Wildcard, ExpirationTimemark);
 }

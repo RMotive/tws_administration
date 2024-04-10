@@ -14,7 +14,6 @@ public class AdvisorMiddleware
     public AdvisorMiddleware() { }
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next) {
-        Stream primaryBody = context.Response.Body;
         try {
             AdvisorManager.Announce(
                 $"Received server request from ({context.Connection.RemoteIpAddress}:{context.Connection.RemotePort})", 
@@ -22,28 +21,29 @@ public class AdvisorMiddleware
                     {"Tracer", context.TraceIdentifier }
                 }
             );
-            context.Request.EnableBuffering();
-            using MemoryStream memory = new();
-            context.Response.Body = memory;
+            Stream OriginalStream = context.Response.Body;
             await next(context);
-            memory.Position = 0;
-            JObject? responseContent = JsonSerializer.Deserialize<JObject>(memory); 
-            memory.Position = 0;
-            await memory.CopyToAsync(primaryBody);
-            if(responseContent != null && responseContent.TryGetValue("Estela", out dynamic? value)) {
-                JsonElement Estela = value;
-                JObject? EstelaObject = Estela.Deserialize<JObject>();
-                if (EstelaObject != null && EstelaObject.ContainsKey("Failure"))
-                    AdvisorManager.Warning($"Reques served with failure", responseContent);
-                else AdvisorManager.Success($"Request served successful", responseContent);
-            } else {
-                AdvisorManager.Success($"Request served successful", responseContent);
+            HttpResponse Response = context.Response;
+            if(!Response.HasStarted) {
+                Stream bufferStream = Response.Body;
+                JObject? responseContent = await JsonSerializer.DeserializeAsync<JObject>(bufferStream);
+                if (responseContent != null && responseContent.TryGetValue("Estela", out dynamic? value)) {
+                    JsonElement Estela = value;
+                    JObject? EstelaObject = Estela.Deserialize<JObject>();
+                    if (EstelaObject != null && EstelaObject.ContainsKey("Failure"))
+                        AdvisorManager.Warning($"Reques served with failure", responseContent);
+                    else AdvisorManager.Success($"Request served successful", responseContent);
+                } else {
+                    AdvisorManager.Success($"Request served successful", responseContent);
+                }
+
+                bufferStream.Seek(0, SeekOrigin.Begin);
+                await bufferStream.CopyToAsync(OriginalStream);
+                Response.Body = OriginalStream;
             }
         } catch (Exception XU) {
             XUndefined XCritical = new(XU);
             AdvisorManager.Exception(XCritical);
-        } finally {
-            context.Response.Body = primaryBody;
         }
     }
 }   

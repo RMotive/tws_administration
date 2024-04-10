@@ -5,6 +5,8 @@ using Foundation.Contracts.Modelling.Bases;
 using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Datasources;
 
+using IntegrityLacks = System.Collections.Generic.Dictionary<string, Foundation.Enumerators.Exceptions.IntegrityFailureReasons>;
+
 namespace Foundation.Contracts.Datasources.Bases;
 
 /// <summary>
@@ -28,13 +30,12 @@ public abstract class BEntity<TSet, TEntity>
     ///     The setter can only be handled by the entity operations.
     /// </summary>
     [Required]
-    public int Pointer { get; protected set; }
+    public int Pointer { get; init; }
 
     protected BEntity() {
         Pointer = 0;
     }
-    protected abstract Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container);
-    protected abstract TSet Generate();
+
     public abstract bool EqualsSet(TSet Set);
     /// <summary>
     ///     Tries to generate a MUTABLE live datasource set record that is allowed to interact
@@ -47,10 +48,42 @@ public abstract class BEntity<TSet, TEntity>
     ///     When the integrity check ran over integrity failures.
     /// </exception>
     public TSet GenerateSet() {
-        Dictionary<string, IntegrityFailureReasons> integrityFailureReasons = ValidateIntegrity([]);
+        IntegrityLacks integrityFailureReasons = ValidateIntegrity([]);
         if (integrityFailureReasons.Count > 0)
             throw new XEntityIntegrity<TSet, TEntity>(this, integrityFailureReasons);
 
         return Generate();
     }
+
+
+
+    #region Protected Methods
+
+    /// <summary>
+    ///     Validates the integrity of the <see cref="TEntity"/>.
+    ///     
+    ///     This collects possible integrity lacks along transaction between user -> server -> database, and database -> server -> user
+    /// </summary>
+    /// <param name="Container">
+    ///     Container to store the integrity lacks by property name and reason.
+    /// </param>
+    /// <returns>
+    ///      The Container of integrity lacks calculated by the Entity instance.
+    /// </returns>
+    protected abstract IntegrityLacks ValidateIntegrity(IntegrityLacks Container);
+
+    /// <summary>
+    ///     Generates the <see cref="TSet"/> base from <see cref="TEntity"/>.
+    ///     
+    ///     First validates the integrity calling <see cref="ValidateIntegrity(IntegrityLacks)"/> 
+    ///     if everything goes well builds the Set.
+    /// </summary>
+    /// <returns>
+    ///     <see cref="TSet"/>: Set concept base from Entity mirror concept.
+    /// </returns>
+    protected abstract TSet Generate();
+
+    #endregion
+
+
 }

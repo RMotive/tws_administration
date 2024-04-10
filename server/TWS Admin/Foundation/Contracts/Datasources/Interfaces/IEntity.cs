@@ -22,4 +22,5 @@ public interface IEntity<TSet>
 }
 
 public interface IEntity {
+    public int Pointer { get; }
 }
