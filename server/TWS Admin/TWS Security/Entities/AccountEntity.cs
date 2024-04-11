@@ -72,9 +72,9 @@ public class AccountEntity
 
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (String.IsNullOrWhiteSpace(User))
-            Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmpty);
         if (Password.IsNullOrEmpty())
-            Container.Add(nameof(Password), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(Password), IntegrityFailureReasons.NullOrEmpty);
         return Container;
     }
 

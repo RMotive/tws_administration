@@ -81,9 +81,9 @@ public class SolutionEntity
 
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (String.IsNullOrWhiteSpace(Name))
-            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmpty);
         if (String.IsNullOrWhiteSpace(Sign))
-            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmpty);
 
         return Container;
     }

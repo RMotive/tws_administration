@@ -15,7 +15,7 @@ public partial class Profile
 
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (String.IsNullOrWhiteSpace(Name))
-            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmpty);
 
         return Container;
     }

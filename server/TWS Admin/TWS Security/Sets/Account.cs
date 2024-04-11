@@ -20,9 +20,9 @@ public partial class Account
         if (Id <= 0)
             Container.Add(nameof(Id), IntegrityFailureReasons.LessOrEqualZero);
         if (String.IsNullOrWhiteSpace(User))
-            Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmpty);
         if (Password.IsNullOrEmpty())
-            Container.Add(nameof(Password), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(Password), IntegrityFailureReasons.NullOrEmpty);
 
         return Container;
     }

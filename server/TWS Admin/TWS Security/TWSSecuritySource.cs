@@ -11,7 +11,7 @@ namespace TWS_Security;
 public partial class TWSSecuritySource
     : DbContext {
     private readonly DatasourceConnectionModel ConnectionProperties;
-
+     
     public TWSSecuritySource() {
         ConnectionProperties = DatasourceConnectionManager.Load();
     }

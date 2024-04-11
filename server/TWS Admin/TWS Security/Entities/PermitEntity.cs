@@ -66,9 +66,9 @@ public class PermitEntity
 
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (String.IsNullOrWhiteSpace(Name))
-            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmpty);
         if (Solution <= 0)
-            Container.Add(nameof(Solution), IntegrityFailureReasons.requiredValidDependencyPointer);
+            Container.Add(nameof(Solution), IntegrityFailureReasons.DependencyPointer);
 
         return Container;
     }

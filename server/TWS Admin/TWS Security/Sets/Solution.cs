@@ -21,9 +21,9 @@ public partial class Solution
         if (Id <= 0)
             Container.Add(nameof(Id), IntegrityFailureReasons.LessOrEqualZero);
         if (String.IsNullOrEmpty(Name))
-            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmpty);
         if (String.IsNullOrEmpty(Sign))
-            Container.Add(nameof(Sign), IntegrityFailureReasons.NullOrEmptyValue);
+            Container.Add(nameof(Sign), IntegrityFailureReasons.NullOrEmpty);
 
         return Container;
     }
