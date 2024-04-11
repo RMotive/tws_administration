@@ -1,4 +1,6 @@
 ﻿using Foundation.Contracts.Datasources.Interfaces;
+using Foundation.Enumerators.Exceptions;
+using Foundation.Exceptions.Datasources;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -47,15 +49,27 @@ public abstract class BQ_Repository<TLive, TRepository, TEntity, TSet>
     protected abstract (TEntity[] Mocks, (TSet[] Sets, TEntity[] Entities) XMocks) InitMocks();
     protected abstract Task<(TSet[] Sets, TEntity[] Entities)> InitLiveMocks();
 
-    protected async void GenerateLiveMocks() {
+    protected async Task GenerateLiveMocks() {
         LiveMocks = await InitLiveMocks();
+    }
+
+    protected void UpdateLiveMocks(TSet[] Sets, TEntity[] Entities) {
+        LiveMocks = (Sets, Entities);
+    }
+
+
+    protected void Restore() {
+        Live.RemoveRange(LiveMocks.Sets);
+        Live.SaveChanges();
+
+        LiveMocks = ([], []);
     }
     protected void Restore(TSet Set) {
         Live.Remove(Set);
         Live.SaveChanges();
     }
     protected void Restore(TSet[] Sets) {
-        Live.Remove(Sets);
+        Live.RemoveRange(Sets);
         Live.SaveChanges();
     }
 
@@ -64,7 +78,7 @@ public abstract class BQ_Repository<TLive, TRepository, TEntity, TSet>
             .Set<TSet>()
             .Where(i => i.Id == Entity.Pointer)
             .FirstOrDefault()
-            ?? throw new Exception($"Item wasn't saved correctly {Identifier}");
+            ?? throw new XRecordUnfound<TRepository>($"nameof(Search) over {Identifier} ", Entity.Pointer, RecordSearchMode.ByPointer);
         return set;
     }
 

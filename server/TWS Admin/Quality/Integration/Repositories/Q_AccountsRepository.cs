@@ -6,7 +6,6 @@ using Foundation.Exceptions.Datasources;
 using Foundation.Managers;
 using Foundation.Records.Datasources;
 
-using Microsoft.EntityFrameworkCore;
 using TWS_Security.Entities;
 using TWS_Security.Quality.Contracts.Bases;
 using TWS_Security.Repositories;
@@ -18,14 +17,9 @@ using CriticalOperationResults = Foundation.Records.Datasources.CriticalOperatio
 using EntityReferenceResults = Foundation.Records.Datasources.OperationResults<TWS_Security.Entities.AccountEntity, TWS_Security.Entities.AccountEntity>;
 
 namespace TWS_Security.Quality.Integration.Repositories;
-public class Q_AccountsRepository 
+public class Q_AccountsRepository
     : BQ_Repository<TWSSecuritySource, AccountsRepository, AccountEntity, Account> {
     public Q_AccountsRepository() : base(new(), new()) { }
-    private void RemoveMocks(IEnumerable<Account> setMocks) {
-        Live.ChangeTracker.Clear();
-        Live.RemoveRange(setMocks);
-        Live.SaveChanges();
-    }
 
     protected override (AccountEntity[] Mocks, (Account[] Sets, AccountEntity[] Entities) XMocks) InitMocks() {
         AccountEntity[] mocks = [];
@@ -38,38 +32,43 @@ public class Q_AccountsRepository
         }
 
         AccountEntity[] entities = [];
-        Account[] sets = [];
+        Account[] sets = Array.Empty<Account>();
         for (int P = 0; P < 2; P++) {
             string RandomtString = RandomManager.String(12);
-            Account RecMock = new() {
+            Account set = new() {
                 Id = int.MaxValue - P,
                 User = RandomtString,
                 Password = Encoding.Unicode.GetBytes(RandomtString),
             };
-            sets[P] = RecMock;
-            entities[P] = RecMock.GenerateEntity();
+            AccountEntity entity = set.GenerateEntity();
+
+            sets = [.. sets, set];
+            entities = [.. entities, entity];
         }
 
         return (mocks, (sets, entities));
     }
 
     protected override async Task<(Account[] Sets, AccountEntity[] Entities)> InitLiveMocks() {
-        AccountEntity[] GeneratedEntities = [];
-        Account[] GeneratedRecords = [];
+        AccountEntity[] entities = [];
+        Account[] sets = [];
+
         for (int P = 0; P < 2; P++) {
-            string Randomed = RandomManager.String(7);
-            Account Record = new() {
-                User = Randomed,
-                Password = Encoding.ASCII.GetBytes(Randomed),
+            string random = RandomManager.String(7);
+            Account set = new() {
+                User = random,
+                Password = Encoding.ASCII.GetBytes(random),
             };
 
-            await Live.AddAsync(Record);
+            await Live.AddAsync(set);
             await Live.SaveChangesAsync();
             Live.ChangeTracker.Clear();
-            GeneratedRecords[P] = Record;
-            GeneratedEntities[P] = Record.GenerateEntity();
+            AccountEntity entity = set.GenerateEntity();
+
+            sets = [.. sets, set];
+            entities = [.. entities, entity];
         }
-        return (GeneratedRecords, GeneratedEntities);
+        return (sets, entities);
     }
 
     public override async void Create() {
@@ -156,10 +155,16 @@ public class Q_AccountsRepository
     public override async void Read() {
 
         #region Pre-Tests 
-        Account Set = Mocks[0].GenerateSet();
-        await Live.AddAsync(Set);
-        await Live.SaveChangesAsync();
-        AccountEntity mockEntity = Set.GenerateEntity();
+
+        (Account set, AccountEntity entity) mock;
+        {
+            Account set = Mocks[0].GenerateSet();
+            await Live.AddAsync(set);
+            await Live.SaveChangesAsync();
+            AccountEntity entity = set.GenerateEntity();
+
+            mock = (set, entity);
+        }
 
         #endregion 
 
@@ -167,13 +172,13 @@ public class Q_AccountsRepository
             CriticalOperationResults firstFact = await Repository.Read();
             CriticalOperationResults secondFact = await Repository.Read(Behavior: ReadingBehavior.First);
             CriticalOperationResults thirdFact = await Repository.Read(Behavior: ReadingBehavior.Last);
-            AccountEntity fourthFact = await Repository.Read(mockEntity.Pointer);
-            CriticalOperationResults fifthFact = await Repository.Read([mockEntity.Pointer, 1000000000]);
+            AccountEntity fourthFact = await Repository.Read(mock.entity.Pointer);
+            CriticalOperationResults fifthFact = await Repository.Read([mock.entity.Pointer, 1000000000]);
 
             #region First Fact Asserts (Reading all no filter) 
             Assert.Multiple([
                 () => Assert.NotEmpty(firstFact.Successes),
-                () => Assert.Contains(mockEntity, firstFact.Successes),
+                () => Assert.Contains(mock.entity, firstFact.Successes),
                 () => Assert.Empty(firstFact.Failures),
             ]);
             #endregion
@@ -232,7 +237,7 @@ public class Q_AccountsRepository
             #region Fourth Fact Asserts (Reading by pointer)
             Assert.Multiple([
                 () => Assert.True(fourthFact.Pointer > 0),
-                () => Assert.Equal(mockEntity, fourthFact),
+                () => Assert.Equal(mock.entity, fourthFact),
                 () => Assert.ThrowsAsync<XRecordUnfound<AccountsRepository>>(async () => await Repository.Read(1000000000)),
             ]);
             #endregion
@@ -247,7 +252,7 @@ public class Q_AccountsRepository
                 () => {
                     AccountEntity Successed = fifthFact.Successes[0];
                     Assert.True(Successed.Pointer > 0);
-                    Assert.Equal(mockEntity, Successed);
+                    Assert.Equal(mock.entity, Successed);
                 },
                 () => {
                     OperationFailure<Account> Failed = fifthFact.Failures[0];
@@ -260,7 +265,7 @@ public class Q_AccountsRepository
             #endregion
 
         } finally {
-            Restore(Set);
+            Restore(mock.set);
         }
     }
 
@@ -268,7 +273,7 @@ public class Q_AccountsRepository
         try {
             #region Pre-Tests
 
-            GenerateLiveMocks();
+            await GenerateLiveMocks();
             (Account Set, AccountEntity Entity) firstFactMocks;
             {
                 Account FirstFactSet = LiveMocks.Sets[0].Clone();
@@ -296,8 +301,14 @@ public class Q_AccountsRepository
 
             #region Second Fact (Asserts) [Updating an unexisting record with fallback] 
 
+
             Assert.Multiple([
-                () => LiveMocks.Sets[LiveMocks.Sets.Length] = secondFact.GenerateSet(),
+                () => {
+                    AccountEntity entity = secondFact;
+                    Account set = secondFact.GenerateSet();
+
+                    UpdateLiveMocks([.. LiveMocks.Sets, set], [.. LiveMocks.Entities, entity]);
+                },
                 () => Assert.True(secondFact.Pointer > 0),
                 () => Assert.Equal(secondFact.User, XMocks.Entities[0].User),
                 () => Assert.True(secondFact.Password.SequenceEqual(XMocks.Entities[0].Password)),
@@ -310,21 +321,29 @@ public class Q_AccountsRepository
                 cause that simple assertion is being checked up in the fifth assert line of the First Fact Asserts region
             */
         } finally {
-            Restore(LiveMocks.Sets);
+            Restore();
         }
     }
 
     public override async void Delete() {
+        #region Pre-Tests
+
+        await GenerateLiveMocks();
+
+        (Account set, AccountEntity entity) = (LiveMocks.Sets[0], LiveMocks.Entities[0]);
+
+        #endregion
         try {
-            await Repository.Delete(XMocks.Entities[0]);
+            await Repository.Delete(entity);
 
             #region First Fact (Asserts) [Deleting an existing record]
 
-            Assert.Null(Live.Accounts.Find(XMocks.Sets[0].Id));
-            
+            Assert.Throws<XRecordUnfound<AccountsRepository>>(() => Search(entity, ""));
+
             #endregion
         } finally {
-            if (Live.Accounts.Find(XMocks.Sets[0].Id) is not null) Restore(XMocks.Sets);
+            UpdateLiveMocks(LiveMocks.Sets[1..], LiveMocks.Entities[1..]);
+            Restore();
         }
     }
 }
