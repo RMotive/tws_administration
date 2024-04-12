@@ -1,4 +1,5 @@
-﻿using Foundation.Datasources.Sets;
+﻿using Foundation.Contracts.Datasources.Bases;
+using Foundation.Datasources.Sets;
 using Foundation.Managers;
 using Foundation.Models;
 
@@ -9,17 +10,12 @@ using TWS_Security.Sets;
 namespace TWS_Security;
 
 public partial class TWSSecuritySource
-    : DbContext {
-    private readonly DatasourceConnectionModel ConnectionProperties;
+    : BEntityFramework<TWSSecuritySource> {
 
-    public TWSSecuritySource() {
-        ConnectionProperties = DatasourceConnectionManager.Load();
-    }
+    public TWSSecuritySource() : base() { }
+    public TWSSecuritySource(DbContextOptions<TWSSecuritySource> Options) : base(Options) { }
 
-    public TWSSecuritySource(DbContextOptions<TWSSecuritySource> options)
-        : base(options) {
-        ConnectionProperties = DatasourceConnectionManager.Load();
-    }
+
 
     public virtual DbSet<Feature> Features { get; set; }
 
@@ -34,18 +30,6 @@ public partial class TWSSecuritySource
     public virtual DbSet<ProfilesPermit> ProfilesPermits { get; set; }
 
     public virtual DbSet<Solution> Solutions { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        string ConnectionString =
-            $"Server={ConnectionProperties.Host};" +
-            $"Database={ConnectionProperties.Database};" +
-            $"User={ConnectionProperties.User};" +
-            $"Password={ConnectionProperties.Password};" +
-            $"Encrypt={ConnectionProperties.Encrypted};";
-
-
-        optionsBuilder.UseSqlServer(ConnectionString);
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Account>(entity => {
