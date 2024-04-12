@@ -7,6 +7,5 @@ namespace TWS_Security.Repositories;
 public class AccountsRepository
     : BRepository<TWSSecuritySource, AccountsRepository, AccountEntity, Account> {
 
-    public AccountsRepository()
-        : base(new()) { }
+    public AccountsRepository() : base(new()) { }
 }

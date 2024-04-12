@@ -3,7 +3,7 @@ using TWS_Security.Sets;
 
 using Xunit;
 
-namespace TWS_Security.Quality.Entities;
+namespace TWS_Security.Quality.Unit.Entities;
 public class Q_SolutionEntity {
     private readonly Solution _setMock;
     private readonly SolutionEntity _entityMock;

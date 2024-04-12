@@ -8,16 +8,20 @@ using Microsoft.IdentityModel.Tokens;
 using TWS_Security.Sets;
 
 namespace TWS_Security.Entities;
+
+
 /// <summary>
-///     Represents an Account entity based on a datasource set, works as an interface
-///     between bussines and datasource to create a soft validation entity.
+///     Entity for [Account].
 ///     
-///     The account is used to represent a solution user, it is the mirror representation 
-///     of a logical solutions user, anything that have their own permits and information
-///     to use the bussines solution features.
+///     Defines the Entity concept mirror from a Set concept of [Account].
+///     
+///     [Account] concept: An account is the definition for a combination of solution login credentials, and
+///     preserved information.
 /// </summary>
 public class AccountEntity
     : BEntity<Account, AccountEntity> {
+    #region Properties
+
     /// <summary>
     ///     Account user identification.
     /// </summary>
@@ -35,12 +39,12 @@ public class AccountEntity
     [Required]
     public bool Wildcard { get; private set; }
 
+    #endregion
+
+    #region Constructors
+
     /// <summary>
-    ///     Creates a new Account entity.
-    ///     
-    ///     The account entity repersents a data object with information 
-    ///     related to a solution account and with this validate permissions
-    ///     along the solutions.
+    ///     Generates a new <see cref="AccountEntity"/>
     /// </summary>
     /// <param name="User">
     ///     Account user identifier
@@ -64,15 +68,17 @@ public class AccountEntity
     ///     Set that represents this entity. The data will be populated from it.
     /// </param>
     public AccountEntity(Account Set) {
-        this.Pointer = Set.Id;
-        this.User = Set.User;
-        this.Password = Set.Password;
-        this.Wildcard = Set.Wildcard;
+        Pointer = Set.Id;
+        User = Set.User;
+        Password = Set.Password;
+        Wildcard = Set.Wildcard;
     }
 
+    #endregion
+
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
-        if (String.IsNullOrWhiteSpace(User))
-            Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmpty);
+        if (string.IsNullOrWhiteSpace(User))
+            Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmptyValue);
         if (Password.IsNullOrEmpty())
             Container.Add(nameof(Password), IntegrityFailureReasons.NullOrEmpty);
         return Container;
