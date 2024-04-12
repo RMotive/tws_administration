@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+
 using Foundation.Contracts.Datasources.Bases;
 using Foundation.Enumerators.Exceptions;
 
@@ -79,7 +81,11 @@ public class FeatureEntity
             Container.Add(nameof(Name), IntegrityFailureReasons.NullOrEmptyValue);
         return Container;
     }
-
+    protected override PropertyInfo[] EqualityExceptions() {
+        return [
+                HookProperty(nameof(Pointer)),
+        ];
+    }
 
     #endregion
 

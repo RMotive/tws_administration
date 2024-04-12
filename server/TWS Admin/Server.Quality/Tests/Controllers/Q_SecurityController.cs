@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Quality.Helpers;
 using Server.Quality.Private;
+using Server.Templates;
+using Server.Templates.Exposures;
 
 using Xunit;
 
@@ -44,10 +46,10 @@ public class Q_SecurityController
     public async void InitSession() {
         const string Service = $"{Controller}initSession";
 
-        (HttpStatusCode StatusCode, ForeignSessionScheme? ResponseBody) FirstFact = await HostManager.Post<AccountIdentityScheme, ForeignSessionScheme>(Service, CorrectScheme);
+        (HttpStatusCode StatusCode, SuccessExposure<ForeignSessionScheme>? ResponseBody) FirstFact = await HostManager.Post<AccountIdentityScheme, SuccessExposure<ForeignSessionScheme>>(Service, CorrectScheme);
 
         Assert.Equal(HttpStatusCode.OK, FirstFact.StatusCode);
         Assert.NotNull(FirstFact.ResponseBody);
-        Assert.True(FirstFact.ResponseBody.Wildcard);
+        Assert.True(FirstFact.ResponseBody.Estela.Wildcard);
     }
 }

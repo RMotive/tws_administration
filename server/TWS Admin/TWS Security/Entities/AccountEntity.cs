@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 using Foundation.Contracts.Datasources.Bases;
 using Foundation.Enumerators.Exceptions;
@@ -76,6 +77,8 @@ public class AccountEntity
 
     #endregion
 
+    #region Protected Methods
+
     protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
         if (string.IsNullOrWhiteSpace(User))
             Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmptyValue);
@@ -83,14 +86,23 @@ public class AccountEntity
             Container.Add(nameof(Password), IntegrityFailureReasons.NullOrEmptyValue);
         return Container;
     }
-
     protected override Account Generate() {
         return new() {
             Id = Pointer,
             User = User,
             Password = Password,
+            Wildcard = Wildcard
         };
     }
+    protected override PropertyInfo[] EqualityExceptions() {
+        return [
+                HookProperty(nameof(Pointer)),
+            ];
+    }
+
+    #endregion
+
+    #region Public Methods
 
     public override bool EqualsSet(Account Set) {
         if (Pointer != Set.Id)
@@ -99,7 +111,12 @@ public class AccountEntity
             return false;
         if (!Password.SequenceEqual(Set.Password))
             return false;
+        if (Wildcard != Wildcard)
+            return false;
 
         return true;
     }
+
+    #endregion
+
 }

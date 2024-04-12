@@ -2,7 +2,6 @@
 
 using Foundation.Contracts.Datasources.Interfaces;
 using Foundation.Contracts.Modelling.Bases;
-using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Datasources;
 
 using IntegrityLacks = System.Collections.Generic.Dictionary<string, Foundation.Enumerators.Exceptions.IntegrityFailureReasons>;
