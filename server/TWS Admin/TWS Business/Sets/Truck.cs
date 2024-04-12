@@ -37,11 +37,11 @@ namespace TWS_Business.Sets
 
         protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container){
             if(Id <= 0)
-                Container.Add(nameof(Id), IntegrityFailureReasons.LessOrEqualZero);
+                Container.Add(nameof(Id), IntegrityFailureReasons.DependencyPointer);
             if (string.IsNullOrWhiteSpace(VIN))
                 Container.Add(nameof(VIN), IntegrityFailureReasons.NullOrEmpty);
             if(Plate <= 0)
-                Container.Add(nameof(Plate),IntegrityFailureReasons.LessOrEqualZero);
+                Container.Add(nameof(Plate),IntegrityFailureReasons.DependencyPointer);
             if (Manufacturer <= 0)
                 Container.Add(nameof(Manufacturer), IntegrityFailureReasons.DependencyPointer);
             if(string.IsNullOrWhiteSpace(Motor))

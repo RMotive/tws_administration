@@ -16,8 +16,9 @@ final SessionStorage _sessionStorage = SessionStorage.instance;
 class TWSARouteTree extends CSMRouterTreeBase {
   TWSARouteTree()
       : super(
+          devRoute: Routes.featuresCreateWhisper,
           redirect: (_, __) async {
-            if (!await _sessionStorage.isSession) return Routes.overviewPage;
+            if (!await _sessionStorage.isSession) return Routes.loginPage;
             return null;
           },
           routes: <CSMRouteBase>[
