@@ -14,13 +14,13 @@ public class XWrongPassword
     readonly AccountEntity Account;
     readonly byte[] Missmatch;
 
-    public XWrongPassword(AccountEntity account, byte[] missmatch) 
+    public XWrongPassword(AccountEntity account, byte[] missmatch)
         : base(SUBJECT, new Situation(2, DISPLAY)) {
         Account = account;
         Missmatch = missmatch;
     }
 
-    protected override XFWrongPassword DesignFailure() 
+    protected override XFWrongPassword DesignFailure()
     => new() {
         Message = SUBJECT,
         Situation = Situation,

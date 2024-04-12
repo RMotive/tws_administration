@@ -37,13 +37,13 @@ public partial class Account
     protected override AccountEntity Generate()
     => new(this);
     public override bool EqualsEntity(AccountEntity Entity) {
-        if (Id != Entity.Pointer) 
+        if (Id != Entity.Pointer)
             return false;
-        if (User != Entity.User) 
+        if (User != Entity.User)
             return false;
-        if (!Password.SequenceEqual(Entity.Password)) 
+        if (!Password.SequenceEqual(Entity.Password))
             return false;
-        if(Wildcard != Entity.Wildcard) 
+        if (Wildcard != Entity.Wildcard)
             return false;
 
         return true;

@@ -1,9 +1,9 @@
-﻿using Foundation.Contracts.Exceptions.Bases;
-using Foundation.Contracts.Exceptions.Interfaces;
+﻿using System.Text.Json;
 
-using Details = System.Collections.Generic.Dictionary<string, dynamic>;
+using Foundation.Contracts.Exceptions.Bases;
+
 using Detail = System.Collections.Generic.KeyValuePair<string, dynamic>;
-using System.Text.Json;
+using Details = System.Collections.Generic.Dictionary<string, dynamic>;
 
 namespace Foundation.Managers;
 public class AdvisorManager {
@@ -40,7 +40,7 @@ public class AdvisorManager {
         Restore();
         Console.ForegroundColor = color;
         Console.WriteLine($"{label}{Subject}");
-        if(Details != null) 
+        if (Details != null)
             PrintDetails(0, "\t", color, Details);
         Restore();
     }
@@ -51,7 +51,7 @@ public class AdvisorManager {
     => Write("Note", ConsoleColor.Blue, Subject, Details);
     public static void Success(string Subject, Details? Details = null)
     => Write("Success", ConsoleColor.DarkGreen, Subject, Details);
-    public static void Exception(BException Exception) 
+    public static void Exception(BException Exception)
     => Write("Exception", ConsoleColor.DarkRed, Exception.Message, Exception.GenerateAdvising());
     public static void Warning(string Subject, Details? Details = null)
     => Write("Warning", ConsoleColor.DarkYellow, Subject, Details);

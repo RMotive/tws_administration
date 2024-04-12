@@ -47,7 +47,7 @@ public class FeatureEntity
     /// <param name="Description">
     ///     [Feature] summary description.
     /// </param>
-    public FeatureEntity(string Name, string? Description) { 
+    public FeatureEntity(string Name, string? Description) {
         this.Name = Name;
         this.Description = Description;
     }
@@ -92,9 +92,9 @@ public class FeatureEntity
     #region Public Methods
 
     public override bool EqualsSet(Feature Set) {
-        if(Pointer != Set.Id) return false;
-        if(Name != Set.Name) return false;
-        if(Description != Set.Description) return false;
+        if (Pointer != Set.Id) return false;
+        if (Name != Set.Name) return false;
+        if (Description != Set.Description) return false;
 
         return true;
     }

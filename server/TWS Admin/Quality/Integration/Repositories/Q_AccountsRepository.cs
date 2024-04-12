@@ -8,10 +8,10 @@ using TWS_Security.Sets;
 namespace TWS_Security.Quality.Integration.Repositories;
 public class Q_AccountsRepository
     : BQ_Repository<TWSSecuritySource, AccountsRepository, AccountEntity, Account> {
-    public Q_AccountsRepository() 
+    public Q_AccountsRepository()
         : base(
             0,
-            new(), 
+            new(),
             new(),
             (token, set) => {
                 set.User = token;

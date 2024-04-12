@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
-    
+
 using Customer.Contracts.Services.Interfaces;
 using Customer.Services;
 
@@ -25,9 +25,9 @@ public class Program {
         string expectation = "\\Properties\\server_properties.json";
         string workingDirectory = Directory.GetCurrentDirectory();
         // --> When you`re using Unix based file system.
-        if(workingDirectory.Contains('/')) {
+        if (workingDirectory.Contains('/')) {
             expectation = expectation.Replace("\\", "/");
-        } 
+        }
         string fullPath = $"{workingDirectory}{expectation}";
 
         Dictionary<string, dynamic> noteDetails = new()
@@ -77,8 +77,7 @@ public class Program {
                     options.JsonSerializerOptions.IncludeFields = true;
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 });
-            builder.Services.Configure<KestrelServerOptions>(options =>
-            {
+            builder.Services.Configure<KestrelServerOptions>(options => {
                 options.AllowSynchronousIO = true;
             });
             builder.Services.AddCors(setup => {
@@ -96,7 +95,7 @@ public class Program {
                         return isCorsAllowed;
                     });
                 });
-            }); 
+            });
             // --> Adding customer services
             {
                 builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
@@ -120,8 +119,8 @@ public class Program {
                 app.UseMiddleware<AdvisorMiddleware>();
                 app.UseMiddleware<TemplatesMiddleware>();
             }
-            app.Run(); 
-        } catch(BException X) {
+            app.Run();
+        } catch (BException X) {
             AdvisorManager.Exception(X);
             Console.WriteLine("Press any key to close...");
             Console.ReadKey();

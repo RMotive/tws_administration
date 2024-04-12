@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Quality.Helpers;
 using Server.Quality.Private;
-using Server.Templates;
 using Server.Templates.Exposures;
 
 using Xunit;

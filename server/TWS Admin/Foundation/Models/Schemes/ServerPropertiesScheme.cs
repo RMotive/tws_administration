@@ -7,7 +7,7 @@ public class ServerPropertiesScheme
     public string Tenant { get; set; }
     public string Solution { get; set; }
     public string IPv4 { get; set; }
-    public string[] Cors {  get; set; }
+    public string[] Cors { get; set; }
     public string? Sign { get; set; }
     public string? Scope { get; set; }
     public int? Pointer { get; set; }
@@ -28,6 +28,6 @@ public class ServerPropertiesScheme
 
         if (breaks.Count > 0)
             throw new XModelGeneration<ServerPropertiesScheme, ServerPropertiesModel>(breaks);
-        return new ServerPropertiesModel(Tenant, Solution, Cors,IPv4, Sign, Scope, Pointer);
+        return new ServerPropertiesModel(Tenant, Solution, Cors, IPv4, Sign, Scope, Pointer);
     }
 }

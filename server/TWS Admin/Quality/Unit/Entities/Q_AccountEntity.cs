@@ -1,4 +1,5 @@
 ﻿using System.Text;
+
 using TWS_Security.Entities;
 using TWS_Security.Quality.Contracts.Bases;
 using TWS_Security.Sets;
@@ -6,7 +7,7 @@ using TWS_Security.Sets;
 using Xunit;
 
 namespace TWS_Security.Quality.Unit.Entities;
-public class Q_AccountEntity 
+public class Q_AccountEntity
     : BQ_Entity<Account, AccountEntity> {
     protected override (Account SetMock, AccountEntity EntityMock, AccountEntity XEntityMock) InitMocks() {
         string user = "Quality Accont";

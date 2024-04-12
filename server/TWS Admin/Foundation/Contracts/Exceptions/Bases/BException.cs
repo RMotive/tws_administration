@@ -20,7 +20,7 @@ public abstract class BException<TFailure>
 
 public abstract class BException
     : Exception {
-    public Situation Situation { get; set;}
+    public Situation Situation { get; set; }
     protected BException(string Message, Situation? situation = null)
         : base(Message) {
         Situation = situation ?? new Situation(0, "Unset");

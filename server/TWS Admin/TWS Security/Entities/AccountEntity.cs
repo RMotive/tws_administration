@@ -97,7 +97,7 @@ public class AccountEntity
     protected override PropertyInfo[] EqualityExceptions() {
         return [
                 HookProperty(nameof(Pointer)),
-            ];
+        ];
     }
 
     #endregion

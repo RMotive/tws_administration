@@ -3,7 +3,6 @@ using Customer.Exceptions.Services.Security;
 using Customer.Managers;
 using Customer.Models;
 
-using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Exceptions.Datasources;
 using Foundation.Records.Datasources;
 
@@ -29,13 +28,13 @@ public class SecurityService
         try {
             SearchAccountResult = await AccountsRepository
                 .Read(I => I.User == Identity.Identity, Foundation.ReadingBehavior.First);
-        } catch(XRecordUnfound<AccountsRepository> X) {
+        } catch (XRecordUnfound<AccountsRepository> X) {
             throw new XUnfoundUser(X);
         }
 
         // --> The account was found
         AccountEntity Account = SearchAccountResult.Successes[0];
-        if (!Account.Password.SequenceEqual(Identity.Password)) 
+        if (!Account.Password.SequenceEqual(Identity.Password))
             throw new XWrongPassword(Account, Identity.Password);
 
         SessionModel SessionInited = SessionsManager.InitSession(Account);

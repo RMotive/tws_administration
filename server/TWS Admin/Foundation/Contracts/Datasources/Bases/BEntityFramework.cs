@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foundation.Contracts.Datasources.Bases;
 public abstract class BEntityFramework<TSource>
-    : DbContext 
+    : DbContext
     where TSource : DbContext {
 
     private readonly DatasourceConnectionModel Connection;

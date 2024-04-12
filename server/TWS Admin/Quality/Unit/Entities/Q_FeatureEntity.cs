@@ -5,7 +5,7 @@ using TWS_Security.Sets;
 using Xunit;
 
 namespace TWS_Security.Quality.Unit.Entities;
-public class Q_FeatureEntity 
+public class Q_FeatureEntity
     : BQ_Entity<Feature, FeatureEntity> {
     protected override (Feature SetMock, FeatureEntity EntityMock, FeatureEntity XEntityMock) InitMocks() {
         string name = "Quality Ability";

@@ -8,7 +8,7 @@ namespace Foundation.Contracts.Modelling.Bases;
 ///     that need specific equality comparisson between their properties.
 /// </summary>
 public abstract class BObject<TObject> {
-    protected virtual PropertyInfo[] EqualityExceptions() 
+    protected virtual PropertyInfo[] EqualityExceptions()
     => [];
 
     public override bool Equals(object? Comparer) {
@@ -26,7 +26,7 @@ public abstract class BObject<TObject> {
             PropertyInfo rProperty = rProperties[i];
             PropertyInfo cProperty = cProperties[i];
 
-            if(exceptions.Contains(rProperty) || exceptions.Contains(cProperty)) 
+            if (exceptions.Contains(rProperty) || exceptions.Contains(cProperty))
                 continue;
 
             if (rProperty.Name != cProperty.Name) return false;
@@ -43,7 +43,7 @@ public abstract class BObject<TObject> {
                 byte[] currentReferenceValue = (byte[])rReferenceValue!;
                 byte[] comparerReferenceValue = (byte[])cReferenceValue!;
                 bool comparisson = currentReferenceValue.SequenceEqual(comparerReferenceValue);
-                if(comparisson) continue;
+                if (comparisson) continue;
 
                 return false;
             }

@@ -6,7 +6,7 @@ using Server.Templates.Exposures;
 
 namespace Server.Templates;
 
-public class SuccessTemplate<TSuccess> 
+public class SuccessTemplate<TSuccess>
     : ITemplate<TSuccess, SuccessExposure<TSuccess>> {
     [Required]
     public Guid Tracer { get; init; }
@@ -18,7 +18,7 @@ public class SuccessTemplate<TSuccess>
     }
 
     public SuccessExposure<TSuccess> GenerateExposure() {
-        return new () {
+        return new() {
             Tracer = Tracer,
             Estela = Estela,
         };

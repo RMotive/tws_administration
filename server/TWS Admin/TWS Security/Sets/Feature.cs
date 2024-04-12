@@ -15,19 +15,19 @@ namespace TWS_Security.Sets;
 ///     
 ///     [Feature] concept: A Feature is the representation of an ability along solutions.
 /// </summary>
-public class Feature 
+public class Feature
     : BSet<Feature, FeatureEntity> {
     public override int Id { get; set; }
     [Unique]
-    public string Name {  get; set; } = string.Empty;
-    public string? Description {  get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
 
     #region Public Methods
 
     public override bool EqualsEntity(FeatureEntity Entity) {
-        if(Id != Entity.Pointer) return false;
-        if(Name != Entity.Name) return false;
-        if(Description != Entity.Description) return false;
+        if (Id != Entity.Pointer) return false;
+        if (Name != Entity.Name) return false;
+        if (Description != Entity.Description) return false;
 
         return true;
     }

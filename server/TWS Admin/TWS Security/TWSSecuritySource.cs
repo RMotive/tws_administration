@@ -1,7 +1,5 @@
 ﻿using Foundation.Contracts.Datasources.Bases;
 using Foundation.Datasources.Sets;
-using Foundation.Managers;
-using Foundation.Models;
 
 using Microsoft.EntityFrameworkCore;
 

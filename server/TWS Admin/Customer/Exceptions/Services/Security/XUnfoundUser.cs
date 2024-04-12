@@ -1,4 +1,5 @@
 ﻿using Customer.Exceptions.Services.Security.Failures;
+
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Records.Exceptions;
 

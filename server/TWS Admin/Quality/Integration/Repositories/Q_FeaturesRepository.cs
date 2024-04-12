@@ -7,7 +7,7 @@ namespace TWS_Security.Quality.Integration.Repositories;
 public class Q_FeaturesRepository
     : BQ_Repository<TWSSecuritySource, FeaturesRepository, FeatureEntity, Feature> {
 
-    public Q_FeaturesRepository() 
+    public Q_FeaturesRepository()
         : base(
                 0,
                 new(),
@@ -19,7 +19,7 @@ public class Q_FeaturesRepository
             ) { }
 
     protected override Feature UMockFactory(int Pointer, string Token) {
-        return new () {
+        return new() {
             Name = Token,
             Description = $"Quality description for {Token}",
         };

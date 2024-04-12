@@ -17,11 +17,11 @@ public abstract class BQ_Set<TSet, TEntity>
     : IQ_Set
     where TSet : ISet
     where TEntity : IEntity {
-    
+
     /// <summary>
     ///     A test managed <see cref="TSet"/> mocked instance.
     /// </summary>
-    protected TSet SetMock { get; private set; } = default!; 
+    protected TSet SetMock { get; private set; } = default!;
     /// <summary>
     ///     A test managed <see cref="TEntity"/> mocked instance
     /// </summary>
@@ -31,7 +31,7 @@ public abstract class BQ_Set<TSet, TEntity>
     /// </summary>
     protected TEntity XEntityMock { get; private set; } = default!;
 
-    protected BQ_Set() { 
+    protected BQ_Set() {
         (SetMock, EntityMock, XEntityMock) = InitMocks();
     }
 
