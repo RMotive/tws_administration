@@ -11,6 +11,8 @@ using Foundation.Managers;
 using Foundation.Models;
 using Foundation.Models.Schemes;
 
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+
 using Server.Middlewares;
 
 namespace Server;
@@ -75,6 +77,10 @@ public class Program {
                     options.JsonSerializerOptions.IncludeFields = true;
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 });
+            builder.Services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
             builder.Services.AddCors(setup => {
                 setup.AddDefaultPolicy(builder => {
                     builder.AllowAnyHeader();
@@ -97,7 +103,8 @@ public class Program {
             }
             // --> Adding middleware services
             {
-                builder.Services.AddSingleton(new FailuresMiddleware());
+                builder.Services.AddSingleton(new AnalyticsMiddleware());
+                builder.Services.AddSingleton(new TemplatesMiddleware());
                 builder.Services.AddSingleton(new AdvisorMiddleware());
             }
             WebApplication app = builder.Build();
@@ -109,8 +116,9 @@ public class Program {
             app.MapControllers();
             // --> Injecting middlewares to server
             {
+                app.UseMiddleware<AnalyticsMiddleware>();
                 app.UseMiddleware<AdvisorMiddleware>();
-                app.UseMiddleware<FailuresMiddleware>();
+                app.UseMiddleware<TemplatesMiddleware>();
             }
             app.Run(); 
         } catch(BException X) {

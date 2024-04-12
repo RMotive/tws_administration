@@ -1,35 +1,37 @@
-﻿using Foundation.Exceptions.Datasources;
-
-using TWS_Security.Entities;
+﻿using TWS_Security.Entities;
 using TWS_Security.Sets;
 
 using Xunit;
 
-namespace TWS_Security.Quality.Sets;
-public class Q_Profile {
-    private readonly Profile _setMock;
-    private readonly ProfileEntity _entityMock;
-    private readonly ProfileEntity _entityEmptyMock;
+namespace TWS_Security.Quality.Unit.Sets;
+public class Q_Solution {
+    private readonly Solution _setMock;
+    private readonly SolutionEntity _entityMock;
+    private readonly SolutionEntity _entityEmptyMock;
 
-    public Q_Profile() {
+    public Q_Solution() {
+        string name = "solution test name";
+        string sign = "stn";
+
         _setMock = new() {
             Id = 1,
-            Name = "testing profile name",
-            Description = "testing profile description",
+            Name = name,
+            Sign = sign,
         };
         _entityMock = new(_setMock);
-        _entityEmptyMock = new("", null);
+        _entityEmptyMock = new("", "", null);
     }
 
     [Fact]
     public void BuildEntity() {
-        ProfileEntity testFact = _setMock.GenerateEntity();
+        SolutionEntity testFact = _setMock.GenerateEntity();
 
         Assert.Equal(testFact.Pointer, _setMock.Id);
         Assert.Equal(testFact.Name, _setMock.Name);
+        Assert.Equal(testFact.Sign, _setMock.Sign.ToUpper());
         Assert.Equal(testFact.Description, _setMock.Description);
-        Assert.Throws<XSetIntegrity<Profile, ProfileEntity>>(new Profile().GenerateEntity);
     }
+
     [Fact]
     public void EvaluateEntity() {
         bool testFactSuccess = _setMock.EqualsEntity(_entityMock);

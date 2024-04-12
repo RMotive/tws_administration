@@ -6,8 +6,18 @@ using Microsoft.IdentityModel.Tokens;
 
 using TWS_Security.Entities;
 
+using IntegrityLacks = System.Collections.Generic.Dictionary<string, Foundation.Enumerators.Exceptions.IntegrityFailureReasons>;
+
 namespace TWS_Security.Sets;
 
+/// <summary>
+///     Set for [Account].
+///     
+///     Defines the Set concept of [Account].
+///     
+///     [Account] concept: An account is the definition for a combination of solution login credentials, and
+///     preserved information.
+/// </summary>
 public partial class Account
     : BSet<Account, AccountEntity> {
     public override int Id { get; set; }
@@ -16,10 +26,8 @@ public partial class Account
     public byte[] Password { get; set; } = [];
     public bool Wildcard { get; set; } = false;
 
-    protected override Dictionary<string, IntegrityFailureReasons> ValidateIntegrity(Dictionary<string, IntegrityFailureReasons> Container) {
-        if (Id <= 0)
-            Container.Add(nameof(Id), IntegrityFailureReasons.LessOrEqualZero);
-        if (String.IsNullOrWhiteSpace(User))
+    protected override IntegrityLacks ValidateIntegrity(IntegrityLacks Container) {
+        if (string.IsNullOrWhiteSpace(User))
             Container.Add(nameof(User), IntegrityFailureReasons.NullOrEmptyValue);
         if (Password.IsNullOrEmpty())
             Container.Add(nameof(Password), IntegrityFailureReasons.NullOrEmptyValue);

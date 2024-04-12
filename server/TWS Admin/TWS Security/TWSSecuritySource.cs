@@ -21,6 +21,8 @@ public partial class TWSSecuritySource
         ConnectionProperties = DatasourceConnectionManager.Load();
     }
 
+    public virtual DbSet<Feature> Features { get; set; }
+
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountsPermit> AccountsPermits { get; set; }
@@ -153,6 +155,9 @@ public partial class TWSSecuritySource
                 .HasMaxLength(5)
                 .IsUnicode(false)
                 .HasColumnName("sign");
+        });
+
+        modelBuilder.Entity<Feature>(entity => {
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -6,10 +6,13 @@ public class ForeignSessionModel
     public Guid Token { get; private set; }
     public bool Wildcard { get; private set; } = false;
     public List<int> Features { get; private set; } = [];
+    public DateTime Expiration {  get; private set; } = DateTime.MinValue;
+
     public ForeignSessionModel() { }
-    public ForeignSessionModel(Guid token, List<int> features, bool isOwner) {
+    public ForeignSessionModel(Guid token, List<int> features, bool wildcard, DateTime expiration) {
         Token = token;
         Features = features;
-        Wildcard = isOwner;
+        Wildcard = wildcard;
+        Expiration = expiration;
     }
 }

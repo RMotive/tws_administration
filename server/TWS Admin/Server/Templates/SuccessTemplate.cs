@@ -12,8 +12,9 @@ public class SuccessTemplate<TSuccess>
     public Guid Tracer { get; init; }
     public TSuccess Estela { get; }
 
-    public SuccessTemplate(TSuccess success) {
+    public SuccessTemplate(TSuccess success, Guid tracer) {
         Estela = success;
+        Tracer = tracer;
     }
 
     public SuccessExposure<TSuccess> GenerateExposure() {

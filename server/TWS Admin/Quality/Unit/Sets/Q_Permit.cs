@@ -1,11 +1,10 @@
 ﻿using Foundation.Exceptions.Datasources;
-
 using TWS_Security.Entities;
 using TWS_Security.Sets;
 
 using Xunit;
 
-namespace TWS_Security.Quality.Sets;
+namespace TWS_Security.Quality.Unit.Sets;
 public class Q_Permit {
     private readonly Permit _setMock;
     private readonly PermitEntity _entityMock;
