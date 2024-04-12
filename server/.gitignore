@@ -1,3 +1,6 @@
+### macOS Storage Features
+**/.DS_Store
+
 ###################
 # compiled source #
 ###################
@@ -73,3 +76,5 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+*.vs
+.vs/
