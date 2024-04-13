@@ -1,11 +1,10 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
-
-using Foundation.Attributes.Datasources;
 using Foundation.Contracts.Datasources.Interfaces;
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Datasources;
+using Foundation.Migrations.Attributes;
 using Foundation.Records.Datasources;
 
 using Microsoft.Data.SqlClient;
@@ -27,12 +26,13 @@ namespace Foundation.Contracts.Datasources.Bases;
 /// <typeparam name="TSet">
 ///     The Set type related to the Entity that is related to this repository implementation.
 /// </typeparam>
-public abstract class BRepository<TSource, TRepository, TEntity, TSet>
+public abstract class BRepository<TSource, TRepository, TEntity, TSet, TMigration>
     : IRepository<TEntity, TSet>
     where TRepository : IRepository
     where TEntity : BEntity<TSet, TEntity>
-    where TSet : BSet<TSet, TEntity>, ISet, new()
-    where TSource : DbContext {
+    where TSet : BSet<TSet, TEntity, TMigration>, ISet, new()
+    where TSource : DbContext
+    where TMigration : class {
     /// <summary>
     ///     Internal repository datasource context handler
     /// </summary>

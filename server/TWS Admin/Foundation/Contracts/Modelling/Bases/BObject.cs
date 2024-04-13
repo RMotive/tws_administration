@@ -66,7 +66,7 @@ public abstract class BObject<TObject> {
     }
     public override int GetHashCode() => base.GetHashCode();
 
-    public PropertyInfo HookProperty(string name) {
+    public PropertyInfo Property(string name) {
         Type reflection = GetType();
         PropertyInfo tracedProperty
         = reflection.GetProperty(name)
