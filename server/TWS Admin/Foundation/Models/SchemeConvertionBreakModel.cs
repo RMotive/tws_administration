@@ -6,7 +6,7 @@ namespace Foundation.Models;
 public class SchemeConvertionBreakModel
     : BModel {
     [Required]
-    public string Property { get; private set; }
+    public new string Property { get; private set; }
     [Required]
     public string Reason { get; private set; }
 

@@ -1,23 +1,33 @@
 ﻿using System.Runtime.CompilerServices;
 
 using Foundation.Managers;
+using Foundation.Migrations.Interfaces;
 using Foundation.Models;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Foundation.Contracts.Datasources.Bases;
-public abstract class BEntityFramework<TSource>
+namespace Foundation.Migrations.Bases;
+public abstract class BMigrationSource<TSource>
     : DbContext
     where TSource : DbContext {
 
     private readonly DatasourceConnectionModel Connection;
 
-    public BEntityFramework([CallerFilePath] string? callerPath = null) {
+    public BMigrationSource([CallerFilePath] string? callerPath = null) {
         Connection = DatasourceConnectionManager.Load(callerPath);
     }
-    public BEntityFramework(DbContextOptions<TSource> Options, [CallerFilePath] string? callerPath = null)
+    public BMigrationSource(DbContextOptions<TSource> Options, [CallerFilePath] string? callerPath = null)
         : base(Options) {
         Connection = DatasourceConnectionManager.Load(callerPath);
+    }
+
+    protected abstract IMigrationSet[] EvaluateFactory();
+    public void Evaluate() {
+        IMigrationSet[] sets = EvaluateFactory();
+
+        foreach(IMigrationSet set in sets) {
+            set.Evaluate(true);
+        }
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {

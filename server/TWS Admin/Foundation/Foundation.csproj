@@ -15,7 +15,6 @@
   <ItemGroup>
     <Folder Include="Attributes\Datasources\" />
     <Folder Include="Exceptions\Datasources\Failures\" />
-    <Folder Include="Migrations\Annotations\" />
   </ItemGroup>
 
 </Project>

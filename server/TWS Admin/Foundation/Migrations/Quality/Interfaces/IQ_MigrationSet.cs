@@ -8,9 +8,9 @@ namespace Foundation.Migrations.Quality.Interfaces;
 ///     Defines what quality operations must be performed by a [Q_Entity].
 ///     
 ///     [Q_Entity] concept: determines a quality implementation to qualify 
-///     a [Source] [Entity] implementation.
+///     a [MigrationSource] [Entity] implementation.
 /// </summary>
-public interface IQ_Entity {
+public interface IQ_MigrationSet {
     /// <summary>
     ///     Qualifies:
     ///         - [Entity] Evaluate success.
