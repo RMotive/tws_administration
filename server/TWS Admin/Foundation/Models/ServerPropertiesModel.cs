@@ -10,8 +10,8 @@ public class ServerPropertiesModel
     [Required]
     public string Solution { get; private set; }
     public string IPv4 { get; private set; }
-    public string[] Listeners {  get; private set; }
-    public string[] Cors {  get; private set; }
+    public string[] Listeners { get; private set; }
+    public string[] Cors { get; private set; }
     public string? Sign { get; private set; }
     public string? Scope { get; private set; }
     public int? Pointer { get; private set; }

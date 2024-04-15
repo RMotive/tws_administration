@@ -1,6 +1,4 @@
-﻿using TWS_Security.Sets;
-
-namespace Foundation.Datasources.Sets;
+﻿namespace TWS_Security.Sets;
 
 public partial class ProfilesPermit {
     public int Permit { get; set; }

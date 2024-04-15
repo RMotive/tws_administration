@@ -10,16 +10,19 @@ namespace Foundation.Contracts.Datasources.Bases;
 ///     Represents an inheritance relation between Datasource Set to 
 ///     handle their shared properties and operations.
 /// </summary>
-public abstract class BSet<TSet, TEntity>
+public abstract class BSet<TSet, TEntity, TMigration>
     : BObject<TSet>,
         Interfaces.ISet<TEntity>
     where TEntity : IEntity
-    where TSet : ISet {
-    public abstract int Id { get; set; }
+    where TSet : ISet
+    where TMigration : class {
 
+    #region Properties
 
-    protected abstract TEntity Generate();
-    public abstract bool EqualsEntity(TEntity Entity);
+    public TMigration? Migration { get; init; } = default!;
+    public int Id { get; set; } = default!;
+
+    #endregion
 
     #region Private Methods
 
@@ -50,12 +53,26 @@ public abstract class BSet<TSet, TEntity>
     ///     If the integrity check ran over integrity failures.
     /// </exception>
     public TEntity GenerateEntity() {
-        Dictionary<string, IntegrityFailureReasons> integrityFailureReasons = Validate([]);
+        FailureLacks integrityFailureReasons = Validate([]);
         if (integrityFailureReasons.Count > 0)
-            throw new XSetIntegrity<TSet, TEntity>(this, integrityFailureReasons);
+            throw new XSetIntegrity<TMigration, TSet, TEntity>(this, integrityFailureReasons);
 
         return Generate();
     }
+
+    public TMigration GenerateMigration() {
+        FailureLacks integrityFailureReasons = Validate([]);
+        if (integrityFailureReasons.Count > 0)
+            throw new XSetIntegrity<TMigration, TSet, TEntity>(this, integrityFailureReasons);
+
+        return Migrate();
+    }
+
+    #endregion
+
+    #region Public Abstract Methods
+
+    public abstract bool EqualsEntity(TEntity Entity);
 
     #endregion
 
@@ -73,6 +90,13 @@ public abstract class BSet<TSet, TEntity>
     ///      The Container of integrity lacks calculated by the Entity instance.
     /// </returns>
     protected abstract FailureLacks ValidateIntegrity(FailureLacks Container);
+
+    #endregion
+
+    #region Protected Abstract Methods 
+
+    protected abstract TEntity Generate();
+    protected abstract TMigration Migrate();
 
     #endregion
 }

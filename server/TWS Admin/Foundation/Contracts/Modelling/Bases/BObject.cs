@@ -8,7 +8,12 @@ namespace Foundation.Contracts.Modelling.Bases;
 ///     that need specific equality comparisson between their properties.
 /// </summary>
 public abstract class BObject<TObject> {
+    protected virtual PropertyInfo[] EqualityExceptions()
+    => [];
+
     public override bool Equals(object? Comparer) {
+        PropertyInfo[] exceptions = EqualityExceptions();
+
         if (this is null && Comparer is null) return true;
         if (this is not null && Comparer is null) return false;
         if (this is null && Comparer is not null) return false;
@@ -20,6 +25,9 @@ public abstract class BObject<TObject> {
         for (int i = 0; i < rProperties.Length; i++) {
             PropertyInfo rProperty = rProperties[i];
             PropertyInfo cProperty = cProperties[i];
+
+            if (exceptions.Contains(rProperty) || exceptions.Contains(cProperty))
+                continue;
 
             if (rProperty.Name != cProperty.Name) return false;
             if (rProperty.PropertyType != cProperty.PropertyType) return false;
@@ -34,7 +42,10 @@ public abstract class BObject<TObject> {
             if (isByteArray && ReferenceValuesNotNull) {
                 byte[] currentReferenceValue = (byte[])rReferenceValue!;
                 byte[] comparerReferenceValue = (byte[])cReferenceValue!;
-                return currentReferenceValue.SequenceEqual(comparerReferenceValue);
+                bool comparisson = currentReferenceValue.SequenceEqual(comparerReferenceValue);
+                if (comparisson) continue;
+
+                return false;
             }
             #endregion
 
@@ -54,12 +65,23 @@ public abstract class BObject<TObject> {
         return JsonSerializer.Serialize(jsonReference);
     }
     public override int GetHashCode() => base.GetHashCode();
-
-    public PropertyInfo HookProperty(string name) {
+    /// <summary>
+    ///     Localizes the current object Property mirror reflected.
+    /// </summary>
+    /// <param name="name">
+    ///     Name of the property to localize.
+    /// </param>
+    /// <returns>
+    ///     Property reflected info.
+    /// </returns>
+    /// <exception cref="XGetProperty"> 
+    ///     If the Property wasn't find.
+    /// </exception>
+    public PropertyInfo GetProperty(string name) {
         Type reflection = GetType();
         PropertyInfo tracedProperty
         = reflection.GetProperty(name)
-            ?? throw new XPropertyHooking(reflection, name);
+            ?? throw new XGetProperty(reflection, name);
 
         return tracedProperty;
     }

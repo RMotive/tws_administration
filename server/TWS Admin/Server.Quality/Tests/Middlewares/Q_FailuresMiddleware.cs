@@ -54,10 +54,14 @@ public class Q_FailuresMiddleware {
                         jOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
                     });
                     services.AddRouting();
+                    services.AddSingleton<AnalyticsMiddleware>();
+                    services.AddSingleton<AdvisorMiddleware>();
                     services.AddSingleton<TemplatesMiddleware>();
                 });
                 webBuilder.Configure(app => {
                     app.UseRouting();
+                    app.UseMiddleware<AnalyticsMiddleware>();
+                    app.UseMiddleware<AdvisorMiddleware>();
                     app.UseMiddleware<TemplatesMiddleware>();
                     app.UseEndpoints(endPoints => {
 
@@ -80,6 +84,8 @@ public class Q_FailuresMiddleware {
         using HttpClient Server = (await Host.StartAsync()).GetTestClient();
 
         HttpResponseMessage Response = await Server.GetAsync(UNCGHT_EXCEPTION_ENDPOINT);
+
+        string value = await Response.Content.ReadAsStringAsync();
 
         GenericExposure? FailureExposure = await Response.Content.ReadFromJsonAsync<GenericExposure>();
 

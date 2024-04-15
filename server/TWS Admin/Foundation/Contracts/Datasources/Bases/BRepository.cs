@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-using Foundation.Attributes.Datasources;
 using Foundation.Contracts.Datasources.Interfaces;
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
@@ -27,12 +26,13 @@ namespace Foundation.Contracts.Datasources.Bases;
 /// <typeparam name="TSet">
 ///     The Set type related to the Entity that is related to this repository implementation.
 /// </typeparam>
-public abstract class BRepository<TSource, TRepository, TEntity, TSet>
+public abstract class BRepository<TSource, TRepository, TEntity, TSet, TMigration>
     : IRepository<TEntity, TSet>
     where TRepository : IRepository
     where TEntity : BEntity<TSet, TEntity>
-    where TSet : BSet<TSet, TEntity>, ISet, new()
-    where TSource : DbContext {
+    where TSet : BSet<TSet, TEntity, TMigration>, ISet, new()
+    where TSource : DbContext
+    where TMigration : class {
     /// <summary>
     ///     Internal repository datasource context handler
     /// </summary>
@@ -109,7 +109,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet>
             foreach (PropertyInfo SetProperty in SetProperties) {
                 IEnumerable<CustomAttributeData> CustomAttributes = SetProperty.CustomAttributes;
                 bool IsUnique = CustomAttributes
-                    .Any(i => i.AttributeType == typeof(UniqueAttribute));
+                    .Any(i => true);
                 if (!IsUnique) continue;
 
                 object? SavingSetValue = SetProperty.GetValue(Record);
