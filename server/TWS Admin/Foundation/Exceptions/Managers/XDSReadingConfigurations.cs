@@ -22,7 +22,7 @@ public class XDSReadingConfigurations
     }
 
     public override Dictionary<string, dynamic> GenerateAdvising()
-    => new () {
+    => new() {
         {nameof(Reason), Reason.ToString()},
         {nameof(PropertiesFileName), PropertiesFileName},
         {nameof(IOCritical), IOCritical?.Message ?? "None"}

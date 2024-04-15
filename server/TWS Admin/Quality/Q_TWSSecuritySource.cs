@@ -1,17 +1,7 @@
-﻿using Xunit;
+﻿using Foundation.Migrations.Quality.Bases;
 
 namespace TWS_Security.Quality;
-public class Q_TWSSecuritySource {
-    private readonly TWSSecuritySource Source;
-
-
-    public Q_TWSSecuritySource() {
-        Source = new TWSSecuritySource();
-    }
-
-    [Fact]
-    public async void SourceLoad() {
-        bool SourceCanConnect = await Source.Database.CanConnectAsync();
-        Assert.True(SourceCanConnect);
-    }
+public class Q_TWSSecuritySource
+    : BQ_MigrationSource<TWSSecuritySource> {
+    public Q_TWSSecuritySource() : base(new()) { }
 }

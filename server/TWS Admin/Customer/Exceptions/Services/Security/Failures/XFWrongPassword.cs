@@ -2,7 +2,7 @@
 using Foundation.Records.Exceptions;
 
 namespace Customer.Exceptions.Services.Security.Failures;
-public class XFWrongPassword 
+public class XFWrongPassword
     : IGenericFailure {
     public Dictionary<string, object> Failure { get; set; } = [];
     public string Message { get; set; } = string.Empty;

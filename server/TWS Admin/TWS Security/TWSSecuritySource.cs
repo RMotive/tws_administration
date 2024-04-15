@@ -1,31 +1,19 @@
-﻿using Foundation.Datasources.Sets;
-using Foundation.Managers;
-using Foundation.Models;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using TWS_Security.Sets;
 
 namespace TWS_Security;
 
-public partial class TWSSecuritySource
-    : DbContext {
-    private readonly DatasourceConnectionModel ConnectionProperties;
-     
-    public TWSSecuritySource() {
-        ConnectionProperties = DatasourceConnectionManager.Load();
-    }
-
+public partial class TWSSecuritySource {
     public TWSSecuritySource(DbContextOptions<TWSSecuritySource> options)
         : base(options) {
-        ConnectionProperties = DatasourceConnectionManager.Load();
     }
-
-    public virtual DbSet<Feature> Features { get; set; }
 
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountsPermit> AccountsPermits { get; set; }
+
+    public virtual DbSet<Feature> Features { get; set; }
 
     public virtual DbSet<Permit> Permits { get; set; }
 
@@ -35,18 +23,6 @@ public partial class TWSSecuritySource
 
     public virtual DbSet<Solution> Solutions { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        string ConnectionString =
-            $"Server={ConnectionProperties.Host};" +
-            $"Database={ConnectionProperties.Database};" +
-            $"User={ConnectionProperties.User};" +
-            $"Password={ConnectionProperties.Password};" +
-            $"Encrypt={ConnectionProperties.Encrypted};";
-
-
-        optionsBuilder.UseSqlServer(ConnectionString);
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Account>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Accounts__3213E83F365E950F");
@@ -55,7 +31,6 @@ public partial class TWSSecuritySource
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Password).HasColumnName("password");
-            entity.Property(e => e.Wildcard).HasColumnName("wildcard");
             entity.Property(e => e.User)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -79,6 +54,15 @@ public partial class TWSSecuritySource
                 .HasForeignKey(d => d.Permit)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Accounts___permi__47DBAE45");
+        });
+
+        modelBuilder.Entity<Feature>(entity => {
+            entity.HasKey(e => e.Id).HasName("PK__Features__3213E83F264D9ED7");
+
+            entity.HasIndex(e => e.Name, "UQ__Features__737584F660DC9B98").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).HasMaxLength(25);
         });
 
         modelBuilder.Entity<Permit>(entity => {
@@ -155,9 +139,6 @@ public partial class TWSSecuritySource
                 .HasMaxLength(5)
                 .IsUnicode(false)
                 .HasColumnName("sign");
-        });
-
-        modelBuilder.Entity<Feature>(entity => {
         });
 
         OnModelCreatingPartial(modelBuilder);

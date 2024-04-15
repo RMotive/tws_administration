@@ -1,15 +1,9 @@
-﻿using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
-
-using Azure;
 
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Contracts.Exceptions.Interfaces;
-using Foundation.Contracts.Server.Interfaces;
 using Foundation.Exceptions.Servers;
-
-using Microsoft.AspNetCore.Http;
 
 using Server.Templates;
 using Server.Templates.Exposures;
@@ -25,7 +19,13 @@ public class TemplatesMiddleware
         int StatusCode = (int)HttpStatusCode.Conflict;
         FailureTemplate<IException<IXFailure>, IGenericFailure>? Template = null;
         Exception? CriticalUnderivation = null;
-        Guid Tracer = Guid.Parse(context.TraceIdentifier);
+        Guid Tracer;
+        try {
+            Tracer = Guid.Parse(context.TraceIdentifier);
+        } catch {
+            Tracer = Guid.NewGuid();
+            context.TraceIdentifier = Tracer.ToString();
+        }
         using MemoryStream bufferingStream = new();
         try {
             context.Response.Body = bufferingStream;
@@ -37,7 +37,7 @@ public class TemplatesMiddleware
         } catch (BException DefinedXNoFailure) {
             StatusCode = (int)HttpStatusCode.BadRequest;
             XGenericException Generic = new(DefinedXNoFailure);
-            Template = new (Generic, Tracer);
+            Template = new(Generic, Tracer);
         } catch (Exception UndefinedX) {
             StatusCode = (int)HttpStatusCode.InternalServerError;
             XUndefined DefinedX = new(UndefinedX);
@@ -45,7 +45,7 @@ public class TemplatesMiddleware
             Template = new(CastedX, Tracer);
         } finally {
             HttpResponse Response = context.Response;
-            if(!Response.HasStarted) {
+            if (!Response.HasStarted) {
                 bufferingStream.Seek(0, SeekOrigin.Begin);
                 string bufferContent = await new StreamReader(bufferingStream).ReadToEndAsync();
                 string encodedContent = "";

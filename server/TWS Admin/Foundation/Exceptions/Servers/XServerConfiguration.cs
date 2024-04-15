@@ -22,7 +22,7 @@ public class XServerConfiguration
             {nameof(Reason), Reason },
         }
     };
-    public override Dictionary<string, dynamic> GenerateAdvising() 
+    public override Dictionary<string, dynamic> GenerateAdvising()
     => new() {
         {nameof(Reason), Reason},
     };
