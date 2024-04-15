@@ -38,8 +38,4 @@
     <ProjectReference Include="..\Foundation\Foundation.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>

@@ -1,4 +1,7 @@
 ﻿namespace Foundation.Migrations.Interfaces;
 public interface IMigrationSet {
-    public void Evaluate(bool Definition = false);
+    public int Id { get; set; }
+
+    public void Evaluate();
+    public Exception[] EvaluateDefinition();
 }

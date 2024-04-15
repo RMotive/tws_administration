@@ -3,7 +3,7 @@ using Foundation.Exceptions.Modelling.Failures;
 
 namespace Foundation;
 
-public class XPropertyHooking
+public class XGetProperty
     : BException<XFPropertyHooking> {
     /// <summary>
     ///     Constant message template to lead the exception when its thrown.
@@ -12,7 +12,7 @@ public class XPropertyHooking
     private readonly string PropertyName;
     private readonly Type Reflection;
 
-    public XPropertyHooking(Type reflection, string name)
+    public XGetProperty(Type reflection, string name)
         : base($"{MESSAGE}({name}) on ({reflection})") {
         Reflection = reflection;
         PropertyName = name;

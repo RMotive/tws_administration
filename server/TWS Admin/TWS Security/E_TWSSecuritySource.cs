@@ -5,7 +5,7 @@ using TWS_Security.Sets;
 
 namespace TWS_Security;
 
-public partial class TWSSecuritySource 
+public partial class TWSSecuritySource
     : BMigrationSource<TWSSecuritySource> {
     public TWSSecuritySource()
         : base() { }
@@ -13,6 +13,6 @@ public partial class TWSSecuritySource
     protected override IMigrationSet[] EvaluateFactory() {
         return [
                 new Solution(),
-            ];
+        ];
     }
 }

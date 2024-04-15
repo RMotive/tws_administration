@@ -1,9 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-using Customer.Contracts.Services.Interfaces;
-using Customer.Services;
-
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Servers;

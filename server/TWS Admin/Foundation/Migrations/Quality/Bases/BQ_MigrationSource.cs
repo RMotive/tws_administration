@@ -38,7 +38,7 @@ public abstract class BQ_MigrationSource<TSource>
     }
 
     [Fact]
-    public void Evaluate() { 
+    public void Evaluate() {
         Source.Evaluate();
     }
 }

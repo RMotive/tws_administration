@@ -65,12 +65,23 @@ public abstract class BObject<TObject> {
         return JsonSerializer.Serialize(jsonReference);
     }
     public override int GetHashCode() => base.GetHashCode();
-
-    public PropertyInfo Property(string name) {
+    /// <summary>
+    ///     Localizes the current object Property mirror reflected.
+    /// </summary>
+    /// <param name="name">
+    ///     Name of the property to localize.
+    /// </param>
+    /// <returns>
+    ///     Property reflected info.
+    /// </returns>
+    /// <exception cref="XGetProperty"> 
+    ///     If the Property wasn't find.
+    /// </exception>
+    public PropertyInfo GetProperty(string name) {
         Type reflection = GetType();
         PropertyInfo tracedProperty
         = reflection.GetProperty(name)
-            ?? throw new XPropertyHooking(reflection, name);
+            ?? throw new XGetProperty(reflection, name);
 
         return tracedProperty;
     }

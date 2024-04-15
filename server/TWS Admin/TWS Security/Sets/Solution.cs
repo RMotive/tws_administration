@@ -1,7 +1,7 @@
 ﻿namespace TWS_Security.Sets;
 
 public partial class Solution {
-    public int Id { get; set; }
+    public override int Id { get; set; }
 
     public string Name { get; set; } = null!;
 

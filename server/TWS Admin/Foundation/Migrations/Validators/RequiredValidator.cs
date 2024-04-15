@@ -1,14 +1,33 @@
-﻿using Foundation.Migrations.Interfaces;
+﻿using System.Reflection;
+
+using Foundation.Migrations.Exceptions;
+using Foundation.Migrations.Interfaces;
 
 namespace Foundation.Migrations.Validators;
-public class RequiredValidator 
-    : IValidator<object?> {
+/// <summary>
+/// 
+/// </summary>
+public class RequiredValidator
+    : IValidator {
+    /// <summary>
+    /// 
+    /// </summary>
     public RequiredValidator() { }
-    public void Evaluate(object? Property) {
-        if(Property is not null) return;
-        
-        throw new Exception("The field is required but the value came null");
-    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Property"></param>
+    /// <param name="Value"></param>
+    /// <exception cref="XIValidator_Evaluate"></exception>
+    public void Evaluate(PropertyInfo Property, object? Value) {
+        if (Value is not null) return;
 
+        throw new XIValidator_Evaluate(this, Property, 1, $"Cannot be empty");
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Type"></param>
+    /// <returns></returns>
     public bool Satisfy(Type Type) => true;
 }

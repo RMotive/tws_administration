@@ -1,4 +1,5 @@
-﻿using Foundation.Migrations.Interfaces;
+﻿using Foundation.Migrations.Exceptions;
+using Foundation.Migrations.Interfaces;
 using Foundation.Migrations.Quality.Records;
 
 using Xunit;
@@ -18,20 +19,36 @@ public abstract class BQ_MigrationSet<TSet>
     protected abstract Q_MigrationSet_EvaluateRecord<TSet>[] EvaluateFactory(Q_MigrationSet_EvaluateRecord<TSet>[] Container);
 
     [Fact]
-    public void Definition() {
+    public void EvaluateDefinition() {
         TSet mock = new();
-        mock.Evaluate(true);
+        mock.EvaluateDefinition();
     }
 
     [Fact]
     public void Evaluate() {
-        Q_MigrationSet_EvaluateRecord<TSet>[] expectations = EvaluateFactory([]);
+        Q_MigrationSet_EvaluateRecord<TSet>[] checks = EvaluateFactory([]);
 
 
-        foreach (Q_MigrationSet_EvaluateRecord<TSet> expectation in expectations) {
-            TSet mock = expectation.Mock;
+        foreach (Q_MigrationSet_EvaluateRecord<TSet> qualityCheck in checks) {
+            TSet mock = qualityCheck.Mock;
+            (string property, (IValidator validator, int code)[] reasons)[] asserts = qualityCheck.Expectations;
 
-            mock.Evaluate();
+            // --> The set is expected to not throw exceptions
+            if (asserts.Length == 0) {
+                continue;
+            }
+
+            // --> Here are asserts to perform
+            try {
+                mock.Evaluate();
+                if(asserts.Length == 0) continue;
+                Assert.Fail("Asserts expected but none caught");
+            } catch (XBMigrationSet_Evaluate x) {
+                (string property, XIValidator_Evaluate[] faults)[] unvalidations = x.Unvalidations;
+                
+                Assert.Equal(asserts.Length, unvalidations.Length);
+
+            }
         }
     }
 }

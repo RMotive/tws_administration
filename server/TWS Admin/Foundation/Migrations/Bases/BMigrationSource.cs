@@ -25,8 +25,8 @@ public abstract class BMigrationSource<TSource>
     public void Evaluate() {
         IMigrationSet[] sets = EvaluateFactory();
 
-        foreach(IMigrationSet set in sets) {
-            set.Evaluate(true);
+        foreach (IMigrationSet set in sets) {
+            set.EvaluateDefinition();
         }
     }
 

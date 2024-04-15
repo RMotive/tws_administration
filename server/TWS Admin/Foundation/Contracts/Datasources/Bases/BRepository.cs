@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+
 using Foundation.Contracts.Datasources.Interfaces;
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Enumerators.Exceptions;
 using Foundation.Exceptions.Datasources;
-using Foundation.Migrations.Attributes;
 using Foundation.Records.Datasources;
 
 using Microsoft.Data.SqlClient;
@@ -109,7 +109,7 @@ public abstract class BRepository<TSource, TRepository, TEntity, TSet, TMigratio
             foreach (PropertyInfo SetProperty in SetProperties) {
                 IEnumerable<CustomAttributeData> CustomAttributes = SetProperty.CustomAttributes;
                 bool IsUnique = CustomAttributes
-                    .Any(i => i.AttributeType == typeof(UniqueAttribute));
+                    .Any(i => true);
                 if (!IsUnique) continue;
 
                 object? SavingSetValue = SetProperty.GetValue(Record);
