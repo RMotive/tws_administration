@@ -1,27 +1,19 @@
-﻿using Foundation.Contracts.Datasources.Bases;
-using Foundation.Datasources.Sets;
-using Foundation.Managers;
-using Foundation.Models;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using TWS_Security.Sets;
 
 namespace TWS_Security;
 
-public partial class TWSSecuritySource
-    : BEntityFramework<TWSSecuritySource> {
-
-    public TWSSecuritySource() : base() { }
-    public TWSSecuritySource(DbContextOptions<TWSSecuritySource> Options) : base(Options) { }
-
-
-
-    public virtual DbSet<Feature> Features { get; set; }
+public partial class TWSSecuritySource {
+    public TWSSecuritySource(DbContextOptions<TWSSecuritySource> options)
+        : base(options) {
+    }
 
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AccountsPermit> AccountsPermits { get; set; }
+
+    public virtual DbSet<Feature> Features { get; set; }
 
     public virtual DbSet<Permit> Permits { get; set; }
 
@@ -39,7 +31,6 @@ public partial class TWSSecuritySource
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Password).HasColumnName("password");
-            entity.Property(e => e.Wildcard).HasColumnName("wildcard");
             entity.Property(e => e.User)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -63,6 +54,15 @@ public partial class TWSSecuritySource
                 .HasForeignKey(d => d.Permit)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Accounts___permi__47DBAE45");
+        });
+
+        modelBuilder.Entity<Feature>(entity => {
+            entity.HasKey(e => e.Id).HasName("PK__Features__3213E83F264D9ED7");
+
+            entity.HasIndex(e => e.Name, "UQ__Features__737584F660DC9B98").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).HasMaxLength(25);
         });
 
         modelBuilder.Entity<Permit>(entity => {
@@ -139,9 +139,6 @@ public partial class TWSSecuritySource
                 .HasMaxLength(5)
                 .IsUnicode(false)
                 .HasColumnName("sign");
-        });
-
-        modelBuilder.Entity<Feature>(entity => {
         });
 
         OnModelCreatingPartial(modelBuilder);

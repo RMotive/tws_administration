@@ -2,7 +2,7 @@
 
 namespace Server.Templates.Exposures;
 
-public class SuccessExposure<TEstela> 
+public class SuccessExposure<TEstela>
     : ITemplateExposure<TEstela> {
     public Guid Tracer { get; set; }
     public TEstela Estela { get; set; } = default!;

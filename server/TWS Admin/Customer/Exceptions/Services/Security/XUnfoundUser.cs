@@ -1,8 +1,9 @@
 ﻿using Customer.Exceptions.Services.Security.Failures;
+
 using Foundation.Contracts.Exceptions.Bases;
 using Foundation.Records.Exceptions;
 
-using XRepository = Foundation.Exceptions.Datasources.XRecordUnfound<TWS_Security.Repositories.AccountsRepository>;
+using XRepository = dynamic;
 
 namespace Customer.Exceptions.Services.Security;
 public class XUnfoundUser

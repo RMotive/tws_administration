@@ -8,7 +8,7 @@ using JObject = System.Collections.Generic.Dictionary<string, dynamic>;
 
 namespace Server.Middlewares;
 
-public class AdvisorMiddleware 
+public class AdvisorMiddleware
     : IMiddleware {
 
     public AdvisorMiddleware() { }
@@ -16,7 +16,7 @@ public class AdvisorMiddleware
     public async Task InvokeAsync(HttpContext context, RequestDelegate next) {
         try {
             AdvisorManager.Announce(
-                $"Received server request from ({context.Connection.RemoteIpAddress}:{context.Connection.RemotePort})", 
+                $"Received server request from ({context.Connection.RemoteIpAddress}:{context.Connection.RemotePort})",
                 new() {
                     {"Tracer", context.TraceIdentifier }
                 }
@@ -24,7 +24,7 @@ public class AdvisorMiddleware
             Stream OriginalStream = context.Response.Body;
             await next(context);
             HttpResponse Response = context.Response;
-            if(!Response.HasStarted) {
+            if (!Response.HasStarted) {
                 Stream bufferStream = Response.Body;
                 JObject? responseContent = await JsonSerializer.DeserializeAsync<JObject>(bufferStream);
                 if (responseContent != null && responseContent.TryGetValue("Estela", out dynamic? value)) {
@@ -46,4 +46,4 @@ public class AdvisorMiddleware
             AdvisorManager.Exception(XCritical);
         }
     }
-}   
+}

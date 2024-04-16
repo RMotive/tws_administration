@@ -5,7 +5,7 @@ using Foundation.Enumerators.Exceptions;
 namespace Foundation.Exceptions.Datasources;
 
 /// <summary>
-///     This class represent a datasource exception when a Set record is not found.
+///     This class represent a datasource exception when a TMigrationSet record is not found.
 ///     
 ///     Used when a record is request from a datasource repository, and it isn't found.
 /// </summary>
