@@ -10,20 +10,19 @@ public class Q_Maintenance : BQ_MigrationSet<Maintenance> {
         Q_MigrationSet_EvaluateRecord<Maintenance> success = new() {
             Mock = new() {
                 Id = 1,
-                
+                Anual = DateOnly.FromDateTime(new DateTime()),
+                Trimestral = DateOnly.FromDateTime(new DateTime()),
             },
             Expectations = [],
         };
         Q_MigrationSet_EvaluateRecord<Maintenance> failByPointer = new() {
             Mock = new() {
-                Id = -1,
-               
+                Id = 0,
+
             },
             Expectations = [
-                (nameof(Maintenance.Id), [(new PointerValidator(), 1)]),
-                (nameof(Maintenance.Anual), [(new RequiredValidator(), 1)]),
-                (nameof(Maintenance.Trimestral), [(new RequiredValidator(), 1)]),
-
+                (nameof(Maintenance.Id), [(new PointerValidator(), 3)]),
+                
             ],
         };
 

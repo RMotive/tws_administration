@@ -22,5 +22,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Connection\" />
+  </ItemGroup>
 
 </Project>

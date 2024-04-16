@@ -2,5 +2,5 @@
 
 namespace TWS_Security.Depots;
 public class SolutionsDepot
-    : BMigrationDepot {
+     {
 }
