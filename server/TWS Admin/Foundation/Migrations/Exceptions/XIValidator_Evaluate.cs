@@ -23,6 +23,10 @@ public class XIValidator_Evaluate
     /// </summary>
     public new string Message { get; init; }
     /// <summary>
+    /// 
+    /// </summary>
+    public int Code { get; init; }
+    /// <summary>
     ///     TODO:
     /// </summary>
     /// <param name="Validator"></param>
@@ -33,5 +37,6 @@ public class XIValidator_Evaluate
         this.Validator = Validator;
         this.Property = Property;
         this.Message = Message;
+        this.Code = Code;
     }
 }

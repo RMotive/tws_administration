@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foundation.Migrations.Bases;
 public abstract class BMigrationSource<TSource>
-    : DbContext
+    : DbContext, IMigrationSource
     where TSource : DbContext {
 
     private readonly DatasourceConnectionModel Connection;

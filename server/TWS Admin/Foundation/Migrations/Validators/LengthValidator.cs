@@ -7,7 +7,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Foundation.Migrations.Validators;
 /// <summary>
-///     
+///     <list type="number">
+///         <listheader> <term> Coding: </term> </listheader>
+///         <item> Value can't be null </item>
+///         <item> Value doesn't reach min value </item>
+///         <item> Value overrides max value </item>
+///         <item> Unrecognized case </item>
+///     </list> 
 /// </summary>
 public class LengthValidator
     : IValidator {
@@ -20,7 +26,13 @@ public class LengthValidator
     /// </summary>
     private readonly int? Max;
     /// <summary>
-    /// 
+    ///     <list type="number">
+    ///         <listheader> <term> Coding: </term> </listheader>
+    ///         <item> Value can't be null </item>
+    ///         <item> Value doesn't reach min value </item>
+    ///         <item> Value overrides max value </item>
+    ///         <item> Unrecognized case </item>
+    ///     </list> 
     /// </summary>
     /// <param name="Min"></param>
     /// <param name="Max"></param>

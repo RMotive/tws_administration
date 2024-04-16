@@ -5,10 +5,26 @@ using Foundation.Migrations.Interfaces;
 
 namespace Foundation.Migrations.Validators;
 /// <summary>
-/// 
+///     <list type="number">
+///         <listheader> <term> Coding: </term> </listheader>
+///         <item> <description> Pointer cannot be named different than 'Id'. </description> </item>
+///         <item> Pointer must be integer indexer and not null. </item>
+///         <item> Pointer cannot be less or equal zero. </item>
+///     </list> 
 /// </summary>
 public class PointerValidator
     : IValidator {
+
+    /// <summary>
+    ///     <list type="number">
+    ///         <listheader> <term> Coding: </term> </listheader>
+    ///         <item> <description> Pointer cannot be named different than 'Id'. </description> </item>
+    ///         <item> Pointer must be integer indexer and not null. </item>
+    ///         <item> Pointer cannot be less or equal zero. </item>
+    ///     </list> 
+    /// </summary>
+    public PointerValidator() { }
+
     /// <summary>
     /// 
     /// </summary>

@@ -11,7 +11,7 @@ public partial class Solution
         RequiredValidator Required = new();
 
         Container = [
-                .. Container,
+            ..Container,
             (nameof(Name), [Required, new UniqueValidator(), new LengthValidator(1, 40),]),
             (nameof(Sign), [Required, new UniqueValidator(), new LengthValidator(5, 5),]),
         ];

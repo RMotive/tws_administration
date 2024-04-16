@@ -37,6 +37,7 @@ public abstract class BMigrationSet
                 }
             }
             
+            if(faults.Length == 0) continue;
             unvalidations = [..unvalidations, (property, faults)];
         }
 
