@@ -1,136 +1,115 @@
-﻿using Foundation.Managers;
-using Foundation.Models;
+﻿
 using Microsoft.EntityFrameworkCore;
 using TWS_Business.Sets;
 
 namespace TWS_Business;
 
-public partial class TWSBusinessSource 
-: DbContext{
-    private readonly DatasourceConnectionModel ConnectionProperties;
-
-    public TWSBusinessSource()
-    {
-        ConnectionProperties = DatasourceConnectionManager.Load();
-    }
+public partial class TWSBusinessSource{
 
     public TWSBusinessSource(DbContextOptions<TWSBusinessSource> options)
-        : base(options)
-    {
-        ConnectionProperties = DatasourceConnectionManager.Load();
+        : base(options){
     }
 
-    public virtual DbSet<Truck> Truck { get; set; }
+    public virtual DbSet<Insurance> Insurances { get; set; }
 
-    public virtual DbSet<Plates> Plates { get; set; }
+    public virtual DbSet<Maintenance> Maintenances { get; set; }
 
-    public virtual DbSet<Manufacturers> Manufacturers { get; set; }
+    public virtual DbSet<Manufacturer> Manufacturers { get; set; }
 
-    public virtual DbSet<Maintenance> Maintenance { get; set; }
+    public virtual DbSet<Plate> Plates { get; set; }
 
-    public virtual DbSet<Insurances> Insurances { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        string ConnectionString =
-            $"Server={ConnectionProperties.Host};" +
-            $"Database={ConnectionProperties.Database};" +
-            $"User={ConnectionProperties.User};" +
-            $"Password={ConnectionProperties.Password};" +
-            $"Encrypt={ConnectionProperties.Encrypted};";
-
-
-        optionsBuilder.UseSqlServer(ConnectionString);
-    }
+    public virtual DbSet<Truck> Trucks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Truck>(entity => {
-            entity.HasKey(e => e.Id).HasName("PK__Accounts__3213E83F365E950F");
-
-            entity.HasIndex(e => e.User, "UQ__Accounts__7FC76D727B35E61A").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Password).HasColumnName("password");
-            entity.Property(e => e.Wildcard).HasColumnName("wildcard");
-            entity.Property(e => e.User)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("user");
-        });
-
-        modelBuilder.Entity<Plates>(entity => {
-            entity
-                .HasNoKey()
-                .ToTable("Accounts_Permits");
-
-            entity.Property(e => e.Account).HasColumnName("account");
-            entity.Property(e => e.Permit).HasColumnName("permit");
-
-            entity.HasOne(d => d.AccountNavigation).WithMany()
-                .HasForeignKey(d => d.Account)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Accounts___accou__46E78A0C");
-
-            entity.HasOne(d => d.PermitNavigation).WithMany()
-                .HasForeignKey(d => d.Permit)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Accounts___permi__47DBAE45");
-        });
-
-        modelBuilder.Entity<Manufacturers>(entity => {
-            entity.HasKey(e => e.Id).HasName("PK__Permits__3213E83F49C6A78D");
-
-            entity.HasIndex(e => e.Name, "UQ__Permits__72E12F1BAEA504F0").IsUnique();
+        modelBuilder.Entity<Insurance>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Insuranc__3213E83FC7272AD5");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Description)
-                .IsUnicode(false)
-                .HasColumnName("description");
-            entity.Property(e => e.Name)
+            entity.Property(e => e.Country)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.Policy)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Maintenance>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Maintena__3213E83F493363B3");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+        });
+
+        modelBuilder.Entity<Manufacturer>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Manufact__3213E83FE99242F3");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Brand)
+                .HasMaxLength(15)
+                .IsUnicode(false);
+            entity.Property(e => e.Model)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Plate>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Plates__3213E83FA07BB331");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Country)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.Identifier)
+                .HasMaxLength(12)
+                .IsUnicode(false);
+            entity.Property(e => e.State)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Truck>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Trucks__3213E83FC4FC890E");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Motor)
+                .HasMaxLength(16)
+                .IsUnicode(false);
+            entity.Property(e => e.Sct)
                 .HasMaxLength(25)
                 .IsUnicode(false)
-                .HasColumnName("name");
-            entity.Property(e => e.Solution).HasColumnName("solution");
-
-            entity.HasOne(d => d.SolutionNavigation).WithMany(p => p.Permits)
-                .HasForeignKey(d => d.Solution)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Permits__solutio__3C69FB99");
-        });
-
-        modelBuilder.Entity<Maintenance>(entity => {
-            entity.HasKey(e => e.Id).HasName("PK__Profiles__3213E83FC4B7E671");
-
-            entity.HasIndex(e => e.Name, "UQ__Profiles__72E12F1B00165EF3").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Description)
+                .HasColumnName("SCT");
+            entity.Property(e => e.Situation)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Vin)
+                .HasMaxLength(17)
                 .IsUnicode(false)
-                .HasColumnName("description");
-            entity.Property(e => e.Name)
-                .HasMaxLength(25)
-                .IsUnicode(false)
-                .HasColumnName("name");
-        });
+                .HasColumnName("VIN");
 
-        modelBuilder.Entity<Insurances>(entity => {
-            entity
-                .HasNoKey()
-                .ToTable("Profiles_Permits");
-
-            entity.Property(e => e.Permit).HasColumnName("permit");
-            entity.Property(e => e.Profile).HasColumnName("profile");
-
-            entity.HasOne(d => d.PermitNavigation).WithMany()
-                .HasForeignKey(d => d.Permit)
+            entity.HasOne(d => d.InsuranceNavigation).WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Insurance)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Profiles___permi__412EB0B6");
+                .HasConstraintName("FK@Trucks_Insurances");
 
-            entity.HasOne(d => d.ProfileNavigation).WithMany()
-                .HasForeignKey(d => d.Profile)
+            entity.HasOne(d => d.MaintenanceNavigation).WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Maintenance)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Profiles___profi__4222D4EF");
+                .HasConstraintName("FK@Trucks_Maintenances");
+
+            entity.HasOne(d => d.ManufacturerNavigation).WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Manufacturer)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK@Trucks_Manufacturers");
+
+            entity.HasOne(d => d.PlateNavigation).WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Plate)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK@Trucks_Plates");
         });
 
         OnModelCreatingPartial(modelBuilder);
