@@ -50,7 +50,7 @@ public class AdvisorManager {
     public static void Note(string Subject, Details? Details = null)
     => Write("Note", ConsoleColor.Blue, Subject, Details);
     public static void Success(string Subject, Details? Details = null)
-    => Write("Success", ConsoleColor.DarkGreen, Subject, Details);
+    => Write("QSuccesses", ConsoleColor.DarkGreen, Subject, Details);
     public static void Exception(BException Exception)
     => Write("Exception", ConsoleColor.DarkRed, Exception.Message, Exception.GenerateAdvising());
     public static void Warning(string Subject, Details? Details = null)

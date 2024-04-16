@@ -9,30 +9,27 @@ namespace TWS_Security.Quality.Sets;
 public class Q_Solution
     : BQ_MigrationSet<Solution> {
     protected override Q_MigrationSet_EvaluateRecord<Solution>[] EvaluateFactory(Q_MigrationSet_EvaluateRecord<Solution>[] Container) {
-
+        const string successName = "TWS Quality";
+        const string successSign = "TWSMQ";
+        
         Q_MigrationSet_EvaluateRecord<Solution> success = new() {
             Mock = new() {
                 Id = 1,
-                Name = "TWS Administration",
-                Sign = "TWSMA",
+                Name = successName,
+                Sign = successSign,
             },
             Expectations = [],
         };
-        Q_MigrationSet_EvaluateRecord<Solution> failByPointer = new() {
-            Mock = new() {
-                Id = 0,
-                Name = "TWS Administration",
-                Sign = "TWSMA",
-            },
+        Q_MigrationSet_EvaluateRecord<Solution> failure = new() {
+            Mock = new() { },
             Expectations = [
-                (nameof(Solution.Id), [(new PointerValidator(), 1)]),
+                (nameof(Solution.Id), [(new PointerValidator(), 3)]),
+                (nameof(Solution.Name), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
+                (nameof(Solution.Sign), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
             ],
         };
 
-
-        Container = [.. Container, success, failByPointer];
-
-
+        Container = [..Container, success, failure];
         return Container;
     }
 }

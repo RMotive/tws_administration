@@ -5,12 +5,18 @@ using Foundation.Migrations.Interfaces;
 
 namespace Foundation.Migrations.Validators;
 /// <summary>
-/// 
+///     <list type="number">
+///         <listheader> <term> Coding: </term> </listheader>
+///         <item> Value cannot be empty, is required </item>
+///     </list> 
 /// </summary>
 public class RequiredValidator
     : IValidator {
     /// <summary>
-    /// 
+    ///     <list type="number">
+    ///         <listheader> <term> Coding: </term> </listheader>
+    ///         <item> Value cannot be empty, is required </item>
+    ///     </list> 
     /// </summary>
     public RequiredValidator() { }
     /// <summary>
@@ -22,7 +28,7 @@ public class RequiredValidator
     public void Evaluate(PropertyInfo Property, object? Value) {
         if (Value is not null) return;
 
-        throw new XIValidator_Evaluate(this, Property, 1, $"Cannot be empty");
+        throw new XIValidator_Evaluate(this, Property, 1, "Value cannot be empty, is required");
     }
     /// <summary>
     /// 
