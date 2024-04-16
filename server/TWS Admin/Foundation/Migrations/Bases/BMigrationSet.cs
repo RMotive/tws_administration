@@ -10,20 +10,19 @@ using Microsoft.IdentityModel.Tokens;
 namespace Foundation.Migrations.Bases;
 public abstract class BMigrationSet
     : BObject<IMigrationSet>, IMigrationSet {
-
+    public abstract int Id { get; set; }
     private (string Property, IValidator[] Validators)[]? Validators { get; set; }
     private bool Defined { get; set; } = false;
 
     protected abstract (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container);
-    public void Evaluate() {
-        Validators ??= Validations([
-            (nameof(Id), [ new PointerValidator(), ])        
-        ]);
-        (string property, XIValidator_Evaluate[] faults)[] unvalidations = []; 
+    protected void Evaluate((string Propety, IValidator[] Validators)[] Custom) {
+        Validators ??= Validations([]);
 
-        int quantity = Validators.Length;
+        (string Propety, IValidator[] Validators)[] validators = [..Custom, ..Validators];
+        (string property, XIValidator_Evaluate[] faults)[] unvalidations = [];
+        int quantity = validators.Length;
         for (int i = 0; i < quantity; i++) {
-            (string property, IValidator[] validations) = Validators[i];
+            (string property, IValidator[] validations) = validators[i];
             PropertyInfo pi = GetProperty(property);
             object? value = pi.GetValue(this);
 
@@ -36,13 +35,21 @@ public abstract class BMigrationSet
                     faults = [.. faults, x];
                 }
             }
-            
-            if(faults.Length == 0) continue;
-            unvalidations = [..unvalidations, (property, faults)];
+
+            if (faults.Length == 0) continue;
+            unvalidations = [.. unvalidations, (property, faults)];
         }
 
         if (unvalidations.IsNullOrEmpty()) return;
         throw new XBMigrationSet_Evaluate(GetType(), unvalidations);
+    }
+    public void EvaluateRead() {
+        Evaluate([
+            (nameof(Id), [new PointerValidator()])
+        ]);
+    }
+    public void EvaluateWrite() {
+        Evaluate([]);
     }
 
     public Exception[] EvaluateDefinition() {
@@ -98,6 +105,4 @@ public abstract class BMigrationSet
         Defined = true;
         return [];
     }
-
-    public abstract int Id { get; set; }
 }

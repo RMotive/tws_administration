@@ -11,8 +11,8 @@
 public interface IQ_MigrationSet {
     /// <summary>
     ///     Qualifies:
-    ///         - [Entity] Evaluate success.
-    ///         - [Entity] Evaluate fails.
+    ///         - [Entity] EvaluateRead success.
+    ///         - [Entity] EvaluateRead fails.
     /// </summary>
     public void Evaluate();
 }

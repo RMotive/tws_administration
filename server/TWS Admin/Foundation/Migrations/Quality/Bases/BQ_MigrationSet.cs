@@ -40,7 +40,7 @@ public abstract class BQ_MigrationSet<TSet>
 
             // --> Here are asserts to perform
             try {
-                mock.Evaluate();
+                mock.EvaluateRead();
                 if (asserts.Length == 0) continue;
                 Assert.Fail("Asserts expected but none caught");
             } catch (XBMigrationSet_Evaluate x) {
