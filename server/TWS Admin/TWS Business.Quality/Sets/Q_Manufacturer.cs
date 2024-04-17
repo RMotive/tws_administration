@@ -16,19 +16,21 @@ public class Q_Manufacturer : BQ_MigrationSet<Manufacturer> {
             },
             Expectations = [],
         };
-        Q_MigrationSet_EvaluateRecord<Manufacturer> failByPointer = new() {
+        Q_MigrationSet_EvaluateRecord<Manufacturer> failAllCases = new() {
             Mock = new() {
                 Id = 0,
+                Model = "",
+                Brand = "",
             },
             Expectations = [
                 (nameof(Manufacturer.Id), [(new PointerValidator(), 3)]),
-                (nameof(Manufacturer.Model), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
-                (nameof(Manufacturer.Brand), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
+                (nameof(Manufacturer.Model), [(new LengthValidator(), 2)]),
+                (nameof(Manufacturer.Brand), [(new LengthValidator(), 2)]),
             ],
         };
 
 
-        Container = [.. Container, success, failByPointer];
+        Container = [.. Container, success, failAllCases];
 
 
         return Container;

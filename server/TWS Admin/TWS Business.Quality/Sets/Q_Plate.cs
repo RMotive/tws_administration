@@ -18,22 +18,24 @@ public class Q_Plate : BQ_MigrationSet<Plate> {
             },
             Expectations = [],
         };
-        Q_MigrationSet_EvaluateRecord<Plate> failByPointer = new() {
+        Q_MigrationSet_EvaluateRecord<Plate> failAllCases = new() {
             Mock = new() {
                 Id = 0,
-
+                Identifier = "",
+                State = "",
+                Country = ""
             },
             Expectations = [
                 (nameof(Plate.Id), [(new PointerValidator(), 3)]),
-                (nameof(Plate.Identifier), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
-                (nameof(Plate.State), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
-                (nameof(Plate.Country), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
+                (nameof(Plate.Identifier), [(new LengthValidator(), 2)]),
+                (nameof(Plate.State), [(new LengthValidator(), 2)]),
+                (nameof(Plate.Country), [(new LengthValidator(), 2)]),
 
             ],
         };
 
 
-        Container = [.. Container, success, failByPointer];
+        Container = [.. Container, success, failAllCases];
 
 
         return Container;

@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace TWS_Business.Sets;
 
 public partial class Truck
@@ -17,7 +19,7 @@ public partial class Truck
 
     public int Maintenance { get; set; }
 
-    public string Situation { get; set; } = null!;
+    public int Situation { get; set; }
 
     public int Insurance { get; set; }
 
@@ -28,4 +30,6 @@ public partial class Truck
     public virtual Manufacturer ManufacturerNavigation { get; set; } = null!;
 
     public virtual Plate PlateNavigation { get; set; } = null!;
+
+    public virtual Situation SituationNavigation { get; set; } = null!;
 }

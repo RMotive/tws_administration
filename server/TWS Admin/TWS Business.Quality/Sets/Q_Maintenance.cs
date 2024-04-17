@@ -15,7 +15,7 @@ public class Q_Maintenance : BQ_MigrationSet<Maintenance> {
             },
             Expectations = [],
         };
-        Q_MigrationSet_EvaluateRecord<Maintenance> failByPointer = new() {
+        Q_MigrationSet_EvaluateRecord<Maintenance> failAllCases = new() {
             Mock = new() {
                 Id = 0,
 
@@ -27,7 +27,7 @@ public class Q_Maintenance : BQ_MigrationSet<Maintenance> {
         };
 
 
-        Container = [.. Container, success, failByPointer];
+        Container = [.. Container, success, failAllCases];
 
 
         return Container;

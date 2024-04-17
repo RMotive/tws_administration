@@ -14,9 +14,9 @@ public partial class Plate
 
         Container = [
                 .. Container,
-            (nameof(Identifier), [Required, new LengthValidator(8, 12),]),
-            (nameof(State), [Required, new LengthValidator(1, 30)]),
-            (nameof(Country), [Required, new LengthValidator(1, 30)]),
+            (nameof(Identifier), [new LengthValidator(8, 12)]),
+            (nameof(State), [new LengthValidator(1, 30)]),
+            (nameof(Country), [new LengthValidator(1, 30)]),
             (nameof(Expiration), [Required]),
 
         ];

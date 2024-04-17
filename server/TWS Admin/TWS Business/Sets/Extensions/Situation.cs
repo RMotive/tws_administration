@@ -4,9 +4,8 @@ using Foundation.Migrations.Validators;
 
 namespace TWS_Business.Sets;
 
-public partial class Insurance
-    : BMigrationSet
-{
+public partial class Situation
+    : BMigrationSet{
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container)
     {
@@ -14,9 +13,7 @@ public partial class Insurance
 
         Container = [
                 .. Container,
-            (nameof(Policy), [new UniqueValidator(), new LengthValidator(1, 20),]),
-            (nameof(Expiration), [Required, new UniqueValidator()]),
-            (nameof(Country), [new LengthValidator(1, 30)]),
+                (nameof(Name), [Required, new LengthValidator(1, 25)]),
         ];
 
         return Container;

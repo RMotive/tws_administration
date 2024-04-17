@@ -14,14 +14,14 @@ public partial class Truck
 
         Container = [
                 .. Container,
-            (nameof(Vin), [Required, new UniqueValidator(), new LengthValidator(17, 17)]),
-            (nameof(Plate), [Required, new UniqueValidator()]),
-            (nameof(Manufacturer), [Required, new UniqueValidator()]),
-            (nameof(Motor), [Required, new UniqueValidator(), new LengthValidator(15, 16)]),
-            (nameof(Sct), [Required, new UniqueValidator(), new LengthValidator(19, 20)]),
-            (nameof(Maintenance), [Required, new UniqueValidator(),]),
-            (nameof(Situation), [Required, new LengthValidator(1, 20)]),
-            (nameof(Insurance), [Required, new UniqueValidator()]),
+            (nameof(Vin), [new UniqueValidator(), new LengthValidator(17, 17)]),
+            (nameof(Plate), [Required, new PointerValidator()]),
+            (nameof(Manufacturer), [Required, new PointerValidator()]),
+            (nameof(Motor), [new UniqueValidator(), new LengthValidator(15, 16)]),
+            (nameof(Sct), [new UniqueValidator(), new LengthValidator(19, 20)]),
+            (nameof(Maintenance), [Required, new PointerValidator()]),
+            (nameof(Situation), [Required, new PointerValidator()]),
+            (nameof(Insurance), [Required, new PointerValidator()]),
         ];
 
         return Container;

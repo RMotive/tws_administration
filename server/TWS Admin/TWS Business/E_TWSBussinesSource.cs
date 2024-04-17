@@ -22,6 +22,7 @@ namespace TWS_Business
                 new Manufacturer(),
                 new Maintenance(),
                 new Insurance(),
+                new Situation(),
                 new Truck(),
 
             ];

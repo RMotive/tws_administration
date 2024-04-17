@@ -1,13 +1,15 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using TWS_Business.Sets;
 
 namespace TWS_Business;
 
-public partial class TWSBusinessSource{
-
+public partial class TWSBusinessSource
+{
     public TWSBusinessSource(DbContextOptions<TWSBusinessSource> options)
-        : base(options){
+        : base(options)
+    {
     }
 
     public virtual DbSet<Insurance> Insurances { get; set; }
@@ -18,17 +20,19 @@ public partial class TWSBusinessSource{
 
     public virtual DbSet<Plate> Plates { get; set; }
 
+    public virtual DbSet<Situation> Situations { get; set; }
+
     public virtual DbSet<Truck> Trucks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Insurance>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Insuranc__3213E83FC7272AD5");
+            entity.HasKey(e => e.Id).HasName("PK__Insuranc__3213E83FF5D07FAA");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Country)
-                .HasMaxLength(30)
+                .HasMaxLength(3)
                 .IsUnicode(false);
             entity.Property(e => e.Policy)
                 .HasMaxLength(20)
@@ -57,23 +61,40 @@ public partial class TWSBusinessSource{
 
         modelBuilder.Entity<Plate>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Plates__3213E83FA07BB331");
+            entity.HasKey(e => e.Id).HasName("PK__Plates__3213E83F8192257A");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Country)
-                .HasMaxLength(30)
+                .HasMaxLength(3)
                 .IsUnicode(false);
             entity.Property(e => e.Identifier)
                 .HasMaxLength(12)
                 .IsUnicode(false);
             entity.Property(e => e.State)
-                .HasMaxLength(30)
+                .HasMaxLength(3)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Situation>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Situatio__3213E83F127DE4E7");
+
+            entity.HasIndex(e => e.Name, "UQ__Situatio__737584F658ECB81C").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Description).HasMaxLength(100);
+            entity.Property(e => e.Name).HasMaxLength(25);
         });
 
         modelBuilder.Entity<Truck>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Trucks__3213E83FC4FC890E");
+            entity.HasKey(e => e.Id).HasName("PK__Trucks__3213E83FD231B178");
+
+            entity.HasIndex(e => e.Vin, "UQ__Trucks__C5DF234CA048AA71").IsUnique();
+
+            entity.HasIndex(e => e.Sct, "UQ__Trucks__CA1908069B670C73").IsUnique();
+
+            entity.HasIndex(e => e.Motor, "UQ__Trucks__FF113ED41643C6D3").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Motor)
@@ -83,9 +104,6 @@ public partial class TWSBusinessSource{
                 .HasMaxLength(25)
                 .IsUnicode(false)
                 .HasColumnName("SCT");
-            entity.Property(e => e.Situation)
-                .HasMaxLength(20)
-                .IsUnicode(false);
             entity.Property(e => e.Vin)
                 .HasMaxLength(17)
                 .IsUnicode(false)
@@ -110,6 +128,11 @@ public partial class TWSBusinessSource{
                 .HasForeignKey(d => d.Plate)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK@Trucks_Plates");
+
+            entity.HasOne(d => d.SituationNavigation).WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Situation)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK@Trucks_Situations");
         });
 
         OnModelCreatingPartial(modelBuilder);

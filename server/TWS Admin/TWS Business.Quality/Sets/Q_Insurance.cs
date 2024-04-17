@@ -11,25 +11,27 @@ public class Q_Insurance : BQ_MigrationSet<Insurance> {
             Mock = new() {
                 Id = 1,
                 Policy = "",
+                Country = "",
                 Expiration = DateOnly.FromDateTime(new DateTime()),
-                Country = ""
+
             },
             Expectations = [],
         };
-        Q_MigrationSet_EvaluateRecord<Insurance> failByPointer = new() {
+        Q_MigrationSet_EvaluateRecord<Insurance> failAllCases = new() {
             Mock = new() {
                 Id = 0,
-
+                Policy = "",
+                Country = ""
             },
             Expectations = [
                 (nameof(Insurance.Id), [(new PointerValidator(), 3)]),
-                (nameof(Insurance.Policy), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
-                (nameof(Insurance.Country), [(new RequiredValidator(),1),(new LengthValidator(), 1)]),
+                (nameof(Insurance.Policy), [(new LengthValidator(), 2)]),
+                (nameof(Insurance.Country), [(new LengthValidator(), 2)]),
             ],
         };
 
 
-        Container = [.. Container, success, failByPointer];
+        Container = [.. Container, success, failAllCases];
 
 
         return Container;
