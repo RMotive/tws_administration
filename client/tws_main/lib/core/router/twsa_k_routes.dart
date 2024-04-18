@@ -12,4 +12,8 @@ class TWSAKRoutes {
   static const CSMRouteOptions securityPage = CSMRouteOptions('security');
   static const CSMRouteOptions featuresArticle = CSMRouteOptions('features');
   static const CSMRouteOptions featuresCreateWhisper = CSMRouteOptions('create');
+  static const CSMRouteOptions businessPage = CSMRouteOptions('business');
+  static const CSMRouteOptions trucksArticle = CSMRouteOptions('trucks');
+  static const CSMRouteOptions trucksCreateWhisper = CSMRouteOptions('add');
+
 }
