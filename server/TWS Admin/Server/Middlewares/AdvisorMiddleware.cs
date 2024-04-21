@@ -1,8 +1,6 @@
 ﻿
 using System.Text.Json;
-
-using Foundation.Exceptions.Servers;
-using Foundation.Managers;
+using Foundation.Advising.Managers;
 
 using JObject = System.Collections.Generic.Dictionary<string, dynamic>;
 
@@ -27,7 +25,7 @@ public class AdvisorMiddleware
             if (!Response.HasStarted) {
                 Stream bufferStream = Response.Body;
                 JObject? responseContent = await JsonSerializer.DeserializeAsync<JObject>(bufferStream);
-                if (responseContent != null && responseContent.TryGetValue("Estela", out dynamic? value)) {
+                if (responseContent != null && responseContent.TryGetValue("Details", out dynamic? value)) {
                     JsonElement Estela = value;
                     JObject? EstelaObject = Estela.Deserialize<JObject>();
                     if (EstelaObject != null && EstelaObject.ContainsKey("Failure"))
@@ -41,9 +39,8 @@ public class AdvisorMiddleware
                 await bufferStream.CopyToAsync(OriginalStream);
                 Response.Body = OriginalStream;
             }
-        } catch (Exception XU) {
-            XUndefined XCritical = new(XU);
-            AdvisorManager.Exception(XCritical);
+        } catch {
+            throw;
         }
     }
 }

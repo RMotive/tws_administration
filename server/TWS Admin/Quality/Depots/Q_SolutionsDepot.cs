@@ -1,6 +1,5 @@
-﻿using Foundation.Managers;
-using Foundation.Migrations.Quality.Bases;
-
+﻿using Foundation.Migrations.Quality.Bases;
+using Foundation.Utils;
 using TWS_Security.Depots;
 using TWS_Security.Sets;
 
@@ -11,11 +10,14 @@ namespace TWS_Security.Quality.Depots;
 /// </summary>
 public class Q_SolutionsDepost
     : BQ_MigrationDepot<Solution, SolutionsDepot, TWSSecuritySource> {
+    public Q_SolutionsDepost() 
+        : base(nameof(Solution.Name)) {
+    }
 
     protected override Solution MockFactory() {
         return new() {
-            Sign = RandomManager.String(5),
-            Name = RandomManager.String(15),
+            Sign = RandomUtils.String(5),
+            Name = RandomUtils.String(15),
             Description = "Q_DescriptionToken"
         };
     }
