@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Middlewares.Frames;
 
-using TWS_Security.Sets;
-
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
@@ -22,7 +20,7 @@ namespace Server.Quality.Controllers;
 
 public class Q_SolutionsController
     : BQ_ServerController<Program> {
-    private class Frame : SuccessFrame<MigrationView<Solution>> { }
+    private class Frame : SuccessFrame<View> { }
 
 
     public Q_SolutionsController(WebApplicationFactory<Program> hostFactory)
