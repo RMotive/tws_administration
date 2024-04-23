@@ -8,9 +8,6 @@ namespace Server.Middlewares;
 
 public class AdvisorMiddleware
     : IMiddleware {
-
-    public AdvisorMiddleware() { }
-
     public async Task InvokeAsync(HttpContext context, RequestDelegate next) {
         try {
             AdvisorManager.Announce(

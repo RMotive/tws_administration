@@ -1,7 +1,7 @@
 ﻿using Foundation.Server.Records;
 using Foundation.Servers.Interfaces;
 
-namespace Server.Templates;
+namespace Server.Middlewares.Frames;
 
 public class FailureFrame
     : IServerFrame<ServerExceptionPublish> {

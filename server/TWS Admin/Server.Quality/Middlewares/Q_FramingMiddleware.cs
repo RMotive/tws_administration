@@ -87,7 +87,11 @@ public class Q_FramingMiddleware
         Assert.Equal(HttpStatusCode.InternalServerError, Response.StatusCode);
         Assert.NotNull(fact);
         Assert.True(fact.Estela.ContainsKey("System"));
-        Assert.Equal(typeof(ArgumentException).ToString(), fact.Estela["System"].ToString());
+
+        string expectedExcep = typeof(ArgumentException).ToString();
+        string actualExcep = fact.Estela["System"].ToString()?.Split('|')[0] ?? "";
+
+        Assert.Equal(expectedExcep, actualExcep);
     }
     [Fact]
     public async void FoundationException() {
@@ -100,6 +104,9 @@ public class Q_FramingMiddleware
         Assert.Equal(HttpStatusCode.BadRequest, Response.StatusCode);
         Assert.NotNull(fact);
         Assert.True(fact.Estela.ContainsKey("System"));
-        Assert.Equal("N/A", fact.Estela["System"].ToString());
+        string expectedExcep = "N/A";
+        string actualExcep = fact.Estela["System"].ToString()?.Split('|')[0] ?? "";
+
+        Assert.Equal(expectedExcep, actualExcep);
     }
 }

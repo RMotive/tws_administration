@@ -1,11 +1,11 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 
 using Foundation.Server.Bases;
 using Foundation.Server.Interfaces;
 using Foundation.Server.Records;
 using Foundation.Shared.Exceptions;
-
-using Server.Templates;
+using Server.Middlewares.Frames;
 
 namespace Server.Middlewares;
 
@@ -49,7 +49,16 @@ public class FramingMiddleware
                     Response.StatusCode = (int)failure.Status;
                     encodedContent = JsonSerializer.Serialize(frame);
                 } else {
+                    Stream resolutionStream = Response.Body;
+                    Dictionary<string, dynamic> resolution = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(resolutionStream)!;
 
+                    SuccessFrame<Dictionary<string, dynamic>> frame = new() { 
+                        Tracer = Tracer,
+                        Estela = resolution,
+                    };
+
+                    Response.StatusCode = (int)HttpStatusCode.OK;
+                    encodedContent = JsonSerializer.Serialize(frame);
                 }
 
 

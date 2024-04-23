@@ -33,6 +33,10 @@ public interface IServerTransactionException {
     ///     Indicates a custom status code for the transaction resolution.
     /// </summary>
     public HttpStatusCode Status { get; }
+    /// <summary>
+    ///     Stores custom factors to analyze the thrown exception.
+    /// </summary>
+    public Dictionary<string, dynamic> Factors { get; }
 
     public ServerExceptionPublish Publish();
 }

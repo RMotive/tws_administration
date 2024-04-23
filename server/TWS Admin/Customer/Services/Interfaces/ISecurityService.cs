@@ -1,3 +1,7 @@
-﻿namespace Customer.Services.Interfaces;
+﻿using Customer.Services.Records;
 
-public interface ISecurityService { }
+namespace Customer.Services.Interfaces;
+
+public interface ISecurityService { 
+    public Task<Privileges> Authenticate(Credentials Credentials);
+}

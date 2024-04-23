@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Customer.Services.Interfaces;
+using Customer.Services.Records;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Server.Controllers;
 
@@ -8,7 +10,14 @@ namespace Server.Controllers;
 [ApiController, Route("[controller]")]
 public class SecurityController
     : ControllerBase {
-    //private readonly ISecurityService Service;
+    
+    
+    readonly ISecurityService Service;
+    public SecurityController(ISecurityService Service) {
+        this.Service = Service;
+    }
 
-    public SecurityController() { }
+    [HttpPost("[Action]")]
+    public async Task<IActionResult> Authenticate(Credentials Credentials)
+    => Ok(await Service.Authenticate(Credentials));
 }

@@ -6,7 +6,7 @@ namespace Server.Quality.Middlewares.Resources.Exceptions;
 public class XQ_Exception
     : BServerTransactionException<XQ_ExceptionSituation> {
     public XQ_Exception() 
-        : base("quality exception mock", HttpStatusCode.BadRequest, null, null) {
+        : base("quality exception mock", HttpStatusCode.BadRequest, null) {
     }
 }
 

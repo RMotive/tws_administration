@@ -1,7 +1,8 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-using Foundation.Migrations.Exceptions;
+using Foundation.Migration.Enumerators;
+using Foundation.Migration.Interfaces.Depot;
 using Foundation.Migrations.Interfaces;
 using Foundation.Migrations.Records;
 
@@ -23,7 +24,8 @@ namespace Foundation.Migrations.Bases;
 ///     Migration mirror concept that this depot handles.
 /// </typeparam>
 public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
-    : IMigrationDepot<TMigrationSet>
+    : IMigrationDepot<TMigrationSet>,
+      IMigrationDepot_Read<TMigrationSet>
     where TMigrationSource : BMigrationSource<TMigrationSource>
     where TMigrationSet : class, IMigrationSet {
     /// <summary>
@@ -78,14 +80,14 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
                 UnaryExpression translationExpression = Expression.Convert(memberExpression, typeof(object));
                 Expression<Func<TMigrationSet, object>> orderingExpression = Expression.Lambda<Func<TMigrationSet, object>>(translationExpression, parameterExpression);
 
-                if(i == 0) {
+                if (i == 0) {
                     orderingQuery = ordering.Behavior switch {
                         Enumerators.MIgrationViewOrderBehaviors.DownUp => query.OrderBy(orderingExpression),
                         Enumerators.MIgrationViewOrderBehaviors.UpDown => query.OrderByDescending(orderingExpression),
                         _ => query.OrderBy(orderingExpression),
                     };
                     continue;
-                } 
+                }
 
                 orderingQuery = ordering.Behavior switch {
                     Enumerators.MIgrationViewOrderBehaviors.DownUp => orderingQuery.ThenBy(orderingExpression),
@@ -151,8 +153,11 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             try {
                 set.EvaluateWrite();
                 safe = [.. safe, set];
-            } catch (XBMigrationSet_Evaluate) {
-                MigrationTransactionFailure fail = new();
+            } catch (Exception excep) {
+                MigrationTransactionFailure fail = new() {
+                    Set = set,
+                    System = excep,
+                };
                 fails = [.. fails, fail];
             }
         }
@@ -160,6 +165,40 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         await this.Set.AddRangeAsync(safe);
         return new(safe, []);
     }
+    #endregion
 
+    #region Read interface
+    public async Task<MigrationTransactionResult<TMigrationSet>> Read(Expression<Func<TMigrationSet, bool>> Predicate, MigrationReadBehavior Behavior) {
+        IQueryable<TMigrationSet> query = Set.Where(Predicate);
+        TMigrationSet[] items = [];
+
+        if (!query.Any())
+            return new MigrationTransactionResult<TMigrationSet>([], []);
+        items = Behavior switch {
+            MigrationReadBehavior.First => [await query.FirstAsync()],
+            MigrationReadBehavior.Last => [await query.LastAsync()],
+            MigrationReadBehavior.All => await query.ToArrayAsync(),
+            _ => throw new NotImplementedException()
+        };
+
+
+        TMigrationSet[] successes = [];
+        MigrationTransactionFailure[] failures = [];
+        foreach (TMigrationSet item in items) {
+            try {
+                item.EvaluateRead();
+
+                successes = [.. successes, item];
+            } catch (Exception excep) {
+                MigrationTransactionFailure failure = new() {
+                    Set = item,
+                    System = excep,
+                };
+                failures = [.. failures, failure];
+            }
+        }
+
+        return new(successes, failures);
+    }
     #endregion
 }

@@ -73,6 +73,7 @@ public class Program {
             // --> Adding customer services
             {
                 builder.Services.AddSingleton<ISolutionsService>(new SolutionsService(new()));
+                builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
             }
             // --> Adding middleware services
             {

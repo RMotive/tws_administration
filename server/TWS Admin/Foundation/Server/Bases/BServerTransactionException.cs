@@ -11,15 +11,16 @@ public class BServerTransactionException<TSituation>
     public string Trace { get; init; }
     public string Subject { get; protected set; } = string.Empty;
     public string Advise { get; protected set; } = string.Empty;
-    public Exception? System { get; init; }
+    public Exception? System { get; init; } = null;
     public TSituation Situation { get; protected set; } = default!;
-    public Dictionary<string, dynamic> Details { get; init; }
+    public Dictionary<string, dynamic> Details { get; init; } = [];
+    public Dictionary<string, dynamic> Factors {  get; init; } = [];
     public HttpStatusCode Status { get; init; }
-    public BServerTransactionException(string Subject, HttpStatusCode Status, Exception? Exception, Dictionary<string, dynamic>? Details = null)
-        : base(Exception?.Message ?? Subject) {
-        Trace = Exception?.StackTrace ?? new StackTrace().ToString();
+    public BServerTransactionException(string Subject, HttpStatusCode Status, Exception? System = null)
+        : base(System?.Message ?? Subject) {
+        Trace = System?.StackTrace ?? new StackTrace().ToString();
         this.Details = Details ?? [];
-        this.System = Exception;
+        this.System = System;
         this.Subject = Subject;
         this.Status = Status;
     }
@@ -28,7 +29,7 @@ public class BServerTransactionException<TSituation>
         return new ServerExceptionPublish() {
             Advise = Advise,
             Sitaution = Convert.ToInt32(Situation),
-            System = System?.GetType().ToString() ?? "N/A",
+            System = (System?.GetType().ToString() ?? "N/A") + $"|{Message}",
             Trace = Trace,
         };
     }

@@ -1,9 +1,9 @@
 ﻿using Foundation.Servers.Interfaces;
 
-namespace Server.Templates;
+namespace Server.Middlewares.Frames;
 
 public class SuccessFrame<TSuccess>
-    : IServerFrame {
+    : IServerFrame<TSuccess> {
 
     required public Guid Tracer { get; init; }
     required public TSuccess Estela { get; init; }
