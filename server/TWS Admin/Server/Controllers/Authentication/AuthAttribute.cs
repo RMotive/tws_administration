@@ -23,7 +23,7 @@ public class AuthAttribute
     public void OnAuthorization(AuthorizationFilterContext context) {
         StringValues headers = context.HttpContext.Request.Headers.Authorization;
         string authHedaer = headers
-            .Where(i => i.Contains(AUTH_TOKEN_KEY))
+            .Where(i => i is not null && i.Contains(AUTH_TOKEN_KEY))
             .FirstOrDefault() 
             ?? throw new XAuth(XAuthSituation.Lack);
 

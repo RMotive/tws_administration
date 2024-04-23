@@ -19,7 +19,7 @@ public sealed class SessionsManager {
 
     }
 
-    private bool EvaluateAlive(DateTime Expiration) {
+    private static bool EvaluateAlive(DateTime Expiration) {
         return DateTime.Compare(DateTime.Now, Expiration) >= 0;
     }
     private Guid Tokenize() {
