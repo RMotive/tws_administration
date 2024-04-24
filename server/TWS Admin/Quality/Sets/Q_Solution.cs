@@ -24,8 +24,8 @@ public class Q_Solution
             Mock = new() { },
             Expectations = [
                 (nameof(Solution.Id), [(new PointerValidator(), 3)]),
-                (nameof(Solution.Name), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
-                (nameof(Solution.Sign), [(new RequiredValidator(), 1), (new LengthValidator(), 1)]),
+                (nameof(Solution.Name), [(new LengthValidator(), 1)]),
+                (nameof(Solution.Sign), [(new LengthValidator(), 1)]),
             ],
         };
 

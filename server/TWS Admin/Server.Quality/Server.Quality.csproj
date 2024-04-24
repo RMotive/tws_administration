@@ -7,24 +7,17 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <UserSecretsId>992fcf99-d240-4b46-8409-0c38992d219b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\**" />
-    <EmbeddedResource Remove="Controllers\**" />
-    <None Remove="Controllers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0-preview-24080-01" />
     <PackageReference Include="xunit" Version="2.7.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.8">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

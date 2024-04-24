@@ -2,3 +2,4 @@
 
 **/.vs/
 /server/TWS Admin/Server.Quality/Private/AccountIdentityPrivates.cs
+/server/TWS Admin/Server.Quality/Secrets/Account.cs
