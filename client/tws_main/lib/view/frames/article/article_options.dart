@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/router/router_module.dart';
+import 'package:cosmos_foundation/csm_foundation.dart';
 import 'package:flutter/material.dart';
 
 class ArticleOptions {

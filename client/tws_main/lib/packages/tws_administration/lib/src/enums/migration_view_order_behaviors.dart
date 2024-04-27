@@ -1,0 +1,4 @@
+enum MigrationViewOrderBehaviors {
+  ascending,
+  descending,
+}

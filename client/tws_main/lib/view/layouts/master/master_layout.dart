@@ -1,11 +1,5 @@
 import 'dart:ui';
-import 'package:cosmos_foundation/common/common_module.dart';
-import 'package:cosmos_foundation/common/tools/csm_responsive.dart';
-import 'package:cosmos_foundation/router/router_module.dart';
-import 'package:cosmos_foundation/theme/theme_module.dart';
-import 'package:cosmos_foundation/widgets/csm_responsive_view.dart';
-import 'package:cosmos_foundation/widgets/csm_spacing_column.dart';
-import 'package:cosmos_foundation/widgets/enums/csm_states.dart';
+import 'package:cosmos_foundation/csm_foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/router/twsa_k_routes.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
@@ -38,12 +32,12 @@ class MasterLayout extends CSMLayoutBase {
       _MasterLayoutMenuButtonOptions(
         label: 'Overview',
         icon: Icons.dashboard_outlined,
-        route: TWSAKRoutes.overviewPage,
+        route: TWSARoutes.overviewPage,
       ),
       _MasterLayoutMenuButtonOptions(
         label: 'Security',
         icon: Icons.security_outlined,
-        route: TWSAKRoutes.securityPage,
+        route: TWSARoutes.securityPage,
       )
     ];
 

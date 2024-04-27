@@ -1,5 +1,4 @@
-import 'package:cosmos_foundation/router/router_module.dart';
-import 'package:cosmos_foundation/widgets/csm_table.dart';
+import 'package:cosmos_foundation/csm_foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/theme/theme_module.dart';
+import 'package:cosmos_foundation/csm_foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/constants/twsa_assets.dart';
 import 'package:tws_main/core/constants/twsa_colors.dart';
@@ -13,35 +13,35 @@ final class TWSAThemeDark extends TWSAThemeBase {
           loginLogo: TWSAAssets.fullLogoWhiteWebp,
           masterLayoutMenuLogo: TWSAAssets.wideLogoBlackWebp,
           frame: TWSAColors.warmWhite,
-          masterLayoutStruct: const CSMColorThemeOptions(
+          masterLayout: const CSMColorThemeOptions(
             TWSAColors.oceanBlue,
             TWSAColors.warmWhite,
             Colors.transparent,
           ),
-          pageColorStruct: const CSMColorThemeOptions(
+          pageColor: const CSMColorThemeOptions(
             TWSAColors.lightDark,
             TWSAColors.warmWhite,
             TWSAColors.oceanBlue,
             foreAlt: TWSAColors.darkGrey,
           ),
-          primaryControlColorStruct: const CSMColorThemeOptions(
+          primaryControlColor: const CSMColorThemeOptions(
             TWSAColors.oceanBlue,
             TWSAColors.darkGrey,
             TWSAColors.oceanBlue,
             foreAlt: TWSAColors.warmWhite,
           ),
-          primaryDisabledControlColorStruct: const CSMColorThemeOptions(
+          primaryDisabledControlColor: const CSMColorThemeOptions(
             TWSAColors.darkGrey,
             TWSAColors.darkGrey,
             TWSAColors.darkGrey,
             foreAlt: TWSAColors.warmWhite,
           ),
-          primaryErrorControlColorStruct: const CSMColorThemeOptions(
+          primaryErrorControlColor: const CSMColorThemeOptions(
             Colors.transparent,
             Color.fromARGB(255, 208, 136, 130),
             TWSAColors.smoothWine,
           ),
-          articlesLayoutSelectorButtonStruct: const CSMStateThemeOptions(
+          articlesLayoutSelectorButtonState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
               background: TWSAColors.oceanBlue,
               foreground: TWSAColors.warmWhite,
@@ -53,7 +53,7 @@ final class TWSAThemeDark extends TWSAThemeBase {
               background: TWSAColors.oceanBlueH,
             ),
           ),
-          masterLayoutMenuButtonStruct: const CSMStateThemeOptions(
+          masterLayoutMenuButtonState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
               background: Colors.transparent,
               foreground: TWSAColors.warmWhite,
@@ -69,7 +69,7 @@ final class TWSAThemeDark extends TWSAThemeBase {
               foreground: TWSAColors.warmWhite,
             ),
           ),
-          articlesLayoutActionButtonStruct: const CSMStateThemeOptions(
+          articlesLayoutActionButtonState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
               background: TWSAColors.oceanBlue,
               foreground: TWSAColors.warmWhite,
@@ -77,6 +77,18 @@ final class TWSAThemeDark extends TWSAThemeBase {
             hoverStruct: CSMGenericThemeOptions(
               background: TWSAColors.oceanBlueH,
               foreground: Colors.white60,
+            ),
+            selectStruct: CSMGenericThemeOptions(
+              background: TWSAColors.oceanBlueH,
+            ),
+          ),
+          primaryControlState: const CSMStateThemeOptions(
+            main: CSMGenericThemeOptions(
+              background: TWSAColors.oceanBlue,
+              foreground: TWSAColors.warmWhite,
+            ),
+            hoverStruct: CSMGenericThemeOptions(
+              background: TWSAColors.oceanBlueH,
             ),
             selectStruct: CSMGenericThemeOptions(
               background: TWSAColors.oceanBlueH,

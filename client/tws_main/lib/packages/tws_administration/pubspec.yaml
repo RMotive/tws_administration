@@ -1,0 +1,17 @@
+name: tws_administration
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.3.3
+
+dependencies:
+  build_runner: ^2.4.9
+  csm_foundation_services:
+    git:
+      url: https://github.com/RMotive/csm_foundation_services
+
+dev_dependencies:
+  lints: ^3.0.0
+  test: ^1.24.0

@@ -23,7 +23,7 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
   CSMStates controlState = CSMStates.none;
 
   void listenTheme() {
-    theme = getTheme<TWSAThemeBase>().masterLayoutMenuButtonStruct;
+    theme = getTheme<TWSAThemeBase>().masterLayoutMenuButtonState;
     assert(theme.hovered != null, 'Uses hover state');
     assert(theme.selected != null, 'Uses select state');
     stateTheme = controlState.evaluateTheme(theme);
@@ -41,7 +41,7 @@ class _MasterLayoutMenuButtonState extends State<_MasterLayoutMenuButton> {
     super.initState();
     theme = getTheme<TWSAThemeBase>(
       updateEfect: listenTheme,
-    ).masterLayoutMenuButtonStruct;
+    ).masterLayoutMenuButtonState;
     assert(theme.hovered != null, 'Uses hover state');
     assert(theme.selected != null, 'Uses select state');
 

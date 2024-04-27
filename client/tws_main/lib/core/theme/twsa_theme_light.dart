@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/theme/theme_module.dart';
+import 'package:cosmos_foundation/csm_foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/constants/twsa_assets.dart';
 import 'package:tws_main/core/constants/twsa_colors.dart';
@@ -13,43 +13,46 @@ class TWSAThemeLight extends TWSAThemeBase {
           loginLogo: TWSAAssets.fullLogoBlackWebp,
           masterLayoutMenuLogo: TWSAAssets.wideLogoWhiteWebp,
           frame: TWSAColors.deepPurple,
-          masterLayoutStruct: const CSMColorThemeOptions(
+          masterLayout: const CSMColorThemeOptions(
             Colors.transparent,
             Colors.transparent,
             Colors.transparent,
           ),
-          pageColorStruct: const CSMColorThemeOptions(
+          pageColor: const CSMColorThemeOptions(
             TWSAColors.warmWhite,
             TWSAColors.deepPurple,
             TWSAColors.oceanBlue,
             foreAlt: TWSAColors.darkGrey,
           ),
-          primaryControlColorStruct: const CSMColorThemeOptions(
+          primaryControlColor: const CSMColorThemeOptions(
             Colors.transparent,
             TWSAColors.darkGrey,
             TWSAColors.oceanBlue,
             foreAlt: TWSAColors.deepPurple,
           ),
-          primaryDisabledControlColorStruct: const CSMColorThemeOptions(
+          primaryDisabledControlColor: const CSMColorThemeOptions(
             Colors.transparent,
             TWSAColors.darkGrey,
             Colors.red,
           ),
-          primaryErrorControlColorStruct: const CSMColorThemeOptions(
+          primaryErrorControlColor: const CSMColorThemeOptions(
             Colors.transparent,
             TWSAColors.darkGrey,
             Colors.red,
           ),
-          articlesLayoutSelectorButtonStruct: const CSMStateThemeOptions(
+          articlesLayoutSelectorButtonState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(),
           ),
-          masterLayoutMenuButtonStruct: const CSMStateThemeOptions(
+          masterLayoutMenuButtonState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
               background: Colors.transparent,
               foreground: TWSAColors.warmWhite,
             ),
           ),
-          articlesLayoutActionButtonStruct: const CSMStateThemeOptions(
+          articlesLayoutActionButtonState: const CSMStateThemeOptions(
+            main: CSMGenericThemeOptions(),
+          ),
+          primaryControlState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(),
           ),
         );

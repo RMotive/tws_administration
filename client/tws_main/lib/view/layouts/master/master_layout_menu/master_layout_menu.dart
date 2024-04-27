@@ -15,7 +15,7 @@ class _MasterLayoutMenu extends StatelessWidget {
 
     final TWSAThemeBase theme = getTheme();
     final Size screen = MediaQuery.sizeOf(context);
-    final CSMColorThemeOptions themeStruct = theme.masterLayoutStruct;
+    final CSMColorThemeOptions themeStruct = theme.masterLayout;
 
     final double currentMenuWidth = CSMResponsive.clampRatio(screen.width, ratioCts);
 
