@@ -175,10 +175,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "547e28a2a893e926a5034cbfdc5c83e67d016efb"
+      resolved-ref: "9156fcf4447055456c2a61a5cb946c4894ef99ad"
       url: "https://github.com/RMotive/csm_foundation_services"
     source: git
-    version: "4.2.3"
+    version: "5.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -591,12 +591,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  tws_administration:
+  tws_administration_service:
     dependency: "direct main"
     description:
-      path: "lib/packages/tws_administration"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "7aab9157dc22190d0c048baf0d908e2ab998ce17"
+      url: "https://github.com/RMotive/tws_administration_service"
+    source: git
     version: "1.0.0"
   typed_data:
     dependency: transitive

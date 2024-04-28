@@ -11,8 +11,6 @@ dependencies:
     sdk: flutter
   flutter_web_plugins: 
     sdk: flutter
-  tws_administration:
-    path: ./lib/packages/tws_administration
   cosmos_foundation:
     git:
       url: https://github.com/RMotive/CMSF-Cosmos_Foundation
@@ -20,6 +18,12 @@ dependencies:
   go_router: ^13.0.1
   http: ^1.2.0
   localstorage: ^5.0.0
+
+
+
+  tws_administration_service:
+    git:
+      url: https://github.com/RMotive/tws_administration_service
 
 dev_dependencies:
   flutter_test:
