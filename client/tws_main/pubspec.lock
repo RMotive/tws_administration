@@ -153,15 +153,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
-  cosmos_foundation:
-    dependency: "direct main"
-    description:
-      path: "package/cosmos_foundation"
-      ref: HEAD
-      resolved-ref: d05975ad9ead041bb6a35dfb510a6e8ee5a1db8d
-      url: "https://github.com/RMotive/CMSF-Cosmos_Foundation"
-    source: git
-    version: "2.1.8"
   crypto:
     dependency: transitive
     description:
@@ -179,6 +170,15 @@ packages:
       url: "https://github.com/RMotive/csm_foundation_services"
     source: git
     version: "5.0.0"
+  csm_foundation_view:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "10cade4ce702ac5c8aa5465655365cdae6056fd0"
+      url: "https://github.com/RMotive/csm_foundation_view"
+    source: git
+    version: "2.1.1"
   dart_style:
     dependency: transitive
     description:
@@ -262,10 +262,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: b465e99ce64ba75e61c8c0ce3d87b66d8ac07f0b35d0a7e0263fcfc10f99e836
+      sha256: "9e0f7d1a3e7dc5010903e330fbc5497872c4c3cf6626381d69083cc1d5113c1e"
       url: "https://pub.dev"
     source: hosted
-    version: "13.2.5"
+    version: "14.0.2"
   graphs:
     dependency: transitive
     description:

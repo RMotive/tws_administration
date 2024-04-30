@@ -1,7 +1,7 @@
-import 'package:cosmos_foundation/csm_foundation.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
+import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/core/router/twsa_k_routes.dart';
-import 'package:tws_main/packages/tws_administration/lib/tws_administration.dart';
 import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
 import 'package:tws_main/view/frames/security/security_frame.dart';

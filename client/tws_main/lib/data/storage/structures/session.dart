@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/csm_foundation.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 
 class Session {
   final String token;

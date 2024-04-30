@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/csm_foundation.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/view/frames/introduction/introduction_frame.dart';
 import 'package:tws_main/view/frames/security/security_frame.dart';

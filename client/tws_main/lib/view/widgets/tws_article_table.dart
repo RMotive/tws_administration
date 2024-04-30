@@ -1,4 +1,6 @@
-import 'package:cosmos_foundation/csm_foundation.dart';
+import 'dart:math';
+
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/constants/twsa_colors.dart';
 import 'package:tws_main/view/widgets/options/bases/tws_article_table_data_adapter.dart';
@@ -23,12 +25,15 @@ class _TWSArticleTableState<TArticle> extends State<TWSArticleTable<TArticle>> {
   TArticle? sltItem;
 
   Future<List<int>> call() async {
-    await Future<void>.delayed(2.seconds);
-    return <int>[];
+    Random random = Random.secure();
+
+    return <int>[random.nextInt(120)];
   }
 
   @override
   Widget build(BuildContext context) {
+    final CSMConsumerAgent agent = CSMConsumerAgent();
+
     return LayoutBuilder(
       builder: (_, BoxConstraints constrains) {
         final double detailsWidth = sltItem != null ? 400 : 0;
@@ -85,8 +90,10 @@ class _TWSArticleTableState<TArticle> extends State<TWSArticleTable<TArticle>> {
                         ),
                         // --> Details drawer
                         CSMConsumer<List<int>>(
-                          consume: call(),
-                          emptyAsError: true,
+                          consume: call,
+                          delay: 1.seconds,
+                          agent: agent,
+                          emptyCheck: (List<int> data) => data.isEmpty,
                           loadingBuilder: (_) {
                             return const Padding(
                               padding: EdgeInsets.only(
@@ -104,10 +111,28 @@ class _TWSArticleTableState<TArticle> extends State<TWSArticleTable<TArticle>> {
                             );
                           },
                           errorBuilder: (BuildContext ctx, Object? error, List<int>? data) {
-                            return const Text('FAILURE');
+                            return Column(
+                              children: <Widget>[
+                                FloatingActionButton(
+                                  onPressed: () {
+                                    agent.refresh();
+                                  },
+                                ),
+                                const Text('FAILURE'),
+                              ],
+                            );
                           },
                           successBuilder: (_, List<int> data) {
-                            return const Text('SUCCESSES');
+                            return Column(
+                              children: <Widget>[
+                                FloatingActionButton(
+                                  onPressed: () {
+                                    agent.refresh();
+                                  },
+                                ),
+                                Text('SUCCESSES $data'),
+                              ],
+                            );
                           },
                         ),
                       ],

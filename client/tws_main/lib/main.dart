@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/csm_foundation.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:localstorage/localstorage.dart';

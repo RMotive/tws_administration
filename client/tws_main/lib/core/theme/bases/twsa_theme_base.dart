@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/csm_foundation.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:tws_main/core/theme/structs/section_theme_struct.dart';
 
 abstract class TWSAThemeBase extends CSMThemeBase {
