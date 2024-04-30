@@ -1,5 +1,4 @@
-import 'package:cosmos_foundation/csm_application.dart';
-import 'package:cosmos_foundation/theme/theme_module.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:localstorage/localstorage.dart';
@@ -29,7 +28,7 @@ class TWSAdministration extends StatelessWidget {
       defaultTheme: const TWSAThemeDark(),
       routerConfig: TWSARouteTree(),
       builder: (BuildContext context, Widget? home) {
-        CSMColorThemeOptions theme = getTheme<TWSAThemeBase>().pageColorStruct;
+        CSMColorThemeOptions theme = getTheme<TWSAThemeBase>().pageColor;
         
         return DefaultTextStyle(
           style: const TextStyle(

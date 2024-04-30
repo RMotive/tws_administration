@@ -1,9 +1,5 @@
 import 'dart:ui';
-
-import 'package:cosmos_foundation/common/common_module.dart';
-import 'package:cosmos_foundation/common/tools/csm_responsive.dart';
-import 'package:cosmos_foundation/theme/theme_module.dart';
-import 'package:cosmos_foundation/widgets/csm_spacing_row.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/view/frames/whisper/options/whisper_frame_action_options.dart';
@@ -34,7 +30,7 @@ class WhisperFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CSMColorThemeOptions pageTheme = getTheme<TWSAThemeBase>().pageColorStruct;
+    final CSMColorThemeOptions pageTheme = getTheme<TWSAThemeBase>().pageColor;
 
     return BackdropFilter(
       filter: ImageFilter.blur(

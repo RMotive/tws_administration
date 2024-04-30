@@ -5,7 +5,7 @@ class _MasterLayoutHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CSMColorThemeOptions themeStruct = getTheme<TWSAThemeBase>().masterLayoutStruct;
+    final CSMColorThemeOptions themeStruct = getTheme<TWSAThemeBase>().masterLayout;
     final MasterLayoutMenuState masterLayoutMenu = masterLayoutMenuState;
 
     return ColoredBox(

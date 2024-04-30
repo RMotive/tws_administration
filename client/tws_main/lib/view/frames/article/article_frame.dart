@@ -1,9 +1,4 @@
-import 'package:cosmos_foundation/router/router_module.dart';
-import 'package:cosmos_foundation/theme/theme_module.dart';
-import 'package:cosmos_foundation/widgets/csm_color_box.dart';
-import 'package:cosmos_foundation/widgets/csm_pointer_handler.dart';
-import 'package:cosmos_foundation/widgets/csm_spacing_row.dart';
-import 'package:cosmos_foundation/widgets/enums/csm_states.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/constants/twsa_assets.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';

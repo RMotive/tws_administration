@@ -8,26 +8,25 @@ import 'package:tws_main/view/frames/security/security_frame.dart';
 import 'package:tws_main/view/widgets/options/bases/tws_article_table_data_adapter.dart';
 import 'package:tws_main/view/widgets/tws_article_table.dart';
 
-part './options/features_article_table_adapter.dart';
+part 'options/solutions_article_table_adapter.dart';
 
-class FeaturesArticle extends CSMPageBase {
-  const FeaturesArticle({super.key});
+class SolutionsArticle extends CSMPageBase {
+  const SolutionsArticle({super.key});
 
   @override
   Widget compose(BuildContext ctx, Size window) {
     return SecurityFrame(
-      currentRoute: TWSARoutes.featuresArticle,
+      currentRoute: TWSARoutes.solutionsArticle,
       actionsOptions: ActionRibbonOptions(
         maintenanceGroupConfig: MaintenanceGroupOptions(
-          onCreate: () {
-            
-          },
+          onCreate: () {},
         ),
       ),
-      article: const TWSArticleTable<Feature>(
+      article: const TWSArticleTable<Solution>(
         adapter: _TableAdapter(),
         fields: <String>[
           'Name',
+          'Sign',
         ],
       ),
     );

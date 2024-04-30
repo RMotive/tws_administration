@@ -1,4 +1,4 @@
-import 'package:cosmos_foundation/theme/theme_module.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
@@ -58,9 +58,9 @@ class _TWSInputTextState extends State<TWSInputText> {
   }
 
   void initializeThemes() {
-    colorStruct = theme.primaryControlColorStruct;
-    disabledColorStruct = theme.primaryDisabledControlColorStruct;
-    errorColorStruct = theme.primaryErrorControlColorStruct;
+    colorStruct = theme.primaryControlColor;
+    disabledColorStruct = theme.primaryDisabledControlColor;
+    errorColorStruct = theme.primaryErrorControlColor;
   }
 
   void themeUpdateListener() {
