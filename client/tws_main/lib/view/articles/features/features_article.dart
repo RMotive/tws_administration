@@ -29,6 +29,9 @@ class FeaturesArticle extends CSMPageBase {
         fields: <String>[
           'Name',
         ],
+        page: 1,
+        size: 25,
+        sizes: <int>[25, 50, 75, 100],
       ),
     );
   }

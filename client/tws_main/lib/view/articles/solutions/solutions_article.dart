@@ -2,6 +2,7 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/core/router/twsa_k_routes.dart';
+import 'package:tws_main/data/sources/sources.dart';
 import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
 import 'package:tws_main/view/frames/security/security_frame.dart';
@@ -28,6 +29,9 @@ class SolutionsArticle extends CSMPageBase {
           'Name',
           'Sign',
         ],
+        page: 1,
+        size: 25,
+        sizes: <int>[25, 50, 75, 100],
       ),
     );
   }
