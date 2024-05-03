@@ -72,8 +72,8 @@ public class Program {
             });
             // --> Adding customer services
             {
-                builder.Services.AddSingleton<ISolutionsService>(new SolutionsService(new()));
-                builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
+                builder.Services.AddTransient<ISolutionsService>((SP) => new SolutionsService(new()));
+                builder.Services.AddTransient<ISecurityService>((SP) => new SecurityService(new()));
             }
             // --> Adding middleware services
             {

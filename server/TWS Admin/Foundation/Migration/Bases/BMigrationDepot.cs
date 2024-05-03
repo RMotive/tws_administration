@@ -101,6 +101,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         TMigrationSet[] sets = [.. query];
 
         return Task.FromResult(new MigrationView<TMigrationSet>() {
+            Amount = amount,
             Pages = pages,
             Page = page,
             Sets = sets,

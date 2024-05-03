@@ -28,9 +28,9 @@ public class BServerTransactionException<TSituation>
     public ServerExceptionPublish Publish() {
         return new ServerExceptionPublish() {
             Advise = Advise,
-            Sitaution = Convert.ToInt32(Situation),
+            Situation = Convert.ToInt32(Situation),
             System = (System?.GetType().ToString() ?? "N/A") + $"|{Message}",
-            Trace = Trace,
+            Trace = Trace[..200],
         };
     }
 }

@@ -39,4 +39,8 @@ public class MigrationView<TMigrationSet>
     ///     Indicates the amount of records that this result contains.
     /// </summary>
     public int Records { get; init; }
+    /// <summary>
+    ///     Amount of total records that currently exist at the live database
+    /// </summary>
+    public required int Amount { get; init; }
 }

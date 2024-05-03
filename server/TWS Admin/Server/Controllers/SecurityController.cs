@@ -7,7 +7,7 @@ namespace Server.Controllers;
 /// <summary>
 ///     Represents the controller to perform secutiry operations.
 /// </summary>
-[ApiController, Route("[controller]")]
+[ApiController, Route("[Controller]")]
 public class SecurityController
     : ControllerBase {
     
@@ -18,6 +18,6 @@ public class SecurityController
     }
 
     [HttpPost("[Action]")]
-    public async Task<IActionResult> Authenticate(Credentials Credentials)
+    public async Task<IActionResult> Authenticate([FromBody] Credentials Credentials)
     => Ok(await Service.Authenticate(Credentials));
 }
