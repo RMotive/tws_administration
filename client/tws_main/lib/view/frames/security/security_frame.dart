@@ -37,6 +37,7 @@ class SecurityFrame extends StatelessWidget {
           color: stateColor,
         );
       },
+      route: TWSARoutes.solutionsArticle,
       title: 'Solutions',
     ),
   ];

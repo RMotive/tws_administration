@@ -6,6 +6,7 @@ import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
 import 'package:tws_main/view/frames/security/security_frame.dart';
 import 'package:tws_main/view/widgets/options/bases/tws_article_table_data_adapter.dart';
+import 'package:tws_main/view/widgets/options/tws_article_table_field_options.dart';
 import 'package:tws_main/view/widgets/tws_article_table.dart';
 
 part './options/features_article_table_adapter.dart';
@@ -26,9 +27,7 @@ class FeaturesArticle extends CSMPageBase {
       ),
       article: const TWSArticleTable<Feature>(
         adapter: _TableAdapter(),
-        fields: <String>[
-          'Name',
-        ],
+        fields: <TWSArticleTableFieldOptions<Feature>>[],
         page: 1,
         size: 25,
         sizes: <int>[25, 50, 75, 100],

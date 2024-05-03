@@ -7,9 +7,4 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<Feature> {
   Future<MigrationView<Feature>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) {
     throw UnimplementedError();
   }
-
-  @override
-  Widget factory(Feature entry) {
-    throw UnimplementedError();
-  }
 }

@@ -1,0 +1,53 @@
+import 'dart:convert';
+
+import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:tws_administration_service/tws_administration_service.dart';
+
+/// Specifies a static service.
+///
+/// Works as a singleton service to manage everything related to the session local storage functions.
+class SessionStorage {
+  //* --> SINGLETON PATTER HANDLER <--
+  static SessionStorage? _instance;
+  // Avoid self instance
+  static SessionStorage get i => _instance ??= SessionStorage._();
+
+  /// Indicates the key reference for the specific session item in the storage.
+  static const String _kSessionItemStoreKey = "session-privileges";
+
+  /// Service to print advises in console.
+  late final CSMAdvisor _advisor;
+
+  /// Stores the current session that the manager works in.
+  Privileges? _session;
+
+  /// Current session.
+  Privileges? get session => _session;
+
+  /// Wheter the application context has an active session
+  late bool _isSession;
+  bool get isSession => _isSession;
+
+  /// When the singleton is created it first will look if the browser already has a stored session.
+  SessionStorage._() {
+    _advisor = const CSMAdvisor('session-storage');
+    _advisor.message('Starting engines for [SessionStorage]');
+    String? sessionGather = localStorage.getItem(_kSessionItemStoreKey);
+    if (sessionGather == null) {
+      _session = null;
+      _isSession = false;
+      return;
+    }
+
+    JObject json = jsonDecode(sessionGather);
+    _session = Privileges.des(json);
+    _isSession = true;
+  }
+
+  void storeSession(Privileges session) async {
+    _session = session;
+    _isSession = true;
+    localStorage.setItem(_kSessionItemStoreKey, jsonEncode(session.encode()));
+  }
+}

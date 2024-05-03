@@ -130,6 +130,9 @@ class _TWSDropupState<T> extends State<TWSDropup<T>> with TickerProviderStateMix
       this.currentItem = currentItem ?? this.currentItem;
       theme = state.evaluateTheme(themeState);
     });
+    if (currentItem != null) {
+      widget.onChange(currentItem);
+    }
   }
 
   @override
