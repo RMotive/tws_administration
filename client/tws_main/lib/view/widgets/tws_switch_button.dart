@@ -1,8 +1,5 @@
 
-import 'package:cosmos_foundation/theme/csm_theme_manager.dart';
-import 'package:cosmos_foundation/widgets/widgets_module.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
 ///[TWSSwitchButton] Custom widget for TWS environment.
 ///This widget returns a boolean, based on the its state.
@@ -30,11 +27,9 @@ class TWSSwitchButton extends StatefulWidget {
   @override
   State<TWSSwitchButton> createState() => _TWSSwitchButtonState();
 }
-dynamic _globalState;
 bool _internalValue = false;
 
 class _TWSSwitchButtonState extends State<TWSSwitchButton> {
-  final TWSAThemeBase _theme = getTheme();
 
   @override
   void initState() {

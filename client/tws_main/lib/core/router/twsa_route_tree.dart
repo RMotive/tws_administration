@@ -9,10 +9,10 @@ import 'package:tws_main/view/articles/solutions/solutions_article.dart';
 import 'package:tws_main/view/articles/trucks/Whispers/Create/trucks_create_whisper.dart';
 import 'package:tws_main/view/articles/trucks/trucks_article.dart';
 import 'package:tws_main/view/layouts/master/master_layout.dart';
-import 'package:tws_main/view/pages/Business/business_page.dart';
 import 'package:tws_main/view/pages/login/login_page.dart';
 import 'package:tws_main/view/pages/overview/overview_page.dart';
 import 'package:tws_main/view/pages/security/security_page.dart';
+import 'package:tws_main/view/pages/usiness/business_page.dart';
 
 typedef Routes = TWSARoutes;
 

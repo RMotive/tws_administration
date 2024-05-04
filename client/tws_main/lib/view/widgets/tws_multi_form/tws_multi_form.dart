@@ -1,7 +1,4 @@
-import 'package:cosmos_foundation/theme/csm_theme_manager.dart';
-import 'package:cosmos_foundation/theme/models/options/csm_color_theme_options.dart';
-import 'package:cosmos_foundation/theme/models/options/csm_state_theme_options.dart';
-import 'package:cosmos_foundation/widgets/widgets_module.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/view/frames/whisper/whisper_frame.dart';
@@ -84,11 +81,11 @@ class TWSMultiForm<T> extends StatelessWidget {
               //final double tableDataHeigth = maxHeight - 320;
               //final double vdInternalHeight = scrollHeigthLimit - 80;
               // Expands the Data table has it is posible, based on [_maxFloatSectionWidth]
-              final double floatSectionSupposedWidth = constraints.maxWidth * 0.55;
+              //final double floatSectionSupposedWidth = constraints.maxWidth * 0.55;
               // Validate if components width has an overflow.
-              final bool hasPassedThreshold = constraints.maxWidth < (_maxFloatSectionWidth + _kMinFocusSectionWidth);
+              //final bool hasPassedThreshold = constraints.maxWidth < (_maxFloatSectionWidth + _kMinFocusSectionWidth);
               // Value Details section width
-              final double floatSectionWidth = hasPassedThreshold ? constraints.maxWidth : _floatSectionConstrains.constrainWidth(floatSectionSupposedWidth);
+              //final double floatSectionWidth = hasPassedThreshold ? constraints.maxWidth : _floatSectionConstrains.constrainWidth(floatSectionSupposedWidth);
               // Data Table Section width
               //final double focusSectionWidth = hasPassedThreshold ? constraints.maxWidth : constraints.maxWidth - floatSectionWidth - 50;
 

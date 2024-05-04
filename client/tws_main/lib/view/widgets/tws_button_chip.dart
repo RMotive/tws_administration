@@ -1,8 +1,4 @@
-import 'package:cosmos_foundation/theme/models/options/csm_generic_theme_options.dart';
-import 'package:cosmos_foundation/theme/models/options/csm_state_theme_options.dart';
-import 'package:cosmos_foundation/widgets/csm_color_box.dart';
-import 'package:cosmos_foundation/widgets/csm_pointer_handler.dart';
-import 'package:cosmos_foundation/widgets/enums/csm_states.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 
 class TWSButtonChip extends StatefulWidget {

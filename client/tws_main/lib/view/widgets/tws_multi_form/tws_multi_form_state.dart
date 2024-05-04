@@ -13,7 +13,7 @@ bool _firstRun = true;
 
 //theme declaration
 final TWSAThemeBase _theme = getTheme();
-final CSMColorThemeOptions _pageTheme = _theme.pageColorStruct;
+final CSMColorThemeOptions _pageTheme = _theme.pageColor;
 final CSMStateThemeOptions _struct = _asrStruct(_theme);
 
 /// [_rowLabelMaxWidth] maxWidth for the labels on table rows.
@@ -30,16 +30,16 @@ int _selectedItem = 0;
 const double _tdListsMinHeigth = 445;
 
 /// [_maxFloatSectionWidth] Value Details width
-const double _maxFloatSectionWidth = 900;
+//const double _maxFloatSectionWidth = 900;
 
 /// [_kMinFocusSectionWidth] Min Data Table width, pass this value will trigger contrains.maxwidth.
-const double _kMinFocusSectionWidth = 120;
+//const double _kMinFocusSectionWidth = 120;
 
 /// [_floatSectionConstrains] Constraints for [floatSectionWidth] when constrains.maxwidth is false.
-const BoxConstraints _floatSectionConstrains = BoxConstraints(
-  maxWidth: _maxFloatSectionWidth,
-  minWidth: _maxFloatSectionWidth - 500,
-);
+// const BoxConstraints _floatSectionConstrains = BoxConstraints(
+//   maxWidth: _maxFloatSectionWidth,
+//   minWidth: _maxFloatSectionWidth - 500,
+// );
 
 /// [_headerStyle] Text Style for the header in Table Data section.
 final TextStyle _headerStyle = TextStyle(
@@ -56,7 +56,7 @@ final TextStyle _resumeFieldSubtitle = TextStyle(fontSize: 12, color: _pageTheme
 
 /// Asserts the primary control theme color struct to ensure dependencies.
 CSMStateThemeOptions _asrStruct(TWSAThemeBase theme) {
-  CSMStateThemeOptions struct = theme.articlesLayoutSelectorButtonStruct;
+  CSMStateThemeOptions struct = theme.articlesLayoutSelectorButtonState;
   return struct;
 }
 
@@ -147,7 +147,6 @@ void _selectItem(int index) {
       input.controller?.value = TextEditingValue(text: rowElement.value ?? "");
       rowElement.value = input.controller?.value.text;
     }, switchActions: () {
-      TWSSwitchButton input = tempDetails;
       // input.changeValue(rowElement.value);
     });
 

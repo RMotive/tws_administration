@@ -37,12 +37,12 @@ class MasterLayout extends CSMLayoutBase {
       _MasterLayoutMenuButtonOptions(
         label: 'Security',
         icon: Icons.security_outlined,
-        route: TWSAKRoutes.securityPage,
+        route: TWSARoutes.securityPage,
       ),
       _MasterLayoutMenuButtonOptions(
         label: 'Business',
         icon: Icons.emoji_transportation,
-        route: TWSAKRoutes.businessPage,
+        route: TWSARoutes.businessPage,
       )
     ];
 

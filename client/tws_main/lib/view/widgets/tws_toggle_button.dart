@@ -1,18 +1,13 @@
 
-// ignore_for_file: prefer_const_constructors
-
-import 'package:cosmos_foundation/widgets/bases/csm_state_base.dart';
-import 'package:cosmos_foundation/widgets/widgets_module.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-final class _SwitchState extends CSMStateBase{
+final class _SwitchState extends CSMStateBase {
  final GlobalKey state = GlobalKey();
 }
 
 typedef _State = _SwitchState;
 dynamic _value;
-dynamic _globalState;
 class TWSToggleButton extends StatelessWidget {
   final double width;
   final double height;
@@ -32,8 +27,7 @@ class TWSToggleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return  CSMDynamicWidget<_State>(
       state: _State(),
-      designer: (BuildContext ctx,CSMStateBase state) {
-        _globalState = state;
+        designer: (BuildContext ctx, CSMStateBase state) {
         return SizedBox( 
         width: width,
         height: height,
@@ -43,36 +37,29 @@ class TWSToggleButton extends StatelessWidget {
               visible:   title != null,
               child: Text(title ?? "")
             ),
-            Container(
-              child: Row(
-                children: [
-                  TapRegion(
-                     onTapInside:(_){
-                      _value = false;
-                      onSelected(_value);
-                      state.effect();
-                     },
-                    child: const DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Colors.amber
-                    ),
-                    child: Text("Tap on me"),
-                  )),
-                   TapRegion(
-                    onTapInside:(_){
-                    _value = false;
-                    onSelected(_value);
-                    state.effect();
-                    },
-                    child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Colors.amber
-                    ),
-                    child: Text("Tap on me"),
-                  ))
-      
-                ],
-              ),
+                Row(
+                  children: <Widget>[
+                    TapRegion(
+                        onTapInside: (_) {
+                          _value = false;
+                          onSelected(_value);
+                          state.effect();
+                        },
+                        child: const DecoratedBox(
+                          decoration: BoxDecoration(color: Colors.amber),
+                          child: Text("Tap on me"),
+                        )),
+                    TapRegion(
+                        onTapInside: (_) {
+                          _value = false;
+                          onSelected(_value);
+                          state.effect();
+                        },
+                        child: const DecoratedBox(
+                          decoration: BoxDecoration(color: Colors.amber),
+                          child: Text("Tap on me"),
+                        ))
+                  ],
             )
           ],
         ),
