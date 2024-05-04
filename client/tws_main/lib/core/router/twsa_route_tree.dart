@@ -1,9 +1,11 @@
-import 'package:cosmos_foundation/router/router_module.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/router/twsa_k_routes.dart';
 import 'package:tws_main/data/storage/session_storage.dart';
 import 'package:tws_main/view/articles/features/features_article.dart';
 import 'package:tws_main/view/articles/features/whispers/create/features_create_whisper.dart';
+import 'package:tws_main/view/articles/solutions/solutions_article.dart';
 import 'package:tws_main/view/articles/trucks/Whispers/Create/trucks_create_whisper.dart';
 import 'package:tws_main/view/articles/trucks/trucks_article.dart';
 import 'package:tws_main/view/layouts/master/master_layout.dart';
@@ -12,7 +14,7 @@ import 'package:tws_main/view/pages/login/login_page.dart';
 import 'package:tws_main/view/pages/overview/overview_page.dart';
 import 'package:tws_main/view/pages/security/security_page.dart';
 
-typedef Routes = TWSAKRoutes;
+typedef Routes = TWSARoutes;
 
 final SessionStorage _sessionStorage = SessionStorage.instance;
 
@@ -21,6 +23,7 @@ class TWSARouteTree extends CSMRouterTreeBase {
       : super(
           devRoute: Routes.trucksCreateWhisper,
           redirect: (_, __) async {
+            if (kDebugMode) return null;
             if (!await _sessionStorage.isSession) return Routes.loginPage;
             return null;
           },
@@ -29,6 +32,7 @@ class TWSARouteTree extends CSMRouterTreeBase {
             CSMRouteNode(
               Routes.loginPage,
               redirect: (_, __) async {
+                if (kDebugMode) return null;
                 if (await _sessionStorage.isSession) return Routes.overviewPage;
                 return null;
               },
@@ -68,6 +72,37 @@ class TWSARouteTree extends CSMRouterTreeBase {
                           Routes.featuresCreateWhisper,
                           whisperOptions: const CSMRouteWhisperOptions(),
                           pageBuild: (BuildContext ctx, CSMRouterOutput output) => const FeaturesCreateWhisper(),
+                        ),
+                      ],
+                    ),
+                    CSMRouteNode(
+                      TWSARoutes.solutionsArticle,
+                      pageBuild: (BuildContext ctx, CSMRouterOutput output) {
+                        return const SolutionsArticle();
+                      },
+                    )
+                  ],
+                ),
+                // --> [Business Page]
+                CSMRouteNode(
+                  Routes.businessPage,
+                  pageBuild: (_, __) {
+                    return const BusinessPage(
+                      currentRoute: Routes.businessPage,
+                    );
+                  },
+                  routes: <CSMRouteBase>[
+                    // --> [Trucks]
+                    CSMRouteNode(
+                      Routes.trucksArticle,
+                      pageBuild: (_, __) {
+                        return const TrucksArticle();
+                      },
+                      routes: <CSMRouteBase>[
+                        CSMRouteWhisper<Object>(
+                          Routes.trucksCreateWhisper,
+                          whisperOptions: const CSMRouteWhisperOptions(),
+                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const TrucksCreateWhisper(),
                         ),
                       ],
                     ),

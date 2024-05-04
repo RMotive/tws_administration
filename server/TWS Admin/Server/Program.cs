@@ -1,72 +1,49 @@
-﻿using System.Net;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-using Foundation.Contracts.Exceptions.Bases;
-using Foundation.Enumerators.Exceptions;
-using Foundation.Exceptions.Servers;
-using Foundation.Managers;
-using Foundation.Models;
-using Foundation.Models.Schemes;
+using Customer.Services;
+using Customer.Services.Interfaces;
+
+using Foundation.Advising.Interfaces;
+using Foundation.Advising.Managers;
+using Foundation.Server.Utils;
+using Foundation.Shared.Exceptions;
+using Foundation.Utils;
 
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 using Server.Middlewares;
+using Server.Models;
 
 namespace Server;
 
 public class Program {
+    const string SETTINGS_LOCATION = "\\Properties\\server_properties.json";
     const string CORS_BLOCK_MESSAGE = "Request blocked by cors, is not part of allowed hosts";
-    public static ServerPropertiesModel? ServerContext { get; private set; }
 
-    private static void LoadServerContext() {
-        string expectation = "\\Properties\\server_properties.json";
-        string workingDirectory = Directory.GetCurrentDirectory();
-        // --> When you`re using Unix based file system.
-        if (workingDirectory.Contains('/')) {
-            expectation = expectation.Replace("\\", "/");
-        }
-        string fullPath = $"{workingDirectory}{expectation}";
 
-        Dictionary<string, dynamic> noteDetails = new()
-        {
-            {"Working Directory", workingDirectory },
-            {"Expected Path", fullPath },
-        };
-        AdvisorManager.Note("Loading server context", noteDetails);
-        if (!File.Exists(fullPath))
-            throw new XServerConfiguration(ServerConfigurationFailureReasons.NotFound);
+    private static Settings? SettingsStore { get; set; }
+    public static Settings Settings { get { return SettingsStore ??= RetrieveSettings(); } }
+    static private Settings RetrieveSettings() {
+        string ws = Directory.GetCurrentDirectory();
+        string sl = FileUtils.FormatLocation(SETTINGS_LOCATION);
+        Dictionary<string, dynamic> tempModel = FileUtils.Deserealize<Dictionary<string, dynamic>>($"{ws}{sl}");
+        AdvisorManager.Note("Retrieving server settings", new Dictionary<string, dynamic> {
+            {"Workspace", ws },
+            {"Settings", sl },
+        });
+        string host = ServerUtils.GetHost();
+        string[] listeners = Environment.GetEnvironmentVariable("ASPNETCORE_URLS")?.Split(";") ?? [];
+        tempModel.Add("Host", host);
+        tempModel.Add("Listeners", listeners);
 
-        Stream fileStream = File.OpenRead(fullPath);
-        ServerPropertiesScheme contextScheme
-            = JsonSerializer.Deserialize<ServerPropertiesScheme>(fileStream)
-            ?? throw new XServerConfiguration(ServerConfigurationFailureReasons.WrongFormat);
-        try {
-            string HostName = Dns.GetHostName();
-            IPAddress[] Addresses = Dns.GetHostAddresses(HostName);
-            contextScheme.IPv4 = Addresses.ToList().Where(I => I.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).FirstOrDefault()?.ToString() ?? "";
-
-            ServerContext = contextScheme.GenerateModel();
-            string[] Listeners = ServerContext.Listeners;
-            Dictionary<string, dynamic> successDetails = new()
-            {
-                {"Tenant", ServerContext.Tenant },
-                {"Solution", ServerContext.Solution },
-                {"IPv4", ServerContext.IPv4 },
-                {"Listeners", string.Join(", ", Listeners)}
-            };
-            AdvisorManager.Success("Server context loaded", successDetails);
-        } catch (BException x) {
-            AdvisorManager.Exception(x);
-            throw;
-        } catch {
-            throw;
-        }
+        return JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(tempModel)) ?? throw new Exception();
     }
-
     public static void Main(string[] args) {
         AdvisorManager.Announce("Running engines (⌐■_■)");
         try {
-            LoadServerContext();
+            Settings s = Settings;
+            AdvisorManager.Success("Server settings retrieved", s);
+
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             // Add services and overriding options to the container.
             builder.Services.AddControllers()
@@ -82,7 +59,7 @@ public class Program {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
                     builder.SetIsOriginAllowed(origin => {
-                        string[] CorsPolicies = ServerContext?.Cors ?? [];
+                        string[] CorsPolicies = [];
                         Uri parsedUrl = new(origin);
                         bool isCorsAllowed = CorsPolicies.Contains(parsedUrl.Host);
                         AdvisorManager.Warning(CORS_BLOCK_MESSAGE, new() {
@@ -95,11 +72,13 @@ public class Program {
             });
             // --> Adding customer services
             {
+                builder.Services.AddSingleton<ISolutionsService>(new SolutionsService(new()));
+                builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
             }
             // --> Adding middleware services
             {
                 builder.Services.AddSingleton(new AnalyticsMiddleware());
-                builder.Services.AddSingleton(new TemplatesMiddleware());
+                builder.Services.AddSingleton(new FramingMiddleware());
                 builder.Services.AddSingleton(new AdvisorMiddleware());
             }
             WebApplication app = builder.Build();
@@ -113,12 +92,16 @@ public class Program {
             {
                 app.UseMiddleware<AnalyticsMiddleware>();
                 app.UseMiddleware<AdvisorMiddleware>();
-                app.UseMiddleware<TemplatesMiddleware>();
+                app.UseMiddleware<FramingMiddleware>();
             }
             app.Run();
-        } catch (BException X) {
-            AdvisorManager.Exception(X);
-            Console.WriteLine("Press any key to close...");
+        } catch (Exception X) when (X is IAdvisingException AX) {
+            AdvisorManager.Exception(AX);
+            throw;
+        } catch (Exception X) {
+            AdvisorManager.Exception(new XSystem(X));
+        } finally {
+            Console.WriteLine($"Press any key to close...");
             Console.ReadKey();
         }
     }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cosmos_foundation/common/common_module.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:tws_main/data/storage/structures/session.dart';
 

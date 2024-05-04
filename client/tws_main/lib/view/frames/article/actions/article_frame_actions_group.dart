@@ -11,7 +11,7 @@ class _ArticleActionsGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CSMStateThemeOptions actionStruct = getTheme<TWSAThemeBase>().articlesLayoutActionButtonStruct;
+    final CSMStateThemeOptions actionStruct = getTheme<TWSAThemeBase>().articlesLayoutActionButtonState;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

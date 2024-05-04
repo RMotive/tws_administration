@@ -1,7 +1,7 @@
 ﻿namespace TWS_Security.Sets;
 
 public partial class Account {
-    public int Id { get; set; }
+    public override int Id { get; set; }
 
     public string User { get; set; } = null!;
 

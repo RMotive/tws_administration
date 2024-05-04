@@ -1,5 +1,4 @@
-import 'package:cosmos_foundation/common/common_module.dart';
-import 'package:tws_main/data/repositories/tws_administration/services/outputs/init_session_output.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 
 class Session {
   final String token;
@@ -18,13 +17,6 @@ class Session {
     DateTime expiration = DateTime.parse(encodedExpiration);
     DateTime expirationLocal = expiration.toLocal();
     return Session(token, wildcard, features, expiration, expirationLocal);
-  }
-  factory Session.fromOutput(InitSessionOutput output) {
-    String token = output.token;
-    bool wildcard = output.wildcard;
-    List<int> features = output.features;
-    DateTime expiration = output.expiration;
-    return Session(token, wildcard, features, expiration, output.expirationLocal);
   }
   
   JObject toJson() {
