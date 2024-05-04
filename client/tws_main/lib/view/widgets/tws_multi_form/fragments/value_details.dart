@@ -1,13 +1,11 @@
-part of "../collector_frame.dart";
+part of "../tws_multi_form.dart";
 
 ///[_ValueDetails] Class that shows the [_ValueDetails] Section.
 ///This section contains the input type specified by the main component [inputTemplate] parameter.
 ///Build the input template and overwrite the data of the selected item in [_DataTable] section.
 class _ValueDetails extends StatelessWidget {
   final double heigth;
-  const _ValueDetails({
-    required this.heigth
-  });
+  const _ValueDetails({required this.heigth});
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +15,6 @@ class _ValueDetails extends StatelessWidget {
         width: double.maxFinite,
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
         constraints: BoxConstraints(minHeight: heigth),
-        decoration: BoxDecoration(
-          border: Border.fromBorderSide(
-            BorderSide(
-              color: _pageTheme.highlight,
-              width: 2,
-            ),
-          ),
-        ),
         child: Column(
           children: <Widget>[
             Visibility(
@@ -45,11 +35,7 @@ class _ValueDetails extends StatelessWidget {
               maintainState: true,
               child: Form(
                 key: _formKey,
-                child: Wrap(
-                    runSpacing: 20,
-                    spacing: 20,
-                    alignment: WrapAlignment.start,
-                    children: _valueDetails),
+                child: Wrap(runSpacing: 20, spacing: 20, alignment: WrapAlignment.start, children: _valueDetails),
               ),
             ),
           ],

@@ -1,4 +1,6 @@
-part of "collector_frame.dart";
+part of "tws_multi_form.dart";
+
+final class _MultiFormState extends CSMStateBase {}
 
 /// [_formKey] GlobalKey for [TWSInputText] Form management.
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -18,23 +20,27 @@ final CSMStateThemeOptions _struct = _asrStruct(_theme);
 const double _rowLabelMaxWidth = 150;
 
 /// [_globalState] storage the GlobalKey [CSMStateBase] state.
-/// It's values is given on component runtime. 
+/// It's values is given on component runtime.
 dynamic _globalState;
 
 /// [_selectedItem] Current index for the selected item on the List table.
 int _selectedItem = 0;
 
-/// Internal components measures 
+/// Internal components measures
 const double _tdListsMinHeigth = 445;
+
 /// [_maxFloatSectionWidth] Value Details width
 const double _maxFloatSectionWidth = 900;
+
 /// [_kMinFocusSectionWidth] Min Data Table width, pass this value will trigger contrains.maxwidth.
 const double _kMinFocusSectionWidth = 120;
+
 /// [_floatSectionConstrains] Constraints for [floatSectionWidth] when constrains.maxwidth is false.
 const BoxConstraints _floatSectionConstrains = BoxConstraints(
   maxWidth: _maxFloatSectionWidth,
   minWidth: _maxFloatSectionWidth - 500,
 );
+
 /// [_headerStyle] Text Style for the header in Table Data section.
 final TextStyle _headerStyle = TextStyle(
   fontSize: 14,
@@ -42,20 +48,11 @@ final TextStyle _headerStyle = TextStyle(
 );
 
 /// [_resumeFieldTitle] Text Style for the title on the [_ResumeField] component
-final TextStyle _resumeFieldTitle = TextStyle(
-  fontSize: 14, 
-  color: _pageTheme.fore, 
-  fontWeight: FontWeight.bold
-);
+final TextStyle _resumeFieldTitle = TextStyle(fontSize: 14, color: _pageTheme.fore, fontWeight: FontWeight.bold);
 
 /// [_resumeFieldSubtitle] Text Style for the subtitle (content or value caputured by the input components)
 /// on the [_ResumeField] component.
-final TextStyle _resumeFieldSubtitle = TextStyle(
-  fontSize: 12,
-  color: _pageTheme.fore,
-  fontStyle: FontStyle.italic,
-  fontWeight: FontWeight.w100
-);
+final TextStyle _resumeFieldSubtitle = TextStyle(fontSize: 12, color: _pageTheme.fore, fontStyle: FontStyle.italic, fontWeight: FontWeight.w100);
 
 /// Asserts the primary control theme color struct to ensure dependencies.
 CSMStateThemeOptions _asrStruct(TWSAThemeBase theme) {
@@ -72,41 +69,31 @@ List<Widget> _valueDetails = <Widget>[];
 /// [_retriveType] Method that evaluates the object type given in parameter
 ///  and generate an [CollectorData] object based on its type.
 CollectorData _retriveType(dynamic object) {
-
-  assert(
-    object.runtimeType != CollectorTextOption ||
-    object.runtimeType != CollectorSwitchOption,
-    "validateType() - Invalid Object: ${object.runtimeType}"
-  );
-  if(object.runtimeType == CollectorSwitchOption){
-    return CollectorData(
-      type: object.runtimeType,
-      title: object.label,
-      value: object.defaultvalue
-    );
+  assert(object.runtimeType != CollectorTextOption || object.runtimeType != CollectorSwitchOption, "validateType() - Invalid Object: ${object.runtimeType}");
+  if (object.runtimeType == CollectorSwitchOption) {
+    return CollectorData(type: object.runtimeType, title: object.label, value: object.defaultvalue);
   }
   return CollectorData(
     type: object.runtimeType,
     title: object.label,
   );
-  
+
   // if (object.runtimeType == CollectorToggleOption) {
   //   CollectorToggleOption temp = object;
   //   return CollectorData(title: "Toggle test", type: CollectorToggleOption);
   // }
 
   ///Validate if the current input template is a valid component type
-  
 }
 
 /// [_onTapOutside] Method that triggers the validate and rebuild states,
 /// used for the OnTapOutside event in [TWSInputText] widget.
-void _onTapOutside(){
+void _onTapOutside() {
   _formKey.currentState!.validate();
   _globalState.effect();
 }
 
-/// [_addItem] Method that add a new item row to the Table Data Section. 
+/// [_addItem] Method that add a new item row to the Table Data Section.
 void _addItem() {
   // List of [CollectorData] objects that stores the data to display in [_CollectorResumeField] components.
   List<CollectorData> temp = <CollectorData>[];
@@ -136,7 +123,7 @@ void _deleteItem(int index) {
     // Select the last item row in the Table data section.
     _selectItem(_tableValues.length - 1);
   } else {
-    // after delete the last row remaining in the Table data section, 
+    // after delete the last row remaining in the Table data section,
     //set the [_selectedItem] to an invalid index value.
     _selectedItem = -1;
   }
@@ -147,24 +134,22 @@ void _selectItem(int index) {
 
   final List<CollectorData> rowSelected = _tableValues[index];
   _selectedItem = index;
-  
 
   for (int cont = 0; cont < _valueDetails.length; cont++) {
     final dynamic tempDetails = _valueDetails[cont];
+
     /// [rowelement] is a [ResumeField] component for the selected item in [TableData] component.
     final CollectorData rowElement = rowSelected[cont];
+
     /// generated components for value data section
-    final _Collectorbehavior behavior = _Collectorbehavior(
-    textActions: (){
+    final _Collectorbehavior behavior = _Collectorbehavior(textActions: () {
       TWSInputText input = tempDetails;
       input.controller?.value = TextEditingValue(text: rowElement.value ?? "");
       rowElement.value = input.controller?.value.text;
-    }, 
-    switchActions: (){
+    }, switchActions: () {
       TWSSwitchButton input = tempDetails;
       // input.changeValue(rowElement.value);
     });
-
 
     behavior.collectorValidationType(tempDetails.runtimeType);
   }
@@ -174,7 +159,6 @@ void _selectItem(int index) {
   /// due to the errorMessage parameter cannot be implemented properly in this component.
   if (!_firstRun) _formKey.currentState!.validate();
   _firstRun = false;
-  
 }
 
 /// [_onChanged] Method to trigger on "onEditingComplete" event in the TWSInputText.
@@ -199,44 +183,41 @@ void _onChanged(int inputIndex) {
     // }
   }
 }
-/// [_retriveData] Method, Verify all the stored inputs data using as validator the 
-/// validator methods given in the component options list parameters. 
+
+/// [_retriveData] Method, Verify all the stored inputs data using as validator the
+/// validator methods given in the component options list parameters.
 bool _retriveData() {
   // Success validation variable.
   bool allGood = true;
-  
+
   //Clear the debug console.
   //Use only in for debuging propurses!
   print('\x1B[2J\x1B[0;0H');
 
-
-  if(_tableValues.isEmpty) return false;
+  if (_tableValues.isEmpty) return false;
 
   /// Iterate each item row in table
   for (int rowcont = 0; rowcont < _tableValues.length; rowcont++) {
     final List<CollectorData> currentRow = _tableValues[rowcont];
     print("📌 Row actual: ${rowcont + 1}");
 
-
     /// Iterate each [CollectorData] object in the current row.
     for (int rowFieldCont = 0; rowFieldCont < currentRow.length; rowFieldCont++) {
-      
       final CollectorData currentRowField = currentRow[rowFieldCont];
+
       /// Current input [inputTemplate] component in Value Details section.
       final dynamic currentInput = inputTemplate[rowFieldCont];
 
-      print("   Evaluando Campo numero ${rowFieldCont+1} - ${currentRowField.title}.....");
+      print("   Evaluando Campo numero ${rowFieldCont + 1} - ${currentRowField.title}.....");
       print("       Contenido: ${currentRowField.value}");
 
       /// Validate if method validator exist in this object
-      if(currentInput.runtimeType == CollectorSwitchOption){
+      if (currentInput.runtimeType == CollectorSwitchOption) {
         print("       Tipo de objeto: ${currentInput.runtimeType}");
-
       } else if (currentInput.validator != null) {
-        
         /// Validate the input content
         print("       Resultado de Evaluacion: ${currentInput.validator(currentRowField.value ?? "")}");
-        //if the valitador method returns an any string content, then set the [allGood] 
+        //if the valitador method returns an any string content, then set the [allGood]
         //variable as an false, indicating an validation error.
         if (currentInput.validator(currentRowField.value ?? "") != null) {
           print("   🚩 ERROR DETECTADO....");
@@ -245,20 +226,18 @@ bool _retriveData() {
         }
 
         print("   📗 Exitoso");
-        
-         
       }
     }
   }
   // Last validation, to update the state of the current selected item.
-  if(!_formKey.currentState!.validate()){
+  if (!_formKey.currentState!.validate()) {
     print("Fallo en la ultima validacion del form");
     allGood = false;
   }
   // if the validation was succesful, then do this...
   if (allGood) {
     print(" 🎇🎆🎇 All Good.... No hay errores de input..");
-    
+
     return allGood;
     // Retornar Datos al componente padre......
   } else {
@@ -267,4 +246,3 @@ bool _retriveData() {
     return allGood;
   }
 }
-

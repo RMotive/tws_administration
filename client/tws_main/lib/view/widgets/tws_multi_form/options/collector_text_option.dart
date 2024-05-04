@@ -1,7 +1,6 @@
+import 'package:tws_main/view/widgets/tws_multi_form/options/collector_options.dart';
 
-import 'package:tws_main/view/frames/collector/options/collector_options.dart';
-
-class CollectorTextOption extends CollectorOptions{
+class CollectorTextOption extends CollectorOptions {
   final String hint;
   final String? Function(String? value) validator;
 
@@ -10,6 +9,6 @@ class CollectorTextOption extends CollectorOptions{
     super.width,
     required super.label,
     required this.hint,
-    required this.validator, 
+    required this.validator,
   });
 }

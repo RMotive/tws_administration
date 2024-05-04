@@ -43,11 +43,10 @@ class TWSSection extends StatelessWidget {
     return Padding(
       padding: padding,
       child: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border.fromBorderSide(
             BorderSide(
-              width: 1,
-              color: Colors.white,
+              width: 2, color: sectionStruct?.borderColor ?? pageStruct.highlight,
               strokeAlign: BorderSide.strokeAlignCenter
             ),
           ),

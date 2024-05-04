@@ -1,4 +1,4 @@
-part of "../collector_frame.dart";
+part of "../tws_multi_form.dart";
 
 /// [_DataTable] Widget class that shows the table data section.
 /// In this section incluide some buttons options to add or delete rows of items
@@ -6,21 +6,20 @@ part of "../collector_frame.dart";
 class _DataTable extends StatelessWidget {
   final double listHeight;
   final String itemName;
-  const _DataTable({
-    required this.listHeight,
-    required this.itemName
-  });
+  const _DataTable({required this.listHeight, required this.itemName});
 
   @override
   Widget build(BuildContext context) {
-    return TWSSection(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-      title: "Table Data",
-      content: Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
         children: <Widget>[
           // Options Header
           const _CollectorHeader(),
-          
+
           //Sub-Header
           Container(
             width: double.maxFinite,
@@ -30,10 +29,7 @@ class _DataTable extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("ADD $itemName", style: _headerStyle),
-                Text("Total items: ${_tableValues.length}", style: _headerStyle)
-              ],
+              children: <Widget>[Text("ADD $itemName", style: _headerStyle), Text("Total items: ${_tableValues.length}", style: _headerStyle)],
             ),
           ),
 
@@ -65,9 +61,7 @@ class _DataTable extends StatelessWidget {
                         _selectItem(index);
                         _globalState.effect();
                       },
-                      subtitle: Wrap(
-                        children: _generateLabels(index)
-                      ),
+                      subtitle: Wrap(children: _generateLabels(index)),
                       title: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Column(
@@ -75,10 +69,7 @@ class _DataTable extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               "#${index + 1} $itemName",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: _pageTheme.fore),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: _pageTheme.fore),
                             )
                           ],
                         ),
