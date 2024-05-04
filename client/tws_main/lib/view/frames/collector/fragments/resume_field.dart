@@ -34,7 +34,7 @@ class _ResumeField extends StatelessWidget {
               style:titleStyle
             ),
             Text(
-              data.value == null? " ": data.value.toString(),
+              data.value == false? "Deactivated" : data.value == true? "Activated": data.value ?? " ",
               style:subtitleStyle
             ),
             Visibility(

@@ -72,25 +72,31 @@ List<Widget> _valueDetails = <Widget>[];
 /// [_retriveType] Method that evaluates the object type given in parameter
 ///  and generate an [CollectorData] object based on its type.
 CollectorData _retriveType(dynamic object) {
-  dynamic temp;
-  if (object.runtimeType == CollectorTextOption) {
-    CollectorTextOption temp = object;
+
+  assert(
+    object.runtimeType != CollectorTextOption ||
+    object.runtimeType != CollectorSwitchOption,
+    "validateType() - Invalid Object: ${object.runtimeType}"
+  );
+  if(object.runtimeType == CollectorSwitchOption){
     return CollectorData(
       type: object.runtimeType,
-      title: temp.label,
+      title: object.label,
+      value: object.defaultvalue
     );
   }
-  if (object.runtimeType == CollectorToggleOption) {
-    CollectorToggleOption temp = object;
-    return CollectorData(title: "Toggle test", type: CollectorToggleOption);
-  }
+  return CollectorData(
+    type: object.runtimeType,
+    title: object.label,
+  );
+  
+  // if (object.runtimeType == CollectorToggleOption) {
+  //   CollectorToggleOption temp = object;
+  //   return CollectorData(title: "Toggle test", type: CollectorToggleOption);
+  // }
 
   ///Validate if the current input template is a valid component type
-  assert(
-      object.runtimeType != CollectorTextOption ||
-          object.runtimeType != CollectorToggleOption,
-      "validateType() - Invalid Object: ${object.runtimeType} ");
-  return temp;
+  
 }
 
 /// [_onTapOutside] Method that triggers the validate and rebuild states,
@@ -141,19 +147,26 @@ void _selectItem(int index) {
 
   final List<CollectorData> rowSelected = _tableValues[index];
   _selectedItem = index;
+  
 
   for (int cont = 0; cont < _valueDetails.length; cont++) {
-    /// generated components for value data section
     final dynamic tempDetails = _valueDetails[cont];
-    if (tempDetails.runtimeType == TWSInputText) {
+    /// [rowelement] is a [ResumeField] component for the selected item in [TableData] component.
+    final CollectorData rowElement = rowSelected[cont];
+    /// generated components for value data section
+    final _Collectorbehavior behavior = _Collectorbehavior(
+    textActions: (){
       TWSInputText input = tempDetails;
-      CollectorData rowElement = rowSelected[cont];
-      print("errorMessage $cont : ${input.errorText} real: ${rowElement.error}");
       input.controller?.value = TextEditingValue(text: rowElement.value ?? "");
       rowElement.value = input.controller?.value.text;
+    }, 
+    switchActions: (){
+      TWSSwitchButton input = tempDetails;
+      // input.changeValue(rowElement.value);
+    });
 
-      continue;
-    }
+
+    behavior.collectorValidationType(tempDetails.runtimeType);
   }
 
   /// Execute the validation for the current item selection.
@@ -207,15 +220,21 @@ bool _retriveData() {
 
     /// Iterate each [CollectorData] object in the current row.
     for (int rowFieldCont = 0; rowFieldCont < currentRow.length; rowFieldCont++) {
+      
       final CollectorData currentRowField = currentRow[rowFieldCont];
       /// Current input [inputTemplate] component in Value Details section.
       final dynamic currentInput = inputTemplate[rowFieldCont];
 
+      print("   Evaluando Campo numero ${rowFieldCont+1} - ${currentRowField.title}.....");
+      print("       Contenido: ${currentRowField.value}");
+
       /// Validate if method validator exist in this object
-      if (currentInput.validator != null) {
+      if(currentInput.runtimeType == CollectorSwitchOption){
+        print("       Tipo de objeto: ${currentInput.runtimeType}");
+
+      } else if (currentInput.validator != null) {
+        
         /// Validate the input content
-        print("   Evaluando Campo numero ${rowFieldCont+1} - ${currentRowField.title}.....");
-        print("       Contenido: ${currentRowField.value}");
         print("       Resultado de Evaluacion: ${currentInput.validator(currentRowField.value ?? "")}");
         //if the valitador method returns an any string content, then set the [allGood] 
         //variable as an false, indicating an validation error.
@@ -226,6 +245,8 @@ bool _retriveData() {
         }
 
         print("   📗 Exitoso");
+        
+         
       }
     }
   }

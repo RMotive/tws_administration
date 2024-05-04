@@ -1,17 +1,20 @@
+
 import 'package:cosmos_foundation/theme/csm_theme_manager.dart';
 import 'package:cosmos_foundation/theme/models/options/csm_color_theme_options.dart';
 import 'package:cosmos_foundation/theme/models/options/csm_state_theme_options.dart';
 import 'package:cosmos_foundation/widgets/widgets_module.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_main/view/frames/collector/options/collector_options.dart';
 import 'package:tws_main/view/frames/collector/options/collector_text_option.dart';
-import 'package:tws_main/view/frames/collector/options/collector_toggle_option.dart';
+import 'package:tws_main/view/frames/collector/options/collector_switch_option.dart';
 import 'package:tws_main/view/frames/collector/table/collector_data.dart';
 import 'package:tws_main/view/frames/whisper/whisper_frame.dart';
 import 'package:tws_main/view/widgets/tws_button_chip.dart';
 import 'package:tws_main/view/widgets/tws_display_flat.dart';
 import 'package:tws_main/view/widgets/tws_input_text.dart';
 import 'package:tws_main/view/widgets/tws_section.dart';
+import 'package:tws_main/view/widgets/tws_switch_button.dart';
 
 part "fragments/resume_field.dart";
 part "fragments/table_header.dart";
@@ -21,16 +24,27 @@ part "fragments/data_table.dart";
 part "fragments/value_details.dart";
 
 //!Testing class
-// class _CollectorActions {
-//   final Function() textActions;
-//   final Function() toggleActions;
+class _Collectorbehavior {
+  final Function() textActions;
+  final Function() switchActions;
 
-//   _CollectorActions({required this.textActions, required this.toggleActions});
+  _Collectorbehavior({required this.textActions, required this.switchActions});
 
-//   void CollectorValidationType(Type type) {
-//     // if(Type == )
-//   }
-// }
+  void collectorValidationType(Type type) {
+     switch (type){
+      case (const (TWSInputText) || const (CollectorTextOption)):
+        textActions();
+      break;
+      case (const (TWSSwitchButton) || const (CollectorSwitchOption)):
+        switchActions();
+      break;
+      default:
+        print("Error on collectorValidationType. Error in type: $type");
+      break;
+     }
+     
+  }
+}
 
 /// This [CollectorFrameTable] Widget component build a [WhisperFrame]. This component is divided into two sections:
 /// The firts section is [_DataTable], Allows adding an undefined quantity of rows items, in a List builder.
@@ -58,10 +72,10 @@ class CollectorFrameTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _globalState = state;
     if (_firstRun) {
       _addItem();
       _buildValueDetails();
-      _globalState = state;
     }
 
     return LayoutBuilder(

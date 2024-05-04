@@ -8,9 +8,28 @@ List<Widget> _buildValueDetails(){
 
   //For each value in [inputTemplate] evaluates the object type and generate the appropriate component.
   for(int cont = 0; cont<inputTemplate.length; cont++){
-    if(inputTemplate[cont].runtimeType == CollectorTextOption) _valueDetails.add(_generateInputText(inputTemplate[cont],cont));
+    final dynamic currentTemplate = inputTemplate[cont];
+   _Collectorbehavior behavior = _Collectorbehavior(
+    switchActions: () => _valueDetails.add(_generateSwitchButton(currentTemplate,cont)),
+    textActions: () => _valueDetails.add(_generateInputText(currentTemplate,cont)),
+    );
+    behavior.collectorValidationType(currentTemplate.runtimeType);
   }
   return _valueDetails;
+}
+
+TWSSwitchButton _generateSwitchButton(CollectorSwitchOption content, int index){
+
+
+  return TWSSwitchButton(
+    title: content.label,
+    value: _tableValues[_selectedItem][index].value,
+    onChanged: (bool value) {
+      _tableValues[_selectedItem][index].value = value;
+      _globalState.effect();
+
+    }
+  );
 }
 
 /// [_generateInputText] generate a [TWSInputText] based on parameters inputs
@@ -98,6 +117,11 @@ List<dynamic> inputTemplate = <dynamic>[
       validator: (String? value) {
         return null;
       }),
+
+  const CollectorSwitchOption(
+    label: "Operative", 
+    
+    ),
   CollectorTextOption(
       required: true,
       label: "SCT",

@@ -20,7 +20,7 @@ class TrucksCreateWhisper extends CSMPageBase{
         return CollectorFrameTable(
               state: state,
               onSummit: (List<List<CollectorData>>? result, bool success) {
-                print("OBTUVE RESULTADO $success......");
+                print("Resultado de peticion: $success......");
                 print(result);
               },
               // constraints: constraints,
