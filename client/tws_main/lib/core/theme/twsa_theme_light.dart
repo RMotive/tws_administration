@@ -18,7 +18,7 @@ class TWSAThemeLight extends TWSAThemeBase {
             Colors.transparent,
             Colors.transparent,
           ),
-          pageColor: const CSMColorThemeOptions(
+            page: const CSMColorThemeOptions(
             TWSAColors.warmWhite,
             TWSAColors.deepPurple,
             TWSAColors.oceanBlue,
@@ -55,5 +55,8 @@ class TWSAThemeLight extends TWSAThemeBase {
           primaryControlState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(),
           ),
+            criticalControlState: const CSMStateThemeOptions(
+              main: CSMGenericThemeOptions(),
+            )
         );
 }

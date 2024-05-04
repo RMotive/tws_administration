@@ -104,6 +104,7 @@ List<dynamic> inputTemplate = <dynamic>[
         if (value.length > 20) {
           return "Text too long";
         }
+        return null;
       }),
   CollectorTextOption(
       required: true,

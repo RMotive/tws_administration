@@ -13,7 +13,7 @@ bool _firstRun = true;
 
 //theme declaration
 final TWSAThemeBase _theme = getTheme();
-final CSMColorThemeOptions _pageTheme = _theme.pageColor;
+final CSMColorThemeOptions _pageTheme = _theme.page;
 final CSMStateThemeOptions _struct = _asrStruct(_theme);
 
 /// [_rowLabelMaxWidth] maxWidth for the labels on table rows.
@@ -26,8 +26,6 @@ dynamic _globalState;
 /// [_selectedItem] Current index for the selected item on the List table.
 int _selectedItem = 0;
 
-/// Internal components measures
-const double _tdListsMinHeigth = 445;
 
 /// [_maxFloatSectionWidth] Value Details width
 //const double _maxFloatSectionWidth = 900;
@@ -40,12 +38,6 @@ const double _tdListsMinHeigth = 445;
 //   maxWidth: _maxFloatSectionWidth,
 //   minWidth: _maxFloatSectionWidth - 500,
 // );
-
-/// [_headerStyle] Text Style for the header in Table Data section.
-final TextStyle _headerStyle = TextStyle(
-  fontSize: 14,
-  color: _pageTheme.fore,
-);
 
 /// [_resumeFieldTitle] Text Style for the title on the [_ResumeField] component
 final TextStyle _resumeFieldTitle = TextStyle(fontSize: 14, color: _pageTheme.fore, fontWeight: FontWeight.bold);

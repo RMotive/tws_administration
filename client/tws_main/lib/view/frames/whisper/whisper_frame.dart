@@ -30,7 +30,7 @@ class WhisperFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CSMColorThemeOptions pageTheme = getTheme<TWSAThemeBase>().pageColor;
+    final CSMColorThemeOptions pageTheme = getTheme<TWSAThemeBase>().page;
 
     return BackdropFilter(
       filter: ImageFilter.blur(

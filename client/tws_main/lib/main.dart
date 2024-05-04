@@ -28,7 +28,7 @@ class TWSAdministration extends StatelessWidget {
       defaultTheme: const TWSAThemeDark(),
       routerConfig: TWSARouteTree(),
       builder: (BuildContext context, Widget? home) {
-        CSMColorThemeOptions theme = getTheme<TWSAThemeBase>().pageColor;
+        CSMColorThemeOptions theme = getTheme<TWSAThemeBase>().page;
         
         return DefaultTextStyle(
           style: const TextStyle(

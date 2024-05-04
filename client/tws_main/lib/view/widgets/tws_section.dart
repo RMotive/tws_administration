@@ -37,7 +37,7 @@ class TWSSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TWSAThemeBase theme = getTheme();
-    final CSMColorThemeOptions pageStruct = theme.pageColor;
+    final CSMColorThemeOptions pageStruct = theme.page;
     final SectionThemeStruct? sectionStruct = theme.twsSectionStruct;
 
     return Padding(
