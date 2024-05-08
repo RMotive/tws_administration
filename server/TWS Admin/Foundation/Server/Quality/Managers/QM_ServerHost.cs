@@ -15,7 +15,7 @@ public class QM_ServerHost {
         Host = host;
     }
 
-    public async Task<(HttpStatusCode, TResponse)> Post<TResponse>(string Location, object Request) {        
+    public async Task<(HttpStatusCode, TResponse)> Post<TResponse, TRequest>(string Location, TRequest Request) {        
         HttpResponseMessage Response = await Host.PostAsJsonAsync(Location, Request);
         HttpStatusCode resolutionCode = Response.StatusCode;
         TResponse resolution = await Response.Content.ReadFromJsonAsync<TResponse>()

@@ -18,7 +18,7 @@ using View = Foundation.Migrations.Records.MigrationView<TWS_Security.Sets.Solut
 namespace Server.Quality.Controllers;
 
 
-public class Q_SolutionsController
+public class Q_SolutionsController  
     : BQ_ServerController<Program> {
     private class Frame : SuccessFrame<View> { }
 
@@ -28,7 +28,7 @@ public class Q_SolutionsController
     }
 
     protected override async Task<string> Authentication() {
-        (HttpStatusCode Status, SuccessFrame<Privileges> Response) = await XPost<SuccessFrame<Privileges>>("Security/Authenticate", new Credentials {
+        (HttpStatusCode Status, SuccessFrame<Privileges> Response) = await XPost<SuccessFrame<Privileges>, Credentials>("Security/Authenticate", new Credentials {
             Identity = Account.Identity,
             Password = Account.Password,
         });
@@ -52,5 +52,14 @@ public class Q_SolutionsController
         Assert.True(Estela.Sets.Length > 0);
         Assert.Equal(1, Estela.Page);
         Assert.True(Estela.Pages > 0);
+    }
+
+    [Fact]
+    public async void Create() {
+        #region First (Correctly creates 3 Solutions)
+        {
+
+        }
+        #endregion
     }
 }

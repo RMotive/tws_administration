@@ -21,7 +21,7 @@ public class Q_SecurityController
         : base("Security", hostFactory) { }
 
     protected override async Task<string> Authentication() {
-        (HttpStatusCode Status, PrivilegesFrame Response) = await Post<PrivilegesFrame>("Authenticate", new Credentials {
+        (HttpStatusCode Status, PrivilegesFrame Response) = await Post<PrivilegesFrame, Credentials>("Authenticate", new Credentials {
             Identity = Account.Identity,
             Password = Account.Password,
         });

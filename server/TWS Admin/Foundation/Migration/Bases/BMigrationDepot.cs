@@ -122,6 +122,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     /// </returns>
     public async Task<TMigrationSet> Create(TMigrationSet Set) {
         Set.EvaluateWrite();
+
         await this.Set.AddAsync(Set);
         await Source.SaveChangesAsync();
         Source.ChangeTracker.Clear();
@@ -155,6 +156,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
                 set.EvaluateWrite();
                 safe = [.. safe, set];
             } catch (Exception excep) {
+                if(Sync) throw;
                 MigrationTransactionFailure fail = new() {
                     Set = set,
                     System = excep,
@@ -163,7 +165,10 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             }
         }
 
+
+        Source.ChangeTracker.Clear();
         await this.Set.AddRangeAsync(safe);
+        await Source.SaveChangesAsync();
         return new(safe, []);
     }
     #endregion
