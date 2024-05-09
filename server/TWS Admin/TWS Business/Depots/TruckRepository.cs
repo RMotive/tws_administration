@@ -1,4 +1,4 @@
-﻿namespace TWS_Business.Repositories
+﻿namespace TWS_Business.Depots
 {
     internal class TruckRepository { }
 

@@ -9,27 +9,27 @@ public partial class Truck
 
     public string Vin { get; set; } = null!;
 
-    public int Plate { get; set; }
-
     public int Manufacturer { get; set; }
 
     public string Motor { get; set; } = null!;
 
-    public string Sct { get; set; } = null!;
+    public int? Sct { get; set; }
 
-    public int Maintenance { get; set; }
+    public int? Maintenance { get; set; }
 
-    public int Situation { get; set; }
+    public int? Situation { get; set; }
 
-    public int Insurance { get; set; }
+    public int? Insurance { get; set; }
 
-    public virtual Insurance InsuranceNavigation { get; set; } = null!;
+    public virtual Insurance? InsuranceNavigation { get; set; }
 
-    public virtual Maintenance MaintenanceNavigation { get; set; } = null!;
+    public virtual Maintenance? MaintenanceNavigation { get; set; }
 
     public virtual Manufacturer ManufacturerNavigation { get; set; } = null!;
 
-    public virtual Plate PlateNavigation { get; set; } = null!;
+    public virtual ICollection<Plate> Plates { get; set; } = new List<Plate>();
 
-    public virtual Situation SituationNavigation { get; set; } = null!;
+    public virtual Sct? SctNavigation { get; set; }
+
+    public virtual Situation? SituationNavigation { get; set; }
 }

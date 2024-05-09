@@ -15,5 +15,7 @@ public partial class Plate
 
     public DateOnly Expiration { get; set; }
 
-    public virtual ICollection<Truck> Trucks { get; set; } = new List<Truck>();
+    public int Truck { get; set; }
+
+    public virtual Truck TruckNavigation { get; set; } = null!;
 }

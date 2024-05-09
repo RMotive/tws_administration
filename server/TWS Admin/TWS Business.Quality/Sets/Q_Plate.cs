@@ -13,7 +13,9 @@ public class Q_Plate : BQ_MigrationSet<Plate> {
                 Identifier = "",
                 State = "",
                 Country = "",
-                Expiration = DateOnly.FromDateTime(new DateTime())
+                Expiration = DateOnly.FromDateTime(new DateTime()),
+                Truck = 1
+                
 
             },
             Expectations = [],
@@ -23,13 +25,15 @@ public class Q_Plate : BQ_MigrationSet<Plate> {
                 Id = 0,
                 Identifier = "",
                 State = "",
-                Country = ""
+                Country = "",
+                Truck = 0
             },
             Expectations = [
                 (nameof(Plate.Id), [(new PointerValidator(), 3)]),
                 (nameof(Plate.Identifier), [(new LengthValidator(), 2)]),
                 (nameof(Plate.State), [(new LengthValidator(), 2)]),
                 (nameof(Plate.Country), [(new LengthValidator(), 2)]),
+                (nameof(Plate.Truck), [(new PointerValidator(), 1)]),
 
             ],
         };

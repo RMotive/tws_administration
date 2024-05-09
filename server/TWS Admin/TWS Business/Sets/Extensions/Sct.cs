@@ -4,8 +4,8 @@ using Foundation.Migrations.Validators;
 
 namespace TWS_Business.Sets;
 
-public partial class Plate
-    : BMigrationSet
+public partial class Sct
+: BMigrationSet
 {
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container)
@@ -14,11 +14,9 @@ public partial class Plate
 
         Container = [
                 .. Container,
-            (nameof(Identifier), [new LengthValidator(8, 12)]),
-            (nameof(State), [new LengthValidator(1, 30)]),
-            (nameof(Country), [new LengthValidator(1, 30)]),
-            (nameof(Expiration), [Required]),
-            (nameof(Truck), [Required, new PointerValidator()]),
+                (nameof(Type), [new LengthValidator(6)]),
+                (nameof(Number), [new LengthValidator(25)]),
+                (nameof(Configuration), [new LengthValidator(10)]),
 
         ];
 

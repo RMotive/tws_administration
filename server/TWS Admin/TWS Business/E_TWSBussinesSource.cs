@@ -24,7 +24,7 @@ namespace TWS_Business
                 new Insurance(),
                 new Situation(),
                 new Truck(),
-
+                new Sct()
             ];
         }
     }

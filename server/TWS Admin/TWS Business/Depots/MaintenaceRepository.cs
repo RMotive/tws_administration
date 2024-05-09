@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TWS_Business.Repositories
+namespace TWS_Business.Depots
 {
     internal class MaintenaceRepository
     {
