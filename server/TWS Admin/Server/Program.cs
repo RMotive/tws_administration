@@ -72,8 +72,15 @@ public class Program {
             });
             // --> Adding customer services
             {
+                builder.Services.AddSingleton<IManufacturersService>(new ManufacturersService(new()));
                 builder.Services.AddSingleton<ISolutionsService>(new SolutionsService(new()));
                 builder.Services.AddSingleton<ISecurityService>(new SecurityService(new()));
+                builder.Services.AddSingleton<IInsurancesService>(new InsuranceService(new()));
+                builder.Services.AddSingleton<IMaintenancesService>(new MaintenanceService(new()));
+                builder.Services.AddSingleton<ISctService>(new SctService(new()));
+                builder.Services.AddSingleton<ISituationsService>(new SituationsService(new()));
+                builder.Services.AddSingleton<IPlatesService>(new PlatesServices(new()));
+                builder.Services.AddSingleton<ITrucksService>(new TrucksService(new()));
             }
             // --> Adding middleware services
             {
