@@ -21,15 +21,7 @@ public partial class Truck
 
     public int? Insurance { get; set; }
 
-    public virtual Insurance? InsuranceNavigation { get; set; }
-
-    public virtual Maintenance? MaintenanceNavigation { get; set; }
-
-    public virtual Manufacturer ManufacturerNavigation { get; set; } = null!;
-
     public virtual ICollection<Plate> Plates { get; set; } = new List<Plate>();
 
-    public virtual Sct? SctNavigation { get; set; }
-
-    public virtual Situation? SituationNavigation { get; set; }
+  
 }

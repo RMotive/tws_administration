@@ -6,6 +6,7 @@ using Foundation.Servers.Quality.Bases;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Server.Middlewares.Frames;
 using System.Net;
+using TWS_Business.Sets;
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
@@ -46,5 +47,33 @@ public class Q_PlatesController : BQ_ServerController<Program> {
         Assert.True(Estela.Sets.Length > 0);
         Assert.Equal(1, Estela.Page);
         Assert.True(Estela.Pages > 0);
+    }
+
+    [Fact]
+    public async void Create() {
+        DateOnly year = new(2024, 12, 12);
+
+        //Manufacturer manufacturer = new() {
+        //    Model = "X23 Plate Test",
+        //    Brand = "SCANIA",
+        //    Year = year
+        //};
+
+        //Truck truck = new() {
+        //    Vin = "VIN plate test 1",
+        //    Manufacturer = 1004,
+        //    Motor = "Motor plate T1",
+        //    ManufacturerNavigation = manufacturer
+        //};
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", new Plate() {
+            Identifier = "TMEX2323EST#",
+            State = "BC",
+            Country = "MXN",
+            Expiration = year,
+            Truck = 1,
+        }, true);
+
+        Assert.Equal(HttpStatusCode.OK, fact.Status);
+
     }
 }

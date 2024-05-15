@@ -80,7 +80,7 @@ public class Program {
                 builder.Services.AddSingleton<ISctService>(new SctService(new()));
                 builder.Services.AddSingleton<ISituationsService>(new SituationsService(new()));
                 builder.Services.AddSingleton<IPlatesService>(new PlatesServices(new()));
-                builder.Services.AddSingleton<ITrucksService>(new TrucksService(new()));
+                builder.Services.AddSingleton<ITrucksService>(new TrucksService(new(),new(),new(),new(),new(),new(),new()));
             }
             // --> Adding middleware services
             {

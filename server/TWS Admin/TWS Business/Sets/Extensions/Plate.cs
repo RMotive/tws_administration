@@ -18,10 +18,13 @@ public partial class Plate
             (nameof(State), [new LengthValidator(1, 30)]),
             (nameof(Country), [new LengthValidator(1, 30)]),
             (nameof(Expiration), [Required]),
-            (nameof(Truck), [Required, new PointerValidator()]),
+            (nameof(Truck), [new PointerValidator(true),new UniqueValidator()]),
 
         ];
 
         return Container;
     }
+
+    public virtual Truck? TruckNavigation { get; set; }
+
 }

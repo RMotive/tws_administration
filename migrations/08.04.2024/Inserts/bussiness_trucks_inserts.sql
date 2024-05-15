@@ -32,3 +32,4 @@ select * from Manufacturers	;
 select * from Insurances;
 select * from Situations;
 select * from Trucks;
+select * from SCT;

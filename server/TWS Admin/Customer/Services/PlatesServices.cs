@@ -17,4 +17,8 @@ public class PlatesServices
     public async Task<MigrationView<Plate>> View(MigrationViewOptions options) {
         return await Plates.View(options);
     }
+
+    public async Task<Plate> Create(Plate plate) {
+        return await Plates.Create(plate);
+    }
 }

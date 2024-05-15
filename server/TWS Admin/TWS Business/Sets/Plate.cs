@@ -17,5 +17,6 @@ public partial class Plate
 
     public int Truck { get; set; }
 
-    public virtual Truck TruckNavigation { get; set; } = null!;
+
+
 }

@@ -7,4 +7,7 @@ namespace Customer.Services.Interfaces;
 public interface ITrucksService {
     Task<MigrationView<Truck>> View(MigrationViewOptions options);
 
+    Task<Truck> Assembly(TruckAssembly truck);
+
+
 }

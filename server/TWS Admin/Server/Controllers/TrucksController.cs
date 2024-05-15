@@ -1,10 +1,13 @@
 ﻿using Customer.Services.Interfaces;
+using Customer.Services.Records;
 using Foundation.Migrations.Records;
 using Microsoft.AspNetCore.Mvc;
 using Server.Controllers.Authentication;
 
 namespace Server.Controllers;
-
+/// <summary>
+///     Represents the controller to perform trucks operations.
+/// </summary>
 [ApiController, Route("[Controller]")]
 public class TrucksController: ControllerBase {
 
@@ -16,5 +19,10 @@ public class TrucksController: ControllerBase {
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
     public async Task<IActionResult> View(MigrationViewOptions Options)
         => Ok(await Service.View(Options));
+
+    [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
+    public async Task<IActionResult> Assembly(TruckAssembly truck)
+        => Ok(await Service.Assembly(truck));
+       
 
 }

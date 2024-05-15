@@ -33,7 +33,7 @@ public class Q_Plate : BQ_MigrationSet<Plate> {
                 (nameof(Plate.Identifier), [(new LengthValidator(), 2)]),
                 (nameof(Plate.State), [(new LengthValidator(), 2)]),
                 (nameof(Plate.Country), [(new LengthValidator(), 2)]),
-                (nameof(Plate.Truck), [(new PointerValidator(), 1)]),
+                (nameof(Plate.Truck), [(new PointerValidator(true), 3)]),
 
             ],
         };

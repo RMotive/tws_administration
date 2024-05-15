@@ -15,6 +15,7 @@ namespace Foundation.Migrations.Validators;
 public class PointerValidator
     : IValidator {
 
+    public bool isDependency;
     /// <summary>
     ///     <list type="number">
     ///         <listheader> <term> Coding: </term> </listheader>
@@ -23,7 +24,9 @@ public class PointerValidator
     ///         <item> Pointer cannot be less or equal zero. </item>
     ///     </list> 
     /// </summary>
-    public PointerValidator() { }
+    public PointerValidator(bool isDependency = false) {
+        this.isDependency = isDependency;
+    }
 
     /// <summary>
     /// 
@@ -45,7 +48,8 @@ public class PointerValidator
     public void Evaluate(PropertyInfo Property, object? Value) {
         string message;
         int code;
-        if (Property.Name != "Id") {
+
+        if (Property.Name != "Id" && !isDependency) {
             message = "Pointer cannot be named different than 'Id'";
             code = 1;
         } else if (Value is not int value) {

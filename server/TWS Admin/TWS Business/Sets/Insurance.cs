@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 
 namespace TWS_Business.Sets;
 
@@ -12,5 +13,5 @@ public partial class Insurance
 
     public string Country { get; set; } = null!;
 
-    public virtual ICollection<Truck> Trucks { get; set; } = new List<Truck>();
+    public virtual Truck? Truck { get; set; }
 }
