@@ -6,7 +6,7 @@ using TWS_Security.Depots;
 using TWS_Security.Sets;
 
 namespace Customer.Services;
-public class SolutionsService 
+public class SolutionsService
     : ISolutionsService {
     readonly SolutionsDepot Solutions;
 

@@ -4,7 +4,7 @@ namespace Foundation.Utils;
 public class FileUtils {
     public static string FormatLocation(string Location) {
         string wd = Directory.GetCurrentDirectory();
-        if (wd.Contains('/'))             Location = Location.Replace("\\", "/");
+        if (wd.Contains('/')) Location = Location.Replace("\\", "/");
 
         return Location;
     }

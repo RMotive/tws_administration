@@ -30,7 +30,7 @@ public class MigrationView<TMigrationSet>
     /// <summary>
     ///     The current page.
     /// </summary>
-    public required int Page {  get; init; }
+    public required int Page { get; init; }
     /// <summary>
     ///     Indicates the timemark of time when was created.
     /// </summary>

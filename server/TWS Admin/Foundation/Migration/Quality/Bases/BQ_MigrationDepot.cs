@@ -147,10 +147,10 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
                     Expression<Func<TMigrationSet, object>> orderingExpression = Expression.Lambda<Func<TMigrationSet, object>>(translationExpression, parameterExpression);
                     IQueryable<TMigrationSet> sorted = sortedRecords.AsQueryable();
                     sorted = sorted.OrderByDescending(orderingExpression);
-                    sortedRecords = [..sorted];
+                    sortedRecords = [.. sorted];
                 }
 
-                for(int i = 0; i < sortedRecords.Length; i++) {
+                for (int i = 0; i < sortedRecords.Length; i++) {
                     TMigrationSet expected = sortedRecords[i];
                     TMigrationSet actual = factRecords[i];
 

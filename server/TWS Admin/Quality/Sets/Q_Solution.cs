@@ -11,7 +11,7 @@ public class Q_Solution
     protected override Q_MigrationSet_EvaluateRecord<Solution>[] EvaluateFactory(Q_MigrationSet_EvaluateRecord<Solution>[] Container) {
         const string successName = "TWS Quality";
         const string successSign = "TWSMQ";
-        
+
         Q_MigrationSet_EvaluateRecord<Solution> success = new() {
             Mock = new() {
                 Id = 1,
@@ -29,7 +29,7 @@ public class Q_Solution
             ],
         };
 
-        Container = [..Container, success, failure];
+        Container = [.. Container, success, failure];
         return Container;
     }
 }

@@ -9,7 +9,7 @@ public record MigrationTransactionResult<TSet>
     public int QSuccesses { get; private set; }
     public int QFailures { get; private set; }
     public bool Failed { get; private set; }
-    
+
     public MigrationTransactionResult(TSet[] Successes, MigrationTransactionFailure[] Failures) {
         this.Successes = Successes;
         this.Failures = Failures;

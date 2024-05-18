@@ -1,6 +1,8 @@
 ﻿using Customer.Managers.Records;
 using Customer.Services.Records;
 
+using TWS_Security.Sets;
+
 namespace Customer.Managers;
 public sealed class SessionsManager {
     private static SessionsManager? Instance;
@@ -12,7 +14,7 @@ public sealed class SessionsManager {
 
 
     readonly TimeSpan EXPIRATION_RANGE = TimeSpan.FromHours(2);
-    readonly List<Session> Sessions = []; 
+    readonly List<Session> Sessions = [];
     private SessionsManager() {
 
     }
@@ -33,10 +35,10 @@ public sealed class SessionsManager {
         Session? session = Sessions
             .Where(i => i.Identity == Identity)
             .FirstOrDefault();
-        if(session is null)
+        if (session is null)
             return null;
 
-        if(DateTime.Compare(DateTime.UtcNow, session.Expiration) < 0) 
+        if (DateTime.Compare(DateTime.UtcNow, session.Expiration) < 0)
             return session;
 
         Sessions.Remove(session);
@@ -63,28 +65,30 @@ public sealed class SessionsManager {
             Wildcard = session.Wildcard,
             Identity = session.Identity,
             Token = session.Token,
+            Permits = session.Permits,
         };
         Sessions[position] = refreshed;
         return refreshed;
     }
-    public Session Subscribe(Credentials Credentials, bool Wildcard) {
+    public Session Subscribe(Credentials Credentials, bool Wildcard, Permit[] Permits) {
         Session? session = Clean(Credentials.Identity);
 
-        if(session is not null) 
+        if (session is not null)
             return Refresh(session);
 
-        session = new() { 
+        session = new() {
             Expiration = DateTime.Now.Add(EXPIRATION_RANGE),
             Identity = Credentials.Identity,
             Wildcard = Wildcard,
             Token = Tokenize(),
+            Permits = Permits,
         };
         Sessions.Add(session);
         return session;
     }
     public bool EvaluateExpiration(string Token) {
         Session? session = TClean(Token);
-        if(session is null)
+        if (session is null)
             return false;
 
         return EvaluateAlive(session.Expiration);

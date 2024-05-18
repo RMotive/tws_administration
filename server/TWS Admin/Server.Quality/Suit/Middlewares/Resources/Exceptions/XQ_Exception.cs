@@ -2,10 +2,10 @@
 
 using Foundation.Server.Bases;
 
-namespace Server.Quality.Middlewares.Resources.Exceptions;
+namespace Server.Quality.Quality.Middlewares.Resources.Exceptions;
 public class XQ_Exception
     : BServerTransactionException<XQ_ExceptionSituation> {
-    public XQ_Exception() 
+    public XQ_Exception()
         : base("quality exception mock", HttpStatusCode.BadRequest, null) {
     }
 }

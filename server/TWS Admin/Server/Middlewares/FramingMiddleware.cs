@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-using Foundation.Server.Bases;
 using Foundation.Server.Interfaces;
 using Foundation.Server.Records;
 using Foundation.Shared.Exceptions;
+
 using Server.Middlewares.Frames;
 
 namespace Server.Middlewares;
@@ -38,7 +38,7 @@ public class FramingMiddleware
             if (!Response.HasStarted) {
                 bufferingStream.Seek(0, SeekOrigin.Begin);
                 string encodedContent = "";
-                if(failure is not null) {
+                if (failure is not null) {
                     ServerExceptionPublish exPublish = failure.Publish();
 
                     FailureFrame frame = new() {
@@ -48,11 +48,15 @@ public class FramingMiddleware
 
                     Response.StatusCode = (int)failure.Status;
                     encodedContent = JsonSerializer.Serialize(frame);
+                } else if (Response.StatusCode != 200) {
+                    Stream resolutionStream = Response.Body;
+
+                    encodedContent = JsonSerializer.Serialize(resolutionStream);
                 } else {
                     Stream resolutionStream = Response.Body;
                     Dictionary<string, dynamic> resolution = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(resolutionStream)!;
 
-                    SuccessFrame<Dictionary<string, dynamic>> frame = new() { 
+                    SuccessFrame<Dictionary<string, dynamic>> frame = new() {
                         Tracer = Tracer,
                         Estela = resolution,
                     };

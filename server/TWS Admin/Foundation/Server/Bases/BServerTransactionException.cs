@@ -14,7 +14,7 @@ public class BServerTransactionException<TSituation>
     public Exception? System { get; init; } = null;
     public TSituation Situation { get; protected set; } = default!;
     public Dictionary<string, dynamic> Details { get; init; } = [];
-    public Dictionary<string, dynamic> Factors {  get; init; } = [];
+    public Dictionary<string, dynamic> Factors { get; init; } = [];
     public HttpStatusCode Status { get; init; }
     public BServerTransactionException(string Subject, HttpStatusCode Status, Exception? System = null)
         : base(System?.Message ?? Subject) {

@@ -6,7 +6,7 @@ using Foundation.Shared.Constants;
 namespace Foundation.Server.Exceptions;
 public class XAuth
     : BServerTransactionException<XAuthSituation> {
-    public XAuth(XAuthSituation Situation) 
+    public XAuth(XAuthSituation Situation)
         : base($"Unauthorized transaction request", HttpStatusCode.Unauthorized, null) {
         this.Situation = Situation;
         this.Advise = Situation switch {

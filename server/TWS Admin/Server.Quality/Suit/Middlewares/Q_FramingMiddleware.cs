@@ -11,11 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Server.Middlewares;
-using Server.Quality.Middlewares.Resources.Exceptions;
+using Server.Quality.Quality.Middlewares.Resources.Exceptions;
 
 using Xunit;
 
-namespace Server.Quality.Middlewares;
+namespace Server.Quality.Quality.Middlewares;
 /// <summary>
 ///     Test class context.
 ///     This test class tests the quality of the <seealso cref="FramingMiddleware"/> implementation inside the server.

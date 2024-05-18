@@ -11,6 +11,7 @@ using Foundation.Utils;
 
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
+using Server.Managers;
 using Server.Middlewares;
 using Server.Models;
 
@@ -20,6 +21,7 @@ public class Program {
     const string SETTINGS_LOCATION = "\\Properties\\server_properties.json";
     const string CORS_BLOCK_MESSAGE = "Request blocked by cors, is not part of allowed hosts";
 
+    static readonly DispositionManager Disposer = new();
 
     private static Settings? SettingsStore { get; set; }
     public static Settings Settings { get { return SettingsStore ??= RetrieveSettings(); } }
@@ -38,7 +40,8 @@ public class Program {
 
         return JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(tempModel)) ?? throw new Exception();
     }
-    public static void Main(string[] args) {
+
+    static void Main(string[] args) {
         AdvisorManager.Announce("Running engines (⌐■_■)");
         try {
             Settings s = Settings;
@@ -70,30 +73,31 @@ public class Program {
                     });
                 });
             });
+
             // --> Adding customer services
             {
-                builder.Services.AddTransient<ISolutionsService>((SP) => new SolutionsService(new()));
-                builder.Services.AddTransient<ISecurityService>((SP) => new SecurityService(new()));
+                builder.Services.AddSingleton(Disposer);
+                builder.Services.AddTransient<ISolutionsService>((IServiceProvider sp) => new SolutionsService(new(Disposer.Push)));
+                builder.Services.AddTransient<ISecurityService>((SP) => new SecurityService(new(Disposer.Push)));
             }
             // --> Adding middleware services
             {
                 builder.Services.AddSingleton(new AnalyticsMiddleware());
                 builder.Services.AddSingleton(new FramingMiddleware());
                 builder.Services.AddSingleton(new AdvisorMiddleware());
+                builder.Services.AddSingleton(new DispositionMiddleware(Disposer));
             }
             WebApplication app = builder.Build();
-            app.UseCors(action => {
-                action.AllowAnyMethod();
-                action.AllowAnyHeader();
-                action.AllowAnyOrigin();
-            });
             app.MapControllers();
             // --> Injecting middlewares to server
             {
                 app.UseMiddleware<AnalyticsMiddleware>();
                 app.UseMiddleware<AdvisorMiddleware>();
                 app.UseMiddleware<FramingMiddleware>();
+                app.UseMiddleware<DispositionMiddleware>();
             }
+
+            app.Lifetime.ApplicationStopping.Register(OnProcessExit);
             app.Run();
         } catch (Exception X) when (X is IAdvisingException AX) {
             AdvisorManager.Exception(AX);
@@ -102,6 +106,16 @@ public class Program {
             AdvisorManager.Exception(new XSystem(X));
         } finally {
             Console.WriteLine($"Press any key to close...");
+            Console.ReadKey();
+        }
+    }
+
+    static void OnProcessExit() {
+        AdvisorManager.Announce("Disposing quality context records");
+        Disposer.Dispose();
+
+        bool isTesting = AppDomain.CurrentDomain.FriendlyName.Contains("testhost");
+        if (!isTesting) {
             Console.ReadKey();
         }
     }

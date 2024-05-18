@@ -1,5 +1,6 @@
 ﻿using Customer.Services.Interfaces;
 using Customer.Services.Records;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Server.Controllers;
@@ -10,8 +11,8 @@ namespace Server.Controllers;
 [ApiController, Route("[Controller]")]
 public class SecurityController
     : ControllerBase {
-    
-    
+
+
     readonly ISecurityService Service;
     public SecurityController(ISecurityService Service) {
         this.Service = Service;
