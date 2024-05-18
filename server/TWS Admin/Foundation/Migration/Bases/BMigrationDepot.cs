@@ -163,10 +163,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
                 safe = [.. safe, set];
             } catch (Exception excep) {
                 if (Sync) throw;
-                MigrationTransactionFailure fail = new() {
-                    Set = set,
-                    System = excep,
-                };
+                MigrationTransactionFailure fail = new(set, excep);
                 fails = [.. fails, fail];
             }
         }
@@ -204,10 +201,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
                 successes = [.. successes, item];
             } catch (Exception excep) {
-                MigrationTransactionFailure failure = new() {
-                    Set = item,
-                    System = excep,
-                };
+                MigrationTransactionFailure failure = new(item, excep);
                 failures = [.. failures, failure];
             }
         }

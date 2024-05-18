@@ -26,7 +26,7 @@ public interface IServerTransactionException {
     /// </summary>
     public string Advise { get; }
     /// <summary>
-    ///     The System exception thrown that arised this server known exception.
+    ///     The SystemInternal exception thrown that arised this server known exception.
     /// </summary>
     public Exception? System { get; }
     /// <summary>

@@ -62,13 +62,16 @@ public class Program {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
                     builder.SetIsOriginAllowed(origin => {
-                        string[] CorsPolicies = [];
+                        string[] CorsPolicies = Settings.CORS;
                         Uri parsedUrl = new(origin);
+
                         bool isCorsAllowed = CorsPolicies.Contains(parsedUrl.Host);
-                        AdvisorManager.Warning(CORS_BLOCK_MESSAGE, new() {
-                            {nameof(isCorsAllowed), isCorsAllowed},
-                            {nameof(parsedUrl), parsedUrl}
-                        });
+                        if (!isCorsAllowed) {
+                            AdvisorManager.Warning(CORS_BLOCK_MESSAGE, new() {
+                                {nameof(isCorsAllowed), isCorsAllowed},
+                                {nameof(parsedUrl), parsedUrl}
+                            });
+                        }
                         return isCorsAllowed;
                     });
                 });
@@ -98,6 +101,7 @@ public class Program {
             }
 
             app.Lifetime.ApplicationStopping.Register(OnProcessExit);
+            app.UseCors();
             app.Run();
         } catch (Exception X) when (X is IAdvisingException AX) {
             AdvisorManager.Exception(AX);
@@ -113,11 +117,6 @@ public class Program {
     static void OnProcessExit() {
         AdvisorManager.Announce("Disposing quality context records");
         Disposer.Dispose();
-
-        bool isTesting = AppDomain.CurrentDomain.FriendlyName.Contains("testhost");
-        if (!isTesting) {
-            Console.ReadKey();
-        }
     }
 }
 

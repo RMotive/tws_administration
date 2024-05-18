@@ -57,17 +57,17 @@ public sealed partial class DispositionManager {
                     source.Remove(record);
                     source.SaveChanges();
                     corrects++;
-                    AdvisorManager.Success($"Disposed: ({record.GetType}) | ({record.Id})");
+                    AdvisorManager.Success($"Disposed: ({record.GetType()}) | ({record.Id})");
                 } catch (Exception Exep) {
                     incorrects++;
-                    AdvisorManager.Warning($"No disposed: ({record.GetType}) | ({record.Id}) |> ({Exep.Message})");
+                    AdvisorManager.Warning($"No disposed: ({record.GetType()}) | ({record.Id}) |> ({Exep.Message})");
                 }
             }
 
             if (incorrects > 0) {
                 AdvisorManager.Warning($"Disposed with errors: (Errors: ({incorrects}) Successes: {corrects})");
             } else {
-                AdvisorManager.Success($"Disposed: ({corrects} elements)");
+                AdvisorManager.Success($"Disposed: ({corrects} elements) at ({source.GetType()})");
             }
         }
     }

@@ -51,7 +51,19 @@ public class FramingMiddleware
                 } else if (Response.StatusCode != 200) {
                     Stream resolutionStream = Response.Body;
 
-                    encodedContent = JsonSerializer.Serialize(resolutionStream);
+                    if(Response.StatusCode == 405) {
+                        ServerExceptionPublish publish = new XSystem(new MethodAccessException()).Publish();
+
+                        FailureFrame frame = new() {
+                            Tracer = Tracer,
+                            Estela = publish,
+                        };
+                        encodedContent = JsonSerializer.Serialize(frame);
+                    } else if(Response.StatusCode == 204) { 
+                        encodedContent = "{}";
+                    } else {
+                        encodedContent = JsonSerializer.Serialize(resolutionStream);
+                    }
                 } else {
                     Stream resolutionStream = Response.Body;
                     Dictionary<string, dynamic> resolution = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(resolutionStream)!;
