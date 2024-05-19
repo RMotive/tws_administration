@@ -13,5 +13,5 @@ public partial class Sct
 
     public string Configuration { get; set; } = null!;
 
-    public virtual Truck? Truck { get; set; }
+    public virtual ICollection<Truck> Trucks { get; set; } = new List<Truck>();
 }

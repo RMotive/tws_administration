@@ -14,8 +14,8 @@ public partial class Manufacturer
 
         Container = [
                 .. Container,
-            (nameof(Model), [new LengthValidator(1, 30)]),
-            (nameof(Brand), [new LengthValidator(1, 15)]),
+            (nameof(Model), [Required, new LengthValidator(1, 30)]),
+            (nameof(Brand), [Required, new LengthValidator(1, 15)]),
             (nameof(Year), [Required]),
         ];
 

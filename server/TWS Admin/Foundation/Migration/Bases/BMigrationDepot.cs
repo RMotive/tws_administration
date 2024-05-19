@@ -25,7 +25,8 @@ namespace Foundation.Migrations.Bases;
 /// </typeparam>
 public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     : IMigrationDepot<TMigrationSet>,
-      IMigrationDepot_Read<TMigrationSet>
+      IMigrationDepot_Read<TMigrationSet>,
+      ImigrationDepot_Delete<TMigrationSet>
     where TMigrationSource : BMigrationSource<TMigrationSource>
     where TMigrationSet : class, IMigrationSet {
     /// <summary>
@@ -201,4 +202,38 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         return new(successes, failures);
     }
     #endregion
+
+    #region Delete interface
+
+    public Task<MigrationTransactionResult<TMigrationSet>> Delete(TMigrationSet[] Sets) {
+
+        TMigrationSet[] safe = [];
+        MigrationTransactionFailure[] fails = [];
+
+        foreach (TMigrationSet set in Sets) {
+            try {
+                set.EvaluateWrite();
+                safe = [.. safe, set];
+            } catch (Exception excep) {
+                MigrationTransactionFailure fail = new() {
+                    Set = set,
+                    System = excep,
+                };
+                fails = [.. fails, fail];
+            }
+        }
+
+        this.Set.RemoveRange(safe);
+        return Task.FromResult<MigrationTransactionResult<TMigrationSet>>(new(safe, []));
+    }
+
+    public async Task<TMigrationSet> Delete (TMigrationSet Set) {
+        Set.EvaluateWrite();
+        this.Set.Remove(Set);
+        await Source.SaveChangesAsync();
+        Source.ChangeTracker.Clear();
+        return Set;
+    }
+    #endregion
+
 }

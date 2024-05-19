@@ -22,6 +22,4 @@ public partial class Truck
     public int? Insurance { get; set; }
 
     public virtual ICollection<Plate> Plates { get; set; } = new List<Plate>();
-
-  
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TWS_Business.Sets;
 
@@ -27,9 +25,9 @@ public partial class TWSBusinessSource
 
     public virtual DbSet<Truck> Trucks { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
         optionsBuilder.UseSqlServer("Server=DESKTOP-M2SPTNQ;Database=TWS Business; Trusted_Connection=True; Encrypt=False");
-
         optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
                              .EnableSensitiveDataLogging();
     }
@@ -71,7 +69,7 @@ public partial class TWSBusinessSource
 
         modelBuilder.Entity<Plate>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Plates__3213E83F1DAA3B62");
+            entity.HasKey(e => e.Id).HasName("PK__Plates__3213E83F67368BAA");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Country)
@@ -121,17 +119,11 @@ public partial class TWSBusinessSource
 
         modelBuilder.Entity<Truck>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Trucks__3213E83FF8FEE6CB");
+            entity.HasKey(e => e.Id).HasName("PK__Trucks__3213E83FC942131F");
 
-            entity.HasIndex(e => e.Maintenance, "UQ__Trucks__32D1185F53A7D0F2").IsUnique();
+            entity.HasIndex(e => e.Vin, "UQ__Trucks__C5DF234CADD033E9").IsUnique();
 
-            entity.HasIndex(e => e.Insurance, "UQ__Trucks__93D492550C6EA2D0").IsUnique();
-
-            entity.HasIndex(e => e.Vin, "UQ__Trucks__C5DF234C77595224").IsUnique();
-
-            entity.HasIndex(e => e.Sct, "UQ__Trucks__CA190806B354828D").IsUnique();
-
-            entity.HasIndex(e => e.Motor, "UQ__Trucks__FF113ED4BA7E44C4").IsUnique();
+            entity.HasIndex(e => e.Motor, "UQ__Trucks__FF113ED400BB40FD").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Motor)
@@ -143,12 +135,12 @@ public partial class TWSBusinessSource
                 .IsUnicode(false)
                 .HasColumnName("VIN");
 
-            entity.HasOne(d => d.InsuranceNavigation).WithOne(p => p.Truck)
-                .HasForeignKey<Truck>(d => d.Insurance)
+            entity.HasOne(d => d.InsuranceNavigation).WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Insurance)
                 .HasConstraintName("FK@Trucks_Insurances");
 
-            entity.HasOne(d => d.MaintenanceNavigation).WithOne(p => p.Truck)
-                .HasForeignKey<Truck>(d => d.Maintenance)
+            entity.HasOne(d => d.MaintenanceNavigation).WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Maintenance)
                 .HasConstraintName("FK@Trucks_Maintenances");
 
             entity.HasOne(d => d.ManufacturerNavigation).WithMany(p => p.Trucks)
@@ -156,8 +148,8 @@ public partial class TWSBusinessSource
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK@Trucks_Manufacturers");
 
-            entity.HasOne(d => d.SctNavigation).WithOne(p => p.Truck)
-                .HasForeignKey<Truck>(d => d.Sct)
+            entity.HasOne(d => d.SctNavigation).WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Sct)
                 .HasConstraintName("FK@Trucks_SCT");
 
             entity.HasOne(d => d.SituationNavigation).WithMany(p => p.Trucks)

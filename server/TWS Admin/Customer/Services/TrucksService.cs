@@ -1,8 +1,9 @@
 ﻿
+using Customer.Services.Exceptions;
 using Customer.Services.Interfaces;
 using Foundation.Migrations.Records;
-using Foundation.Server.Interfaces;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
@@ -34,71 +35,109 @@ public class TrucksService : ITrucksService {
     }
 
     public async Task<Truck> Assembly(TruckAssembly truck) {
+
+        /// Stores the depot on success "Creation" inserts. If any error occurs, 
+        /// this inserts will be removed using the "Delete" method. 
+        List<(dynamic depot, dynamic set)> nullify = [];
+
+        /// Stores the generated plates to remove on exception case.
+        List<Plate> generatedPlates = [];
+
+        /// Generated Truck on "Create" method.
+        Truck result = new();
+
+        /// Base model to generate a new truck.
         Truck assembly = new() {
             Vin = truck.Vin,
             Motor = truck.Motor,
         };
-        if (truck.Manufacturer == null && truck.ManufacturerPointer == null) {
-            /// EXCEPTION......
-        }
 
-        if (truck.Plates.IsNullOrEmpty() && truck.PlatePointer.IsNullOrEmpty()) {
-            /// EXCEPTION......
-        }
+        /// Optional / Required validations.
+        if (truck.Manufacturer == null && truck.ManufacturerPointer == null)
+            throw new XTruckAssembly(XTrcukAssemblySituation.Required_Manufacturer);
 
-        /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
-        if (truck.Manufacturer != null) {
-            /// generate a new insert.
-            Manufacturer ManufacturerResult = await Manufacturers.Create(truck.Manufacturer);
-            assembly.Manufacturer = ManufacturerResult.Id;
-        } else if (truck.ManufacturerPointer != null) {
-            /// use an existent insert.
-            assembly.Manufacturer = (int)truck.ManufacturerPointer;
-        }
+        if (truck.Plates.IsNullOrEmpty() && truck.PlatePointer.IsNullOrEmpty())
+            throw new XTruckAssembly(XTrcukAssemblySituation.Required_Plates);
 
-        if (truck.Insurance != null) {
-            try {
+        if (truck.Manufacturer != null && truck.ManufacturerPointer != null)
+            throw new XTruckAssembly(XTrcukAssemblySituation.Multiple_Manufacturer_Input);
+
+        if (truck.Plates != null && truck.PlatePointer != null)
+            throw new XTruckAssembly(XTrcukAssemblySituation.Multiple_Plates_Input);
+
+        try {
+            /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
+            if (truck.Manufacturer != null) {
+                /// generate a new insert.
+                Manufacturer ManufacturerResult = await Manufacturers.Create(truck.Manufacturer);
+                assembly.Manufacturer = ManufacturerResult.Id;
+                nullify.Add((Manufacturers, ManufacturerResult));
+            } else if (truck.ManufacturerPointer != null) {
+                /// use an existent insert.
+                assembly.Manufacturer = (int)truck.ManufacturerPointer;
+            }
+            /// Assembly Optional fields bundle.
+            if (truck.Insurance != null) {
                 Insurance InsuranceResult = await Insurances.Create(truck.Insurance);
                 assembly.Insurance = InsuranceResult.Id;
-            } catch (Exception ex) when (ex is IServerTransactionException Exception) {
+                nullify.Add((Insurances, InsuranceResult));
+            }
+            if (truck.Maintenance != null) {
+                Maintenance MaintenenceResult = await Maintenaces.Create(truck.Maintenance);
+                assembly.Maintenance = MaintenenceResult.Id;
+                nullify.Add((Maintenaces, MaintenenceResult));
+            }
+            if (truck.Sct != null) {
+                Sct SctResult = await Sct.Create(truck.Sct);
+                assembly.Sct = SctResult.Id;
+                nullify.Add((Sct, SctResult));
+            }
+            if (truck.Situation != null) {
 
+                Situation SituationResult = await Situations.Create(truck.Situation);
+                assembly.Situation = SituationResult.Id;
+                nullify.Add((Situations, SituationResult));
             }
 
-        }
-        if (truck.Maintenance != null) {
-            Maintenance MaintenenceResult = await Maintenaces.Create(truck.Maintenance);
-            assembly.Maintenance = MaintenenceResult.Id;
-        }
-        if (truck.Sct != null) {
-            Sct SctResult = await Sct.Create(truck.Sct);
-            assembly.Sct = SctResult.Id;
-        }
-        if (truck.Situation != null) {
-            Situation SituationResult = await Situations.Create(truck.Situation);
-            assembly.Situation = SituationResult.Id;
-        }
+            /// Create the defined truck.
+            result = await Trucks.Create(assembly);
+            nullify.Add((Trucks, result));
 
+            /// validate and generate a plate list asocciated to this truck.
+            if (!truck.Plates.IsNullOrEmpty()) {
+                foreach (Plate plate in truck.Plates) {
+                    plate.Truck = result.Id;
+                    Plate currentPlate = await Plates.Create(plate);
+                    generatedPlates.Add(currentPlate);
+                }
+                //assembly.Plates = generatedPlates;
+            } else if (!truck.PlatePointer.IsNullOrEmpty()) {
+                List<Plate> currentsPlates = new List<Plate>();
+                foreach (int pointer in truck.PlatePointer) {
+                    ///update plate insert......
+                }
+            }
+        } catch (Exception ex) {
+            // Undo all changes on data source.
+            Debug.WriteLine("Ejecutando: ToString.....");
+            Debug.WriteLine(ex.ToString());
 
-        Truck result = await Trucks.Create(assembly);
+            /// Remove the last items to avoid key dependencies errors on data source.
+            nullify.Reverse();
+            foreach (Plate plate in generatedPlates)
+                await Plates.Delete(plate);
 
-        ///// validate and generate a plate list asocciated to this truck.
-        //if (!truck.Plates.IsNullOrEmpty()) {
-        //    List<Plate> currentsPlates = new List<Plate>();
-        //    foreach (Plate plate in truck.Plates) {
-        //        plate.Truck = result.Id;
-        //        plate.TruckNavigation = result;
-        //        currentsPlates.Add(await Plates.Create(plate));
-        //    }
-        //    assembly.Plates = currentsPlates;
-        //} else if (!truck.PlatePointer.IsNullOrEmpty()) {
-        //    List<Plate> currentsPlates = new List<Plate>();
-        //    foreach (int pointer in truck.PlatePointer) {
-        //        ///update plate insert......
-        //    }
-        //}
+            foreach ((dynamic depot, dynamic set) query in nullify) 
+                await query.depot.Delete(query.set);
+            
+           
 
+            throw;
+        }
         return result;
     }
+
+
 
 
 }

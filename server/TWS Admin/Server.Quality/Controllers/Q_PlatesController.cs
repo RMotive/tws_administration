@@ -51,28 +51,18 @@ public class Q_PlatesController : BQ_ServerController<Program> {
 
     [Fact]
     public async void Create() {
-        DateOnly year = new(2024, 12, 12);
+        DateOnly year = new(2024, 11, 11);
 
-        //Manufacturer manufacturer = new() {
-        //    Model = "X23 Plate Test",
-        //    Brand = "SCANIA",
-        //    Year = year
-        //};
-
-        //Truck truck = new() {
-        //    Vin = "VIN plate test 1",
-        //    Manufacturer = 1004,
-        //    Motor = "Motor plate T1",
-        //    ManufacturerNavigation = manufacturer
-        //};
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", new Plate() {
-            Identifier = "TMEX2323EST#",
-            State = "BC",
+            Identifier = "TMEX232TEST5",
+            State = "ABC",
             Country = "MXN",
             Expiration = year,
             Truck = 1,
         }, true);
 
+        fact.Response.Estela.TryGetValue("Advise", out object? value);
+        Assert.Null(value);
         Assert.Equal(HttpStatusCode.OK, fact.Status);
 
     }

@@ -16,4 +16,8 @@ public class ManufacturersService : IManufacturersService {
     public async Task<MigrationView<Manufacturer>> View(MigrationViewOptions Options) {
        return await Manufacturers.View(Options);
     }
+
+    public async Task<Manufacturer> Create(Manufacturer manufacturer) {
+        return await Manufacturers.Create(manufacturer);
+    }
 }

@@ -16,7 +16,4 @@ public partial class Plate
     public DateOnly Expiration { get; set; }
 
     public int Truck { get; set; }
-
-
-
 }

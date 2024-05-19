@@ -16,7 +16,7 @@ public partial class Insurance
                 .. Container,
             (nameof(Policy), [new UniqueValidator(), new LengthValidator(1, 20),]),
             (nameof(Expiration), [Required, new UniqueValidator()]),
-            (nameof(Country), [new LengthValidator(1, 30)]),
+            (nameof(Country), [new LengthValidator(2, 3)]),
         ];
 
         return Container;

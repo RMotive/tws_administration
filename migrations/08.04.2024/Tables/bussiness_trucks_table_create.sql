@@ -40,10 +40,10 @@ create table Trucks(
  VIN varchar(17) Unique NOT NULL,
  Manufacturer int NOT NULL,
  Motor varchar(16) unique NOT NULL,
- SCT int unique,
- Maintenance int unique,
+ SCT int,
+ Maintenance int,
  Situation int,
- Insurance int unique,
+ Insurance int,
 
  constraint FK@Trucks_Manufacturers foreign key(Manufacturer) references Manufacturers(id),
  constraint FK@Trucks_Maintenances foreign key(Maintenance) references Maintenances(id),

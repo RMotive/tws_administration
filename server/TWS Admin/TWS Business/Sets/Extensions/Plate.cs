@@ -15,10 +15,10 @@ public partial class Plate
         Container = [
                 .. Container,
             (nameof(Identifier), [new LengthValidator(8, 12)]),
-            (nameof(State), [new LengthValidator(1, 30)]),
-            (nameof(Country), [new LengthValidator(1, 30)]),
+            (nameof(State), [new LengthValidator(2, 3)]),
+            (nameof(Country), [new LengthValidator(2, 3)]),
             (nameof(Expiration), [Required]),
-            (nameof(Truck), [new PointerValidator(true),new UniqueValidator()]),
+            (nameof(Truck), [Required,new PointerValidator(true)]),
 
         ];
 

@@ -16,6 +16,7 @@ public class PointerValidator
     : IValidator {
 
     public bool isDependency;
+    public bool isRequired;
     /// <summary>
     ///     <list type="number">
     ///         <listheader> <term> Coding: </term> </listheader>
@@ -24,8 +25,9 @@ public class PointerValidator
     ///         <item> Pointer cannot be less or equal zero. </item>
     ///     </list> 
     /// </summary>
-    public PointerValidator(bool isDependency = false) {
+    public PointerValidator(bool isDependency = false, bool isRequired = true) {
         this.isDependency = isDependency;
+        this.isRequired = isRequired;
     }
 
     /// <summary>
@@ -48,11 +50,12 @@ public class PointerValidator
     public void Evaluate(PropertyInfo Property, object? Value) {
         string message;
         int code;
-
+        int? value = Value as int?;
         if (Property.Name != "Id" && !isDependency) {
             message = "Pointer cannot be named different than 'Id'";
             code = 1;
-        } else if (Value is not int value) {
+        }
+        else if ((value == null && isRequired) || (Value != null && value == null && !isRequired)) {
             message = "Pointer must be integer indexer and not null";
             code = 2;
         } else if (value <= 0) {

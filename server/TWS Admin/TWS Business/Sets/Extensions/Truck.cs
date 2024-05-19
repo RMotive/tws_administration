@@ -12,11 +12,11 @@ public partial class Truck
     {
         RequiredValidator Required = new();
         UniqueValidator Unique = new();
-        PointerValidator Pointer = new(true);
+        PointerValidator Pointer = new(true,false);
         Container = [
                 .. Container,
             (nameof(Vin), [Unique, new LengthValidator(17, 17)]),
-            (nameof(Manufacturer), [Required, Unique, Pointer]),
+            (nameof(Manufacturer), [Unique, new PointerValidator(true)]),
             (nameof(Motor), [Unique, new LengthValidator(15, 16)]),
             (nameof(Sct), [Unique, Pointer]),
             (nameof(Maintenance), [Pointer]),

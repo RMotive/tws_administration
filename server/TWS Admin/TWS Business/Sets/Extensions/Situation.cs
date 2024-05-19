@@ -14,6 +14,8 @@ public partial class Situation
         Container = [
                 .. Container,
                 (nameof(Name), [Required, new LengthValidator(1, 25)]),
+                (nameof(Description), [new LengthValidator(1, 100)]),
+
         ];
 
         return Container;

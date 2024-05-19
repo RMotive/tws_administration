@@ -14,9 +14,9 @@ public partial class Sct
 
         Container = [
                 .. Container,
-                (nameof(Type), [new LengthValidator(6)]),
-                (nameof(Number), [new LengthValidator(25)]),
-                (nameof(Configuration), [new LengthValidator(10)]),
+                (nameof(Type), [Required, new LengthValidator(6,6)]),
+                (nameof(Number), [Required, new LengthValidator(25,25)]),
+                (nameof(Configuration), [Required, new LengthValidator(6,10)]),
 
         ];
 

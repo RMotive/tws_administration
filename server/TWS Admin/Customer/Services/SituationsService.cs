@@ -1,10 +1,5 @@
 ﻿using Customer.Services.Interfaces;
 using Foundation.Migrations.Records;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 

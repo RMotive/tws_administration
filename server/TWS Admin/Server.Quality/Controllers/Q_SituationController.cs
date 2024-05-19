@@ -35,7 +35,7 @@ public class Q_SituationController : BQ_ServerController<Program> {
     public async void View() {
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
             Page = 1,
-            Range = 10,
+            Range = 5,
             Retroactive = false,
         }, true);
 

@@ -49,33 +49,61 @@ public class Q_TrucksController : BQ_ServerController<Program> {
 
     [Fact]
     public async void Assembly() {
-        DateOnly year = new(2024, 12, 12);
+        DateOnly date = new(2024, 12, 12);
+        string testTag = "T27";
         Manufacturer manufacturer = new() {
             Model = "X23",
-            Brand = "SCANIA",
-            Year = year
+            Brand = "SCANIA TEST"+testTag,
+            Year = date
+        };
+        Insurance insurance = new() {
+            Policy = "P232Policy" + testTag,
+            Expiration = date,
+            Country = "MEX"
+        };
+
+        Maintenance maintenace = new() {
+            Anual = date,
+            Trimestral = date,
+        };
+        Sct sct = new() {
+            Type = "TypT14",
+            Number = "NumberSCTTesting value" + testTag,
+            Configuration = "Conf" + testTag
+        };
+        Situation situation = new() {
+            Name = "Situational test " + testTag,
+            Description = "Description test " + testTag
         };
         Plate plateMX = new() {
-            Identifier = "mxPlate1",
-            State = "BC",
+            Identifier = "mxPlate" + testTag,
+            State = "BAC",
             Country = "MXN",
-            Expiration = year,
-            Truck = 0
+            Expiration = date,
+            Truck = 2
         };
         Plate plateUSA = new() {
-            Identifier = "usaPlate1",
-            State = "CA",
+            Identifier = "usaPlate" + testTag,
+            State = "CaA",
             Country = "USA",
-            Expiration = year,
-            Truck = 0
+            Expiration = date,
+            Truck = 2
         };
-        //List<Plate> plateList = [plateMX, plateUSA];
+
+        List<Plate> plateList = [plateMX, plateUSA];
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Assembly", new TruckAssembly {
-            Vin = "VIN number test 10",
-            Motor = "Motor number T10",
-            ManufacturerPointer = 2,
+            Vin = "VINnumber test" + testTag,
+            Motor = "Motor number " + testTag,
+            Manufacturer = manufacturer,
+            Insurance = insurance,
+            Maintenance = maintenace,
+            Sct = sct,
+            Situation = situation,
+            Plates = plateList,
         }, true);
 
+        fact.Response.Estela.TryGetValue("Advise", out object? value);
+        Assert.Null(value);
         Assert.Equal(HttpStatusCode.OK, fact.Status);
 
     }
