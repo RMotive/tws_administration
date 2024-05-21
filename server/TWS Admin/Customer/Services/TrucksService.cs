@@ -68,6 +68,7 @@ public class TrucksService : ITrucksService {
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
             if (truck.Manufacturer != null) {
+                truck.Manufacturer.Id = 0;
                 /// generate a new insert.
                 Manufacturer ManufacturerResult = await Manufacturers.Create(truck.Manufacturer);
                 assembly.Manufacturer = ManufacturerResult.Id;
@@ -78,22 +79,25 @@ public class TrucksService : ITrucksService {
             }
             /// Assembly Optional fields bundle.
             if (truck.Insurance != null) {
+                truck.Insurance.Id = 0;
                 Insurance InsuranceResult = await Insurances.Create(truck.Insurance);
                 assembly.Insurance = InsuranceResult.Id;
                 nullify.Add((Insurances, InsuranceResult));
             }
             if (truck.Maintenance != null) {
+                truck.Maintenance.Id = 0;
                 Maintenance MaintenenceResult = await Maintenaces.Create(truck.Maintenance);
                 assembly.Maintenance = MaintenenceResult.Id;
                 nullify.Add((Maintenaces, MaintenenceResult));
             }
             if (truck.Sct != null) {
+                truck.Sct.Id = 0;
                 Sct SctResult = await Sct.Create(truck.Sct);
                 assembly.Sct = SctResult.Id;
                 nullify.Add((Sct, SctResult));
             }
             if (truck.Situation != null) {
-
+                truck.Situation.Id = 0;
                 Situation SituationResult = await Situations.Create(truck.Situation);
                 assembly.Situation = SituationResult.Id;
                 nullify.Add((Situations, SituationResult));
@@ -106,6 +110,7 @@ public class TrucksService : ITrucksService {
             /// validate and generate a plate list asocciated to this truck.
             if (!truck.Plates.IsNullOrEmpty()) {
                 foreach (Plate plate in truck.Plates) {
+                    plate.Id = 0;
                     plate.Truck = result.Id;
                     Plate currentPlate = await Plates.Create(plate);
                     generatedPlates.Add(currentPlate);
