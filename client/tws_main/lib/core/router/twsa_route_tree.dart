@@ -1,11 +1,10 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/router/twsa_k_routes.dart';
-import 'package:tws_main/data/storage/session_storage.dart';
+import 'package:tws_main/core/router/twsa_routes.dart';
 import 'package:tws_main/view/articles/features/features_article.dart';
 import 'package:tws_main/view/articles/features/whispers/create/features_create_whisper.dart';
 import 'package:tws_main/view/articles/solutions/solutions_article.dart';
+import 'package:tws_main/view/articles/solutions/whispers/solutions_create_whisper.dart';
 import 'package:tws_main/view/layouts/master/master_layout.dart';
 import 'package:tws_main/view/pages/login/login_page.dart';
 import 'package:tws_main/view/pages/overview/overview_page.dart';
@@ -13,15 +12,12 @@ import 'package:tws_main/view/pages/security/security_page.dart';
 
 typedef Routes = TWSARoutes;
 
-final SessionStorage _sessionStorage = SessionStorage.instance;
 
 class TWSARouteTree extends CSMRouterTreeBase {
   TWSARouteTree()
       : super(
-          devRoute: Routes.solutionsArticle,
-          redirect: (_, __) async {
-            if (kDebugMode) return null;
-            if (!await _sessionStorage.isSession) return Routes.loginPage;
+          devRoute: Routes.solutionsCreateWhisper,
+          redirect: (_, __) {
             return null;
           },
           routes: <CSMRouteBase>[
@@ -29,8 +25,6 @@ class TWSARouteTree extends CSMRouterTreeBase {
             CSMRouteNode(
               Routes.loginPage,
               redirect: (_, __) async {
-                if (kDebugMode) return null;
-                if (await _sessionStorage.isSession) return Routes.overviewPage;
                 return null;
               },
               pageBuild: (_, __) => const LoginPage(),
@@ -72,11 +66,18 @@ class TWSARouteTree extends CSMRouterTreeBase {
                         ),
                       ],
                     ),
+                    // --> [Solutions]
                     CSMRouteNode(
                       TWSARoutes.solutionsArticle,
-                      pageBuild: (BuildContext ctx, CSMRouterOutput output) {
-                        return const SolutionsArticle();
-                      },
+                      pageBuild: (BuildContext ctx, CSMRouterOutput output) => const SolutionsArticle(),
+                      routes: <CSMRouteBase>[
+                        // --> [Create]
+                        CSMRouteWhisper<void>(
+                          TWSARoutes.solutionsCreateWhisper,
+                          whisperOptions: const CSMRouteWhisperOptions(),
+                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const SolutionsCreateWhisper(),
+                        ),
+                      ],
                     )
                   ],
                 )

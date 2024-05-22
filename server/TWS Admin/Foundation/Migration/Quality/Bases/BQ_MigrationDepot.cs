@@ -147,10 +147,10 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
                     Expression<Func<TMigrationSet, object>> orderingExpression = Expression.Lambda<Func<TMigrationSet, object>>(translationExpression, parameterExpression);
                     IQueryable<TMigrationSet> sorted = sortedRecords.AsQueryable();
                     sorted = sorted.OrderByDescending(orderingExpression);
-                    sortedRecords = [..sorted];
+                    sortedRecords = [.. sorted];
                 }
 
-                for(int i = 0; i < sortedRecords.Length; i++) {
+                for (int i = 0; i < sortedRecords.Length; i++) {
                     TMigrationSet expected = sortedRecords[i];
                     TMigrationSet actual = factRecords[i];
 
@@ -165,20 +165,39 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
 
     [Fact]
     public async void Create() {
-        TMigrationSet mock = MockFactory();
-
-        TMigrationSet firstFact = await Depot.Create(mock);
-
-        #region First-Fact (Set successfully saved and generated)
+        #region First-Fact (Set successfuly saved and generated)
         {
+            TMigrationSet mock = MockFactory();
+            TMigrationSet fact = await Depot.Create(mock);
             Assert.Multiple([
-                    () => Assert.True(firstFact.Id > 0),
+                () => Assert.True(fact.Id > 0),
                 async () => await Assert.ThrowsAnyAsync<Exception>(async () => await Depot.Create(mock)),
                 () => {
                     Restore(mock);
                 }
             ]);
 
+        }
+        #endregion
+
+        #region Second-Fact (Sets successfuly saved and generated)
+        {
+            TMigrationSet[] mocks = [];
+            for (int i = 0; i < 3; i++) {
+                mocks = [.. mocks, MockFactory()];
+            }
+            MigrationTransactionResult<TMigrationSet> fact = await Depot.Create(mocks);
+
+            Assert.Multiple([
+                () => Assert.Equal(fact.QTransactions, mocks.Length),
+                () => Assert.Equal(fact.QSuccesses, mocks.Length),
+                () => Assert.All(mocks, i => {
+                    Assert.True(i.Id > 0);
+                }),
+                () => {
+                    Restore(fact.Successes);
+                }
+            ]);
         }
         #endregion
     }

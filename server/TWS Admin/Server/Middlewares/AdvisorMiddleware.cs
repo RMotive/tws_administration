@@ -1,5 +1,6 @@
 ﻿
 using System.Text.Json;
+
 using Foundation.Advising.Managers;
 
 using JObject = System.Collections.Generic.Dictionary<string, dynamic>;
@@ -28,13 +29,15 @@ public class AdvisorMiddleware
                     if (EstelaObject != null && EstelaObject.ContainsKey("Failure"))
                         AdvisorManager.Warning($"Reques served with failure", responseContent);
                     else AdvisorManager.Success($"Request served successful", responseContent);
-                } else {
+                } else if(Response.StatusCode != 204) {
                     AdvisorManager.Success($"Request served successful", responseContent);
                 }
 
-                bufferStream.Seek(0, SeekOrigin.Begin);
-                await bufferStream.CopyToAsync(OriginalStream);
-                Response.Body = OriginalStream;
+                if (Response.StatusCode != 204) {
+                    bufferStream.Seek(0, SeekOrigin.Begin);
+                    await bufferStream.CopyToAsync(OriginalStream);
+                    Response.Body = OriginalStream;
+                }
             }
         } catch {
             throw;

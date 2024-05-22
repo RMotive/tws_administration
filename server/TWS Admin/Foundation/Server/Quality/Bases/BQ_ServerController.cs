@@ -22,40 +22,61 @@ namespace Foundation.Servers.Quality.Bases;
 /// </typeparam>
 public abstract class BQ_ServerController<TEntry>
     : IClassFixture<WebApplicationFactory<TEntry>>
+    , IDisposable
     where TEntry : class {
 
     readonly string Service;
     readonly QM_ServerHost Host;
+    readonly WebApplicationFactory<TEntry> Factory;
 
-    public BQ_ServerController(string Service, WebApplicationFactory<TEntry> hostFactory) {
+    public BQ_ServerController(string Service, WebApplicationFactory<TEntry> Factory) {
         this.Service = Service;
-        this.Host = new(hostFactory.CreateClient());
+        this.Host = new(Factory.CreateClient());
+        this.Factory = Factory;
     }
 
+    #region Protected Abstract Methods
 
     protected abstract Task<string> Authentication();
+
+    #endregion
+
+    #region Protected Methods 
+
     protected TFrame Framing<TFrame>(ServerGenericFrame Generic) {
         string desContent = JsonSerializer.Serialize(Generic);
 
         TFrame frame = JsonSerializer.Deserialize<TFrame>(desContent)!;
         return frame;
     }
-    protected async Task<(HttpStatusCode, ServerGenericFrame)> Post(string Action, object Request, bool Authenticate = false) {
+    protected async Task<(HttpStatusCode, ServerGenericFrame)> Post<TRequest>(string Action, TRequest Request, bool Authenticate = false)
+    => await Post<ServerGenericFrame, TRequest>(Action, Request, false, Authenticate);
+    protected async Task<(HttpStatusCode, TResponse)> Post<TResponse, TRequest>(string Action, TRequest Request, bool Authenticate = false)
+    => await Post<TResponse, TRequest>(Action, Request, false, Authenticate);
+    protected async Task<(HttpStatusCode, TResponse)> XPost<TResponse, TRequest>(string Free, TRequest Request, bool Authenticate = false)
+    => await Post<TResponse, TRequest>(Free, Request, true, Authenticate);
+
+    #endregion
+
+    #region Private Methods 
+
+    private async Task<(HttpStatusCode, TResponse)> Post<TResponse, TRequest>(string Action, TRequest RequestBody, bool FreeAction, bool Authenticate = false, string Disposition = "Quality") {
         if (Authenticate) {
-            Host.Authenticate(await Authentication());
+            string authToken = await Authentication();
+            Host.Authenticate(authToken);
         }
-        return await Host.Post<ServerGenericFrame>($"{Service}/{Action}", Request);
-    }
-    protected async Task<(HttpStatusCode, TPayload)> Post<TPayload>(string Action, object Request, bool Authenticate = false) {
-        if (Authenticate) {
-            Host.Authenticate(await Authentication());
+        if (!FreeAction) {
+            Action = $"{Service}/{Action}";
         }
-        return await Host.Post<TPayload>($"{Service}/{Action}", Request);
+
+        Host.Disposition(Disposition);
+        return await Host.Post<TResponse, TRequest>(Action, RequestBody);
     }
-    protected async Task<(HttpStatusCode, TPayload)> XPost<TPayload>(string Free, object Request, bool Authenticate = false) {
-        if (Authenticate) {
-            Host.Authenticate(await Authentication());
-        }
-        return await Host.Post<TPayload>(Free, Request);
+
+    public void Dispose() {
+        Host.Dispose();
+        Factory.Dispose();
+        GC.SuppressFinalize(this);
     }
+    #endregion
 }

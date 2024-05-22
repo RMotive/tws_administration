@@ -6,7 +6,7 @@
 ///     that handles the data for the transaction context.
 /// </summary>
 /// <typeparam name="TEstela"></typeparam>
-public interface IServerFrame<TEstela> 
+public interface IServerFrame<TEstela>
     : IServerFrame {
     /// <summary>
     ///     Transaction dynamic store object.
