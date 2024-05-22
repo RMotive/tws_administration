@@ -1,6 +1,9 @@
 ﻿using Customer.Services.Interfaces;
+
 using Foundation.Migrations.Records;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Server.Controllers.Authentication;
 
 namespace Server.Controllers;

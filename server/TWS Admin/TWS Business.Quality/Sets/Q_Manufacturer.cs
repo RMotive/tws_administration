@@ -1,6 +1,7 @@
 ﻿using Foundation.Migrations.Quality.Bases;
 using Foundation.Migrations.Quality.Records;
 using Foundation.Migrations.Validators;
+
 using TWS_Business.Sets;
 
 namespace TWS_Business.Quality.Sets;

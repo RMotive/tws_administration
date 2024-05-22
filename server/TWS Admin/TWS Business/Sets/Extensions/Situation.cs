@@ -5,7 +5,8 @@ using Foundation.Migrations.Validators;
 namespace TWS_Business.Sets;
 
 public partial class Situation
-    : BMigrationSet{
+    : BMigrationSet
+{
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container)
     {

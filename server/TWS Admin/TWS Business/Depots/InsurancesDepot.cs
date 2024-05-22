@@ -12,8 +12,8 @@ namespace TWS_Business.Depots
         /// <summary>
         ///     Generates a new depot handler for <see cref="Insurance"/>.
         /// </summary>
-        public InsurancesDepot() 
-            : base(new()){
+        public InsurancesDepot() : base(new(), null)
+        {
         }
     }
 }

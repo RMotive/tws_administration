@@ -1,10 +1,5 @@
 ﻿using Foundation.Migrations.Bases;
 using Foundation.Migrations.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TWS_Business.Sets;
 
 namespace TWS_Business

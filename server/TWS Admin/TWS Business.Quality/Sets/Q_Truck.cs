@@ -1,7 +1,7 @@
 ﻿using Foundation.Migrations.Quality.Bases;
 using Foundation.Migrations.Quality.Records;
 using Foundation.Migrations.Validators;
-using Newtonsoft.Json;
+
 using TWS_Business.Sets;
 
 namespace TWS_Business.Quality.Sets;
@@ -37,7 +37,7 @@ public class Q_Truck : BQ_MigrationSet<Truck> {
             Expectations = [
                 (nameof(Truck.Id), [(new PointerValidator(), 3) ]),
                 (nameof(Truck.Manufacturer), [(new PointerValidator(true),3)]),
-                (nameof(Truck.Vin), [((new LengthValidator(),2))]),
+                (nameof(Truck.Vin), [(new LengthValidator(),2)]),
                 (nameof(Truck.Motor), [(new LengthValidator(),2)]),
                 (nameof(Truck.Sct), [(new PointerValidator(true),3)]),
                 (nameof(Truck.Maintenance), [(new PointerValidator(true),3)]),

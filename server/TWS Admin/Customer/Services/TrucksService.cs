@@ -1,9 +1,14 @@
 ﻿
+using System.Diagnostics;
+
 using Customer.Services.Exceptions;
 using Customer.Services.Interfaces;
+using Customer.Services.Records;
+
 using Foundation.Migrations.Records;
+
 using Microsoft.IdentityModel.Tokens;
-using System.Diagnostics;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
@@ -42,9 +47,6 @@ public class TrucksService : ITrucksService {
 
         /// Stores the generated plates to remove on exception case.
         List<Plate> generatedPlates = [];
-
-        /// Generated Truck on "Create" method.
-        Truck result = new();
 
         /// Base model to generate a new truck.
         Truck assembly = new() {
@@ -104,12 +106,12 @@ public class TrucksService : ITrucksService {
             }
 
             /// Create the defined truck.
-            result = await Trucks.Create(assembly);
+            Truck result = await Trucks.Create(assembly);
             nullify.Add((Trucks, result));
 
             /// validate and generate a plate list asocciated to this truck.
             if (!truck.Plates.IsNullOrEmpty()) {
-                foreach (Plate plate in truck.Plates) {
+                foreach (Plate plate in truck.Plates!) {
                     plate.Id = 0;
                     plate.Truck = result.Id;
                     Plate currentPlate = await Plates.Create(plate);
@@ -117,11 +119,12 @@ public class TrucksService : ITrucksService {
                 }
                 //assembly.Plates = generatedPlates;
             } else if (!truck.PlatePointer.IsNullOrEmpty()) {
-                List<Plate> currentsPlates = new List<Plate>();
-                foreach (int pointer in truck.PlatePointer) {
+                List<Plate> currentsPlates = [];
+                foreach (int pointer in truck.PlatePointer!) {
                     ///update plate insert......
                 }
             }
+            return result;
         } catch (Exception ex) {
             // Undo all changes on data source.
             Debug.WriteLine("Ejecutando: ToString.....");
@@ -132,14 +135,13 @@ public class TrucksService : ITrucksService {
             foreach (Plate plate in generatedPlates)
                 await Plates.Delete(plate);
 
-            foreach ((dynamic depot, dynamic set) query in nullify) 
+            foreach ((dynamic depot, dynamic set) query in nullify)
                 await query.depot.Delete(query.set);
-            
-           
+
+
 
             throw;
         }
-        return result;
     }
 
 

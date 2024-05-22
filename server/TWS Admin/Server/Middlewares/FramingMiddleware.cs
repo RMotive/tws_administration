@@ -51,7 +51,7 @@ public class FramingMiddleware
                 } else if (Response.StatusCode != 200) {
                     Stream resolutionStream = Response.Body;
 
-                    if(Response.StatusCode == 405) {
+                    if (Response.StatusCode == 405) {
                         ServerExceptionPublish publish = new XSystem(new MethodAccessException()).Publish();
 
                         FailureFrame frame = new() {
@@ -59,7 +59,7 @@ public class FramingMiddleware
                             Estela = publish,
                         };
                         encodedContent = JsonSerializer.Serialize(frame);
-                    } else if(Response.StatusCode == 204) { 
+                    } else if (Response.StatusCode == 204) {
                         encodedContent = "{}";
                     } else {
                         encodedContent = JsonSerializer.Serialize(resolutionStream);

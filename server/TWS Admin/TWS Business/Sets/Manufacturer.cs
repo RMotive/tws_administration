@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TWS_Business.Sets;
+﻿namespace TWS_Business.Sets;
 
 public partial class Manufacturer
 {
@@ -13,5 +10,5 @@ public partial class Manufacturer
 
     public DateOnly Year { get; set; }
 
-    public virtual ICollection<Truck> Trucks { get; set; } = new List<Truck>();
+    public virtual ICollection<Truck> Trucks { get; set; } = [];
 }

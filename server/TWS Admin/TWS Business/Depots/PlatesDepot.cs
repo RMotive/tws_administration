@@ -7,14 +7,16 @@ namespace TWS_Business.Depots
     ///     Implements a <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/>
     ///     representing a depot to handle <see cref="Plate"/> datasource entity mirror.
     /// </summary>
-    public class PlatesDepot 
-        : BMigrationDepot<TWSBusinessSource, Plate>{
+    public class PlatesDepot
+        : BMigrationDepot<TWSBusinessSource, Plate>
+    {
         /// <summary>
         ///     Generates a new depot handler for <see cref="Plate"/>.
         /// </summary>
-        
-        public PlatesDepot() 
-            : base(new()){
+
+        public PlatesDepot()
+            : base(new(), null)
+        {
         }
     }
 }

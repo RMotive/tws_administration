@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TWS_Business.Sets;
+﻿namespace TWS_Business.Sets;
 
 public partial class Truck
 {
@@ -21,5 +18,5 @@ public partial class Truck
 
     public int? Insurance { get; set; }
 
-    public virtual ICollection<Plate> Plates { get; set; } = new List<Plate>();
+    public virtual ICollection<Plate> Plates { get; set; } = [];
 }

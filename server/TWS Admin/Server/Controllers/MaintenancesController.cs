@@ -1,12 +1,15 @@
 ﻿using Customer.Services.Interfaces;
+
 using Foundation.Migrations.Records;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Server.Controllers.Authentication;
 
 namespace Server.Controllers;
 
 [ApiController, Route("[Controller]")]
-public class MaintenancesController : ControllerBase{
+public class MaintenancesController : ControllerBase {
     readonly IMaintenancesService Service;
 
     public MaintenancesController(IMaintenancesService service) {

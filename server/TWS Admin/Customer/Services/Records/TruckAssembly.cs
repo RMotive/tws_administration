@@ -1,17 +1,14 @@
-
-
 using TWS_Business.Sets;
 
-
+namespace Customer.Services.Records;
 /// <summary>
 /// Class that stores all the optional and required values to generate a truck entity.
 /// </summary>
 public class TruckAssembly {
-
     /// <summary>
     /// Vin number for the truck.
     /// </summary>
-    public required string Vin {  get; set; }
+    public required string Vin { get; set; }
 
     /// <summary>
     /// Motor Number for the truck.
@@ -66,7 +63,7 @@ public class TruckAssembly {
     /// <summary>
     /// Optional Sct data for the truck.
     /// </summary>
-    public Sct? Sct { get; set; }   
+    public Sct? Sct { get; set; }
 
 
 }

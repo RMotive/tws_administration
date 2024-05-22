@@ -1,12 +1,13 @@
 ﻿
-using Foundation.Server.Bases;
 using System.Net;
 
-namespace Customer.Services.Exceptions;
-public class XTruckAssembly: BServerTransactionException<XTrcukAssemblySituation> {
+using Foundation.Server.Bases;
 
-    public XTruckAssembly(XTrcukAssemblySituation Situation) 
-        : base($"", HttpStatusCode.BadRequest, null){
+namespace Customer.Services.Exceptions;
+public class XTruckAssembly : BServerTransactionException<XTrcukAssemblySituation> {
+
+    public XTruckAssembly(XTrcukAssemblySituation Situation)
+        : base($"", HttpStatusCode.BadRequest, null) {
         this.Situation = Situation;
         this.Advise = Situation switch {
             XTrcukAssemblySituation.Required_Manufacturer => $"None Manufacturer data found.",

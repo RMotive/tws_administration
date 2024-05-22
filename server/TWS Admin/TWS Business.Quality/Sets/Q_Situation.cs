@@ -1,11 +1,7 @@
 ﻿using Foundation.Migrations.Quality.Bases;
 using Foundation.Migrations.Quality.Records;
 using Foundation.Migrations.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using TWS_Business.Sets;
 
 namespace TWS_Business.Quality.Sets;

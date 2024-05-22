@@ -29,7 +29,7 @@ public class AdvisorMiddleware
                     if (EstelaObject != null && EstelaObject.ContainsKey("Failure"))
                         AdvisorManager.Warning($"Reques served with failure", responseContent);
                     else AdvisorManager.Success($"Request served successful", responseContent);
-                } else if(Response.StatusCode != 204) {
+                } else if (Response.StatusCode != 204) {
                     AdvisorManager.Success($"Request served successful", responseContent);
                 }
 

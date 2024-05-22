@@ -1,10 +1,16 @@
 ﻿using System.Net;
+
+using Customer.Managers.Records;
 using Customer.Services.Records;
+
 using Foundation.Migrations.Records;
 using Foundation.Server.Records;
 using Foundation.Servers.Quality.Bases;
+
 using Microsoft.AspNetCore.Mvc.Testing;
+
 using Server.Middlewares.Frames;
+
 using Xunit;
 
 
@@ -12,7 +18,7 @@ using Account = Server.Quality.Secrets.Account;
 using View = Foundation.Migrations.Records.MigrationView<TWS_Business.Sets.Insurance>;
 
 namespace Server.Quality.Controllers;
-public class Q_InsurancesController 
+public class Q_InsurancesController
      : BQ_ServerController<Program> {
     private class Frame : SuccessFrame<View> { }
 
@@ -22,7 +28,7 @@ public class Q_InsurancesController
     }
 
     protected override async Task<string> Authentication() {
-        (HttpStatusCode Status, SuccessFrame<Privileges> Response) = await XPost<SuccessFrame<Privileges>>("Security/Authenticate", new Credentials {
+        (HttpStatusCode Status, SuccessFrame<Session> Response) = await XPost<SuccessFrame<Session>, Credentials>("Security/Authenticate", new Credentials {
             Identity = Account.Identity,
             Password = Account.Password,
         });

@@ -10,11 +10,13 @@ namespace TWS_Business.Depots
     /// </summary>
 
     public class MaintenaceDepot
-    : BMigrationDepot<TWSBusinessSource, Maintenance>{
+    : BMigrationDepot<TWSBusinessSource, Maintenance>
+    {
         /// <summary>
         ///     Generates a new depot handler for <see cref="Maintenance"/>.
         /// </summary>
-        public MaintenaceDepot() : base(new()){
+        public MaintenaceDepot() : base(new(), null)
+        {
         }
     }
 }

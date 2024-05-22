@@ -1,11 +1,16 @@
-﻿using Customer.Services.Records;
+﻿using System.Net;
+
+using Customer.Managers.Records;
+using Customer.Services.Records;
+
 using Foundation.Migrations.Records;
 using Foundation.Server.Records;
 using Foundation.Servers.Quality.Bases;
+
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 using Server.Middlewares.Frames;
-using System.Net;
+
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
@@ -21,7 +26,7 @@ public class Q_SituationController : BQ_ServerController<Program> {
     }
 
     protected override async Task<string> Authentication() {
-        (HttpStatusCode Status, SuccessFrame<Privileges> Response) = await XPost<SuccessFrame<Privileges>>("Security/Authenticate", new Credentials {
+        (HttpStatusCode Status, SuccessFrame<Session> Response) = await XPost<SuccessFrame<Session>, Credentials>("Security/Authenticate", new Credentials {
             Identity = Account.Identity,
             Password = Account.Password,
         });

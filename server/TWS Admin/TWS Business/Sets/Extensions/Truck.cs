@@ -10,9 +10,8 @@ public partial class Truck
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container)
     {
-        RequiredValidator Required = new();
         UniqueValidator Unique = new();
-        PointerValidator Pointer = new(true,false);
+        PointerValidator Pointer = new(true, false);
         Container = [
                 .. Container,
             (nameof(Vin), [Unique, new LengthValidator(17, 17)]),

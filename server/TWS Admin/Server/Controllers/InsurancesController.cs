@@ -1,13 +1,16 @@
 ﻿using Customer.Services.Interfaces;
+
 using Foundation.Migrations.Records;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Server.Controllers.Authentication;
 
 namespace Server.Controllers;
 
 
 [ApiController, Route("[Controller]")]
-public class InsurancesController : ControllerBase{
+public class InsurancesController : ControllerBase {
 
     readonly IInsurancesService Service;
 

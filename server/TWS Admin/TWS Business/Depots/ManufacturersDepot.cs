@@ -13,7 +13,8 @@ namespace TWS_Business.Depots
         /// <summary>
         ///     Generates a new depot handler for <see cref="Manufacturer"/>.
         /// </summary>
-        public ManufacturersDepot() : base(new()){
+        public ManufacturersDepot() : base(new(), null)
+        {
 
         }
     }

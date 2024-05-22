@@ -54,8 +54,7 @@ public class PointerValidator
         if (Property.Name != "Id" && !isDependency) {
             message = "Pointer cannot be named different than 'Id'";
             code = 1;
-        }
-        else if ((value == null && isRequired) || (Value != null && value == null && !isRequired)) {
+        } else if ((value == null && isRequired) || (Value != null && value == null && !isRequired)) {
             message = "Pointer must be integer indexer and not null";
             code = 2;
         } else if (value <= 0) {

@@ -1,10 +1,12 @@
 ﻿using Customer.Services.Interfaces;
+
 using Foundation.Migrations.Records;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
 namespace Customer.Services;
-public class SituationsService :ISituationsService {
+public class SituationsService : ISituationsService {
 
     readonly SituationsDepot Situations;
 

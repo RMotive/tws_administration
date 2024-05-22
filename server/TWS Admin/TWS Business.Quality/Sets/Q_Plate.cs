@@ -1,6 +1,7 @@
 ﻿using Foundation.Migrations.Quality.Bases;
 using Foundation.Migrations.Quality.Records;
 using Foundation.Migrations.Validators;
+
 using TWS_Business.Sets;
 
 namespace TWS_Business.Quality.Sets;
@@ -15,7 +16,7 @@ public class Q_Plate : BQ_MigrationSet<Plate> {
                 Country = "",
                 Expiration = DateOnly.FromDateTime(new DateTime()),
                 Truck = 1
-                
+
 
             },
             Expectations = [],

@@ -1,16 +1,19 @@
 ﻿using Customer.Services.Interfaces;
+
 using Foundation.Migrations.Records;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Server.Controllers.Authentication;
 
 namespace Server.Controllers;
 
 
 [ApiController, Route("[Controller]")]
-public class SctController : ControllerBase{
+public class SctController : ControllerBase {
 
     readonly ISctService Service;
-    
+
     public SctController(ISctService service) {
         this.Service = service;
     }

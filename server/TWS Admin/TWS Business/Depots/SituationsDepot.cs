@@ -8,13 +8,15 @@ namespace TWS_Business.Depots
     ///     representing a depot to handle <see cref="Situation"/> datasource entity mirror.
     /// </summary>
     public class SituationsDepot
-        : BMigrationDepot<TWSBusinessSource, Situation> {
+        : BMigrationDepot<TWSBusinessSource, Situation>
+    {
 
         /// <summary>
         ///     Generates a new depot handler for <see cref="Situation"/>.
         /// </summary>
-        public SituationsDepot() : base(new()){
-        
+        public SituationsDepot() : base(new(), null)
+        {
+
         }
     }
 

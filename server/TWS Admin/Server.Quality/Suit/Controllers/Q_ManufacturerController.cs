@@ -1,29 +1,36 @@
 ﻿
 
+using System.Net;
+
+using Customer.Managers.Records;
 using Customer.Services.Records;
+
 using Foundation.Migrations.Records;
 using Foundation.Server.Records;
 using Foundation.Servers.Quality.Bases;
+
 using Microsoft.AspNetCore.Mvc.Testing;
+
 using Server.Middlewares.Frames;
-using System.Net;
+
 using TWS_Business.Sets;
+
 using Xunit;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 using Account = Server.Quality.Secrets.Account;
 using View = Foundation.Migrations.Records.MigrationView<TWS_Business.Sets.Manufacturer>;
 
 namespace Server.Quality.Controllers;
-public class Q_ManufacturerController 
+public class Q_ManufacturerController
     : BQ_ServerController<Program> {
 
-    private class Frame: SuccessFrame<View> { }
-       
+    private class Frame : SuccessFrame<View> { }
+
     public Q_ManufacturerController(WebApplicationFactory<Program> hostFactory)
-        : base("Manufacturers", hostFactory) { 
+        : base("Manufacturers", hostFactory) {
     }
     protected override async Task<string> Authentication() {
-        (HttpStatusCode Status, SuccessFrame<Privileges> Response) = await XPost<SuccessFrame<Privileges>>("Security/Authenticate", new Credentials {
+        (HttpStatusCode Status, SuccessFrame<Session> Response) = await XPost<SuccessFrame<Session>, Credentials>("Security/Authenticate", new Credentials {
             Identity = Account.Identity,
             Password = Account.Password,
         });
@@ -52,7 +59,7 @@ public class Q_ManufacturerController
     public async void Create() {
         DateOnly date = new(2024, 10, 10);
 
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", new Manufacturer (){
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", new Manufacturer() {
             Model = "X23",
             Brand = "SCANIA ctr T1",
             Year = date
