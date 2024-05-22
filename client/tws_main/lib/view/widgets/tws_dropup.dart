@@ -2,29 +2,31 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
-class TWSDropup extends StatefulWidget {
-  final int item;
-  final List<int> items;
+class TWSDropup<T> extends StatefulWidget {
+  final T item;
+  final List<T> items;
   final String? tooltip;
+  final void Function(T item) onChange;
   const TWSDropup({
     super.key,
     this.tooltip,
     required this.item,
     required this.items,
+    required this.onChange,
   });
 
   @override
-  State<TWSDropup> createState() => _TWSDropupState();
+  State<TWSDropup<T>> createState() => _TWSDropupState<T>();
 }
 
-class _TWSDropupState extends State<TWSDropup> with TickerProviderStateMixin {
+class _TWSDropupState<T> extends State<TWSDropup<T>> with TickerProviderStateMixin {
   final LayerLink layerLink = LayerLink();
   CSMStates state = CSMStates.none;
 
   late CSMGenericThemeOptions theme;
   late CSMStateThemeOptions themeState;
   late OverlayEntry? overlay;
-  late int currentItem;
+  late T currentItem;
 
   // --> Animations
   late AnimationController animController;
@@ -74,7 +76,7 @@ class _TWSDropupState extends State<TWSDropup> with TickerProviderStateMixin {
                             child: ListView.builder(
                               itemCount: widget.items.length,
                               itemBuilder: (_, int index) {
-                                bool current = index == currentItem;
+                                bool current = widget.items[index] == currentItem;
 
                                 return MouseRegion(
                                   cursor: SystemMouseCursors.click,
@@ -82,7 +84,7 @@ class _TWSDropupState extends State<TWSDropup> with TickerProviderStateMixin {
                                     behavior: HitTestBehavior.translucent,
                                     onTap: () {
                                       toogleDrawer(true).then(
-                                        (_) => updateState(CSMStates.none, currentItem: index),
+                                        (_) => updateState(CSMStates.none, currentItem: widget.items[index]),
                                       );
                                     },
                                     child: SizedBox(
@@ -122,12 +124,15 @@ class _TWSDropupState extends State<TWSDropup> with TickerProviderStateMixin {
     setState(() {});
   }
 
-  void updateState(CSMStates state, {int? currentItem}) {
+  void updateState(CSMStates state, {T? currentItem}) {
     setState(() {
       this.state = state;
       this.currentItem = currentItem ?? this.currentItem;
       theme = state.evaluateTheme(themeState);
     });
+    if (currentItem != null) {
+      widget.onChange(currentItem);
+    }
   }
 
   @override

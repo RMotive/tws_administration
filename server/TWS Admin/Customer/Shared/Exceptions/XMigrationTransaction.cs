@@ -12,7 +12,7 @@ public class XMigrationTransaction
         Situation = XTransactionSituation.Failed;
         Advise = AdvisesConstants.SERVER_CONTACT_ADVISE;
 
-        Factors = Failures.ToDictionary<MigrationTransactionFailure, string, dynamic>(i => $"{i.Set.GetType()}({i.Set.Id})", i => i.System.Message);
+        Factors = Failures.ToDictionary<MigrationTransactionFailure, string, dynamic>(i => $"{i.Set.GetType()}({i.Set.Id})", i => i.SystemInternal.Message);
         Details = Factors;
     }
 }

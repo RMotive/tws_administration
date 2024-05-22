@@ -1,6 +1,6 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/router/twsa_k_routes.dart';
+import 'package:tws_main/core/router/twsa_routes.dart';
 import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
 import 'package:tws_main/view/frames/business/business_frame.dart';

@@ -10,7 +10,7 @@ namespace Foundation.Server.Interfaces;
 ///     an exceptio thrown when a server request was being tried to
 ///     be resolved but there arised an exception.
 /// </summary>
-public interface IServerTransactionException<TSituation> 
+public interface IServerTransactionException<TSituation>
     : IAdvisingException, IServerTransactionException
     where TSituation : Enum {
     /// <summary>
@@ -26,7 +26,7 @@ public interface IServerTransactionException {
     /// </summary>
     public string Advise { get; }
     /// <summary>
-    ///     The System exception thrown that arised this server known exception.
+    ///     The SystemInternal exception thrown that arised this server known exception.
     /// </summary>
     public Exception? System { get; }
     /// <summary>

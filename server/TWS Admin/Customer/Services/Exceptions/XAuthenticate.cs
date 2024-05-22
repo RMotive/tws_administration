@@ -5,9 +5,9 @@ using Foundation.Server.Bases;
 namespace Customer.Services.Exceptions;
 public class XAuthenticate
     : BServerTransactionException<XAuthenticateSituation> {
-    public XAuthenticate(XAuthenticateSituation Situation) 
+    public XAuthenticate(XAuthenticateSituation Situation)
         : base($"Authentication request has failed", HttpStatusCode.BadRequest, null) {
-    
+
         this.Situation = Situation;
         this.Advise = Situation switch {
             XAuthenticateSituation.Identity => $"Identity not found",

@@ -17,12 +17,13 @@ public class SecurityService
 
     readonly AccountsDepot Accounts;
     readonly SessionsManager Sessions;
+
     public SecurityService(AccountsDepot Accounts) {
         this.Accounts = Accounts;
         Sessions = SessionsManager.Manager;
     }
 
-    public async Task<Privileges> Authenticate(Credentials Credentials) {
+    public async Task<Session> Authenticate(Credentials Credentials) {
         MigrationTransactionResult<Account> result = await Accounts.Read(i => i.User == Credentials.Identity, MigrationReadBehavior.First);
         if (result.Failed)
             throw new XMigrationTransaction(result.Failures);
@@ -34,13 +35,9 @@ public class SecurityService
         if (!account.Password.SequenceEqual(Credentials.Password))
             throw new XAuthenticate(XAuthenticateSituation.Password);
 
-        Session session = Sessions.Subscribe(Credentials, account.Wildcard);
+        Permit[] permits = await Accounts.GetPermits(account.Id);
+        Session session = Sessions.Subscribe(Credentials, account.Wildcard, permits);
 
-        return new() {
-            Token = session.Token,
-            Expiration = session.Expiration,
-            Identity = session.Identity,
-            Wildcard = session.Wildcard,
-        };
+        return session;
     }
 }

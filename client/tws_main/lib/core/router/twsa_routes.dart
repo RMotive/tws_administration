@@ -11,12 +11,13 @@ class TWSARoutes {
   static const CSMRouteOptions overviewPage = CSMRouteOptions('overview');
   static const CSMRouteOptions securityPage = CSMRouteOptions('security');
 
-  static const CSMRouteOptions solutionsArticle = CSMRouteOptions('solutions');
-
   static const CSMRouteOptions featuresArticle = CSMRouteOptions('features');
   static const CSMRouteOptions featuresCreateWhisper = CSMRouteOptions('create');
+
+  static const CSMRouteOptions solutionsArticle = CSMRouteOptions('solutions');
+  static const CSMRouteOptions solutionsCreateWhisper = CSMRouteOptions(name: 'solutions-create', 'create');
+
   static const CSMRouteOptions businessPage = CSMRouteOptions('business');
   static const CSMRouteOptions trucksArticle = CSMRouteOptions('trucks');
   static const CSMRouteOptions trucksCreateWhisper = CSMRouteOptions('add');
-
 }

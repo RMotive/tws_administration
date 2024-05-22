@@ -58,7 +58,7 @@ public class AdvisorManager {
         {"Message", Exception.Message },
         {"Thrower", Exception.GetType() },
         {"Details", Exception.Details },
-        {"Trace", Exception.Trace },
+        {"Trace", Exception.Trace[0..20] },
     });
     public static void Warning(string Subject, Details? Details = null)
     => Write("Warning", ConsoleColor.DarkYellow, Subject, Details);

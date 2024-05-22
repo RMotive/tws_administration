@@ -29,6 +29,8 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
       ImigrationDepot_Delete<TMigrationSet>
     where TMigrationSource : BMigrationSource<TMigrationSource>
     where TMigrationSet : class, IMigrationSet {
+
+    readonly protected Action<DbContext, IMigrationSet[]>? Dispose;
     /// <summary>
     ///     Source to handle direct transactions (not-safe)
     /// </summary>
@@ -43,8 +45,9 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     /// <param name="source">
     ///     The <typeparamref name="TMigrationSource"/> that stores and handles the transactions for this <see cref="TMigrationSet"/> concept.
     /// </param>
-    public BMigrationDepot(TMigrationSource source) {
+    public BMigrationDepot(TMigrationSource source, Action<DbContext, IMigrationSet[]>? Dispose) {
         this.Source = source;
+        this.Dispose = Dispose;
         Set = Source.Set<TMigrationSet>();
     }
 
@@ -102,6 +105,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         TMigrationSet[] sets = [.. query];
 
         return Task.FromResult(new MigrationView<TMigrationSet>() {
+            Amount = amount,
             Pages = pages,
             Page = page,
             Sets = sets,
@@ -111,6 +115,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     #endregion
 
     #region Create Interface
+
     /// <summary>
     ///     Creates a new record into the datasource.
     /// </summary>
@@ -122,9 +127,12 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     /// </returns>
     public async Task<TMigrationSet> Create(TMigrationSet Set) {
         Set.EvaluateWrite();
+
         await this.Set.AddAsync(Set);
         await Source.SaveChangesAsync();
         Source.ChangeTracker.Clear();
+
+        Dispose?.Invoke(Source, [Set]);
         return Set;
     }
     /// <summary>
@@ -155,27 +163,30 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
                 set.EvaluateWrite();
                 safe = [.. safe, set];
             } catch (Exception excep) {
-                MigrationTransactionFailure fail = new() {
-                    Set = set,
-                    System = excep,
-                };
+                if (Sync) throw;
+                MigrationTransactionFailure fail = new(set, excep);
                 fails = [.. fails, fail];
             }
         }
 
+
+        Source.ChangeTracker.Clear();
         await this.Set.AddRangeAsync(safe);
-        return new(safe, []);
+        await Source.SaveChangesAsync();
+
+        Dispose?.Invoke(Source, Sets);
+        return new(safe, fails);
     }
+
     #endregion
 
     #region Read interface
     public async Task<MigrationTransactionResult<TMigrationSet>> Read(Expression<Func<TMigrationSet, bool>> Predicate, MigrationReadBehavior Behavior) {
         IQueryable<TMigrationSet> query = Set.Where(Predicate);
-        TMigrationSet[] items = [];
 
         if (!query.Any())
             return new MigrationTransactionResult<TMigrationSet>([], []);
-        items = Behavior switch {
+        TMigrationSet[] items = Behavior switch {
             MigrationReadBehavior.First => [await query.FirstAsync()],
             MigrationReadBehavior.Last => [await query.LastAsync()],
             MigrationReadBehavior.All => await query.ToArrayAsync(),
@@ -191,10 +202,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
                 successes = [.. successes, item];
             } catch (Exception excep) {
-                MigrationTransactionFailure failure = new() {
-                    Set = item,
-                    System = excep,
-                };
+                MigrationTransactionFailure failure = new(item, excep);
                 failures = [.. failures, failure];
             }
         }
