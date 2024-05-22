@@ -46,10 +46,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "32bed71da8a1b12e97e8465d622c1882aa7eda64"
+      resolved-ref: "64dfd47d152cee6f4847a756e96582d6e5808835"
       url: "https://github.com/RMotive/csm_foundation_services"
     source: git
-    version: "5.0.0"
+    version: "5.0.1"
   csm_foundation_view:
     dependency: "direct main"
     description:
@@ -102,10 +102,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "9e0f7d1a3e7dc5010903e330fbc5497872c4c3cf6626381d69083cc1d5113c1e"
+      sha256: aa073287b8f43553678e6fa9e8bb9c83212ff76e09542129a8099bbc8db4df65
       url: "https://pub.dev"
     source: hosted
-    version: "14.0.2"
+    version: "14.1.2"
   http:
     dependency: "direct main"
     description:
@@ -222,10 +222,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_foundation
-      sha256: "5a7999be66e000916500be4f15a3633ebceb8302719b47b9cc49ce924125350f"
+      sha256: f234384a3fdd67f989b4d54a5d73ca2a6c422fa55ae694381ae0f4375cd1ea16
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.0"
   path_provider_linux:
     dependency: transitive
     description:
@@ -324,7 +324,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4e0ff796cb2384fe8f8d66950348a8660c6aef3e"
+      resolved-ref: "3545d48af24ce7fa00c6a1cc7cbbac4c3d432a4c"
       url: "https://github.com/RMotive/tws_administration_service"
     source: git
     version: "1.1.1"
@@ -378,4 +378,4 @@ packages:
     version: "1.0.4"
 sdks:
   dart: ">=3.3.3 <4.0.0"
-  flutter: ">=3.16.0"
+  flutter: ">=3.16.6"

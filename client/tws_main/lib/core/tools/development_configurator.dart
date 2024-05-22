@@ -5,13 +5,12 @@ import 'package:tws_main/data/services/sources.dart';
 import 'package:tws_main/data/storages/session_storage.dart';
 
 class DevelopmentConfigurator {
-  //final AccountIdentityModel _defaultAccount = AccountIdentityModel(developmentAccountIdentity, developmentAccountPassword);
 
   static Future<void> configure() async {
-    await configureAccount();
+    await _configureAccount();
   }
 
-  static Future<void> configureAccount() async {
+  static Future<void> _configureAccount() async {
     SessionStorage sessionStorage = SessionStorage.i;
     if (sessionStorage.isSession) return;
 

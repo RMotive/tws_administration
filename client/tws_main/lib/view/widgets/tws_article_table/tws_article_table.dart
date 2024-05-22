@@ -2,8 +2,8 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/core/constants/twsa_colors.dart';
-import 'package:tws_main/view/widgets/options/bases/tws_article_table_data_adapter.dart';
-import 'package:tws_main/view/widgets/options/tws_article_table_field_options.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_data_adapter.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 import 'package:tws_main/view/widgets/tws_display_flat.dart';
 import 'package:tws_main/view/widgets/tws_paging_selector.dart';
 
@@ -66,7 +66,6 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
 
   @override
   Widget build(BuildContext context) {
-
     return LayoutBuilder(
       builder: (_, BoxConstraints constrains) {
         final double detailsWidth = selected != null ? 400 : 0;
@@ -183,7 +182,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                   },
                                 );
                               }
-                    
+
                               return SizedBox(
                                 height: pageBounds.maxHeight - 100,
                                 child: ListView.builder(

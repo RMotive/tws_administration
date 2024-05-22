@@ -42,12 +42,19 @@ class SessionStorage {
 
     JObject json = jsonDecode(sessionGather);
     _session = Privileges.des(json);
-    _isSession = true;
+    _isSession = _evaluateExpiration(_session!.expiration);
   }
 
-  void storeSession(Privileges session) async {
+  void storeSession(Privileges session) {
     _session = session;
-    _isSession = true;
+    _isSession = _evaluateExpiration(session.expiration);
     localStorage.setItem(_kSessionItemStoreKey, jsonEncode(session.encode()));
+  }
+
+  static bool _evaluateExpiration(DateTime expiration) {
+    DateTime now = DateTime.now();
+    DateTime expLocal = expiration.toLocal();
+
+    return now.isBefore(expLocal);
   }
 }
