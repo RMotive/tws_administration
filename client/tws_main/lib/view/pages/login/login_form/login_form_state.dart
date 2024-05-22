@@ -1,14 +1,12 @@
 part of '../login_page.dart';
 
-// TODO: Change this to the new feature from csm_foundation (V2.0.3) [CSMState] and [CSMStateHandler] and [CSMForm] with [CSMFormOptions]
-
 /// A class that handles and notifies state changes when is needed.
 ///
 /// State classes handles all behaviors and elements that are used by te UI but aren't explicit
 /// UI.
 ///
 /// Handles state for [_LoginForm]
-class _LoginFormState extends ChangeNotifier {
+class _LoginFormState extends CSMStateBase {
   //* --> UI Resources -->
   /// Specifies the max amount of width that all controls in the form will take.
   final double maxControlsWidth = 275;
@@ -69,20 +67,20 @@ class _LoginFormState extends ChangeNotifier {
     _failureDisplay = "";
     _identityFailure = null;
     _passwordFailure = null;
-    notifyListeners();
+    effect();
   }
 
   /// (Render) Indicates the UI that the request performed was finished and renders the state changes.
   void _finishRequest() {
     _isRequesting = false;
-    notifyListeners();
+    effect();
   }
 
   /// (Render) Indicates the UI to display a failure related with state management and ends the request.
   void _wrongStateFailure() {
     _isRequesting = false;
     _failureDisplay = TWSAMessages.kStateManagementErrorDisplay;
-    notifyListeners();
+    effect();
   }
 
   //* --> UI METHODS --> Methods used directly by the UI.

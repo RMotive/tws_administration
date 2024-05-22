@@ -55,7 +55,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "10cade4ce702ac5c8aa5465655365cdae6056fd0"
+      resolved-ref: "8906887aa9d119f5d4d98689578fdfd8b02bb7f1"
       url: "https://github.com/RMotive/csm_foundation_view"
     source: git
     version: "2.1.1"
