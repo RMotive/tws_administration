@@ -18,7 +18,8 @@ class TWSInputText extends StatefulWidget {
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final String? Function(String? value)? validator;
-
+  final void Function(String)? onChanged;
+  final Function(PointerDownEvent)? onTapOutside;
   const TWSInputText({
     super.key,
     this.label,
@@ -29,6 +30,8 @@ class TWSInputText extends StatefulWidget {
     this.height,
     this.controller,
     this.focusNode,
+    this.onChanged,
+    this.onTapOutside,
     this.isEnabled = true,
     this.isPrivate = false,
   });
@@ -86,6 +89,8 @@ class _TWSInputTextState extends State<TWSInputText> {
           cursorWidth: 3,
           cursorColor: colorStruct.foreAlt,
           enabled: widget.isEnabled,
+          onChanged: widget.onChanged,
+          onTapOutside: widget.onTapOutside,
           style: TextStyle(
             color: colorStruct.foreAlt?.withOpacity(.7),
           ),

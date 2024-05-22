@@ -1,6 +1,6 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
-import 'package:tws_main/core/secrets/development_secrets.dart';
+import 'package:tws_main/core/tools/secrets/development_secrets.dart';
 import 'package:tws_main/data/services/sources.dart';
 import 'package:tws_main/data/storages/session_storage.dart';
 

@@ -5,7 +5,10 @@ import 'package:tws_main/view/articles/features/features_article.dart';
 import 'package:tws_main/view/articles/features/whispers/create/features_create_whisper.dart';
 import 'package:tws_main/view/articles/solutions/solutions_article.dart';
 import 'package:tws_main/view/articles/solutions/whispers/solutions_create_whisper.dart';
+import 'package:tws_main/view/articles/trucks/Whispers/Create/trucks_create_whisper.dart';
+import 'package:tws_main/view/articles/trucks/trucks_article.dart';
 import 'package:tws_main/view/layouts/master/master_layout.dart';
+import 'package:tws_main/view/pages/business/business_page.dart';
 import 'package:tws_main/view/pages/login/login_page.dart';
 import 'package:tws_main/view/pages/overview/overview_page.dart';
 import 'package:tws_main/view/pages/security/security_page.dart';
@@ -80,7 +83,30 @@ class TWSARouteTree extends CSMRouterTreeBase {
                       ],
                     )
                   ],
-                )
+                ),
+                // --> [Business Page]
+                CSMRouteNode(
+                  Routes.businessPage,
+                  pageBuild: (_, __) {
+                    return const BusinessPage(
+                      currentRoute: Routes.businessPage,
+                    );
+                  },
+                  routes: <CSMRouteBase>[
+                    // --> [Trucks]
+                    CSMRouteNode(
+                      Routes.trucksArticle,
+                      pageBuild: (_, __) => const TrucksArticle(),
+                      routes: <CSMRouteBase>[
+                        CSMRouteWhisper<Object>(
+                          Routes.trucksCreateWhisper,
+                          whisperOptions: const CSMRouteWhisperOptions(),
+                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const TrucksCreateWhisper(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ],
             ),
           ],

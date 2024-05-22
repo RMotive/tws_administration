@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TWS Business\TWS Business.csproj" />
     <ProjectReference Include="..\TWS Security\TWS Security.csproj" />
   </ItemGroup>
 </Project>

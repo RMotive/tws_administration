@@ -38,6 +38,11 @@ class MasterLayout extends CSMLayoutBase {
         label: 'Security',
         icon: Icons.security_outlined,
         route: TWSARoutes.securityPage,
+      ),
+      _MasterLayoutMenuButtonOptions(
+        label: 'Business',
+        icon: Icons.emoji_transportation,
+        route: TWSARoutes.businessPage,
       )
     ];
 

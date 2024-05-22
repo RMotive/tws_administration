@@ -37,7 +37,7 @@ class _TWSPagingSelectorState extends State<TWSPagingSelector> {
 
   void themeUpdate([TWSAThemeBase? themeBase]) {
     themeBase ??= getTheme();
-    theme = themeBase.pageColor;
+    theme = themeBase.page;
   }
 
   @override

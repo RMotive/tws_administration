@@ -16,4 +16,8 @@ class TWSARoutes {
 
   static const CSMRouteOptions solutionsArticle = CSMRouteOptions('solutions');
   static const CSMRouteOptions solutionsCreateWhisper = CSMRouteOptions(name: 'solutions-create', 'create');
+
+  static const CSMRouteOptions businessPage = CSMRouteOptions('business');
+  static const CSMRouteOptions trucksArticle = CSMRouteOptions('trucks');
+  static const CSMRouteOptions trucksCreateWhisper = CSMRouteOptions('add');
 }

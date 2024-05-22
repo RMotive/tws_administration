@@ -18,7 +18,7 @@ final class TWSAThemeDark extends TWSAThemeBase {
             TWSAColors.warmWhite,
             Colors.transparent,
           ),
-          pageColor: const CSMColorThemeOptions(
+          page: const CSMColorThemeOptions(
             TWSAColors.lightDark,
             TWSAColors.warmWhite,
             TWSAColors.oceanBlue,
@@ -85,6 +85,18 @@ final class TWSAThemeDark extends TWSAThemeBase {
           primaryControlState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(
               background: TWSAColors.oceanBlue,
+              foreground: TWSAColors.warmWhite,
+            ),
+            hoverStruct: CSMGenericThemeOptions(
+              background: TWSAColors.oceanBlueH,
+            ),
+            selectStruct: CSMGenericThemeOptions(
+              background: TWSAColors.oceanBlueH,
+            ),
+          ),
+          criticalControlState: const CSMStateThemeOptions(
+            main: CSMGenericThemeOptions(
+              background: TWSAColors.deepWine,
               foreground: TWSAColors.warmWhite,
             ),
             hoverStruct: CSMGenericThemeOptions(
