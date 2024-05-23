@@ -55,9 +55,9 @@ public class Q_TrucksController : BQ_ServerController<Program> {
     }
 
     [Fact]
-    public async void Assembly() {
+    public async void Create() {
         DateOnly date = new(2024, 12, 12);
-        string testTag = "T29";
+        string testTag = "T40";
         Manufacturer manufacturer = new() {
             Model = "X23",
             Brand = "SCANIA TEST" + testTag,
@@ -98,7 +98,7 @@ public class Q_TrucksController : BQ_ServerController<Program> {
         };
 
         List<Plate> plateList = [plateMX, plateUSA];
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Assembly", new TruckAssembly {
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", new TruckAssembly {
             Vin = "VINnumber test" + testTag,
             Motor = "Motor number " + testTag,
             Manufacturer = manufacturer,

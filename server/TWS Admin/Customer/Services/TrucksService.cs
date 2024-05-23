@@ -38,8 +38,17 @@ public class TrucksService : ITrucksService {
     public async Task<MigrationView<Truck>> View(MigrationViewOptions options) {
         return await Trucks.View(options);
     }
-
-    public async Task<Truck> Assembly(TruckAssembly truck) {
+    
+    private static async Task<int?> CreationHelper<T>(dynamic? set, dynamic depot, List<(dynamic, dynamic)> nullifyList) where T : class {
+        if (set != null) {
+            set.Id = 0;
+            dynamic result = await depot.Create(set);
+            nullifyList.Add((depot, set));
+            return result.Id;
+        }
+        return null;
+    }
+    public async Task<Truck> Create(TruckAssembly truck) {
 
         /// Stores the depot on success "Creation" inserts. If any error occurs, 
         /// this inserts will be removed using the "Delete" method. 
@@ -70,40 +79,16 @@ public class TrucksService : ITrucksService {
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
             if (truck.Manufacturer != null) {
-                truck.Manufacturer.Id = 0;
-                /// generate a new insert.
-                Manufacturer ManufacturerResult = await Manufacturers.Create(truck.Manufacturer);
-                assembly.Manufacturer = ManufacturerResult.Id;
-                nullify.Add((Manufacturers, ManufacturerResult));
+                assembly.Manufacturer = await CreationHelper<Manufacturer>(truck.Manufacturer, Manufacturers, nullify) ?? 0;
             } else if (truck.ManufacturerPointer != null) {
                 /// use an existent insert.
                 assembly.Manufacturer = (int)truck.ManufacturerPointer;
             }
-            /// Assembly Optional fields bundle.
-            if (truck.Insurance != null) {
-                truck.Insurance.Id = 0;
-                Insurance InsuranceResult = await Insurances.Create(truck.Insurance);
-                assembly.Insurance = InsuranceResult.Id;
-                nullify.Add((Insurances, InsuranceResult));
-            }
-            if (truck.Maintenance != null) {
-                truck.Maintenance.Id = 0;
-                Maintenance MaintenenceResult = await Maintenaces.Create(truck.Maintenance);
-                assembly.Maintenance = MaintenenceResult.Id;
-                nullify.Add((Maintenaces, MaintenenceResult));
-            }
-            if (truck.Sct != null) {
-                truck.Sct.Id = 0;
-                Sct SctResult = await Sct.Create(truck.Sct);
-                assembly.Sct = SctResult.Id;
-                nullify.Add((Sct, SctResult));
-            }
-            if (truck.Situation != null) {
-                truck.Situation.Id = 0;
-                Situation SituationResult = await Situations.Create(truck.Situation);
-                assembly.Situation = SituationResult.Id;
-                nullify.Add((Situations, SituationResult));
-            }
+            /// Create Optional fields bundle.
+            assembly.Insurance = await CreationHelper<Insurance>(truck.Insurance, Insurances, nullify);
+            assembly.Maintenance = await CreationHelper<Maintenance>(truck.Maintenance, Maintenaces, nullify);
+            assembly.Sct = await CreationHelper<Sct>(truck.Sct, Sct, nullify);
+            assembly.Situation = await CreationHelper<Situation>(truck.Situation, Situations, nullify);
 
             /// Create the defined truck.
             Truck result = await Trucks.Create(assembly);
@@ -137,8 +122,6 @@ public class TrucksService : ITrucksService {
 
             foreach ((dynamic depot, dynamic set) query in nullify)
                 await query.depot.Delete(query.set);
-
-
 
             throw;
         }
