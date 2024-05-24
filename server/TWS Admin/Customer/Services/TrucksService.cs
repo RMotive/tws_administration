@@ -59,11 +59,12 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<(IMigrationDepot_Delete<IMigrationSet>, IMigrationSet)> nullifyCallback) where T : IMigrationSet {
+    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Task> nullifyCallback) where T : IMigrationSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
-            nullifyCallback.Add(((IMigrationDepot_Delete<IMigrationSet>)depot, result));
+
+            nullifyCallback.Add(depot.Delete(set));
             return result.Id;
         }
         return null;
@@ -72,7 +73,7 @@ public class TrucksService : ITrucksService {
 
         /// Stores the depot on success "Creation" inserts. If any error occurs, 
         /// this inserts will be removed using the "Delete" method. 
-        List<(IMigrationDepot_Delete<IMigrationSet>, IMigrationSet)> nullify = [];
+        List<Task> nullify = [];
 
         /// Stores the generated plates to remove on exception case.
         List<Plate> generatedPlates = [];
@@ -115,7 +116,7 @@ public class TrucksService : ITrucksService {
 
             /// Create the defined truck.
             Truck result = await Trucks.Create(assembly);
-            nullify.Add(((IMigrationDepot_Delete<IMigrationSet>)Trucks, result));
+            nullify.Add(Trucks.Delete(result));
 
             /// validate and generate a plate list asocciated to this truck.
             if (!truck.Plates.IsNullOrEmpty()) {
@@ -142,8 +143,8 @@ public class TrucksService : ITrucksService {
             foreach (Plate plate in generatedPlates)
                 await Plates.Delete(plate);
 
-            foreach ((IMigrationDepot_Delete<IMigrationSet> depot, IMigrationSet set) query in nullify)
-                await query.depot.Delete(query.set);
+            foreach (Task disposition in nullify)
+                await disposition;
 
             throw;
         }
