@@ -11,17 +11,15 @@ public class XTruckAssembly : BServerTransactionException<XTrcukAssemblySituatio
         this.Situation = Situation;
         this.Advise = Situation switch {
             XTrcukAssemblySituation.Required_Manufacturer => $"None Manufacturer data found.",
-            XTrcukAssemblySituation.Multiple_Manufacturer_Input => $"Multiple Manufacturer Values. Enter only the [Manufacturer] field or [ManufacturerPointer] but not both.",
             XTrcukAssemblySituation.Required_Plates => $"None Plates data found.",
-            XTrcukAssemblySituation.Multiple_Plates_Input => $"Multiple Plates Values. Enter only the [Plates] field or [PlatesPointer] but not both.",
+            XTrcukAssemblySituation.Manufacturer_Not_Exist => $"The given Manufacturer not exist",
             _ => throw new NotImplementedException()
         };
     }
 }
 
 public enum XTrcukAssemblySituation {
-    Multiple_Manufacturer_Input,
     Required_Manufacturer,
-    Multiple_Plates_Input,
-    Required_Plates
+    Required_Plates,
+    Manufacturer_Not_Exist
 }
