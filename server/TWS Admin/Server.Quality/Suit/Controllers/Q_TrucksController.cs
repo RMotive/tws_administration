@@ -5,11 +5,11 @@ using Customer.Services.Records;
 
 using Foundation.Migrations.Records;
 using Foundation.Server.Records;
-using Foundation.Servers.Quality.Bases;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Middlewares.Frames;
+using Server.Quality.Bases;
 
 using TWS_Business.Sets;
 
@@ -19,12 +19,9 @@ using Account = Server.Quality.Secrets.Account;
 using View = Foundation.Migrations.Records.MigrationView<TWS_Business.Sets.Truck>;
 
 namespace Server.Quality.Controllers;
-public class Q_TrucksController : BQ_ServerController<Program> {
-    private class Frame : SuccessFrame<View> { }
+public class Q_TrucksController : BQ_CustomServerController {
 
-
-    public Q_TrucksController(WebApplicationFactory<Program> hostFactory)
-        : base("Trucks", hostFactory) {
+    public Q_TrucksController(WebApplicationFactory<Program> hostFactory) : base("Trucks", hostFactory) {
     }
 
     protected override async Task<string> Authentication() {

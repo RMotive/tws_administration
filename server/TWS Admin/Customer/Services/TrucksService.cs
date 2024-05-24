@@ -5,10 +5,12 @@ using Customer.Services.Exceptions;
 using Customer.Services.Interfaces;
 using Customer.Services.Records;
 using Customer.Shared.Exceptions;
+
 using Foundation.Migration.Enumerators;
 using Foundation.Migration.Interfaces.Depot;
 using Foundation.Migrations.Interfaces;
 using Foundation.Migrations.Records;
+
 using Microsoft.IdentityModel.Tokens;
 
 using TWS_Business.Depots;
@@ -57,11 +59,11 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, Action<T> nullifyCallback) where T : IMigrationSet {
+    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<(IMigrationDepot_Delete<IMigrationSet>, IMigrationSet)> nullifyCallback) where T : IMigrationSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
-            nullifyCallback.Invoke(result);
+            nullifyCallback.Add(((IMigrationDepot_Delete<IMigrationSet>)depot, result));
             return result.Id;
         }
         return null;
@@ -91,7 +93,7 @@ public class TrucksService : ITrucksService {
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
             if (truck.Manufacturer.Id == 0) {
-                assembly.Manufacturer = await CreationHelper<Manufacturer>(truck.Manufacturer, Manufacturers, nullify) ?? 0;
+                assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify) ?? 0;
             } else {
                 /// Pointer Validation
                 MigrationTransactionResult<Manufacturer> fetch = await Manufacturers.Read(i => i.Id == truck.Manufacturer.Id, MigrationReadBehavior.First);
@@ -104,19 +106,21 @@ public class TrucksService : ITrucksService {
                 assembly.Manufacturer = truck.Manufacturer.Id;
             }
             /// Create Optional fields bundle.
-            assembly.Insurance = await CreationHelper<Insurance>(truck.Insurance, Insurances, nullify);
-            assembly.Maintenance = await CreationHelper<Maintenance>(truck.Maintenance, Maintenaces, i => nullify.Add((Maintenaces, i)) );
-            assembly.Sct = await CreationHelper<Sct>(truck.Sct, Sct, nullify);
-            assembly.Situation = await CreationHelper<Situation>(truck.Situation, Situations, nullify);
+            assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify);
+            assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify);
+            assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify);
+            assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify);
+
+            IMigrationDepot_Delete<Manufacturer> interfaceSol = Manufacturers;
 
             /// Create the defined truck.
             Truck result = await Trucks.Create(assembly);
-            nullify.Add((Trucks, result));
+            nullify.Add(((IMigrationDepot_Delete<IMigrationSet>)Trucks, result));
 
             /// validate and generate a plate list asocciated to this truck.
             if (!truck.Plates.IsNullOrEmpty()) {
                 foreach (Plate plate in truck.Plates!) {
-                    if(plate.Id == 0) {
+                    if (plate.Id == 0) {
                         plate.Id = 0;
                         plate.Truck = result.Id;
                         Plate currentPlate = await Plates.Create(plate);
@@ -126,7 +130,7 @@ public class TrucksService : ITrucksService {
                     }
                 }
                 //assembly.Plates = generatedPlates;
-            } 
+            }
             return result;
         } catch (Exception ex) {
             // Undo all changes on data source.
@@ -138,7 +142,7 @@ public class TrucksService : ITrucksService {
             foreach (Plate plate in generatedPlates)
                 await Plates.Delete(plate);
 
-            foreach ((dynamic depot, dynamic set) query in nullify)
+            foreach ((IMigrationDepot_Delete<IMigrationSet> depot, IMigrationSet set) query in nullify)
                 await query.depot.Delete(query.set);
 
             throw;
