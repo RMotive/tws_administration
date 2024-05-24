@@ -1,6 +1,7 @@
 create database [TWS Business];
 
 /****** Generate Tables ******/
+create database [TWS Business];
 use [TWS Business]
 
 create table Maintenances(
