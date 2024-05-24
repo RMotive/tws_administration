@@ -59,12 +59,13 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Task> nullifyCallback) where T : IMigrationSet {
+    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : IMigrationSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
 
-            nullifyCallback.Add(depot.Delete(set));
+
+            nullifyCallback.Add(new(() => depot.Delete(result)));
             return result.Id;
         }
         return null;
@@ -73,7 +74,7 @@ public class TrucksService : ITrucksService {
 
         /// Stores the depot on success "Creation" inserts. If any error occurs, 
         /// this inserts will be removed using the "Delete" method. 
-        List<Task> nullify = [];
+        List<Lazy<Task>> nullify = [];
 
         /// Stores the generated plates to remove on exception case.
         List<Plate> generatedPlates = [];
@@ -116,7 +117,7 @@ public class TrucksService : ITrucksService {
 
             /// Create the defined truck.
             Truck result = await Trucks.Create(assembly);
-            nullify.Add(Trucks.Delete(result));
+            nullify.Add(new(() => Trucks.Delete(result)));
 
             /// validate and generate a plate list asocciated to this truck.
             if (!truck.Plates.IsNullOrEmpty()) {
@@ -143,8 +144,8 @@ public class TrucksService : ITrucksService {
             foreach (Plate plate in generatedPlates)
                 await Plates.Delete(plate);
 
-            foreach (Task disposition in nullify)
-                await disposition;
+            foreach (Lazy<Task> disposition in nullify)
+                await disposition.Value;
 
             throw;
         }
