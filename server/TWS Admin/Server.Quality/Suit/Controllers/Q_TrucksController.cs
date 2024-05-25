@@ -57,7 +57,7 @@ public class Q_TrucksController : BQ_ServerController<Program> {
     [Fact]
     public async void Assembly() {
         DateOnly date = new(2024, 12, 12);
-        string testTag = "T29";
+        string testTag = "T50";
         Manufacturer manufacturer = new() {
             Model = "X23",
             Brand = "SCANIA TEST" + testTag,
