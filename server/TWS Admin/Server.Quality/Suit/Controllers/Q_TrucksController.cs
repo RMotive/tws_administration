@@ -54,9 +54,8 @@ public class Q_TrucksController : BQ_CustomServerController {
     [Fact]
     public async void Create() {
         DateOnly date = new(2024, 12, 12);
-        string testTag = "T42";
+        string testTag = "T45";
         Manufacturer manufacturer = new() {
-            Id = 10099,
             Model = "X23",
             Brand = "SCANIA TEST" + testTag,
             Year = date

@@ -86,10 +86,10 @@ public class Q_FramingMiddleware
 
         Assert.Equal(HttpStatusCode.InternalServerError, Response.StatusCode);
         Assert.NotNull(fact);
-        Assert.True(fact.Estela.ContainsKey("SystemInternal"));
+        Assert.True(fact.Estela.ContainsKey("System"));
 
         string expectedExcep = typeof(ArgumentException).ToString();
-        string actualExcep = fact.Estela["SystemInternal"].ToString()?.Split('|')[0] ?? "";
+        string actualExcep = fact.Estela["System"].ToString()?.Split('|')[0] ?? "";
 
         Assert.Equal(expectedExcep, actualExcep);
     }
@@ -103,9 +103,9 @@ public class Q_FramingMiddleware
 
         Assert.Equal(HttpStatusCode.BadRequest, Response.StatusCode);
         Assert.NotNull(fact);
-        Assert.True(fact.Estela.ContainsKey("SystemInternal"));
+        Assert.True(fact.Estela.ContainsKey("System"));
         string expectedExcep = "N/A";
-        string actualExcep = fact.Estela["SystemInternal"].ToString()?.Split('|')[0] ?? "";
+        string actualExcep = fact.Estela["System"].ToString()?.Split('|')[0] ?? "";
 
         Assert.Equal(expectedExcep, actualExcep);
     }

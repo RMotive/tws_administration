@@ -63,14 +63,14 @@ public class TrucksService : ITrucksService {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
-
+            set = result;
 
             nullifyCallback.Add(new(() => depot.Delete(result)));
             return result.Id;
         }
         return null;
     }
-    public async Task<Truck> Create(TruckAssembly truck) {
+    public async Task<TruckAssembly> Create(TruckAssembly truck) {
 
         /// Stores the depot on success "Creation" inserts. If any error occurs, 
         /// this inserts will be removed using the "Delete" method. 
@@ -106,6 +106,7 @@ public class TrucksService : ITrucksService {
                     throw new XTruckAssembly(XTrcukAssemblySituation.Manufacturer_Not_Exist);
 
                 assembly.Manufacturer = truck.Manufacturer.Id;
+                truck.Manufacturer = fetch.Successes[0];
             }
             /// Create Optional fields bundle.
             assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify);
@@ -131,9 +132,9 @@ public class TrucksService : ITrucksService {
                         /// Update plate row.
                     }
                 }
-                //assembly.Plates = generatedPlates;
+                truck.Plates = generatedPlates;
             }
-            return result;
+            return truck;
         } catch (Exception ex) {
             // Undo all changes on data source.
             Debug.WriteLine("Ejecutando: ToString.....");
