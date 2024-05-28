@@ -24,8 +24,8 @@ public class TrucksController : ControllerBase {
         => Ok(await Service.View(Options));
 
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
-    public async Task<IActionResult> Assembly(TruckAssembly truck)
-        => Ok(await Service.Assembly(truck));
+    public async Task<IActionResult> Create(TruckAssembly truck)
+        => Ok(await Service.Create(truck));
 
 
 }
