@@ -6,7 +6,9 @@ import 'package:tws_main/data/services/sources.dart';
 import 'package:tws_main/data/storages/session_storage.dart';
 
 import 'package:tws_main/view/frames/business/business_frame.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_data_adapter.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 part 'options/maintenences_article_table_adapter.dart';
 
 class MaintenencesArticle extends CSMPageBase {
@@ -14,11 +16,23 @@ class MaintenencesArticle extends CSMPageBase {
 
   @override
   Widget compose(BuildContext ctx, Size window) {
-    return const BusinessFrame(
+    return BusinessFrame(
       currentRoute: TWSARoutes.maintencesArticle,
-      article: SizedBox(
-        child: Text("Maintenences view"),
-
+      article:  TWSArticleTable<Maintenance>(
+        adapter: const _TableAdapter(),
+        fields: <TWSArticleTableFieldOptions<Maintenance>>[
+          TWSArticleTableFieldOptions<Maintenance>(
+            'Anual',
+            (Maintenance item, int index, BuildContext ctx) => item.anual.toString(),
+          ),
+          TWSArticleTableFieldOptions<Maintenance>(
+            'Trimestral',
+            (Maintenance item, int index, BuildContext ctx) => item.trimestral.toString(),
+          )
+        ],
+        page: 1,
+        size: 25,
+        sizes: const <int>[25, 50, 75, 100],
       ),
     );
   }

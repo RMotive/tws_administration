@@ -2,16 +2,16 @@ part of '../insurances_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableDataAdapter<Solution> {
+final class _TableAdapter implements TWSArticleTableDataAdapter<Insurance> {
   const _TableAdapter();
 
   @override
-  Future<MigrationView<Solution>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) async {
+  Future<MigrationView<Insurance>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) async {
     final MigrationViewOptions options = MigrationViewOptions(null, orderings, page, range, false);
     String auth = _sessionStorage.session!.token;
-    MainResolver<MigrationView<Solution>> resolver = await administration.solutions.view(options, auth);
+    MainResolver<MigrationView<Insurance>> resolver = await administration.insurances.view(options, auth);
 
-    MigrationView<Solution> view = await resolver.act(const MigrationViewDecode<Solution>(SolutionDecoder())).catchError(
+    MigrationView<Insurance> view = await resolver.act(const MigrationViewDecode<Insurance>(InsuranceDecoder())).catchError(
       (Object x, StackTrace s) {
         const CSMAdvisor('solution-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
         throw x;

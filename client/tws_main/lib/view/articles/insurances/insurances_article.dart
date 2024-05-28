@@ -6,7 +6,9 @@ import 'package:tws_main/data/services/sources.dart';
 import 'package:tws_main/data/storages/session_storage.dart';
 
 import 'package:tws_main/view/frames/business/business_frame.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_data_adapter.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 part 'options/insurances_article_table_adapter.dart';
 
 class InsurancesArticle extends CSMPageBase {
@@ -14,11 +16,28 @@ class InsurancesArticle extends CSMPageBase {
 
   @override
   Widget compose(BuildContext ctx, Size window) {
-    return const BusinessFrame(
+    return BusinessFrame(
       currentRoute: TWSARoutes.insuranceArticle,
-      article: SizedBox(
-        child: Text("Insurances view"),
-
+      article: TWSArticleTable<Insurance>(
+        adapter: const _TableAdapter(),
+        fields: <TWSArticleTableFieldOptions<Insurance>>[
+          TWSArticleTableFieldOptions<Insurance>(
+            'Policy',
+            (Insurance item, int index, BuildContext ctx) => item.policy,
+          ),
+          TWSArticleTableFieldOptions<Insurance>(
+            'Expiration',
+            (Insurance item, int index, BuildContext ctx) => item.expiration.toString(),
+          ),
+          TWSArticleTableFieldOptions<Insurance>(
+            'Country',
+            (Insurance item, int index, BuildContext ctx) => item.country,
+            true,
+          ),
+        ],
+        page: 1,
+        size: 25,
+        sizes: const <int>[25, 50, 75, 100],
       ),
     );
   }

@@ -26,20 +26,40 @@ class TrucksArticle extends CSMPageBase {
           },
         ),
       ),
-      article: TWSArticleTable<Solution>(
+      article: TWSArticleTable<Truck>(
         adapter: const _TableAdapter(),
-        fields: <TWSArticleTableFieldOptions<Solution>>[
-          TWSArticleTableFieldOptions<Solution>(
-            'Name',
-            (Solution item, int index, BuildContext ctx) => item.name,
+        fields: <TWSArticleTableFieldOptions<Truck>>[
+          TWSArticleTableFieldOptions<Truck>(
+            'VIN number',
+            (Truck item, int index, BuildContext ctx) => item.vin,
           ),
-          TWSArticleTableFieldOptions<Solution>(
-            'Sign',
-            (Solution item, int index, BuildContext ctx) => item.sign,
+          TWSArticleTableFieldOptions<Truck>(
+            'Manufacturer',
+            (Truck item, int index, BuildContext ctx) => item.manufacturer.toString(),
           ),
-          TWSArticleTableFieldOptions<Solution>(
-            'Description',
-            (Solution item, int index, BuildContext ctx) => item.description ?? '---',
+          TWSArticleTableFieldOptions<Truck>(
+            'Motor',
+            (Truck item, int index, BuildContext ctx) => item.motor,
+            true,
+          ),
+          TWSArticleTableFieldOptions<Truck>(
+            'SCT',
+            (Truck item, int index, BuildContext ctx) => item.sct.toString(),
+            true,
+          ),
+          TWSArticleTableFieldOptions<Truck>(
+            'Maintenance',
+            (Truck item, int index, BuildContext ctx) => item.maintenance.toString() ?? '---',
+            true,
+          ),
+          TWSArticleTableFieldOptions<Truck>(
+            'Situation',
+            (Truck item, int index, BuildContext ctx) => item.situation.toString(),
+            true,
+          ),
+          TWSArticleTableFieldOptions<Truck>(
+            'Insurance',
+            (Truck item, int index, BuildContext ctx) => item.insurance.toString(),
             true,
           ),
         ],
