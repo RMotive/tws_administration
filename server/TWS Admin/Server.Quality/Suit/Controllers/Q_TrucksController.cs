@@ -5,11 +5,11 @@ using Customer.Services.Records;
 
 using Foundation.Migrations.Records;
 using Foundation.Server.Records;
-using Foundation.Servers.Quality.Bases;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Middlewares.Frames;
+using Server.Quality.Bases;
 
 using TWS_Business.Sets;
 
@@ -19,12 +19,9 @@ using Account = Server.Quality.Secrets.Account;
 using View = Foundation.Migrations.Records.MigrationView<TWS_Business.Sets.Truck>;
 
 namespace Server.Quality.Controllers;
-public class Q_TrucksController : BQ_ServerController<Program> {
-    private class Frame : SuccessFrame<View> { }
+public class Q_TrucksController : BQ_CustomServerController {
 
-
-    public Q_TrucksController(WebApplicationFactory<Program> hostFactory)
-        : base("Trucks", hostFactory) {
+    public Q_TrucksController(WebApplicationFactory<Program> hostFactory) : base("Trucks", hostFactory) {
     }
 
     protected override async Task<string> Authentication() {
@@ -55,7 +52,7 @@ public class Q_TrucksController : BQ_ServerController<Program> {
     }
 
     [Fact]
-    public async void Assembly() {
+    public async void Create() {
         DateOnly date = new(2024, 12, 12);
         string testTag = "T50";
         Manufacturer manufacturer = new() {
@@ -98,7 +95,7 @@ public class Q_TrucksController : BQ_ServerController<Program> {
         };
 
         List<Plate> plateList = [plateMX, plateUSA];
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Assembly", new TruckAssembly {
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", new TruckAssembly {
             Vin = "VINnumber test" + testTag,
             Motor = "Motor number " + testTag,
             Manufacturer = manufacturer,

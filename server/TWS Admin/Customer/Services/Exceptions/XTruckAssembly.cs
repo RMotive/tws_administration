@@ -4,24 +4,22 @@ using System.Net;
 using Foundation.Server.Bases;
 
 namespace Customer.Services.Exceptions;
-public class XTruckAssembly : BServerTransactionException<XTrcukAssemblySituation> {
+public class XTruckAssembly : BServerTransactionException<XTruckAssemblySituation> {
 
-    public XTruckAssembly(XTrcukAssemblySituation Situation)
+    public XTruckAssembly(XTruckAssemblySituation Situation)
         : base($"", HttpStatusCode.BadRequest, null) {
         this.Situation = Situation;
         this.Advise = Situation switch {
-            XTrcukAssemblySituation.Required_Manufacturer => $"None Manufacturer data found.",
-            XTrcukAssemblySituation.Multiple_Manufacturer_Input => $"Multiple Manufacturer Values. Enter only the [Manufacturer] field or [ManufacturerPointer] but not both.",
-            XTrcukAssemblySituation.Required_Plates => $"None Plates data found.",
-            XTrcukAssemblySituation.Multiple_Plates_Input => $"Multiple Plates Values. Enter only the [Plates] field or [PlatesPointer] but not both.",
+            XTruckAssemblySituation.RequiredManufacturer => $"None Manufacturer data found.",
+            XTruckAssemblySituation.RequiredPlates => $"None Plates data found.",
+            XTruckAssemblySituation.ManufacturerNotExist => $"The given Manufacturer not exist",
             _ => throw new NotImplementedException()
         };
     }
 }
 
-public enum XTrcukAssemblySituation {
-    Multiple_Manufacturer_Input,
-    Required_Manufacturer,
-    Multiple_Plates_Input,
-    Required_Plates
+public enum XTruckAssemblySituation {
+    RequiredManufacturer,
+    RequiredPlates,
+    ManufacturerNotExist
 }

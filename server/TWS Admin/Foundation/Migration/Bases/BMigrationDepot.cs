@@ -24,9 +24,7 @@ namespace Foundation.Migrations.Bases;
 ///     Migration mirror concept that this depot handles.
 /// </typeparam>
 public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
-    : IMigrationDepot<TMigrationSet>,
-      IMigrationDepot_Read<TMigrationSet>,
-      IMigrationDepot_Delete<TMigrationSet>
+    : IMigrationDepot<TMigrationSet>
     where TMigrationSource : BMigrationSource<TMigrationSource>
     where TMigrationSet : class, IMigrationSet {
 
