@@ -87,10 +87,10 @@ public class TrucksService : ITrucksService {
 
         /// Optional / Required validations.
         if (truck.Manufacturer == null)
-            throw new XTruckAssembly(XTrcukAssemblySituation.Required_Manufacturer);
+            throw new XTruckAssembly(XTruckAssemblySituation.RequiredManufacturer);
 
         if (truck.Plates.IsNullOrEmpty())
-            throw new XTruckAssembly(XTrcukAssemblySituation.Required_Plates);
+            throw new XTruckAssembly(XTruckAssemblySituation.RequiredPlates);
 
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
@@ -103,7 +103,7 @@ public class TrucksService : ITrucksService {
                     throw new XMigrationTransaction(fetch.Failures);
 
                 if (fetch.QTransactions == 0)
-                    throw new XTruckAssembly(XTrcukAssemblySituation.Manufacturer_Not_Exist);
+                    throw new XTruckAssembly(XTruckAssemblySituation.ManufacturerNotExist);
 
                 assembly.Manufacturer = truck.Manufacturer.Id;
                 truck.Manufacturer = fetch.Successes[0];
