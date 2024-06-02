@@ -34,6 +34,7 @@ public abstract class BQ_MigrationSource<TSource>
 
     [Fact]
     public void Communication() {
+        Source.Database.EnsureCreated();
         Assert.True(Source.Database.CanConnect());
     }
 
