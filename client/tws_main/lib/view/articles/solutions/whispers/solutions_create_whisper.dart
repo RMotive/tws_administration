@@ -12,7 +12,11 @@ final class SolutionsCreateWhisper extends CSMPageBase {
     return WhisperFrame(
       title: 'Create solutions',
       trigger: () {},
-      child: const TWSArticleCreator<Solution>(),
+      child: TWSArticleCreator<Solution>(
+        displayDesigner: (Solution context) {
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

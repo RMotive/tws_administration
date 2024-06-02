@@ -9,10 +9,12 @@ class TrucksCreateWhisper extends CSMPageBase{
 
   @override 
   Widget compose(BuildContext ctx, Size window) {
-    return const WhisperFrame(
+    return WhisperFrame(
       title: 'Create trucks',
       child: TWSArticleCreator<Solution>(
-
+        displayDesigner: (Solution context) {
+          return const SizedBox();
+        },
       ),
     );
   }
