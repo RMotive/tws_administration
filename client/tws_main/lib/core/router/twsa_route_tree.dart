@@ -77,7 +77,9 @@ class TWSARouteTree extends CSMRouterTreeBase {
                         // --> [Create]
                         CSMRouteWhisper<void>(
                           TWSARoutes.solutionsCreateWhisper,
-                          whisperOptions: const CSMRouteWhisperOptions(),
+                          whisperOptions: const CSMRouteWhisperOptions(
+                            padding: EdgeInsets.zero,
+                          ),
                           pageBuild: (BuildContext ctx, CSMRouterOutput output) => const SolutionsCreateWhisper(),
                         ),
                       ],
