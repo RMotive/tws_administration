@@ -8,5 +8,5 @@ public partial class Maintenance
 
     public DateOnly Trimestral { get; set; }
 
-    public virtual ICollection<Truck> Trucks { get; set; } = [];
+
 }

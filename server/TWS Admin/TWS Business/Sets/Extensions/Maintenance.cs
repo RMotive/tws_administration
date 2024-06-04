@@ -20,4 +20,7 @@ public partial class Maintenance
 
         return Container;
     }
+    public virtual ICollection<Truck>? Trucks { get; set; } = [];
+
+
 }

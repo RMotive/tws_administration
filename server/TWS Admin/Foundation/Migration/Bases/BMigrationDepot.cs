@@ -51,7 +51,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
     #region View Interface
 
-    public Task<MigrationView<TMigrationSet>> View(MigrationViewOptions Options) {
+    public Task<MigrationView<TMigrationSet>> View(MigrationViewOptions Options, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? include = null) {
         int range = Options.Range;
         int page = Options.Page;
         int amount = Set.Count();
@@ -67,6 +67,9 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             .Skip(start)
             .Take(records);
 
+        if(include != null) {
+            query = include(query);
+        }
         int orderActions = Options.Orderings.Length;
         if (orderActions > 0) {
             Type setType = typeof(TMigrationSet);
@@ -81,7 +84,6 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
                 MemberExpression memberExpression = Expression.MakeMemberAccess(parameterExpression, property);
                 UnaryExpression translationExpression = Expression.Convert(memberExpression, typeof(object));
                 Expression<Func<TMigrationSet, object>> orderingExpression = Expression.Lambda<Func<TMigrationSet, object>>(translationExpression, parameterExpression);
-
                 if (i == 0) {
                     orderingQuery = ordering.Behavior switch {
                         Enumerators.MIgrationViewOrderBehaviors.DownUp => query.OrderBy(orderingExpression),

@@ -1,6 +1,7 @@
 ﻿using Foundation.Migrations.Bases;
 using Foundation.Migrations.Interfaces;
 using Foundation.Migrations.Validators;
+using System.Text.Json.Serialization;
 
 namespace TWS_Business.Sets;
 
@@ -21,4 +22,7 @@ public partial class Manufacturer
 
         return Container;
     }
+    public virtual ICollection<Truck>? Trucks { get; set; } = [];
+
+
 }

@@ -5,6 +5,7 @@ using Foundation.Migrations.Records;
 using Microsoft.AspNetCore.Mvc;
 
 using Server.Controllers.Authentication;
+using TWS_Business.Sets;
 
 namespace Server.Controllers;
 
@@ -17,6 +18,10 @@ public class SituationsController : ControllerBase {
     }
 
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
-    public async Task<IActionResult> View(MigrationViewOptions Optios)
-        => Ok(await Service.View(Optios));
+    public async Task<IActionResult> View(MigrationViewOptions Options)
+        => Ok(await Service.View(Options));
+
+    [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
+    public async Task<IActionResult> Create(Situation situation)
+        => Ok(await Service.Create(situation));
 }

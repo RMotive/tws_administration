@@ -55,10 +55,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "10cade4ce702ac5c8aa5465655365cdae6056fd0"
+      resolved-ref: "2041f0783a14d286316d2f0ef3857a3f65f31389"
       url: "https://github.com/RMotive/csm_foundation_view"
     source: git
-    version: "2.1.1"
+    version: "2.2.1"
   fake_async:
     dependency: transitive
     description:
@@ -102,10 +102,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "6ad5662b014c06c20fa46ab78715c96b2222a7fe4f87bf77e0289592c2539e86"
+      sha256: abec47eb8c8c36ebf41d0a4c64dbbe7f956e39a012b3aafc530e951bdc12fe3f
       url: "https://pub.dev"
     source: hosted
-    version: "14.1.3"
+    version: "14.1.4"
   http:
     dependency: "direct main"
     description:
@@ -324,7 +324,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3545d48af24ce7fa00c6a1cc7cbbac4c3d432a4c"
+      resolved-ref: c065ba6e360f4d849a5f4d48dc3d024bc8cc158e
       url: "https://github.com/RMotive/tws_administration_service"
     source: git
     version: "1.1.1"
