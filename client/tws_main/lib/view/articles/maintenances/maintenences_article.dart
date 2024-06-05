@@ -28,7 +28,22 @@ class MaintenencesArticle extends CSMPageBase {
           TWSArticleTableFieldOptions<Maintenance>(
             'Trimestral',
             (Maintenance item, int index, BuildContext ctx) => item.trimestral.toString(),
-          )
+          ),
+           TWSArticleTableFieldOptions<Maintenance>(
+            'Truck VIN',
+            (Maintenance item, int index, BuildContext ctx) {
+              String vins = '';
+            int cont = 0;
+              item.trucks?.forEach((Truck truck) {
+                cont++;
+                vins += truck.vin;
+                if(item.trucks!.length > cont) vins += '\n';
+              });
+
+              return vins != '' ? vins : '---';
+            } ,
+            true,
+          ),
         ],
         page: 1,
         size: 25,

@@ -54,7 +54,7 @@ public class Q_SituationController : BQ_ServerController<Program> {
 
     [Fact]
     public async void Create() {
-        string testTag = "T56";
+        string testTag = Guid.NewGuid().ToString()[..3];
         string name = " name ctl" + testTag;
         string description = "desc ctl" + testTag;
         

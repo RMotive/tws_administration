@@ -35,7 +35,7 @@ class TrucksArticle extends CSMPageBase {
           ),
           TWSArticleTableFieldOptions<Truck>(
             'Manufacturer',
-            (Truck item, int index, BuildContext ctx) => item.manufacturer.toString(),
+            (Truck item, int index, BuildContext ctx) => item.manufacturerNavigation?.brand  ?? '---',
           ),
           TWSArticleTableFieldOptions<Truck>(
             'Motor',
@@ -43,23 +43,43 @@ class TrucksArticle extends CSMPageBase {
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(
-            'SCT',
-            (Truck item, int index, BuildContext ctx) => item.sct.toString(),
+            'SCT Number',
+            (Truck item, int index, BuildContext ctx) => item.sctNavigation?.number ?? '---',
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(
-            'Maintenance',
-            (Truck item, int index, BuildContext ctx) => item.maintenance.toString() ?? '---',
+            'Maintenance - Trimestral',
+            (Truck item, int index, BuildContext ctx) => item.maintenanceNavigation?.trimestral.toString() ?? '---',
+            true,
+          ),
+          TWSArticleTableFieldOptions<Truck>(
+            'Maintenance - Anual',
+            (Truck item, int index, BuildContext ctx) => item.maintenanceNavigation?.anual.toString() ?? '---',
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(
             'Situation',
-            (Truck item, int index, BuildContext ctx) => item.situation.toString(),
+            (Truck item, int index, BuildContext ctx) => item.situationNavigation?.name.toString() ?? '---',
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(
             'Insurance',
-            (Truck item, int index, BuildContext ctx) => item.insurance.toString(),
+            (Truck item, int index, BuildContext ctx) => item.insuranceNavigation?.policy ?? '---',
+            true,
+          ),
+          TWSArticleTableFieldOptions<Truck>(
+            'Plates',
+            (Truck item, int index, BuildContext ctx) {
+              String plates = '';
+              int cont = 0;
+              item.plates?.forEach((Plate plate) {
+                cont++;
+                plates += plate.identifier;
+                if(item.plates!.length > cont) plates += '\n';
+              });
+
+              return plates != '' ? plates : '---';
+            },
             true,
           ),
         ],

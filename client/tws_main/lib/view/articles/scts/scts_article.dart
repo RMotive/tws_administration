@@ -35,6 +35,21 @@ class SCTsArticle extends CSMPageBase {
             (SCT item, int index, BuildContext ctx) => item.configuration,
             true,
           ),
+           TWSArticleTableFieldOptions<SCT>(
+            'Truck VIN',
+            (SCT item, int index, BuildContext ctx) {
+              String vins = '';
+              int cont = 0;
+              item.trucks?.forEach((Truck truck) {
+                cont++;
+                vins += truck.vin;
+                if(item.trucks!.length > cont) vins += '\n';
+              });
+
+              return vins != '' ? vins : '---';
+            } ,
+            true,
+          ),
         ],
         page: 1,
         size: 25,

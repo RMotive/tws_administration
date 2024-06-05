@@ -34,6 +34,22 @@ class InsurancesArticle extends CSMPageBase {
             (Insurance item, int index, BuildContext ctx) => item.country,
             true,
           ),
+            TWSArticleTableFieldOptions<Insurance>(
+            'Truck VIN',
+            (Insurance item, int index, BuildContext ctx) {
+              String vins = '';
+              int cont = 0;
+              item.trucks?.forEach((Truck truck) {
+                cont++;
+                vins += truck.vin;
+                if(item.trucks!.length > cont) vins += '\n';
+              });
+
+
+              return vins != '' ? vins : '---';
+            } ,
+            true,
+          ),
         ],
         page: 1,
         size: 25,

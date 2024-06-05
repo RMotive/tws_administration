@@ -42,11 +42,6 @@ class PlatesArticle extends CSMPageBase {
             true,
           ),
           TWSArticleTableFieldOptions<Plate>(
-            'Truck ID',
-            (Plate item, int index, BuildContext ctx) => item.truck.toString(),
-            true,
-          ),
-          TWSArticleTableFieldOptions<Plate>(
             'Truck VIN',
             (Plate item, int index, BuildContext ctx) => item.truckNavigation?.vin ?? '---',
             true,
