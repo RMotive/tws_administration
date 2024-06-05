@@ -22,6 +22,4 @@ public partial class Sct
 
         return Container;
     }
-    public virtual ICollection<Truck>? Trucks { get; set; } = [];
-
 }

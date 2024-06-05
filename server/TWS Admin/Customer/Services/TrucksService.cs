@@ -86,7 +86,7 @@ public class TrucksService : ITrucksService {
                     Name = t.SituationNavigation.Name,
                     Description = t.SituationNavigation.Description
                 },
-                Plates = t.Plates == null ? null : (ICollection<Plate>)t.Plates.Select(p => new Plate() {
+                Plates = (ICollection<Plate>)t.Plates.Select(p => new Plate() {
                     Id = p.Id,
                     Identifier = p.Identifier,
                     State = p.State,
@@ -150,7 +150,6 @@ public class TrucksService : ITrucksService {
 
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
-
             if (truck.Manufacturer.Id == 0) {
                 assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify, assembly.ManufacturerNavigation) ?? 0;
             } else {
@@ -166,13 +165,31 @@ public class TrucksService : ITrucksService {
                 truck.Manufacturer = fetch.Successes[0];
             }
 
+            /// Validate which Situation value use to assign the manufacturer value to the truck.
+            if(truck.Situation != null) {
+                if (truck.Situation.Id == 0) {
+                    assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify, assembly.SituationNavigation) ?? 0;
+                } else {
+                    /// Pointer Validation
+                    MigrationTransactionResult<Situation> fetch = await Situations.Read(i => i.Id == truck.Situation.Id, MigrationReadBehavior.First);
+                    if (fetch.Failed)
+                        throw new XMigrationTransaction(fetch.Failures);
+
+                    if (fetch.QTransactions == 0)
+                        throw new XTruckAssembly(XTruckAssemblySituation.SitutionNotExist);
+
+                    assembly.Situation = truck.Situation.Id;
+                    truck.Situation = fetch.Successes[0];
+                }
+            }
             
+
+
 
             /// Create Optional fields bundle.
             assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify, assembly.InsuranceNavigation);
             assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify, assembly.MaintenanceNavigation);
             assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify, assembly.SctNavigation);
-            assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify, assembly.SituationNavigation);
 
             IMigrationDepot_Delete<Manufacturer> interfaceSol = Manufacturers;
 

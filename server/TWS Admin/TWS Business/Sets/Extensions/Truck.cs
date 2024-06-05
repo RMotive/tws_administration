@@ -30,7 +30,6 @@ public partial class Truck
     public virtual Manufacturer? ManufacturerNavigation { get; set; }
     public virtual Sct? SctNavigation { get; set; }
     public virtual Situation? SituationNavigation { get; set; }
-    public virtual ICollection<Plate>? Plates { get; set; } = [];
 
 
 }

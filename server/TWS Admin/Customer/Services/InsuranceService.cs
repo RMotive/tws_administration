@@ -21,7 +21,7 @@ public class InsuranceService : IInsurancesService {
                 Policy = I.Policy,
                 Expiration = I.Expiration,
                 Country = I.Country,
-                Trucks = I.Trucks == null ? null : (ICollection<Truck>)I.Trucks.Select(t => new Truck() {
+                Trucks = (ICollection<Truck>)I.Trucks.Select(t => new Truck() {
                     Id = t.Id,
                     Vin = t.Vin,
                     Manufacturer = t.Manufacturer,

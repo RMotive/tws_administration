@@ -22,7 +22,7 @@ public class SctService : ISctService {
                 Type = S.Type,
                 Number = S.Number,
                 Configuration = S.Configuration,
-                Trucks = S.Trucks == null ? null : (ICollection<Truck>)S.Trucks.Select(t => new Truck() {
+                Trucks = (ICollection<Truck>)S.Trucks.Select(t => new Truck() {
                     Id = t.Id,
                     Vin = t.Vin,
                     Manufacturer = t.Manufacturer,

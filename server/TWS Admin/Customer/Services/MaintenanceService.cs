@@ -20,7 +20,7 @@ public class MaintenanceService : IMaintenancesService {
                 Id = M.Id,
                 Anual = M.Anual,
                 Trimestral = M.Trimestral,
-                Trucks = M.Trucks == null ? null : (ICollection<Truck>)M.Trucks.Select(t => new Truck() {
+                Trucks = (ICollection<Truck>)M.Trucks.Select(t => new Truck() {
                     Id = t.Id,
                     Vin = t.Vin,
                     Manufacturer = t.Manufacturer,

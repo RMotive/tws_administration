@@ -21,6 +21,5 @@ public partial class Insurance
 
         return Container;
     }
-    public virtual ICollection<Truck>? Trucks { get; set; } = [];
 
 }

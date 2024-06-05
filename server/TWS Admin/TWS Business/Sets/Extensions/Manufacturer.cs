@@ -22,7 +22,4 @@ public partial class Manufacturer
 
         return Container;
     }
-    public virtual ICollection<Truck>? Trucks { get; set; } = [];
-
-
 }
