@@ -22,7 +22,6 @@ namespace Foundation.Servers.Quality.Bases;
 /// </typeparam>
 public abstract class BQ_ServerController<TEntry>
     : IClassFixture<WebApplicationFactory<TEntry>>
-    , IDisposable
     where TEntry : class {
 
     readonly string Service;
@@ -71,12 +70,6 @@ public abstract class BQ_ServerController<TEntry>
 
         Host.Disposition(Disposition);
         return await Host.Post<TResponse, TRequest>(Action, RequestBody);
-    }
-
-    public void Dispose() {
-        Host.Dispose();
-        Factory.Dispose();
-        GC.SuppressFinalize(this);
     }
     #endregion
 }
