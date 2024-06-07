@@ -34,10 +34,9 @@ public abstract class BQ_CustomServerController
         Assert.True(session.Wildcard, $"User {session.Identity} doesn't have wildcard enabled");
         Assert.Equal(Account.Identity, session.Identity);
 
-        if (!session.Permits.Any(i => i.Name == "Quality")) {
+        if (!session.Permits.Any(i => i.Reference == "AAA000001")) {
             Assert.Fail($"Account ({Account.Identity}) doesn't contain (Quality[AAA000001]) permit");
         }
-        Assert.Contains(session.Permits, i => i.Name == "Quality");
 
         return session.Token.ToString();
     }
