@@ -55,10 +55,11 @@ class WhisperFrame extends StatelessWidget {
             color: pageTheme.main,
             child: LayoutBuilder(
               builder: (_, BoxConstraints constrains) {
+                BoxConstraints frameCts = constrains.tighten(
+                  height: constrains.minHeight,
+                );
                 return ConstrainedBox(
-                  constraints: constrains.tighten(
-                    height: constrains.minHeight,
-                  ),
+                  constraints: frameCts,
                   child: Column(
                     children: <Widget>[
                       // --> Whisper header
@@ -70,7 +71,7 @@ class WhisperFrame extends StatelessWidget {
                               pageTheme: pageTheme,
                             ),
                             // --> Whisper content
-                            child,
+                            Expanded(child: child),
                           ],
                         ),
                       ),

@@ -2,8 +2,8 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 
-typedef StatesSet = Set<MaterialState>;
-typedef MStates = MaterialState;
+typedef StatesSet = Set<WidgetState>;
+typedef MStates = WidgetState;
 
 class TWSButtonFlat extends StatelessWidget {
   final double? width;
@@ -50,9 +50,9 @@ class TWSButtonFlat extends StatelessWidget {
       child: TextButton(
         style: ButtonStyle(
           enableFeedback: true,
-          backgroundColor: MaterialStateColor.resolveWith(bgStateColorize),
-          overlayColor: MaterialStateColor.resolveWith(olStateColorize),
-          shape: MaterialStateProperty.all(const LinearBorder()),
+          backgroundColor: WidgetStateColor.resolveWith(bgStateColorize),
+          overlayColor: WidgetStateColor.resolveWith(olStateColorize),
+          shape: WidgetStateProperty.all(const LinearBorder()),
         ),
         onPressed: showLoading ? null : onTap,
         child: Visibility(
