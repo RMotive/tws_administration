@@ -8,7 +8,7 @@ id int identity(1,1) PRIMARY KEY not null,
 Name varchar(50) not null,
 Lastname varchar(50) not null,
 Email varchar(30) not null,
-Phone Varchar(13) not null
+Phone Varchar(14) not null
 );
 
 create table Accounts(

@@ -11,8 +11,11 @@ public partial class Account
                 ..Container,
                 (nameof(User), [ new UniqueValidator(), new RequiredValidator() ]),
                 (nameof(Password), [ new RequiredValidator() ]),
+                (nameof(Contact), [new PointerValidator(true)]),
+
             ];
 
         return Container;
     }
+    public virtual Contact? ContactNavigation { get; set; } = null!;
 }

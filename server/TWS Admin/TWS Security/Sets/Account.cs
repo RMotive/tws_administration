@@ -8,4 +8,6 @@ public partial class Account {
     public byte[] Password { get; set; } = null!;
 
     public bool Wildcard { get; set; }
+
+    public int Contact { get; set; }
 }
