@@ -1,12 +1,16 @@
 ﻿using System.Net;
 
+using Customer.Managers.Records;
 using Customer.Services.Records;
 
+using Foundation.Server.Records;
 using Foundation.Servers.Quality.Bases;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Quality.Secrets;
+
+using Xunit;
 
 using PrivilegesFrame = Server.Middlewares.Frames.SuccessFrame<Customer.Managers.Records.Session>;
 
@@ -17,16 +21,23 @@ public abstract class BQ_CustomServerController
     protected BQ_CustomServerController(string Service, WebApplicationFactory<Program> hostFactory) : base(Service, hostFactory) { }
 
     protected override async Task<string> Authentication() {
-        (HttpStatusCode Status, PrivilegesFrame Response) = await XPost<PrivilegesFrame, Credentials>("Security/Authenticate", new Credentials {
+        (HttpStatusCode Status, ServerGenericFrame Frame) fact = await XPost<ServerGenericFrame, Credentials>("Security/Authenticate", new Credentials {
             Identity = Account.Identity,
             Password = Account.Password,
         });
+        Dictionary<string, object> estela = fact.Frame.Estela;
+        if (fact.Status != HttpStatusCode.OK) {
+            Assert.Fail($"Failed request with: {estela[nameof(ServerExceptionPublish.System)]} \ndue to: {estela[nameof(ServerExceptionPublish.Advise)]} \nTried with: {Account.Identity}");
+        }
+        PrivilegesFrame successFrame = Framing<PrivilegesFrame>(fact.Frame);
+        Session session = successFrame.Estela;
+        Assert.True(session.Wildcard, $"User {session.Identity} doesn't have wildcard enabled");
+        Assert.Equal(Account.Identity, session.Identity);
 
-        if (Status != HttpStatusCode.OK)
-            throw new ArgumentNullException(nameof(Status));
-        if (!Response.Estela.Permits.Any(i => i.Name == "Quality" && i.Solution == 1))
-            throw new ArgumentException($"The credentials ({Account.Identity}) doesn't have quality privileges at the solution. \n Please check: Secrets/Account.cs");
+        if (!session.Permits.Any(i => i.Reference == "AAA000001")) {
+            Assert.Fail($"Account ({Account.Identity}) doesn't contain (Quality[AAA000001]) permit");
+        }
 
-        return Response.Estela.Token.ToString();
+        return session.Token.ToString();
     }
 }

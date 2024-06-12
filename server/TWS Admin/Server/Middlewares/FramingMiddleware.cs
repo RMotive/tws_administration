@@ -5,6 +5,8 @@ using Foundation.Server.Interfaces;
 using Foundation.Server.Records;
 using Foundation.Shared.Exceptions;
 
+using Microsoft.AspNetCore.Http.Extensions;
+
 using Server.Middlewares.Frames;
 
 namespace Server.Middlewares;
@@ -51,18 +53,32 @@ public class FramingMiddleware
                 } else if (Response.StatusCode != 200) {
                     Stream resolutionStream = Response.Body;
 
-                    if (Response.StatusCode == 405) {
-                        ServerExceptionPublish publish = new XSystem(new MethodAccessException()).Publish();
+                    switch (Response.StatusCode) {
+                        case 204:
+                            encodedContent = "{}";
+                            break;
+                        case 405: {
+                                ServerExceptionPublish publish = new XSystem(new MethodAccessException()).Publish();
+                                FailureFrame frame = new() {
+                                    Tracer = Tracer,
+                                    Estela = publish,
+                                };
+                                encodedContent = JsonSerializer.Serialize(frame);
+                            }
+                            break;
+                        case 404: {
+                                ServerExceptionPublish publish = new XSystem(new Exception($"{context.Request.GetDisplayUrl()} not found")).Publish();
+                                FailureFrame frame = new() {
+                                    Tracer = Tracer,
+                                    Estela = publish,
+                                };
 
-                        FailureFrame frame = new() {
-                            Tracer = Tracer,
-                            Estela = publish,
-                        };
-                        encodedContent = JsonSerializer.Serialize(frame);
-                    } else if (Response.StatusCode == 204) {
-                        encodedContent = "{}";
-                    } else {
-                        encodedContent = JsonSerializer.Serialize(resolutionStream);
+                                encodedContent = JsonSerializer.Serialize(frame);
+                            }
+                            break;
+                        default:
+                            encodedContent = JsonSerializer.Serialize(resolutionStream);
+                            break;
                     }
                 } else {
                     Stream resolutionStream = Response.Body;
