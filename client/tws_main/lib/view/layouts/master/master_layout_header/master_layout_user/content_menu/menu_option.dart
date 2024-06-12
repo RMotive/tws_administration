@@ -1,11 +1,14 @@
-part of '../master_user_button.dart';
+part of '../../../master_layout.dart';
 
 class _MenuOption extends StatelessWidget {
   final _Options options;
   final Color color;
+  final void Function() onTap;
+
   const _MenuOption({
     required this.options, 
-    required this.color
+    required this.color,
+    required this.onTap
   });
 
   @override
@@ -25,7 +28,7 @@ class _MenuOption extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6)
             ),
-            onPressed: () {},
+            onPressed: onTap,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

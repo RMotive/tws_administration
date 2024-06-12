@@ -1,10 +1,5 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 
-part 'master_user_button_state.dart';
-part 'content_menu/content_menu.dart';
-part 'content_menu/menu_option.dart';
+part of '../../master_layout.dart';
 
 typedef _State = _MasterUserButtonState;
 
@@ -48,7 +43,7 @@ class MasterUserButton extends StatelessWidget {
                   child: TapRegion(
                     onTapOutside: (_) {
                       if(!_isHovered){
-                        _overlayController.hide();
+                        state._overlayController.hide();
                         state.effect();
                       }
                     },
@@ -56,26 +51,30 @@ class MasterUserButton extends StatelessWidget {
                       width: menuWidth,
                       height: menuHeight,
                       themeOptions: themeOptions,
+                      onSelectOption: (CSMRouteOptions  selectedRoute) {
+                        _routeDriver.drive(selectedRoute);
+                        state._overlayController.hide();
+                        state.effect();
+                      },
                     ),
                   ),
                 );
               },
-              controller: _overlayController,
+              controller: state._overlayController,
               child: TapRegion(
                 onTapInside: (_) {
-                  _overlayController.toggle();
+                  state._overlayController.toggle();
                   state.effect();                 
                 },
                 child: AnimatedContainer(
                   duration: _animationDuration,
                   height: height,
-                  width: _overlayController.isShowing
+                  width:state. _overlayController.isShowing
                       ? menuWidth
                       : width,
                   decoration: BoxDecoration(
                       color: _isHovered? themeOptions.fore :themeOptions.hightlightAlt ?? Colors.white,
-                      borderRadius: _overlayController.isShowing? BorderRadius.circular(10) : BorderRadius.circular(30)),
-                      
+                      borderRadius: state._overlayController.isShowing? BorderRadius.circular(10) : BorderRadius.circular(30)), 
                   child: Center(
                       child: Text(
                     "EPG",

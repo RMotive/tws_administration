@@ -4,7 +4,7 @@ import 'package:tws_administration_service/tws_administration_service.dart';
 final TWSAdministrationSource administration = TWSAdministrationSource(
   kDebugMode,
   development: const CSMUri(
-    '192.168.100.31',
+    '192.168.0.104',
     '',
     port: 5196,
     protocol: CSMProtocols.http,

@@ -1,13 +1,15 @@
-part of '../master_user_button.dart';
+part of '../../../master_layout.dart';
 
 class _ContentMenu extends StatelessWidget {
   final double width;
   final double height;
   final CSMColorThemeOptions themeOptions;
+  final void Function(CSMRouteOptions) onSelectOption;
   const _ContentMenu({
     required this.themeOptions, 
     required this.width, 
     required this.height, 
+    required this.onSelectOption
   });
 
   @override
@@ -97,7 +99,10 @@ class _ContentMenu extends StatelessWidget {
                     for(_Options opt in _options)
                     _MenuOption(
                       options: opt, 
-                      color: themeOptions.main
+                      color: themeOptions.main,
+                      onTap: () {
+                        onSelectOption(opt.route);
+                      },
                     )
                   ],
                 ),
