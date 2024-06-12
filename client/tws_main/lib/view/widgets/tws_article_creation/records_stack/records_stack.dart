@@ -95,9 +95,14 @@ class _RecordsStack<TModel> extends StatelessWidget {
                       child: CSMDynamicWidget<TWSArticleCreationItemState<TModel>>(
                         state: states[index],
                         designer: (BuildContext ctx, TWSArticleCreationItemState<TModel> state) {
-                          return SizedBox(
-                            width: creatorWidth,
-                            child: itemDesigner(state.model, currentActive),
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              top: 3,
+                            ),
+                            child: SizedBox(
+                              width: creatorWidth,
+                              child: itemDesigner(state.model, currentActive),
+                            ),
                           );
                         },
                       ),

@@ -13,7 +13,7 @@ part 'records_stack/records_stack.dart';
 const double _kPadding = 8;
 const double _kColWidthLimit = 300;
 
-final class TWSArticleCreator<TModel> extends StatelessWidget {
+final class TWSArticleCreator<TModel> extends StatefulWidget {
   final TModel Function() factory;
   final Widget Function(TModel actualModel, bool isSelected) itemDesigner;
   final Widget Function(TWSArticleCreationItemState<TModel>? itemState) formDesigner;
@@ -26,11 +26,24 @@ final class TWSArticleCreator<TModel> extends StatelessWidget {
   });
 
   @override
+  State<TWSArticleCreator<TModel>> createState() => _TWSArticleCreatorState<TModel>();
+}
+
+class _TWSArticleCreatorState<TModel> extends State<TWSArticleCreator<TModel>> {
+  late _TWSArticleCreationState<TModel> mainState;
+
+  @override
+  void initState() {
+    super.initState();
+    mainState = _TWSArticleCreationState<TModel>(widget.factory);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final TWSAThemeBase theme = getTheme();
 
     return CSMDynamicWidget<_TWSArticleCreationState<TModel>>(
-      state: _TWSArticleCreationState<TModel>(factory),
+      state: mainState,
       designer: (BuildContext context, _TWSArticleCreationState<TModel> state) {
         return LayoutBuilder(
           builder: (_, BoxConstraints cts) {
@@ -50,7 +63,7 @@ final class TWSArticleCreator<TModel> extends StatelessWidget {
                     size: sizeFactor,
                     child: TWSSection(
                       title: 'Properties',
-                      content: formDesigner(state.states.isEmpty ? null : state.states[state.current]),
+                      content: widget.formDesigner(state.states.isEmpty ? null : state.states[state.current]),
                     ),
                   ),
                   SizedBox.fromSize(
@@ -61,7 +74,7 @@ final class TWSArticleCreator<TModel> extends StatelessWidget {
                       pageTheme: theme.page,
                       states: state.states,
                       creatorWidth: sizeFactor.width,
-                      itemDesigner: itemDesigner,
+                      itemDesigner: widget.itemDesigner,
                       changeItem: state.changeSelection,
                       currentItemIndex: state.current,
                     ),
