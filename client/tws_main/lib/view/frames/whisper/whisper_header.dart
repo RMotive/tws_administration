@@ -23,7 +23,7 @@ class _WhisperHeader extends StatelessWidget {
             title,
             textAlign: TextAlign.start,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               color: pageTheme.fore,
               fontWeight: FontWeight.w600,
               fontStyle: FontStyle.italic,

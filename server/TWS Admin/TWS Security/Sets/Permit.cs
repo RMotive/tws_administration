@@ -1,6 +1,10 @@
-﻿namespace TWS_Security.Sets;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class Permit {
+namespace TWS_Security.Sets;
+
+public partial class Permit
+{
     public override int Id { get; set; }
 
     public string Name { get; set; } = null!;
@@ -8,4 +12,6 @@ public partial class Permit {
     public string? Description { get; set; }
 
     public int Solution { get; set; }
+
+    public string Reference { get; set; } = null!;
 }

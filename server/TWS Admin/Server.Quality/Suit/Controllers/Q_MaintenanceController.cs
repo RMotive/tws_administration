@@ -10,6 +10,7 @@ using Foundation.Servers.Quality.Bases;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Middlewares.Frames;
+using Server.Quality.Bases;
 
 using Xunit;
 
@@ -17,8 +18,7 @@ using Account = Server.Quality.Secrets.Account;
 using View = Foundation.Migrations.Records.MigrationView<TWS_Business.Sets.Maintenance>;
 
 namespace Server.Quality.Controllers;
-public class Q_MaintenanceController : BQ_ServerController<Program> {
-    private class Frame : SuccessFrame<View> { }
+public class Q_MaintenanceController : BQ_CustomServerController {
 
     public Q_MaintenanceController(WebApplicationFactory<Program> hostFactory)
         : base("Maintenances", hostFactory) {

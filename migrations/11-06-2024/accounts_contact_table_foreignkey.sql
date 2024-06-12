@@ -7,15 +7,15 @@ create table Contact(
 id int identity(1,1) PRIMARY KEY not null,
 Name varchar(50) not null,
 Lastname varchar(50) not null,
-Email varchar(30) not null,
-Phone Varchar(14) not null
+Email varchar(30) unique not null,
+Phone Varchar(14) unique not null
 );
 
 create table Accounts(
 id int identity(1,1) PRIMARY KEY not null,
 [User] varchar(50) unique not null,
 Password varbinary(max) not null,
-Wildcard bit default 0,
+Wildcard bit default 0 not null,
 Contact int unique not null,
 constraint FK@Accounts_Contact foreign key(Contact) references Contact(id),
 );
