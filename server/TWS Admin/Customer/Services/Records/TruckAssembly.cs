@@ -16,34 +16,18 @@ public class TruckAssembly {
     public required string Motor { get; set; }
 
     /// <summary>
-    /// Optional property. If this property is not null, 
-    /// then generate a new insert into the Manufacturer table, in the data source.
+    /// Generate a new insert into the Manufacturer table, in the data source.
     /// This property has a higher prority level over the [ManufacturerPointer] property.
+    /// If [Id] property is set a higher value than 0, then this field will be assingned using that pointer.
     /// </summary>
-    public Manufacturer? Manufacturer { get; set; }
+    public required Manufacturer Manufacturer { get; set; }
 
     /// <summary>
-    /// Optional property. If this property is not null and [Manufacturer] property is null,
-    /// then it use the pointer value to assign/relate this truck with the appropriate [Manufacturer] table value.
-    /// (Use this property in case that the Manufacturer data already exist in the data source).
-
-    /// </summary>
-    public int? ManufacturerPointer { get; set; }
-
-
-    /// <summary>
-    /// Optional property. If this property is not null, 
     /// then generate a new insert into the Plate table, in the data source, based in the list lenght.
     /// This property has a higher prority level over the [PlatePointer] property.
+    /// If [Id] property is set a higher value than 0, then this field will be assingned using that pointer.
     /// </summary>
-    public List<Plate>? Plates { get; set; }
-
-    /// <summary>
-    /// Optional property. If this property is not null and [Manufacturer] property is null,
-    /// then it use the pointer value list to assign/relate this truck with the appropriate [Plate] table value.
-    /// (Use this property in case that the plate data already exist in the data source).
-    /// </summary>
-    public List<int>? PlatePointer { get; set; }
+    public required List<Plate> Plates { get; set; }
 
     /// <summary>
     /// Optional Maintenance data for the truck.

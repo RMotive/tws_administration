@@ -1,4 +1,5 @@
-﻿using Foundation.Migrations.Interfaces.Depot;
+﻿using Foundation.Migration.Interfaces.Depot;
+using Foundation.Migrations.Interfaces.Depot;
 
 namespace Foundation.Migrations.Interfaces;
 /// <summary>
@@ -15,5 +16,8 @@ namespace Foundation.Migrations.Interfaces;
 ///     The datasource object that the implementation handles.
 /// </typeparam>
 public interface IMigrationDepot<TMigrationSet>
-    : IMigrationDepot_View<TMigrationSet>, IMigrationDepot_Create<TMigrationSet>
+    : IMigrationDepot_View<TMigrationSet>
+    , IMigrationDepot_Read<TMigrationSet>
+    , IMigrationDepot_Create<TMigrationSet>
+    , IMigrationDepot_Delete<TMigrationSet>
     where TMigrationSet : IMigrationSet { }

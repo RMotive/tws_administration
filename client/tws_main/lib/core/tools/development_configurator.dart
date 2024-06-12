@@ -5,7 +5,6 @@ import 'package:tws_main/data/services/sources.dart';
 import 'package:tws_main/data/storages/session_storage.dart';
 
 class DevelopmentConfigurator {
-
   static Future<void> configure() async {
     await _configureAccount();
   }

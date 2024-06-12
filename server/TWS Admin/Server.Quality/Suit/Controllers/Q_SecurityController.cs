@@ -14,7 +14,7 @@ using Xunit;
 
 using PrivilegesFrame = Server.Middlewares.Frames.SuccessFrame<Customer.Managers.Records.Session>;
 
-namespace Server.Quality.Quality.Controllers;
+namespace Server.Quality.Controllers;
 
 public class Q_SecurityController
     : BQ_CustomServerController {
