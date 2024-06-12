@@ -15,10 +15,12 @@ class TWSInputText extends StatefulWidget {
   final String? errorText;
   final bool isPrivate;
   final bool isEnabled;
+  final int? maxLength;
+  final int? maxLines;
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final String? Function(String? value)? validator;
-  final void Function(String)? onChanged;
+  final void Function(String newValue)? onChanged;
   final Function(PointerDownEvent)? onTapOutside;
   const TWSInputText({
     super.key,
@@ -28,10 +30,12 @@ class TWSInputText extends StatefulWidget {
     this.width,
     this.validator,
     this.height,
+    this.maxLength,
     this.controller,
     this.focusNode,
     this.onChanged,
     this.onTapOutside,
+    this.maxLines = 1,
     this.isEnabled = true,
     this.isPrivate = false,
   });
@@ -42,7 +46,7 @@ class TWSInputText extends StatefulWidget {
 
 class _TWSInputTextState extends State<TWSInputText> {
   final double borderWidth = 2;
-  late final TextEditingController ctrl;
+  late TextEditingController ctrl;
   late final FocusNode fNode;
   late final TWSAThemeBase theme;
   late final CSMColorThemeOptions colorStruct;
@@ -58,6 +62,20 @@ class _TWSInputTextState extends State<TWSInputText> {
       updateEfect: themeUpdateListener,
     );
     initializeThemes();
+
+
+    ctrl.addListener(() => setState(() {}));
+  }
+
+  @override
+  void didUpdateWidget(covariant TWSInputText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.controller != oldWidget.controller) {
+      ctrl = widget.controller ?? TextEditingController();
+    }
+
+    ctrl.addListener(() => setState(() {}));
   }
 
   void initializeThemes() {
@@ -91,6 +109,8 @@ class _TWSInputTextState extends State<TWSInputText> {
           enabled: widget.isEnabled,
           onChanged: widget.onChanged,
           onTapOutside: widget.onTapOutside,
+          maxLength: widget.maxLength,
+          maxLines: widget.maxLines,
           style: TextStyle(
             color: colorStruct.foreAlt?.withOpacity(.7),
           ),
@@ -99,6 +119,9 @@ class _TWSInputTextState extends State<TWSInputText> {
             labelText: widget.label,
             errorText: widget.errorText,
             isDense: true,
+            counterStyle: TextStyle(
+              color: (ctrl.text.length < (widget.maxLength ?? 0)) ? errorColorStruct.fore : Colors.green,
+            ),
             labelStyle: TextStyle(
               color: colorStruct.foreAlt,
             ),

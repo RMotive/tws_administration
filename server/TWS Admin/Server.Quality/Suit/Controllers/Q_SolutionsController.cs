@@ -14,7 +14,7 @@ using Xunit;
 
 using View = Foundation.Migrations.Records.MigrationView<TWS_Security.Sets.Solution>;
 
-namespace Server.Quality.Quality.Controllers;
+namespace Server.Quality.Controllers;
 
 
 public class Q_SolutionsController

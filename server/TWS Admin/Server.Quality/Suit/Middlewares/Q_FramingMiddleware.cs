@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 
+using Foundation.Server.Bases;
 using Foundation.Server.Records;
 using Foundation.Servers.Quality.Bases;
 
@@ -15,13 +16,14 @@ using Server.Quality.Quality.Middlewares.Resources.Exceptions;
 
 using Xunit;
 
-namespace Server.Quality.Quality.Middlewares;
+namespace Server.Quality.Middlewares;
 /// <summary>
 ///     Test class context.
 ///     This test class tests the quality of the <seealso cref="FramingMiddleware"/> implementation inside the server.
 /// </summary>
 public class Q_FramingMiddleware
     : BQ_ServerMiddleware {
+    const string SYSTEM_PROPERTY_REFERENCE = nameof(BServerTransactionException<Enum>.System);
     /// <summary>
     ///     Reference for the endpoint configured to test the catching of unspeficied exceptions.
     /// </summary>
@@ -86,10 +88,10 @@ public class Q_FramingMiddleware
 
         Assert.Equal(HttpStatusCode.InternalServerError, Response.StatusCode);
         Assert.NotNull(fact);
-        Assert.True(fact.Estela.ContainsKey("System"));
+        Assert.True(fact.Estela.ContainsKey(SYSTEM_PROPERTY_REFERENCE));
 
         string expectedExcep = typeof(ArgumentException).ToString();
-        string actualExcep = fact.Estela["System"].ToString()?.Split('|')[0] ?? "";
+        string actualExcep = fact.Estela[SYSTEM_PROPERTY_REFERENCE].ToString()?.Split('|')[0] ?? "";
 
         Assert.Equal(expectedExcep, actualExcep);
     }
@@ -103,9 +105,9 @@ public class Q_FramingMiddleware
 
         Assert.Equal(HttpStatusCode.BadRequest, Response.StatusCode);
         Assert.NotNull(fact);
-        Assert.True(fact.Estela.ContainsKey("System"));
+        Assert.True(fact.Estela.ContainsKey(SYSTEM_PROPERTY_REFERENCE));
         string expectedExcep = "N/A";
-        string actualExcep = fact.Estela["System"].ToString()?.Split('|')[0] ?? "";
+        string actualExcep = fact.Estela[SYSTEM_PROPERTY_REFERENCE].ToString()?.Split('|')[0] ?? "";
 
         Assert.Equal(expectedExcep, actualExcep);
     }

@@ -7,9 +7,9 @@ class _LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final _LoginFormState state = _LoginFormState();
 
-    return ListenableBuilder(
-        listenable: state,
-        builder: (BuildContext ctx, Widget? widget) {
+    return CSMDynamicWidget<_LoginFormState>(
+        state: state,
+        designer: (BuildContext ctx, _LoginFormState state) {
           return Form(
             key: state.formKey,
             child: CSMSpacingColumn(

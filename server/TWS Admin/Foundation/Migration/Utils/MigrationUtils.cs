@@ -51,7 +51,7 @@ public class MigrationUtils {
             .Where(i => i.Name == DirectoryName)
             .FirstOrDefault();
         if (cpd is null)
-            throw new DirectoryNotFoundException();
+            throw new DirectoryNotFoundException($"{parent.FullName}\\{DirectoryName} not found in the system");
         FileInfo? cpfi = cpd.GetFiles()
             .Where(i => i.Name == fn)
             .FirstOrDefault();

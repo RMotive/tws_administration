@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Customer.Services;
 using Customer.Services.Interfaces;
@@ -17,7 +19,15 @@ using Server.Models;
 
 namespace Server;
 
-public class Program {
+public partial class Program {
+    private enum CtrlType {
+        CTRL_C_EVENT = 0,
+        CTRL_BREAK_EVENT = 1,
+        CTRL_CLOSE_EVENT = 2,
+        CTRL_LOGOFF_EVENT = 5,
+        CTRL_SHUTDOWN_EVENT = 6
+    }
+
     const string SETTINGS_LOCATION = "\\Properties\\server_properties.json";
     const string CORS_BLOCK_MESSAGE = "Request blocked by cors, is not part of allowed hosts";
 
@@ -25,26 +35,15 @@ public class Program {
 
     private static Settings? SettingsStore { get; set; }
     public static Settings Settings { get { return SettingsStore ??= RetrieveSettings(); } }
-    static private Settings RetrieveSettings() {
-        string ws = Directory.GetCurrentDirectory();
-        string sl = FileUtils.FormatLocation(SETTINGS_LOCATION);
-        Dictionary<string, dynamic> tempModel = FileUtils.Deserealize<Dictionary<string, dynamic>>($"{ws}{sl}");
-        AdvisorManager.Note("Retrieving server settings", new Dictionary<string, dynamic> {
-            {"Workspace", ws },
-            {"Settings", sl },
-        });
-        string host = ServerUtils.GetHost();
-        string[] listeners = Environment.GetEnvironmentVariable("ASPNETCORE_URLS")?.Split(";") ?? [];
-        tempModel.Add("Host", host);
-        tempModel.Add("Listeners", listeners);
 
-        return JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(tempModel)) ?? throw new Exception();
-    }
 
     static void Main(string[] args) {
+        Configure();
         AdvisorManager.Announce("Running engines (⌐■_■)");
+
         try {
             Settings s = Settings;
+
             AdvisorManager.Success("Server settings retrieved", s);
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -122,9 +121,28 @@ public class Program {
         }
     }
 
+
+    static void Configure() {
+        Console.Title = $"{Settings.Solution.Name} | {Settings.Host}";
+    }
     static void OnProcessExit() {
         AdvisorManager.Announce("Disposing quality context records");
         Disposer.Dispose();
+    }
+    static Settings RetrieveSettings() {
+        string ws = Directory.GetCurrentDirectory();
+        string sl = FileUtils.FormatLocation(SETTINGS_LOCATION);
+        Dictionary<string, dynamic> tempModel = FileUtils.Deserealize<Dictionary<string, dynamic>>($"{ws}{sl}");
+        AdvisorManager.Note("Retrieving server settings", new Dictionary<string, dynamic> {
+            {"Workspace", ws },
+            {"Settings", sl },
+        });
+        string host = ServerUtils.GetHost();
+        string[] listeners = Environment.GetEnvironmentVariable("ASPNETCORE_URLS")?.Split(";") ?? [];
+        tempModel.Add("Host", host);
+        tempModel.Add("Listeners", listeners);
+
+        return JsonSerializer.Deserialize<Settings>(JsonSerializer.Serialize(tempModel)) ?? throw new Exception();
     }
 }
 

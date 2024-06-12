@@ -1,6 +1,10 @@
-﻿namespace TWS_Security.Sets;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class ProfilesPermit {
+namespace TWS_Security.Sets;
+
+public partial class ProfilesPermit
+{
     public int Permit { get; set; }
 
     public int Profile { get; set; }

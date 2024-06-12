@@ -21,17 +21,17 @@ void main() async {
       final Exception excep = Exception(x.toString());
       const CSMAdvisor('development-configurer').exception('Development configurer exception', excep, s);
       runApp(
-        const MaterialApp(
+        MaterialApp(
           home: ColoredBox(
             color: Colors.black,
             child: Center(
               child: Text(
-                'Unable to auto configure account on debug mode DevelopmentException only, contact someone with more knowledge',
-                style: TextStyle(
-                  color: Colors.white60,
+                'Development pre configuration failure\n$x',
+                style: const TextStyle(
+                  color: Colors.red,
                   fontStyle: FontStyle.normal,
                   decoration: TextDecoration.none,
-                  fontSize: 20,
+                  fontSize: 16,
                 ),
               ),
             ),

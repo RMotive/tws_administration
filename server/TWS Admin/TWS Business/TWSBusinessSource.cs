@@ -25,13 +25,6 @@ public partial class TWSBusinessSource
 
     public virtual DbSet<Truck> Trucks { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=DESKTOP-M2SPTNQ;Database=TWS Business; Trusted_Connection=True; Encrypt=False");
-        optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
-                             .EnableSensitiveDataLogging();
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Insurance>(entity =>

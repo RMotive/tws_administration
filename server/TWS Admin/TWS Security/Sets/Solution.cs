@@ -1,6 +1,10 @@
-﻿namespace TWS_Security.Sets;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class Solution {
+namespace TWS_Security.Sets;
+
+public partial class Solution
+{
     public override int Id { get; set; }
 
     public string Name { get; set; } = null!;

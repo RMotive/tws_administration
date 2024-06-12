@@ -1,5 +1,8 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
+import 'package:tws_main/view/widgets/tws_section.dart';
 
 part 'tws_article_creation_state.dart';
 
@@ -7,39 +10,73 @@ part 'creation_form/creation_form.dart';
 
 part 'records_stack/records_stack.dart';
 
-const double _padding = 8;
+const double _kPadding = 8;
+const double _kColWidthLimit = 300;
 
-final class TWSArticleCreator<TModel> extends StatelessWidget {
-  const TWSArticleCreator({super.key});
+final class TWSArticleCreator<TModel> extends StatefulWidget {
+  final TModel Function() factory;
+  final Widget Function(TModel actualModel, bool isSelected) itemDesigner;
+  final Widget Function(TWSArticleCreationItemState<TModel>? itemState) formDesigner;
+
+  const TWSArticleCreator({
+    super.key,
+    required this.factory,
+    required this.itemDesigner,
+    required this.formDesigner,
+  });
+
+  @override
+  State<TWSArticleCreator<TModel>> createState() => _TWSArticleCreatorState<TModel>();
+}
+
+class _TWSArticleCreatorState<TModel> extends State<TWSArticleCreator<TModel>> {
+  late _TWSArticleCreationState<TModel> mainState;
+
+  @override
+  void initState() {
+    super.initState();
+    mainState = _TWSArticleCreationState<TModel>(widget.factory);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CSMDynamicWidget<_TWSArticleCreationState>(
-      state: _TWSArticleCreationState(),
-      designer: (_, CSMStateBase state) {
+    final TWSAThemeBase theme = getTheme();
+
+    return CSMDynamicWidget<_TWSArticleCreationState<TModel>>(
+      state: mainState,
+      designer: (BuildContext context, _TWSArticleCreationState<TModel> state) {
         return LayoutBuilder(
           builder: (_, BoxConstraints cts) {
-            final double calcWidth = ((cts.maxWidth / 2) - _padding);
-            final double widthFactor = const BoxConstraints(minWidth: 500).constrainWidth(calcWidth);
+            final double calcWidth = ((cts.maxWidth / 2) - _kPadding);
+            Size sizeFactor = const BoxConstraints(
+              minWidth: _kColWidthLimit,
+            ).constrain(Size(calcWidth, cts.maxHeight));
+            if (sizeFactor.width <= _kColWidthLimit) {
+              sizeFactor = Size(cts.maxWidth, sizeFactor.height);
+            }
 
             return Padding(
-              padding: const EdgeInsets.all(_padding),
+              padding: const EdgeInsets.all(_kPadding),
               child: Wrap(
                 children: <Widget>[
-                  ColoredBox(
-                    color: Colors.red,
-                    child: SizedBox(
-                      height: 200,
-                      width: widthFactor,
-                      child: const _RecordsStack(),
+                  SizedBox.fromSize(
+                    size: sizeFactor,
+                    child: TWSSection(
+                      title: 'Properties',
+                      content: widget.formDesigner(state.states.isEmpty ? null : state.states[state.current]),
                     ),
                   ),
-                  ColoredBox(
-                    color: Colors.green,
-                    child: SizedBox(
-                      width: widthFactor,
-                      height: 200,
-                      child: const _CreationForm(),
+                  SizedBox.fromSize(
+                    size: sizeFactor,
+                    child: _RecordsStack<TModel>(
+                      add: state.addItem,
+                      remove: state.removeItem,
+                      pageTheme: theme.page,
+                      states: state.states,
+                      creatorWidth: sizeFactor.width,
+                      itemDesigner: widget.itemDesigner,
+                      changeItem: state.changeSelection,
+                      currentItemIndex: state.current,
                     ),
                   ),
                 ],
