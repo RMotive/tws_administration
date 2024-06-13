@@ -1,12 +1,11 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/tws_article_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
 import 'package:tws_main/view/widgets/tws_section.dart';
 
 part 'tws_article_creation_state.dart';
-
-part 'creation_form/creation_form.dart';
 
 part 'records_stack/records_stack.dart';
 
@@ -15,11 +14,17 @@ const double _kColWidthLimit = 300;
 
 final class TWSArticleCreator<TModel> extends StatefulWidget {
   final TModel Function() factory;
+  final bool Function(TModel model)? modelValidator;
+  final String? Function(List<TModel> records)? onCreation;
   final Widget Function(TModel actualModel, bool isSelected) itemDesigner;
   final Widget Function(TWSArticleCreationItemState<TModel>? itemState) formDesigner;
+  final TWSArticleCreatorAgent<TModel>? agent;
 
   const TWSArticleCreator({
     super.key,
+    this.agent,
+    this.onCreation,
+    this.modelValidator,
     required this.factory,
     required this.itemDesigner,
     required this.formDesigner,
@@ -36,6 +41,17 @@ class _TWSArticleCreatorState<TModel> extends State<TWSArticleCreator<TModel>> {
   void initState() {
     super.initState();
     mainState = _TWSArticleCreationState<TModel>(widget.factory);
+    widget.agent?.addListener(submitRecords);
+  }
+
+  @override
+  void didUpdateWidget(covariant TWSArticleCreator<TModel> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget.agent?.addListener(submitRecords);
+  }
+
+  void submitRecords() {
+    print('Creating records');
   }
 
   @override

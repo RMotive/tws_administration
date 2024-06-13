@@ -4,6 +4,7 @@ import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/view/frames/whisper/whisper_frame.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creation_stack_item.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creation_stack_item_property.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/tws_article_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
 import 'package:tws_main/view/widgets/tws_input_text.dart';
@@ -13,11 +14,15 @@ final class SolutionsCreateWhisper extends CSMPageBase {
 
   @override
   Widget compose(BuildContext ctx, Size window) {
+    final TWSArticleCreatorAgent<Solution> creatorAgent = TWSArticleCreatorAgent<Solution>();
+
     return WhisperFrame(
       title: 'Create solutions',
-      trigger: () {},
+      trigger: creatorAgent.create,
       child: TWSArticleCreator<Solution>(
+        agent: creatorAgent,
         factory: () => const Solution('', '', null),
+        modelValidator: (Solution model) => model.evaluateWrite(),
         formDesigner: (TWSArticleCreationItemState<Solution>? itemState) {
           final bool formDisabled = !(itemState == null);
 

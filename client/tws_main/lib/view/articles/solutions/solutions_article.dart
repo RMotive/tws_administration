@@ -22,7 +22,7 @@ class SolutionsArticle extends CSMPageBase {
       currentRoute: TWSARoutes.solutionsArticle,
       actionsOptions: ActionRibbonOptions(
         maintenanceGroupConfig: MaintenanceGroupOptions(
-          onCreate: () {},
+          onCreate: () => CSMRouter.i.drive(TWSARoutes.solutionsCreateWhisper),
         ),
       ),
       article: TWSArticleTable<Solution>(
