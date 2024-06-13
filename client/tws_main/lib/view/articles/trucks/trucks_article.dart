@@ -30,7 +30,7 @@ class TrucksArticle extends CSMPageBase {
         adapter: const _TableAdapter(),
         fields: <TWSArticleTableFieldOptions<Truck>>[
           TWSArticleTableFieldOptions<Truck>(
-            'VIN number',
+            'VIN',
             (Truck item, int index, BuildContext ctx) => item.vin,
           ),
           TWSArticleTableFieldOptions<Truck>(
@@ -48,12 +48,12 @@ class TrucksArticle extends CSMPageBase {
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(
-            'Maintenance - Trimestral',
+            'Trimestral Maintenance',
             (Truck item, int index, BuildContext ctx) => item.maintenanceNavigation?.trimestral.toString() ?? '---',
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(
-            'Maintenance - Anual',
+            'Anual Maintenance',
             (Truck item, int index, BuildContext ctx) => item.maintenanceNavigation?.anual.toString() ?? '---',
             true,
           ),
@@ -72,11 +72,11 @@ class TrucksArticle extends CSMPageBase {
             (Truck item, int index, BuildContext ctx) {
               String plates = '';
               int cont = 0;
-              item.plates?.forEach((Plate plate) {
+              for (Plate plate in item.plates) {
                 cont++;
                 plates += plate.identifier;
-                if(item.plates!.length > cont) plates += '\n';
-              });
+                if(item.plates.length > cont) plates += '\n';
+              }
 
               return plates != '' ? plates : '---';
             },

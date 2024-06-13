@@ -21,15 +21,15 @@ public class TrucksService : ITrucksService {
 
     readonly TruckDepot Trucks;
     readonly InsurancesDepot Insurances;
-    readonly MaintenaceDepot Maintenaces;
+    readonly MaintenacesDepot Maintenaces;
     readonly ManufacturersDepot Manufacturers;
-    readonly SctDepot Sct;
+    readonly SctsDepot Sct;
     readonly SituationsDepot Situations;
     readonly PlatesDepot Plates;
 
     public TrucksService(
-        TruckDepot Trucks, InsurancesDepot Insurances, MaintenaceDepot Maintenances,
-        ManufacturersDepot Manufacturers, SctDepot Sct, SituationsDepot Situations, PlatesDepot Plates) {
+        TruckDepot Trucks, InsurancesDepot Insurances, MaintenacesDepot Maintenances,
+        ManufacturersDepot Manufacturers, SctsDepot Sct, SituationsDepot Situations, PlatesDepot Plates) {
         this.Trucks = Trucks;
         this.Insurances = Insurances;
         this.Maintenaces = Maintenances;
@@ -213,10 +213,7 @@ public class TrucksService : ITrucksService {
             }
             return truck;
         } catch (Exception ex) {
-            // Undo all changes on data source.
-            Debug.WriteLine("Ejecutando: ToString.....");
-            Debug.WriteLine(ex.ToString());
-
+            // Undo all changes on data source
             /// Remove the last items to avoid key dependencies errors on data source.
             nullify.Reverse();
             foreach (Plate plate in generatedPlates)

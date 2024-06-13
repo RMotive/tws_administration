@@ -8,14 +8,14 @@ namespace TWS_Business.Depots
     ///     Implements a <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/>
     ///     representing a depot to handle <see cref="Sct"/> datasource entity mirror.
     /// </summary>
-    public class SctDepot
+    public class SctsDepot
     : BMigrationDepot<TWSBusinessSource, Sct>
     {
         /// <summary>
         ///     Generates a new depot handler for <see cref="Sct"/>.
         /// </summary>
 
-        public SctDepot()
+        public SctsDepot()
             : base(new(), null)
         {
 

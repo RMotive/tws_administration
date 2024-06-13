@@ -9,13 +9,13 @@ namespace TWS_Business.Depots
     ///     representing a depot to handle <see cref="Maintenance"/> datasource entity mirror.
     /// </summary>
 
-    public class MaintenaceDepot
+    public class MaintenacesDepot
     : BMigrationDepot<TWSBusinessSource, Maintenance>
     {
         /// <summary>
         ///     Generates a new depot handler for <see cref="Maintenance"/>.
         /// </summary>
-        public MaintenaceDepot() : base(new(), null)
+        public MaintenacesDepot() : base(new(), null)
         {
         }
     }

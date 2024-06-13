@@ -34,11 +34,11 @@ class MaintenencesArticle extends CSMPageBase {
             (Maintenance item, int index, BuildContext ctx) {
               String vins = '';
             int cont = 0;
-              item.trucks?.forEach((Truck truck) {
+              for (Truck truck in item.trucks) {
                 cont++;
                 vins += truck.vin;
-                if(item.trucks!.length > cont) vins += '\n';
-              });
+                if(item.trucks.length > cont) vins += '\n';
+              }
 
               return vins != '' ? vins : '---';
             } ,

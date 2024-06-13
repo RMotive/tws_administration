@@ -7,9 +7,9 @@ using TWS_Business.Sets;
 
 namespace Customer.Services;
 public class MaintenanceService : IMaintenancesService {
-    readonly MaintenaceDepot Maintenances;
+    readonly MaintenacesDepot Maintenances;
 
-    public MaintenanceService(MaintenaceDepot Maintenances) {
+    public MaintenanceService(MaintenacesDepot Maintenances) {
         this.Maintenances = Maintenances;
     }
 

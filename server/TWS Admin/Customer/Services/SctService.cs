@@ -8,9 +8,9 @@ using TWS_Business.Sets;
 
 namespace Customer.Services;
 public class SctService : ISctService {
-    readonly SctDepot sctDepot;
+    readonly SctsDepot sctDepot;
 
-    public SctService(SctDepot Solutions) {
+    public SctService(SctsDepot Solutions) {
         this.sctDepot = Solutions;
     }
 
