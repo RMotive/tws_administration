@@ -70,15 +70,15 @@ class TrucksArticle extends CSMPageBase {
           TWSArticleTableFieldOptions<Truck>(
             'Plates',
             (Truck item, int index, BuildContext ctx) {
-              String plates = '';
-              int cont = 0;
-              for (Plate plate in item.plates) {
-                cont++;
-                plates += plate.identifier;
-                if(item.plates.length > cont) plates += '\n';
+              String plates = '---';
+              if(item.plates.isNotEmpty){
+                plates = '';
+                for(int cont = 0; cont < item.plates.length; cont++) {
+                  plates += item.plates[cont].identifier;
+                  if(item.plates.length > cont) plates += '\n';
+                }
               }
-
-              return plates != '' ? plates : '---';
+              return plates;
             },
             true,
           ),

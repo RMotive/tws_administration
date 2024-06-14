@@ -32,15 +32,15 @@ class MaintenencesArticle extends CSMPageBase {
            TWSArticleTableFieldOptions<Maintenance>(
             'Truck VIN',
             (Maintenance item, int index, BuildContext ctx) {
-              String vins = '';
-            int cont = 0;
-              for (Truck truck in item.trucks) {
-                cont++;
-                vins += truck.vin;
-                if(item.trucks.length > cont) vins += '\n';
+             String vins = '---';
+              if(item.trucks.isNotEmpty){
+                vins = '';
+                for(int cont = 0; cont < item.trucks.length; cont++) {
+                  vins += item.trucks[cont].vin;
+                  if(item.trucks.length > cont) vins += '\n';
+                }
               }
-
-              return vins != '' ? vins : '---';
+              return vins;
             } ,
             true,
           ),
