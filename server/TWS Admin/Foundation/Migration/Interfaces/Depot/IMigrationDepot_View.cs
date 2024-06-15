@@ -12,5 +12,5 @@ namespace Foundation.Migrations.Interfaces.Depot;
 public interface IMigrationDepot_View<TMigrationSet>
     where TMigrationSet : IMigrationSet {
 
-    public Task<MigrationView<TMigrationSet>> View(MigrationViewOptions Options);
+    public Task<MigrationView<TMigrationSet>> View(MigrationViewOptions Options, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? incluide = null);
 }

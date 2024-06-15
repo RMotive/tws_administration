@@ -8,5 +8,6 @@ public partial class Situation
 
     public string? Description { get; set; }
 
-    public virtual ICollection<Truck> Trucks { get; set; } = [];
+
+
 }

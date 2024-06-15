@@ -10,7 +10,7 @@ using Foundation.Migration.Enumerators;
 using Foundation.Migration.Interfaces.Depot;
 using Foundation.Migrations.Interfaces;
 using Foundation.Migrations.Records;
-
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 using TWS_Business.Depots;
@@ -21,15 +21,15 @@ public class TrucksService : ITrucksService {
 
     readonly TruckDepot Trucks;
     readonly InsurancesDepot Insurances;
-    readonly MaintenaceDepot Maintenaces;
+    readonly MaintenacesDepot Maintenaces;
     readonly ManufacturersDepot Manufacturers;
-    readonly SctDepot Sct;
+    readonly SctsDepot Sct;
     readonly SituationsDepot Situations;
     readonly PlatesDepot Plates;
 
     public TrucksService(
-        TruckDepot Trucks, InsurancesDepot Insurances, MaintenaceDepot Maintenances,
-        ManufacturersDepot Manufacturers, SctDepot Sct, SituationsDepot Situations, PlatesDepot Plates) {
+        TruckDepot Trucks, InsurancesDepot Insurances, MaintenacesDepot Maintenances,
+        ManufacturersDepot Manufacturers, SctsDepot Sct, SituationsDepot Situations, PlatesDepot Plates) {
         this.Trucks = Trucks;
         this.Insurances = Insurances;
         this.Maintenaces = Maintenances;
@@ -40,7 +40,63 @@ public class TrucksService : ITrucksService {
     }
 
     public async Task<MigrationView<Truck>> View(MigrationViewOptions options) {
-        return await Trucks.View(options);
+
+        Func<IQueryable<Truck>, IQueryable<Truck>> include =
+            query => query
+            .Include(t => t.InsuranceNavigation)
+            .Include(t => t.ManufacturerNavigation)
+            .Include(t => t.MaintenanceNavigation)
+            .Include(t => t.SctNavigation)
+            .Include(t => t.SituationNavigation)
+            .Include(t => t.Plates)
+            .Select(t => new Truck() {
+                Id = t.Id,
+                Vin = t.Vin,
+                Manufacturer = t.Manufacturer,
+                Motor = t.Motor,
+                Sct = t.Sct,
+                Maintenance = t.Maintenance,
+                Situation = t.Situation,
+                Insurance = t.Insurance,
+                SctNavigation = t.SctNavigation == null ? null : new Sct() {
+                    Id = t.SctNavigation.Id,
+                    Type = t.SctNavigation.Type,
+                    Number = t.SctNavigation.Number,
+                    Configuration = t.SctNavigation.Configuration
+                },
+                MaintenanceNavigation = t.MaintenanceNavigation == null ? null : new Maintenance() {
+                    Id = t.MaintenanceNavigation.Id,
+                    Anual = t.MaintenanceNavigation.Anual,
+                    Trimestral = t.MaintenanceNavigation.Trimestral
+                },
+                ManufacturerNavigation = t.ManufacturerNavigation == null ? null : new Manufacturer() {
+                    Id = t.ManufacturerNavigation.Id,
+                    Model = t.ManufacturerNavigation.Model,
+                    Brand = t.ManufacturerNavigation.Brand,
+                    Year = t.ManufacturerNavigation.Year
+                },
+                InsuranceNavigation = t.InsuranceNavigation == null ? null : new Insurance() {
+                    Id = t.InsuranceNavigation.Id,
+                    Policy = t.InsuranceNavigation.Policy,
+                    Expiration = t.InsuranceNavigation.Expiration,
+                    Country = t.InsuranceNavigation.Country
+                },
+                SituationNavigation = t.SituationNavigation == null ? null : new Situation() {
+                    Id = t.SituationNavigation.Id,
+                    Name = t.SituationNavigation.Name,
+                    Description = t.SituationNavigation.Description
+                },
+                Plates = (ICollection<Plate>)t.Plates.Select(p => new Plate() {
+                    Id = p.Id,
+                    Identifier = p.Identifier,
+                    State = p.State,
+                    Country = p.Country,
+                    Expiration = p.Expiration,
+                    Truck = p.Truck 
+                })
+            });
+
+        return await Trucks.View(options, include);
     }
 
     /// <summary>
@@ -59,12 +115,12 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : IMigrationSet {
+    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback, T? navigation) where T : IMigrationSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
             set = result;
-
+            //navigation = result;
             nullifyCallback.Add(new(() => depot.Delete(result)));
             return result.Id;
         }
@@ -95,7 +151,7 @@ public class TrucksService : ITrucksService {
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
             if (truck.Manufacturer.Id == 0) {
-                assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify) ?? 0;
+                assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify, assembly.ManufacturerNavigation) ?? 0;
             } else {
                 /// Pointer Validation
                 MigrationTransactionResult<Manufacturer> fetch = await Manufacturers.Read(i => i.Id == truck.Manufacturer.Id, MigrationReadBehavior.First);
@@ -108,11 +164,32 @@ public class TrucksService : ITrucksService {
                 assembly.Manufacturer = truck.Manufacturer.Id;
                 truck.Manufacturer = fetch.Successes[0];
             }
+
+            /// Validate which Situation value use to assign the manufacturer value to the truck.
+            if(truck.Situation != null) {
+                if (truck.Situation.Id == 0) {
+                    assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify, assembly.SituationNavigation) ?? 0;
+                } else {
+                    /// Pointer Validation
+                    MigrationTransactionResult<Situation> fetch = await Situations.Read(i => i.Id == truck.Situation.Id, MigrationReadBehavior.First);
+                    if (fetch.Failed)
+                        throw new XMigrationTransaction(fetch.Failures);
+
+                    if (fetch.QTransactions == 0)
+                        throw new XTruckAssembly(XTruckAssemblySituation.SitutionNotExist);
+
+                    assembly.Situation = truck.Situation.Id;
+                    truck.Situation = fetch.Successes[0];
+                }
+            }
+            
+
+
+
             /// Create Optional fields bundle.
-            assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify);
-            assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify);
-            assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify);
-            assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify);
+            assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify, assembly.InsuranceNavigation);
+            assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify, assembly.MaintenanceNavigation);
+            assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify, assembly.SctNavigation);
 
             IMigrationDepot_Delete<Manufacturer> interfaceSol = Manufacturers;
 
@@ -136,10 +213,7 @@ public class TrucksService : ITrucksService {
             }
             return truck;
         } catch (Exception ex) {
-            // Undo all changes on data source.
-            Debug.WriteLine("Ejecutando: ToString.....");
-            Debug.WriteLine(ex.ToString());
-
+            // Undo all changes on data source
             /// Remove the last items to avoid key dependencies errors on data source.
             nullify.Reverse();
             foreach (Plate plate in generatedPlates)

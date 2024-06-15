@@ -8,4 +8,6 @@ namespace Customer.Services.Interfaces;
 public interface ISituationsService {
 
     Task<MigrationView<Situation>> View(MigrationViewOptions options);
+    Task<Situation> Create(Situation situation);
+
 }
