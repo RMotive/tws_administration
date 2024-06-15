@@ -13,6 +13,8 @@ public class XTruckAssembly : BServerTransactionException<XTruckAssemblySituatio
             XTruckAssemblySituation.RequiredManufacturer => $"None Manufacturer data found.",
             XTruckAssemblySituation.RequiredPlates => $"None Plates data found.",
             XTruckAssemblySituation.ManufacturerNotExist => $"The given Manufacturer not exist",
+            XTruckAssemblySituation.SitutionNotExist => $"The given Situation ID not exist",
+
             _ => throw new NotImplementedException()
         };
     }
@@ -21,5 +23,6 @@ public class XTruckAssembly : BServerTransactionException<XTruckAssemblySituatio
 public enum XTruckAssemblySituation {
     RequiredManufacturer,
     RequiredPlates,
-    ManufacturerNotExist
+    ManufacturerNotExist,
+    SitutionNotExist
 }

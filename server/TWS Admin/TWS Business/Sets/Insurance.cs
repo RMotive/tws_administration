@@ -11,4 +11,5 @@ public partial class Insurance
     public string Country { get; set; } = null!;
 
     public virtual ICollection<Truck> Trucks { get; set; } = [];
+
 }

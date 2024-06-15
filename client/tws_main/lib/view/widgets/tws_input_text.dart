@@ -19,8 +19,8 @@ class TWSInputText extends StatefulWidget {
   final int? maxLines;
   final FocusNode? focusNode;
   final TextEditingController? controller;
-  final String? Function(String? value)? validator;
-  final void Function(String newValue)? onChanged;
+  final String? Function(String? text)? validator;
+  final void Function(String text)? onChanged;
   final Function(PointerDownEvent)? onTapOutside;
   const TWSInputText({
     super.key,

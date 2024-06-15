@@ -54,7 +54,8 @@ public class Q_TrucksController : BQ_CustomServerController {
     [Fact]
     public async void Create() {
         DateOnly date = new(2024, 12, 12);
-        string testTag = "T45";
+
+        string testTag = Guid.NewGuid().ToString()[..3];
         Manufacturer manufacturer = new() {
             Model = "X23",
             Brand = "SCANIA TEST" + testTag,

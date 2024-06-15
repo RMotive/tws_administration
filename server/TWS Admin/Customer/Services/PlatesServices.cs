@@ -2,7 +2,7 @@
 using Customer.Services.Interfaces;
 
 using Foundation.Migrations.Records;
-
+using Microsoft.EntityFrameworkCore;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
@@ -17,7 +17,27 @@ public class PlatesServices
     }
 
     public async Task<MigrationView<Plate>> View(MigrationViewOptions options) {
-        return await Plates.View(options);
+        return await Plates.View(options, query => query
+            .Include(p => p.TruckNavigation)
+            .Select(p => new Plate() {
+               Id = p.Id,
+               Identifier = p.Identifier,
+               State = p.State,
+               Country = p.Country,
+               Expiration = p.Expiration,
+               Truck = p.Truck,
+               TruckNavigation = p.TruckNavigation == null ? null : new Truck() {
+                   Id = p.TruckNavigation.Id,
+                   Vin = p.TruckNavigation.Vin,
+                   Manufacturer = p.TruckNavigation.Manufacturer,
+                   Motor = p.TruckNavigation.Motor,
+                   Sct = p.TruckNavigation.Sct,
+                   Maintenance = p.TruckNavigation.Maintenance,
+                   Situation = p.TruckNavigation.Situation,
+                   Insurance = p.TruckNavigation.Insurance,
+               },
+
+            }));
     }
 
     public async Task<Plate> Create(Plate plate) {

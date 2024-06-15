@@ -10,6 +10,7 @@ class TWSARoutes {
   static const CSMRouteOptions loginPage = CSMRouteOptions('/');
   static const CSMRouteOptions overviewPage = CSMRouteOptions('overview');
   static const CSMRouteOptions securityPage = CSMRouteOptions('security');
+  static const CSMRouteOptions businessPage = CSMRouteOptions('business');
 
   static const CSMRouteOptions featuresArticle = CSMRouteOptions('features');
   static const CSMRouteOptions featuresCreateWhisper = CSMRouteOptions('create');
@@ -17,7 +18,29 @@ class TWSARoutes {
   static const CSMRouteOptions solutionsArticle = CSMRouteOptions('solutions');
   static const CSMRouteOptions solutionsCreateWhisper = CSMRouteOptions(name: 'solutions-create', 'create');
 
-  static const CSMRouteOptions businessPage = CSMRouteOptions('business');
   static const CSMRouteOptions trucksArticle = CSMRouteOptions('trucks');
   static const CSMRouteOptions trucksCreateWhisper = CSMRouteOptions('add');
+  static const CSMRouteOptions trucksViewWhisper = CSMRouteOptions(name: 'trucks-view', 'view');
+
+  static const CSMRouteOptions manufacturersArticle = CSMRouteOptions('manufacturers');
+  static const CSMRouteOptions manufacturersViewWhisper = CSMRouteOptions(name: 'manufacturers-view', 'view');
+  static const CSMRouteOptions manufacturersCreateWhisper = CSMRouteOptions(name: 'manufacturers-create', 'create');
+
+  static const CSMRouteOptions platesArticle = CSMRouteOptions('plates');
+  static const CSMRouteOptions platesViewWhisper = CSMRouteOptions(name: 'plates-view', 'view');
+  static const CSMRouteOptions platesCreateWhisper = CSMRouteOptions(name: 'plates-create', 'create');
+
+
+  static const CSMRouteOptions insuranceArticle = CSMRouteOptions('insurances');
+  static const CSMRouteOptions insuranceViewWhisper = CSMRouteOptions(name: 'insurances-view', 'view');
+
+  static const CSMRouteOptions maintencesArticle = CSMRouteOptions('mainteneces');
+  static const CSMRouteOptions maintenecesViewWhisper = CSMRouteOptions(name: 'maintenences-view', 'view');
+
+ 
+  static const CSMRouteOptions sctsArticle = CSMRouteOptions('scts');
+  static const CSMRouteOptions sctsViewWhisper = CSMRouteOptions(name: 'scts-view', 'view');
+
+  static const CSMRouteOptions situationsArticle = CSMRouteOptions('situations');
+  static const CSMRouteOptions situationsViewWhisper = CSMRouteOptions(name: 'situations-view', 'view');
 }

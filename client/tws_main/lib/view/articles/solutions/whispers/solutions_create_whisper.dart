@@ -21,8 +21,8 @@ final class SolutionsCreateWhisper extends CSMPageBase {
       trigger: creatorAgent.create,
       child: TWSArticleCreator<Solution>(
         agent: creatorAgent,
-        factory: () => const Solution('', '', null),
-        modelValidator: (Solution model) => model.evaluateWrite(),
+        factory: () => Solution.a(),
+        modelValidator: (Solution model) => model.evaluate().isNotEmpty,
         formDesigner: (TWSArticleCreationItemState<Solution>? itemState) {
           final bool formDisabled = !(itemState == null);
 
@@ -39,9 +39,13 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                       child: TWSInputText(
                         label: 'Name',
                         controller: TextEditingController(text: itemState?.model.name),
-                        onChanged: (String newText) {
+                        onChanged: (String text) {
                           Solution model = itemState!.model;
-                          itemState.updateModelRedrawing(Solution(newText, model.sign, model.description));
+                          itemState.updateModelRedrawing(
+                            model.clone(
+                              name: text,
+                            ),
+                          );
                         },
                         isEnabled: formDisabled,
                       ),
@@ -50,9 +54,13 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                       child: TWSInputText(
                         label: 'Sign',
                         controller: TextEditingController(text: itemState?.model.sign),
-                        onChanged: (String newValue) {
+                        onChanged: (String text) {
                           Solution model = itemState!.model;
-                          itemState.updateModelRedrawing(Solution(model.name, newValue, model.description));
+                          itemState.updateModelRedrawing(
+                            model.clone(
+                              sign: text,
+                            ),
+                          );
                         },
                         maxLength: 5,
                         isEnabled: formDisabled,
@@ -64,9 +72,13 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                   label: 'Description',
                   height: 150,
                   controller: TextEditingController(text: itemState?.model.description),
-                  onChanged: (String newText) {
+                  onChanged: (String text) {
                     Solution model = itemState!.model;
-                    itemState.updateModelRedrawing(Solution(model.name, model.sign, newText.isEmpty ? null : newText));
+                    itemState.updateModelRedrawing(
+                      model.clone(
+                        description: text.isEmpty ? null : text,
+                      ),
+                    );
                   },
                   isEnabled: formDisabled,
                   maxLines: null,

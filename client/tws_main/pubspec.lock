@@ -47,6 +47,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: "5bfd6131c5fcd507856d35c6e1136b544a8ff739"
+      resolved-ref: "5bfd6131c5fcd507856d35c6e1136b544a8ff739"
       url: "https://github.com/RMotive/csm_foundation_services"
     source: git
     version: "5.1.0"

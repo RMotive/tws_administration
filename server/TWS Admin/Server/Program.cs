@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-
+using System.Text.Json.Serialization;
 using Customer.Services;
 using Customer.Services.Interfaces;
 
@@ -52,6 +52,7 @@ public partial class Program {
                 .AddJsonOptions(options => {
                     options.JsonSerializerOptions.IncludeFields = true;
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 });
             builder.Services.Configure<KestrelServerOptions>(options => {
                 options.AllowSynchronousIO = true;
