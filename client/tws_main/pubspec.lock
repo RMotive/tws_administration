@@ -324,7 +324,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "90013b9a1ef1c71ca22dd39a055763007b2e2862"
+      resolved-ref: "321d448de9f24c545fa860bff3d8bff995e564bd"
       url: "https://github.com/RMotive/tws_administration_service"
     source: git
     version: "1.1.1"
