@@ -30,18 +30,14 @@ final class SolutionsCreateWhisper extends CSMPageBase {
         modelValidator: (Solution model) => model.evaluate().isEmpty,
         onCreate: (List<Solution> records) async {
           final String currentToken = _sessionStorage.getTokenStrict();
-          (await _solutionsService.create(records, currentToken)).resolve(
-            onConnectionFailure: () {
-              print('connection error');
-            },
-            onFailure: (FailureFrame failure, int status) {
-              print(failure.estela.advise);
-            },
-            onSuccess: (SuccessFrame<MigrationTransactionResult<Solution>> success) {
-              print('creation successful');
-            },
-          );
-          return null;
+          MainResolver<MigrationTransactionResult<Solution>> resolver = await _solutionsService.create(records, currentToken);
+          try {
+            await resolver.act(const MigrationTransactionResultDecoder<Solution>(SolutionDecoder()));
+          } catch (x) {
+            print('error catched $x');
+            return 'Something have happened';
+          }
+          return 'Something have happened';
         },
         formDesigner: (TWSArticleCreatorItemState<Solution>? itemState) {
           final bool formDisabled = !(itemState == null);
