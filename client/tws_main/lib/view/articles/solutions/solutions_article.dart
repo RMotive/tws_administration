@@ -8,6 +8,7 @@ import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
 import 'package:tws_main/view/frames/security/security_frame.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_data_adapter.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 
@@ -18,15 +19,20 @@ class SolutionsArticle extends CSMPageBase {
 
   @override
   Widget compose(BuildContext ctx, Size window) {
+    final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
+
     return SecurityFrame(
       currentRoute: TWSARoutes.solutionsArticle,
+
       actionsOptions: ActionRibbonOptions(
+        refresher: tableAgent.refresh,
         maintenanceGroupConfig: MaintenanceGroupOptions(
           onCreate: () => CSMRouter.i.drive(TWSARoutes.solutionsCreateWhisper),
         ),
       ),
       article: TWSArticleTable<Solution>(
         adapter: const _TableAdapter(),
+        agent: tableAgent,
         fields: <TWSArticleTableFieldOptions<Solution>>[
           TWSArticleTableFieldOptions<Solution>(
             'Name',

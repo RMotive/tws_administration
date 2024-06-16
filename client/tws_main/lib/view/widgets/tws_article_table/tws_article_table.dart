@@ -2,6 +2,7 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/core/constants/twsa_colors.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_data_adapter.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 import 'package:tws_main/view/widgets/tws_display_flat.dart';
@@ -10,6 +11,7 @@ import 'package:tws_main/view/widgets/tws_paging_selector.dart';
 class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidget {
   final List<TWSArticleTableFieldOptions<TArticle>> fields;
   final TWSArticleTableDataAdapter<TArticle> adapter;
+  final TWSArticleTableAgent? agent;
   final int page;
   final int size;
   final List<int> sizes;
@@ -17,6 +19,7 @@ class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidge
   const TWSArticleTable({
     super.key,
     this.page = 1,
+    this.agent,
     required this.size,
     required this.sizes,
     required this.fields,
@@ -61,6 +64,11 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     adapter = widget.adapter;
     records = <TArticle>[];
     consume = () => adapter.consume(page, size, <MigrationViewOrderOptions>[]);
+    widget.agent?.addListener(
+      () {
+        agent.refresh();
+      },
+    );
     super.initState();
   }
 

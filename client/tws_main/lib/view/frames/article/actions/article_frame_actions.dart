@@ -6,6 +6,10 @@ class _ArticleActions extends StatelessWidget {
     required this.options,
   });
 
+  double _calIconRelation(double size) {
+    return size * .7;
+  }
+
   @override
   Widget build(BuildContext context) {
     final MaintenanceGroupOptions? mtnOptions = options.maintenanceGroupConfig;
@@ -33,6 +37,22 @@ class _ArticleActions extends StatelessWidget {
               child: CSMSpacingRow(
                 spacing: 8,
                 children: <Widget>[
+                  if (options.refresher != null)
+                    _ArticleActionsGroup(
+                      actions: <ArticleFrameActionsOptions>[
+                        ArticleFrameActionsOptions(
+                          tooltip: 'Refresh',
+                          decorator: (double size, Color color) {
+                            return Icon(
+                              Icons.refresh_rounded,
+                              size: _calIconRelation(size),
+                              color: color,
+                            );
+                          },
+                          action: options.refresher!,
+                        )
+                      ],
+                    ),
                   if (mtnOptions != null)
                     _ArticleActionsGroup(
                       name: 'Maintenance',
@@ -46,7 +66,7 @@ class _ArticleActions extends StatelessWidget {
                               return Icon(
                                 Icons.add_box,
                                 color: color,
-                                size: size * .7,
+                                size: _calIconRelation(size),
                               );
                             },
                           ),

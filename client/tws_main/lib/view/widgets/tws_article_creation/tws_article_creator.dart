@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
@@ -5,9 +7,9 @@ import 'package:tws_main/view/widgets/tws_article_creation/tws_article_agent.dar
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
 import 'package:tws_main/view/widgets/tws_section.dart';
 
-part 'tws_article_creation_state.dart';
+part 'tws_article_creator_state.dart';
 
-part 'records_stack/records_stack.dart';
+part 'records_stack/tes_article_creator_records_stack.dart';
 
 const double _kPadding = 8;
 const double _kColWidthLimit = 300;
@@ -15,15 +17,15 @@ const double _kColWidthLimit = 300;
 final class TWSArticleCreator<TModel> extends StatefulWidget {
   final TModel Function() factory;
   final bool Function(TModel model)? modelValidator;
-  final String? Function(List<TModel> records)? onCreation;
-  final Widget Function(TModel actualModel, bool isSelected) itemDesigner;
-  final Widget Function(TWSArticleCreationItemState<TModel>? itemState) formDesigner;
+  final FutureOr<String?> Function(List<TModel> records)? onCreate;
+  final Widget Function(TModel actualModel, bool selected, bool valid) itemDesigner;
+  final Widget Function(TWSArticleCreatorItemState<TModel>? itemState) formDesigner;
   final TWSArticleCreatorAgent<TModel>? agent;
 
   const TWSArticleCreator({
     super.key,
     this.agent,
-    this.onCreation,
+    this.onCreate,
     this.modelValidator,
     required this.factory,
     required this.itemDesigner,
@@ -50,8 +52,34 @@ class _TWSArticleCreatorState<TModel> extends State<TWSArticleCreator<TModel>> {
     widget.agent?.addListener(submitRecords);
   }
 
-  void submitRecords() {
-    print('Creating records');
+  void submitRecords() async {
+    FutureOr<String?> Function(List<TModel> models)? creator = widget.onCreate;
+    bool Function(TModel)? validator = widget.modelValidator;
+    if (creator == null) return;
+    List<TModel> models = <TModel>[];
+
+    if (validator != null) {
+      bool error = false;
+
+      for (TWSArticleCreatorItemState<TModel> state in mainState.states) {
+        TModel model = state.model;
+        models.add(model);
+
+        bool isValid = validator(model);
+        state.updateInvalid(isValid);
+        if (isValid) continue;
+        error = true;
+      }
+
+      mainState.effect();
+      if (error) {
+        return;
+      }
+    } else {
+      models = mainState.states.map((TWSArticleCreatorItemState<TModel> i) => i.model).toList();
+    }
+
+    await creator(models);
   }
 
   @override

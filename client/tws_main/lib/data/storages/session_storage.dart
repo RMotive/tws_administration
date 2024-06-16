@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
+import 'package:tws_main/core/router/twsa_routes.dart';
 
 /// Specifies a static service.
 ///
@@ -56,5 +57,12 @@ class SessionStorage {
     DateTime expLocal = expiration.toLocal();
 
     return now.isBefore(expLocal);
+  }
+
+  String getTokenStrict() {
+    if (isSession) return _session!.token;
+
+    CSMRouter.i.drive(TWSARoutes.loginPage);
+    throw 'Removing token storages and leading to landing page';
   }
 }

@@ -1,10 +1,10 @@
-part of '../tws_article_creation.dart';
+part of '../tws_article_creator.dart';
 
 class _RecordsStack<TModel> extends StatelessWidget {
-  final List<TWSArticleCreationItemState<TModel>> states;
+  final List<TWSArticleCreatorItemState<TModel>> states;
   final CSMColorThemeOptions pageTheme;
   final double creatorWidth;
-  final Widget Function(TModel actualModel, bool isSelected) itemDesigner;
+  final Widget Function(TModel actualModel, bool isSelected, bool invalid) itemDesigner;
   final int currentItemIndex;
   final void Function(int index) changeItem;
 
@@ -92,16 +92,16 @@ class _RecordsStack<TModel> extends StatelessWidget {
                     return CSMPointerHandler(
                       cursor: currentActive ? MouseCursor.defer : SystemMouseCursors.click,
                       onClick: () => changeItem(index),
-                      child: CSMDynamicWidget<TWSArticleCreationItemState<TModel>>(
+                      child: CSMDynamicWidget<TWSArticleCreatorItemState<TModel>>(
                         state: states[index],
-                        designer: (BuildContext ctx, TWSArticleCreationItemState<TModel> state) {
+                        designer: (BuildContext ctx, TWSArticleCreatorItemState<TModel> state) {
                           return Padding(
                             padding: const EdgeInsets.only(
                               top: 3,
                             ),
                             child: SizedBox(
                               width: creatorWidth,
-                              child: itemDesigner(state.model, currentActive),
+                              child: itemDesigner(state.model, currentActive, state.valid),
                             ),
                           );
                         },
