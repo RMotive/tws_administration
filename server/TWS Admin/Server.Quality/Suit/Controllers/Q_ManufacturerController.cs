@@ -59,11 +59,13 @@ public class Q_ManufacturerController
     public async void Create() {
         DateOnly date = new(2024, 10, 10);
 
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", new Manufacturer() {
+        Manufacturer mock = new() {
             Model = "X23",
             Brand = "SCANIA ctr T1",
             Year = date
-        }, true);
+        };
+
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create",mock, true);
 
         fact.Response.Estela.TryGetValue("Advise", out object? value);
         Assert.Null(value);

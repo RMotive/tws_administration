@@ -176,7 +176,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                   (Duration timeStamp) {
                                     setState(() {
                                       records = data.sets;
-                                      items = data.records;
+                                      items = data.amount;
                                       pages = data.pages;
                                     });
                                   },

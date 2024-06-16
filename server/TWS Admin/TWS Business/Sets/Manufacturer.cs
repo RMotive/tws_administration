@@ -11,4 +11,5 @@ public partial class Manufacturer
     public DateOnly Year { get; set; }
 
     public virtual ICollection<Truck> Trucks { get; set; } = [];
+
 }

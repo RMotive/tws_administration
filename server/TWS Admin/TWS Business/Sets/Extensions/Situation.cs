@@ -21,4 +21,6 @@ public partial class Situation
 
         return Container;
     }
+    public virtual ICollection<Truck>? Trucks { get; set; } = [];
+
 }
