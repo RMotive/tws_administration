@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/data/services/sources.dart';
 import 'package:tws_main/data/storages/session_storage.dart';
+import 'package:tws_main/view/articles/solutions/solutions_article.dart';
 import 'package:tws_main/view/frames/whisper/whisper_frame.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item_property.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creator.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
 import 'package:tws_main/view/widgets/tws_input_text.dart';
 
 final SolutionsServiceBase _solutionsService = Sources.administration.solutions;
@@ -27,17 +29,23 @@ final class SolutionsCreateWhisper extends CSMPageBase {
       child: TWSArticleCreator<Solution>(
         agent: creatorAgent,
         factory: () => Solution.a(),
+        afterClose: () {
+          print('no feedback catched');
+          SolutionsArticle.tableAgent.refresh();
+        },
         modelValidator: (Solution model) => model.evaluate().isEmpty,
         onCreate: (List<Solution> records) async {
           final String currentToken = _sessionStorage.getTokenStrict();
           MainResolver<MigrationTransactionResult<Solution>> resolver = await _solutionsService.create(records, currentToken);
-          try {
-            await resolver.act(const MigrationTransactionResultDecoder<Solution>(SolutionDecoder()));
-          } catch (x) {
-            print('error catched $x');
-            return 'Something have happened';
-          }
-          return 'Something have happened';
+          List<TWSArticleCreatorFeedback> feedbacks = <TWSArticleCreatorFeedback>[];
+          resolver.resolve(
+            decoder: const MigrationTransactionResultDecoder<Solution>(SolutionDecoder()),
+            onConnectionFailure: () {},
+            onException: (Object exception, StackTrace trace) {},
+            onFailure: (FailureFrame failure, int status) {},
+            onSuccess: (SuccessFrame<MigrationTransactionResult<Solution>> success) {},
+          );
+          return feedbacks;
         },
         formDesigner: (TWSArticleCreatorItemState<Solution>? itemState) {
           final bool formDisabled = !(itemState == null);

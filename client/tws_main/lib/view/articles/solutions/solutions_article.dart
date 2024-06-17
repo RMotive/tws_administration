@@ -14,12 +14,15 @@ import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_
 
 part 'options/solutions_article_table_adapter.dart';
 
+
+
 class SolutionsArticle extends CSMPageBase {
+  
+  static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
   const SolutionsArticle({super.key});
 
   @override
   Widget compose(BuildContext ctx, Size window) {
-    final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
 
     return SecurityFrame(
       currentRoute: TWSARoutes.solutionsArticle,

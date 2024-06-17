@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
 import 'package:tws_main/view/widgets/tws_section.dart';
 
 part 'tws_article_creator_state.dart';
 
 part 'records_stack/tes_article_creator_records_stack.dart';
+
+final CSMRouter _router = CSMRouter.i;
 
 const double _kPadding = 8;
 const double _kColWidthLimit = 300;
@@ -17,16 +20,18 @@ const double _kColWidthLimit = 300;
 final class TWSArticleCreator<TModel> extends StatefulWidget {
   final TModel Function() factory;
   final bool Function(TModel model)? modelValidator;
-  final FutureOr<String?> Function(List<TModel> records)? onCreate;
+  final FutureOr<List<TWSArticleCreatorFeedback>> Function(List<TModel> records)? onCreate;
   final Widget Function(TModel actualModel, bool selected, bool valid) itemDesigner;
   final Widget Function(TWSArticleCreatorItemState<TModel>? itemState) formDesigner;
   final TWSArticleCreatorAgent<TModel>? agent;
+  final VoidCallback? afterClose;
 
   const TWSArticleCreator({
     super.key,
     this.agent,
     this.onCreate,
     this.modelValidator,
+    this.afterClose,
     required this.factory,
     required this.itemDesigner,
     required this.formDesigner,
@@ -53,7 +58,7 @@ class _TWSArticleCreatorState<TModel> extends State<TWSArticleCreator<TModel>> {
   }
 
   void submitRecords() async {
-    FutureOr<String?> Function(List<TModel> models)? creator = widget.onCreate;
+    FutureOr<List<TWSArticleCreatorFeedback>> Function(List<TModel> models)? creator = widget.onCreate;
     bool Function(TModel)? validator = widget.modelValidator;
     if (creator == null) return;
     List<TModel> models = <TModel>[];
@@ -79,7 +84,11 @@ class _TWSArticleCreatorState<TModel> extends State<TWSArticleCreator<TModel>> {
       models = mainState.states.map((TWSArticleCreatorItemState<TModel> i) => i.model).toList();
     }
 
-    await creator(models);
+    List<TWSArticleCreatorFeedback> feedbacks = await creator(models);
+    if (feedbacks.isEmpty) {
+      _router.pop();
+      widget.afterClose?.call();
+    }
   }
 
   @override
