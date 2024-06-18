@@ -16,10 +16,13 @@ import 'package:tws_main/view/articles/solutions/whispers/solutions_create_whisp
 import 'package:tws_main/view/articles/trucks/Whispers/trucks_create_whisper.dart';
 import 'package:tws_main/view/articles/trucks/trucks_article.dart';
 import 'package:tws_main/view/layouts/master/master_layout.dart';
+import 'package:tws_main/view/pages/about/about_page.dart';
 import 'package:tws_main/view/pages/business/business_page.dart';
 import 'package:tws_main/view/pages/login/login_page.dart';
 import 'package:tws_main/view/pages/overview/overview_page.dart';
+import 'package:tws_main/view/pages/profile/profile_page.dart';
 import 'package:tws_main/view/pages/security/security_page.dart';
+import 'package:tws_main/view/pages/settings/settings_page.dart';
 
 typedef Routes = TWSARoutes;
 
@@ -53,6 +56,21 @@ class TWSARouteTree extends CSMRouterTreeBase {
                 CSMRouteNode(
                   Routes.overviewPage,
                   pageBuild: (_, __) => const OverviewPage(),
+                ),
+                // --> [About page]
+                 CSMRouteNode(
+                  Routes.about,
+                  pageBuild: (_, __) => const AboutPage(),
+                ),
+                // --> [Profile user page]
+                 CSMRouteNode(
+                  Routes.profile,
+                  pageBuild: (_, __) => const ProfilePage(),
+                ),
+                // --> [User settings page]
+                 CSMRouteNode(
+                  Routes.settings,
+                  pageBuild: (_, __) => const SettingsPage(),
                 ),
                 // --> [Security Page]
                 CSMRouteNode(

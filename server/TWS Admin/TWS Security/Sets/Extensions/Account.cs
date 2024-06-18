@@ -17,5 +17,4 @@ public partial class Account
 
         return Container;
     }
-    public virtual Contact? ContactNavigation { get; set; } = null!;
 }

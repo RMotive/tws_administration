@@ -66,11 +66,12 @@ public sealed class SessionsManager {
             Identity = session.Identity,
             Token = session.Token,
             Permits = session.Permits,
+            Contact = session.Contact
         };
         Sessions[position] = refreshed;
         return refreshed;
     }
-    public Session Subscribe(Credentials Credentials, bool Wildcard, Permit[] Permits) {
+    public Session Subscribe(Credentials Credentials, bool Wildcard, Permit[] Permits, Contact Contact) {
         Session? session = Clean(Credentials.Identity);
 
         if (session is not null)
@@ -82,6 +83,7 @@ public sealed class SessionsManager {
             Wildcard = Wildcard,
             Token = Tokenize(),
             Permits = Permits,
+            Contact = Contact
         };
         Sessions.Add(session);
         return session;

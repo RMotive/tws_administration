@@ -57,4 +57,10 @@ class SessionStorage {
 
     return now.isBefore(expLocal);
   }
+
+  void clearSession(){
+    _session = null;
+    _isSession = false;
+    localStorage.removeItem(_kSessionItemStoreKey);
+  }
 }

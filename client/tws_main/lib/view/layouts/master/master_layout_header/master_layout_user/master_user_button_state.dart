@@ -1,6 +1,7 @@
 
 part of '../../master_layout.dart';
 
+SessionStorage _sessionStorage = SessionStorage.i;
 
 bool _isHovered = false;
 const Duration _animationDuration = Duration(milliseconds: 100);
@@ -13,26 +14,18 @@ final List<_Options> _options = <_Options>[
   const _Options(
     title: 'Profile',
     icon: Icons.engineering, 
-    route: TWSARoutes.loginPage,
-    suffix: true
+    route: TWSARoutes.profile,
   ),
   const _Options(
     title: 'Settings',
     icon: Icons.settings, 
-    route: TWSARoutes.securityPage,
-    suffix: true
+    route: TWSARoutes.settings,
   ),
   const _Options(
     title: 'About',
     icon: Icons.more_vert, 
-    route: TWSARoutes.overviewPage,
-    suffix: true
-  ),
-  const _Options(
-    title: 'Log Out',
-    icon: Icons.logout, 
-    route: TWSARoutes.businessPage,
-  ),
+    route: TWSARoutes.about,
+  )
 ];
 
 final class _MasterUserButtonState extends CSMStateBase { 
@@ -48,7 +41,7 @@ final class _Options{
     required this.title,
     required this.icon,
     required this.route,
-    this.suffix = false
+    this.suffix = true
    }
   );
 }

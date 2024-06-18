@@ -103,7 +103,20 @@ class _ContentMenu extends StatelessWidget {
                       onTap: () {
                         onSelectOption(opt.route);
                       },
-                    )
+                    ),
+
+                    _MenuOption(
+                      options: const _Options(
+                        title: 'Log Out',
+                        icon: Icons.logout, 
+                        route: TWSARoutes.loginPage,
+                        suffix: false
+                      ),
+                      color: themeOptions.main, 
+                      onTap: (){
+                        onSelectOption(TWSARoutes.loginPage);
+                        _sessionStorage.clearSession();
+                      })
                   ],
                 ),
               )
