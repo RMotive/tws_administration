@@ -12,4 +12,9 @@ public partial class Account
     public byte[] Password { get; set; } = null!;
 
     public bool Wildcard { get; set; }
+
+    public int Contact { get; set; }
+
+    public virtual Contact ContactNavigation { get; set; } = null!;
+
 }

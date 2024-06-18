@@ -7,7 +7,7 @@ using Customer.Shared.Exceptions;
 
 using Foundation.Migration.Enumerators;
 using Foundation.Migrations.Records;
-
+using Microsoft.EntityFrameworkCore;
 using TWS_Security.Depots;
 using TWS_Security.Sets;
 
@@ -24,7 +24,27 @@ public class SecurityService
     }
 
     public async Task<Session> Authenticate(Credentials Credentials) {
-        MigrationTransactionResult<Account> result = await Accounts.Read(i => i.User == Credentials.Identity, MigrationReadBehavior.First);
+        Func<IQueryable<Account>, IQueryable<Account>> include = query => query
+        .Include(c => c.ContactNavigation)
+        .Select(a => new Account() {
+            Id = a.Id,
+            User = a.User,
+            Password = a.Password,
+            Wildcard = a.Wildcard,
+            Contact = a.Contact,
+            ContactNavigation = new Contact() {
+                Id = a.ContactNavigation.Id,
+                Name = a.ContactNavigation.Name,
+                Lastname = a.ContactNavigation.Lastname,
+                Email = a.ContactNavigation.Email,
+                Phone = a.ContactNavigation.Phone
+            },
+           
+
+        })
+        ;
+
+        MigrationTransactionResult<Account> result = await Accounts.Read(i => i.User == Credentials.Identity, MigrationReadBehavior.First, include);
         if (result.Failed)
             throw new XMigrationTransaction(result.Failures);
 
@@ -36,7 +56,7 @@ public class SecurityService
             throw new XAuthenticate(XAuthenticateSituation.Password);
 
         Permit[] permits = await Accounts.GetPermits(account.Id);
-        Session session = Sessions.Subscribe(Credentials, account.Wildcard, permits);
+        Session session = Sessions.Subscribe(Credentials, account.Wildcard, permits, account.ContactNavigation);
 
         return session;
     }

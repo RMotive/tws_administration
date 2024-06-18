@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TWS Business", "TWS Busines
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TWS Business", "TWS Business\TWS Business.csproj", "{593104FE-D9C3-4391-845D-9F9E21CFCB69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWS Business.Quality", "TWS Business.Quality\TWS Business.Quality.csproj", "{ADEE39EA-2779-4AFF-9EA6-10AC8CF40981}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TWS Business.Quality", "TWS Business.Quality\TWS Business.Quality.csproj", "{ADEE39EA-2779-4AFF-9EA6-10AC8CF40981}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TWS Security.Quality", "TWS Security.Quality\TWS Security.Quality.csproj", "{AF4AA50B-A9B3-4CAC-A4A5-DCC43712EFED}"
 EndProject

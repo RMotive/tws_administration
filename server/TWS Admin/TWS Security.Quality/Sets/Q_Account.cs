@@ -14,6 +14,7 @@ public class Q_Account
                 User = "Q_User",
                 Wildcard = true,
                 Password = [1, 2, 3],
+                Contact = 0
             },
             Expectations = [],
         };
@@ -23,6 +24,8 @@ public class Q_Account
                 (nameof(Account.Id), [(new PointerValidator(), 3)]),
                 (nameof(Account.User), [(new RequiredValidator(), 1)]),
                 (nameof(Account.Password), [(new RequiredValidator(), 1)]),
+                (nameof(Account.Contact), [(new PointerValidator(true), 3)]),
+
             ],
         };
 

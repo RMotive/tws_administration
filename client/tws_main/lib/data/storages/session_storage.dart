@@ -65,4 +65,10 @@ class SessionStorage {
     CSMRouter.i.drive(TWSARoutes.loginPage);
     throw 'Removing token storages and leading to landing page';
   }
+
+  void clearSession() {
+    localStorage.removeItem(_kSessionItemStoreKey);
+    _session = null;
+    _isSession = false;
+  }
 }

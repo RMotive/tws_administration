@@ -181,8 +181,11 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     #endregion
 
     #region Read interface
-    public async Task<MigrationTransactionResult<TMigrationSet>> Read(Expression<Func<TMigrationSet, bool>> Predicate, MigrationReadBehavior Behavior) {
+    public async Task<MigrationTransactionResult<TMigrationSet>> Read(Expression<Func<TMigrationSet, bool>> Predicate, MigrationReadBehavior Behavior, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? Include = null) {
         IQueryable<TMigrationSet> query = Set.Where(Predicate);
+        
+        if (Include != null)
+            query = Include(query);
 
         if (!query.Any())
             return new MigrationTransactionResult<TMigrationSet>([], []);
