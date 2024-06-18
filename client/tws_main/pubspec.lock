@@ -55,10 +55,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "2041f0783a14d286316d2f0ef3857a3f65f31389"
+      resolved-ref: d4eacecd8cfcad7b11be7ac1fe9e0908db0d0924
       url: "https://github.com/RMotive/csm_foundation_view"
     source: git
-    version: "2.2.1"
+    version: "2.3.0"
   fake_async:
     dependency: transitive
     description:
@@ -214,10 +214,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "9c96da072b421e98183f9ea7464898428e764bc0ce5567f27ec8693442e72514"
+      sha256: bca87b0165ffd7cdb9cad8edd22d18d2201e886d9a9f19b4fb3452ea7df3a72a
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.5"
+    version: "2.2.6"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -324,10 +324,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "321d448de9f24c545fa860bff3d8bff995e564bd"
+      resolved-ref: cea4b3c3920270cbd7011c1a4d27e43cd96c7a7d
       url: "https://github.com/RMotive/tws_administration_service"
     source: git
-    version: "1.1.1"
+    version: "1.1.2"
   typed_data:
     dependency: transitive
     description:

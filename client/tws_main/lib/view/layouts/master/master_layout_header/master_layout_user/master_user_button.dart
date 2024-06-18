@@ -1,13 +1,17 @@
-
 part of '../../master_layout.dart';
 
 typedef _State = _MasterUserButtonState;
 
 class MasterUserButton extends StatelessWidget {
+  /// [width] Button width on non-selected state.
   final double width;
+  /// [height] Button heigth. 
   final double height;
+  /// [menuWidth] Overlay menu Width. Main button will expand to this size when is selected.
   final double menuWidth;
+  /// [menuHeight] Overlay menu height.
   final double menuHeight;
+  /// [themeOptions] Component color theme. 
   final CSMColorThemeOptions themeOptions;
 
   const MasterUserButton({
@@ -26,6 +30,7 @@ class MasterUserButton extends StatelessWidget {
       designer: (BuildContext ctx, _State state) {
         return Tooltip(
           message: "Account Options",
+          // [MouseRegion] for catch Hover events.
           child: MouseRegion(
             onEnter: (PointerEnterEvent event) {
               _isHovered = true;
@@ -35,6 +40,7 @@ class MasterUserButton extends StatelessWidget {
               _isHovered = false;
               state.effect();
             },
+            // Overlay Menu
             child: OverlayPortal(
               overlayChildBuilder: (_) {
                 return Positioned(
@@ -42,7 +48,8 @@ class MasterUserButton extends StatelessWidget {
                   right: 12,
                   child: TapRegion(
                     onTapOutside: (_) {
-                      if(!_isHovered){
+                      // check if the tap event occurs outside the widget component.
+                      if (!_isHovered) {
                         state._overlayController.hide();
                         state.effect();
                       }
@@ -51,7 +58,7 @@ class MasterUserButton extends StatelessWidget {
                       width: menuWidth,
                       height: menuHeight,
                       themeOptions: themeOptions,
-                      onSelectOption: (CSMRouteOptions  selectedRoute) {
+                      onSelectOption: (CSMRouteOptions selectedRoute) {
                         _routeDriver.drive(selectedRoute);
                         state._overlayController.hide();
                         state.effect();
@@ -61,27 +68,30 @@ class MasterUserButton extends StatelessWidget {
                 );
               },
               controller: state._overlayController,
+              // [TapRegion] Catch header user button [OnTap] events.
               child: TapRegion(
                 onTapInside: (_) {
                   state._overlayController.toggle();
-                  state.effect();                 
+                  state.effect();
                 },
                 child: AnimatedContainer(
                   duration: _animationDuration,
                   height: height,
-                  width:state. _overlayController.isShowing
-                      ? menuWidth
-                      : width,
+                  width: state._overlayController.isShowing ? menuWidth : width,
                   decoration: BoxDecoration(
-                      color: _isHovered? themeOptions.fore :themeOptions.hightlightAlt ?? Colors.white,
-                      borderRadius: state._overlayController.isShowing? BorderRadius.circular(10) : BorderRadius.circular(30)), 
+                      color: _isHovered
+                          ? themeOptions.fore
+                          : themeOptions.hightlightAlt ?? Colors.white,
+                      borderRadius: state._overlayController.isShowing
+                          ? BorderRadius.circular(10)
+                          : BorderRadius.circular(30)),
                   child: Center(
-                      child: Text(
-                    "EPG",
-                    style: TextStyle(
-                        color: themeOptions.main
-                      ),
-                  )),
+                    // Main header user button content.
+                    child: Text(
+                      _getInitials(),
+                      style: TextStyle(color: themeOptions.main),
+                    )
+                  ),
                 ),
               ),
             ),

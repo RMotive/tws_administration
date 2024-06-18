@@ -59,8 +59,8 @@ class SessionStorage {
   }
 
   void clearSession(){
+    localStorage.removeItem(_kSessionItemStoreKey);
     _session = null;
     _isSession = false;
-    localStorage.removeItem(_kSessionItemStoreKey);
   }
 }
