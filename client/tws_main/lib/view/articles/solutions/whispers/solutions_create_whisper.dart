@@ -17,7 +17,7 @@ final class SolutionsCreateWhisper extends CSMPageBase {
       title: 'Create solutions',
       trigger: () {},
       child: TWSArticleCreator<Solution>(
-        factory: () => const Solution('', '', null),
+        factory: () => Solution(1, '','',null),
         formDesigner: (TWSArticleCreationItemState<Solution>? itemState) {
           final bool formDisabled = !(itemState == null);
 
@@ -36,7 +36,7 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                         controller: TextEditingController(text: itemState?.model.name),
                         onChanged: (String newText) {
                           Solution model = itemState!.model;
-                          itemState.updateModelRedrawing(Solution(newText, model.sign, model.description));
+                          itemState.updateModelRedrawing(Solution(1 ,newText, model.sign, model.description));
                         },
                         isEnabled: formDisabled,
                       ),
@@ -47,7 +47,7 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                         controller: TextEditingController(text: itemState?.model.sign),
                         onChanged: (String newValue) {
                           Solution model = itemState!.model;
-                          itemState.updateModelRedrawing(Solution(model.name, newValue, model.description));
+                          itemState.updateModelRedrawing(Solution(1,model.name, newValue, model.description));
                         },
                         maxLength: 5,
                         isEnabled: formDisabled,
@@ -61,7 +61,7 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                   controller: TextEditingController(text: itemState?.model.description),
                   onChanged: (String newText) {
                     Solution model = itemState!.model;
-                    itemState.updateModelRedrawing(Solution(model.name, model.sign, newText.isEmpty ? null : newText));
+                    itemState.updateModelRedrawing(Solution(1, model.name, model.sign, newText.isEmpty ? null : newText));
                   },
                   isEnabled: formDisabled,
                   maxLines: null,

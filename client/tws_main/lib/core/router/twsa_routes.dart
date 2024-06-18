@@ -12,6 +12,10 @@ class TWSARoutes {
   static const CSMRouteOptions securityPage = CSMRouteOptions('security');
   static const CSMRouteOptions businessPage = CSMRouteOptions('business');
 
+  static const CSMRouteOptions settings = CSMRouteOptions('settings');
+  static const CSMRouteOptions profile = CSMRouteOptions('profile');
+  static const CSMRouteOptions about = CSMRouteOptions('about');
+
   static const CSMRouteOptions featuresArticle = CSMRouteOptions('features');
   static const CSMRouteOptions featuresCreateWhisper = CSMRouteOptions('create');
 
@@ -30,14 +34,12 @@ class TWSARoutes {
   static const CSMRouteOptions platesViewWhisper = CSMRouteOptions(name: 'plates-view', 'view');
   static const CSMRouteOptions platesCreateWhisper = CSMRouteOptions(name: 'plates-create', 'create');
 
-
   static const CSMRouteOptions insuranceArticle = CSMRouteOptions('insurances');
   static const CSMRouteOptions insuranceViewWhisper = CSMRouteOptions(name: 'insurances-view', 'view');
 
   static const CSMRouteOptions maintencesArticle = CSMRouteOptions('mainteneces');
   static const CSMRouteOptions maintenecesViewWhisper = CSMRouteOptions(name: 'maintenences-view', 'view');
 
- 
   static const CSMRouteOptions sctsArticle = CSMRouteOptions('scts');
   static const CSMRouteOptions sctsViewWhisper = CSMRouteOptions(name: 'scts-view', 'view');
 

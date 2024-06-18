@@ -11,6 +11,8 @@ public partial class Account
                 ..Container,
                 (nameof(User), [ new UniqueValidator(), new RequiredValidator() ]),
                 (nameof(Password), [ new RequiredValidator() ]),
+                (nameof(Contact), [new PointerValidator(true)]),
+
             ];
 
         return Container;

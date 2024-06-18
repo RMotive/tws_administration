@@ -7,4 +7,5 @@ public record Session {
     required public string Identity { get; init; }
     required public bool Wildcard { get; init; }
     required public Permit[] Permits { get; init; }
+    required public Contact Contact { get; init; }
 }
