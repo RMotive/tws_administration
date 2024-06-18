@@ -1,5 +1,6 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 final class TwsArticleCreationStackItemProperty extends StatelessWidget {
   final String label;
@@ -29,7 +30,12 @@ final class TwsArticleCreationStackItemProperty extends StatelessWidget {
         spacing: 6,
         children: <Widget>[
           Text('$label:'),
-          Text(val),
+          Text(
+            val,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );

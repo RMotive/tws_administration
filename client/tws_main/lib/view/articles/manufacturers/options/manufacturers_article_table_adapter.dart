@@ -9,7 +9,7 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<Manufacturer> {
   Future<MigrationView<Manufacturer>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) async {
     final MigrationViewOptions options = MigrationViewOptions(null, orderings, page, range, false);
     String auth = _sessionStorage.session!.token;
-    MainResolver<MigrationView<Manufacturer>> resolver = await administration.manufacturers.view(options, auth);
+    MainResolver<MigrationView<Manufacturer>> resolver = await Sources.administration.manufacturers.view(options, auth);
 
     MigrationView<Manufacturer> view = await resolver.act(const MigrationViewDecode<Manufacturer>(ManufacturerDecoder())).catchError(
       (Object x, StackTrace s) {

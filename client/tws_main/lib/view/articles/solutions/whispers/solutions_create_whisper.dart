@@ -1,24 +1,53 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
+import 'package:tws_main/data/services/sources.dart';
+import 'package:tws_main/data/storages/session_storage.dart';
+import 'package:tws_main/view/articles/solutions/solutions_article.dart';
 import 'package:tws_main/view/frames/whisper/whisper_frame.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creation_stack_item.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creation_stack_item_property.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item_property.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/tws_article_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creator.dart';
+import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
 import 'package:tws_main/view/widgets/tws_input_text.dart';
+
+final SolutionsServiceBase _solutionsService = Sources.administration.solutions;
+final SessionStorage _sessionStorage = SessionStorage.i;
 
 final class SolutionsCreateWhisper extends CSMPageBase {
   const SolutionsCreateWhisper({super.key});
 
   @override
   Widget compose(BuildContext ctx, Size window) {
+    final TWSArticleCreatorAgent<Solution> creatorAgent = TWSArticleCreatorAgent<Solution>();
+
     return WhisperFrame(
       title: 'Create solutions',
-      trigger: () {},
+      trigger: creatorAgent.create,
       child: TWSArticleCreator<Solution>(
-        factory: () => Solution(1, '','',null),
-        formDesigner: (TWSArticleCreationItemState<Solution>? itemState) {
+        agent: creatorAgent,
+        factory: () => Solution.a(),
+        afterClose: () {
+          print('no feedback catched');
+          SolutionsArticle.tableAgent.refresh();
+        },
+        modelValidator: (Solution model) => model.evaluate().isEmpty,
+        onCreate: (List<Solution> records) async {
+          final String currentToken = _sessionStorage.getTokenStrict();
+          MainResolver<MigrationTransactionResult<Solution>> resolver = await _solutionsService.create(records, currentToken);
+          List<TWSArticleCreatorFeedback> feedbacks = <TWSArticleCreatorFeedback>[];
+          resolver.resolve(
+            decoder: const MigrationTransactionResultDecoder<Solution>(SolutionDecoder()),
+            onConnectionFailure: () {},
+            onException: (Object exception, StackTrace trace) {},
+            onFailure: (FailureFrame failure, int status) {},
+            onSuccess: (SuccessFrame<MigrationTransactionResult<Solution>> success) {},
+          );
+          return feedbacks;
+        },
+        formDesigner: (TWSArticleCreatorItemState<Solution>? itemState) {
           final bool formDisabled = !(itemState == null);
 
           return Padding(
@@ -34,9 +63,13 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                       child: TWSInputText(
                         label: 'Name',
                         controller: TextEditingController(text: itemState?.model.name),
-                        onChanged: (String newText) {
+                        onChanged: (String text) {
                           Solution model = itemState!.model;
-                          itemState.updateModelRedrawing(Solution(1 ,newText, model.sign, model.description));
+                          itemState.updateModelRedrawing(
+                            model.clone(
+                              name: text,
+                            ),
+                          );
                         },
                         isEnabled: formDisabled,
                       ),
@@ -45,9 +78,13 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                       child: TWSInputText(
                         label: 'Sign',
                         controller: TextEditingController(text: itemState?.model.sign),
-                        onChanged: (String newValue) {
+                        onChanged: (String text) {
                           Solution model = itemState!.model;
-                          itemState.updateModelRedrawing(Solution(1,model.name, newValue, model.description));
+                          itemState.updateModelRedrawing(
+                            model.clone(
+                              sign: text,
+                            ),
+                          );
                         },
                         maxLength: 5,
                         isEnabled: formDisabled,
@@ -59,9 +96,13 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                   label: 'Description',
                   height: 150,
                   controller: TextEditingController(text: itemState?.model.description),
-                  onChanged: (String newText) {
+                  onChanged: (String text) {
                     Solution model = itemState!.model;
-                    itemState.updateModelRedrawing(Solution(1, model.name, model.sign, newText.isEmpty ? null : newText));
+                    itemState.updateModelRedrawing(
+                      model.clone(
+                        description: text.isEmpty ? null : text,
+                      ),
+                    );
                   },
                   isEnabled: formDisabled,
                   maxLines: null,
@@ -70,9 +111,10 @@ final class SolutionsCreateWhisper extends CSMPageBase {
             ),
           );
         },
-        itemDesigner: (Solution actualModel, bool isSelected) {
+        itemDesigner: (Solution actualModel, bool selected, bool valid) {
           return TWSArticleCreationStackItem(
-            isSelected: isSelected,
+            selected: selected,
+            valid: valid,
             properties: <TwsArticleCreationStackItemProperty>[
               TwsArticleCreationStackItemProperty(
                 label: 'Name',
