@@ -56,10 +56,8 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: d4eacecd8cfcad7b11be7ac1fe9e0908db0d0924
-      resolved-ref: d4eacecd8cfcad7b11be7ac1fe9e0908db0d0924
       url: "https://github.com/RMotive/csm_foundation_view"
     source: git
-    version: "2.3.0"
     version: "2.3.0"
   fake_async:
     dependency: transitive
@@ -326,7 +324,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "1dc1eef8efa2b7dcfd0dd23104c6cd6924978acc"
+      resolved-ref: cea4b3c3920270cbd7011c1a4d27e43cd96c7a7d
       url: "https://github.com/RMotive/tws_administration_service"
     source: git
     version: "1.1.2"
