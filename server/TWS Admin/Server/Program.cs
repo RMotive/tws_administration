@@ -79,10 +79,12 @@ public partial class Program {
 
             // --> Adding customer services
             {
-                builder.Services.AddSingleton<IManufacturersService>(new ManufacturersService(new()));
-                builder.Services.AddSingleton(Disposer);
                 builder.Services.AddTransient<ISolutionsService>((IServiceProvider sp) => new SolutionsService(new(Disposer.Push)));
                 builder.Services.AddTransient<ISecurityService>((SP) => new SecurityService(new(Disposer.Push)));
+
+                builder.Services.AddSingleton(Disposer);
+
+                builder.Services.AddSingleton<IManufacturersService>(new ManufacturersService(new()));
                 builder.Services.AddSingleton<IInsurancesService>(new InsuranceService(new()));
                 builder.Services.AddSingleton<IMaintenancesService>(new MaintenanceService(new()));
                 builder.Services.AddSingleton<ISctService>(new SctService(new()));

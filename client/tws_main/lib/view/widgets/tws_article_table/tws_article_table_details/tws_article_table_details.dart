@@ -5,12 +5,8 @@ final class _TWSArticleTableDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ColoredBox(
+    return Container(
       color: Colors.red,
-      child: SizedBox(
-        width: 200,
-        height: 100,
-      ),
     );
   }
 }
