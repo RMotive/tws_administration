@@ -37,13 +37,12 @@ class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidge
 }
 
 class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<TWSArticleTable<TArticle>> with SingleTickerProviderStateMixin {
-  static const double _pagingHeight = 50;
-  static const double _minFieldWidth = 200;
-  static const double _detailsWidth = 400;
+  static const double _kPagingHeight = 50;
+  static const double _kMinFieldWidth = 200;
+  static const double _kDetailsWidth = 400;
 
   late Future<MigrationView<TArticle>> Function() consume;
   late AnimationController detailsAnimationController;
-  late Animation<double> detailsAnimation;
 
   final CSMConsumerAgent agent = CSMConsumerAgent();
 
@@ -79,10 +78,6 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     records = <TArticle>[];
     consume = () => adapter.consume(page, size, <MigrationViewOrderOptions>[]);
     detailsAnimationController = AnimationController(vsync: this, duration: 200.miliseconds);
-    detailsAnimation = Tween<double>(
-      begin: 0,
-      end: 400,
-    ).animate(detailsAnimationController);
     widget.agent?.addListener(agent.refresh);
     super.initState();
   }
@@ -130,127 +125,134 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
             height: constrains.minHeight,
           );
         }
+
         final Size viewSize = pageBounds.biggest;
-        final bool detailsFullDisplay = viewSize.width <= (_detailsWidth * 2);
+        final bool detailsFullDisplay = viewSize.width <= (_kDetailsWidth * 2);
+        final Animation<double> detailsDisplayAnimation = Tween<double>(
+          begin: 0,
+          end: detailsFullDisplay ? viewSize.width : _kDetailsWidth,
+        ).animate(detailsAnimationController);
 
         return SizedBox(
           width: viewSize.width,
           child: AnimatedBuilder(
-            animation: detailsAnimation,
+            animation: detailsDisplayAnimation,
             builder: (_, __) {
-              final double animationComputationValue = viewSize.width - detailsAnimation.value;
+              final double animationComputationValue = viewSize.width - detailsDisplayAnimation.value;
               final double cellWidth = animationComputationValue / widget.fields.length;
 
               return Stack(
                 children: <Widget>[
                   // --> Table
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // --> Table content
-                      Expanded(
-                        child: DecoratedBox(
-                          decoration: const BoxDecoration(
-                            border: Border.fromBorderSide(
-                              BorderSide(
-                                width: 2,
-                                color: Colors.blueGrey,
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: animationComputationValue,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // --> Table content
+                        Expanded(
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                              border: Border.fromBorderSide(
+                                BorderSide(
+                                  width: 2,
+                                  color: Colors.blueGrey,
+                                ),
+                              ),
+                            ),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // Table header draw
+                                  _TWSArticleTableHeader<TArticle>(
+                                    fields: widget.fields,
+                                    minFieldWidth: _kMinFieldWidth,
+                                    fieldWidth: cellWidth,
+                                  ),
+                                  // --> Table items
+                                  Expanded(
+                                    child: CSMConsumer<MigrationView<TArticle>>(
+                                      consume: consume,
+                                      agent: agent,
+                                      emptyCheck: (MigrationView<TArticle> data) => data.sets.isEmpty,
+                                      loadingBuilder: (_) => const _TWSArticleTableLoading(),
+                                      errorBuilder: (_, __, ___) => const _TWSArticleTableError(),
+                                      successBuilder: (_, MigrationView<TArticle> data) {
+                                        _checkPagingChanges(data);
+
+                                        return SizedBox(
+                                          height: pageBounds.maxHeight - 100,
+                                          child: Column(
+                                            children: List<Widget>.generate(
+                                              data.sets.length,
+                                              (int index) {
+                                                return CSMPointerHandler(
+                                                  cursor: SystemMouseCursors.click,
+                                                  onClick: () => _onRecordClicked(index, data.sets[index]),
+                                                  child: DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                      color: selected?.$1 == index ? Colors.blueGrey : Colors.transparent,
+                                                    ),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        for (TWSArticleTableFieldOptions<TArticle> field in widget.fields)
+                                                          ConstrainedBox(
+                                                            constraints: const BoxConstraints(
+                                                              minWidth: _kMinFieldWidth,
+                                                            ),
+                                                            child: SizedBox(
+                                                              width: cellWidth,
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.symmetric(
+                                                                  vertical: 6,
+                                                                  horizontal: 8,
+                                                                ),
+                                                                child: Builder(builder: (BuildContext context) {
+                                                                  final String cellValue = field.factory(data.sets[index], index, context);
+                                                                  final Widget textWidget = Text(
+                                                                    cellValue,
+                                                                    maxLines: 2,
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                  );
+
+                                                                  if (!field.tip) {
+                                                                    return textWidget;
+                                                                  }
+                                                                  return Tooltip(
+                                                                    message: cellValue,
+                                                                    child: textWidget,
+                                                                  );
+                                                                }),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                // Table header draw
-                                _TWSArticleTableHeader<TArticle>(
-                                  fields: widget.fields,
-                                  minFieldWidth: _minFieldWidth,
-                                  fieldWidth: cellWidth,
-                                ),
-                                // --> Table items
-                                Expanded(
-                                  child: CSMConsumer<MigrationView<TArticle>>(
-                                    consume: consume,
-                                    agent: agent,
-                                    emptyCheck: (MigrationView<TArticle> data) => data.sets.isEmpty,
-                                    loadingBuilder: (_) => const _TWSArticleTableLoading(),
-                                    errorBuilder: (_, __, ___) => const _TWSArticleTableError(),
-                                    successBuilder: (_, MigrationView<TArticle> data) {
-                                      _checkPagingChanges(data);
-                  
-                                      return SizedBox(
-                                        height: pageBounds.maxHeight - 100,
-                                        child: Column(
-                                          children: List<Widget>.generate(
-                                            data.sets.length,
-                                            (int index) {
-                                              return CSMPointerHandler(
-                                                cursor: SystemMouseCursors.click,
-                                                onClick: () => _onRecordClicked(index, data.sets[index]),
-                                                child: DecoratedBox(
-                                                  decoration: BoxDecoration(
-                                                    color: selected?.$1 == index ? Colors.blueGrey : Colors.transparent,
-                                                  ),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      for (TWSArticleTableFieldOptions<TArticle> field in widget.fields)
-                                                        ConstrainedBox(
-                                                          constraints: const BoxConstraints(
-                                                            minWidth: _minFieldWidth,
-                                                          ),
-                                                          child: SizedBox(
-                                                            width: cellWidth,
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.symmetric(
-                                                                vertical: 6,
-                                                                horizontal: 8,
-                                                              ),
-                                                              child: Builder(builder: (BuildContext context) {
-                                                                final String cellValue = field.factory(data.sets[index], index, context);
-                                                                final Widget textWidget = Text(
-                                                                  cellValue,
-                                                                  maxLines: 2,
-                                                                  overflow: TextOverflow.ellipsis,
-                                                                );
-
-                                                                if (!field.tip) {
-                                                                  return textWidget;
-                                                                }
-                                                                return Tooltip(
-                                                                  message: cellValue,
-                                                                  child: textWidget,
-                                                                );
-                                                              }),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+                        ),
+                        // --> Paging selection
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minWidth: animationComputationValue,
                           ),
-                        ),
-                      ),
-                      // --> Paging selection
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minWidth: animationComputationValue,
-                        ),
-                        child: ColoredBox(
-                          color: Colors.red,
                           child: SizedBox(
-                            height: _pagingHeight,
+                            height: _kPagingHeight,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
@@ -266,17 +268,20 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   // --> Item detail
                   Positioned(
                     left: animationComputationValue,
-                    width: detailsFullDisplay ? viewSize.width : _detailsWidth,
+                    width: detailsFullDisplay ? viewSize.width : _kDetailsWidth,
                     height: viewSize.height,
-                    child: const Visibility(
-                      visible: true,
-                      child: _TWSArticleTableDetails(),
+                    child: _TWSArticleTableDetails(
+                      closeAction: () {
+                        if (selected != null) {
+                          _onRecordClicked(selected!.$1, selected!.$2);
+                        }
+                      },
                     ),
                   ),
                 ],
