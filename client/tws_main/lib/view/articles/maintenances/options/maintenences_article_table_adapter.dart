@@ -2,7 +2,7 @@ part of '../maintenences_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableDataAdapter<Maintenance> {
+final class _TableAdapter implements TWSArticleTableAdapter<Maintenance> {
   const _TableAdapter();
 
   @override
@@ -19,4 +19,17 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<Maintenance> {
     );
     return view;
   }
+  
+  @override
+  Widget? composeEditor(Maintenance set, BuildContext context) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget composeViewer(Maintenance set, BuildContext context) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void onRemoveRequest(Maintenance set, BuildContext context) {}
 }

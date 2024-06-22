@@ -10,39 +10,26 @@ class _ArticlesDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 8,
-      ),
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          border: Border.fromBorderSide(
-            BorderSide(
-              color: Colors.white24,
-              width: 2,
-            ),
-          ),
-        ),
-        child: SizedBox(
-          width: double.maxFinite,
-          child: Stack(
-            children: <Widget>[
-              // --> Watermark display
-              const Center(
-                child: Opacity(
-                  opacity: .2,
-                  child: Image(
-                    image: AssetImage(
-                      TWSAAssets.fullLogoWhitePng,
-                    ),
-                    width: 325,
+    return TWSFrameDecoration(
+      child: SizedBox(
+        width: double.maxFinite,
+        child: Stack(
+          children: <Widget>[
+            // --> Watermark display
+            const Center(
+              child: Opacity(
+                opacity: .2,
+                child: Image(
+                  image: AssetImage(
+                    TWSAAssets.fullLogoWhitePng,
                   ),
+                  width: 325,
                 ),
               ),
-              // --> Article display
-              if (article != null) article!,
-            ],
-          ),
+            ),
+            // --> Article display
+            if (article != null) article!,
+          ],
         ),
       ),
     );

@@ -2,7 +2,7 @@ part of '../scts_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableDataAdapter<SCT> {
+final class _TableAdapter implements TWSArticleTableAdapter<SCT> {
   const _TableAdapter();
 
   @override
@@ -18,5 +18,22 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<SCT> {
       },
     );
     return view;
+  }
+  
+  @override
+  Widget? composeEditor(SCT set, BuildContext context) {
+    // TODO: implement composeEditor
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget composeViewer(SCT set, BuildContext context) {
+    // TODO: implement composeViewer
+    throw UnimplementedError();
+  }
+
+  @override
+  void onRemoveRequest(SCT set, BuildContext context) {
+    // TODO: implement onRemoveRequest
   }
 }

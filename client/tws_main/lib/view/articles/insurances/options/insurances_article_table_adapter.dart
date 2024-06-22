@@ -2,7 +2,7 @@ part of '../insurances_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableDataAdapter<Insurance> {
+final class _TableAdapter implements TWSArticleTableAdapter<Insurance> {
   const _TableAdapter();
 
   @override
@@ -19,4 +19,17 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<Insurance> {
     );
     return view;
   }
+  
+  @override
+  Widget? composeEditor(Insurance set, BuildContext context) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget composeViewer(Insurance set, BuildContext context) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void onRemoveRequest(Insurance set, BuildContext context) {}
 }

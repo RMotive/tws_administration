@@ -2,7 +2,7 @@ part of '../solutions_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableDataAdapter<Solution> {
+final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
   const _TableAdapter();
 
   @override
@@ -19,4 +19,34 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<Solution> {
     );
     return view;
   }
+
+  @override
+  Widget composeViewer(Solution set, BuildContext context) {
+    return SizedBox.expand(
+      child: CSMSpacingColumn(
+        spacing: 12,
+        crossAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TWSPropertyViewer(
+            label: 'Sign',
+            value: set.sign,
+          ),
+          TWSPropertyViewer(
+            label: 'Name',
+            value: set.name,
+          ),
+          TWSPropertyViewer(
+            label: 'Description',
+            value: set.description,
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget? composeEditor(Solution set, BuildContext context) => null;
+
+  @override
+  void onRemoveRequest(Solution set, BuildContext context) {}
 }

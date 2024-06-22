@@ -3,20 +3,24 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/core/constants/twsa_colors.dart';
+import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_adapter.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_agent.dart';
-import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_data_adapter.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 import 'package:tws_main/view/widgets/tws_display_flat.dart';
+import 'package:tws_main/view/widgets/tws_frame_decoration.dart';
 import 'package:tws_main/view/widgets/tws_paging_selector.dart';
 
 part 'tws_article_table_details/tws_article_table_details.dart';
+part 'tws_article_table_details/tws_article_table_details_action.dart';
+
+part 'tws_article_table_error.dart';
 part 'tws_article_table_header/tws_article_table_header.dart';
 part 'tws_article_table_loading.dart';
-part 'tws_article_table_error.dart';
 
 class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidget {
   final List<TWSArticleTableFieldOptions<TArticle>> fields;
-  final TWSArticleTableDataAdapter<TArticle> adapter;
+  final TWSArticleTableAdapter<TArticle> adapter;
   final TWSArticleTableAgent? agent;
   final int page;
   final int size;
@@ -46,7 +50,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
 
   final CSMConsumerAgent agent = CSMConsumerAgent();
 
-  late final TWSArticleTableDataAdapter<TArticle> adapter;
+  late final TWSArticleTableAdapter<TArticle> adapter;
 
   // --> State resources
   late (int index, TArticle item)? selected;
@@ -89,7 +93,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     super.dispose();
   }
 
-  void _checkPagingChanges(MigrationView<TArticle> data) {
+  void _updatePagingChanges(MigrationView<TArticle> data) {
     if (items != data.amount || pages != data.pages || records != data.sets) {
       WidgetsBinding.instance.addPostFrameCallback(
         (Duration timeStamp) {
@@ -103,7 +107,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     }
   }
 
-  void _onRecordClicked(int index, TArticle set) {
+  void _selectRecord(int index, TArticle set) {
     setState(() {
       if (selected?.$1 == index) {
         selected = null;
@@ -146,7 +150,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                   // --> Table
                   ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxWidth: animationComputationValue,
+                      maxWidth: detailsFullDisplay ? viewSize.width : animationComputationValue,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,7 +171,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  // Table header draw
+                                  // --> Table header draw
                                   _TWSArticleTableHeader<TArticle>(
                                     fields: widget.fields,
                                     minFieldWidth: _kMinFieldWidth,
@@ -182,7 +186,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                       loadingBuilder: (_) => const _TWSArticleTableLoading(),
                                       errorBuilder: (_, __, ___) => const _TWSArticleTableError(),
                                       successBuilder: (_, MigrationView<TArticle> data) {
-                                        _checkPagingChanges(data);
+                                        _updatePagingChanges(data);
 
                                         return SizedBox(
                                           height: pageBounds.maxHeight - 100,
@@ -192,7 +196,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                               (int index) {
                                                 return CSMPointerHandler(
                                                   cursor: SystemMouseCursors.click,
-                                                  onClick: () => _onRecordClicked(index, data.sets[index]),
+                                                  onClick: () => _selectRecord(index, data.sets[index]),
                                                   child: DecoratedBox(
                                                     decoration: BoxDecoration(
                                                       color: selected?.$1 == index ? Colors.blueGrey : Colors.transparent,
@@ -272,14 +276,17 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                     ),
                   ),
                   // --> Item detail
+                  if (selected != null)
                   Positioned(
                     left: animationComputationValue,
                     width: detailsFullDisplay ? viewSize.width : _kDetailsWidth,
                     height: viewSize.height,
-                    child: _TWSArticleTableDetails(
+                      child: _TWSArticleTableDetails<TArticle>(
+                        adapter: widget.adapter,
+                        record: selected!.$2,
                       closeAction: () {
                         if (selected != null) {
-                          _onRecordClicked(selected!.$1, selected!.$2);
+                            _selectRecord(selected!.$1, selected!.$2);
                         }
                       },
                     ),

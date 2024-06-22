@@ -2,7 +2,7 @@ part of '../plates_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableDataAdapter<Plate> {
+final class _TableAdapter implements TWSArticleTableAdapter<Plate> {
   const _TableAdapter();
 
   @override
@@ -19,4 +19,17 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<Plate> {
     );
     return view;
   }
+  
+  @override
+  Widget? composeEditor(Plate set, BuildContext context) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget composeViewer(Plate set, BuildContext context) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void onRemoveRequest(Plate set, BuildContext context) {}
 }

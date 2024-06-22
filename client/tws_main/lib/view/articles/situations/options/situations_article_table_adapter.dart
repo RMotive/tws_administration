@@ -2,7 +2,7 @@ part of '../situations_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableDataAdapter<Situation> {
+final class _TableAdapter implements TWSArticleTableAdapter<Situation> {
   const _TableAdapter();
 
   @override
@@ -18,5 +18,22 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<Situation> {
       },
     );
     return view;
+  }
+  
+  @override
+  Widget? composeEditor(Situation set, BuildContext context) {
+    // TODO: implement composeEditor
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget composeViewer(Situation set, BuildContext context) {
+    // TODO: implement composeViewer
+    throw UnimplementedError();
+  }
+
+  @override
+  void onRemoveRequest(Situation set, BuildContext context) {
+    // TODO: implement onRemoveRequest
   }
 }

@@ -1,31 +1,70 @@
 part of '../tws_article_table.dart';
 
-final class _TWSArticleTableDetails extends StatelessWidget {
+final class _TWSArticleTableDetails<TArticle extends CSMEncodeInterface> extends StatelessWidget {
+  final TWSArticleTableAdapter<TArticle> adapter;
   final VoidCallback closeAction;
+  final TArticle record;
 
   const _TWSArticleTableDetails({
     required this.closeAction,
+    required this.adapter,
+    required this.record,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-      child: Column(
-        children: <Widget>[
-          Row(
+    final TWSAThemeBase themeBase = getTheme<TWSAThemeBase>();
+
+    final CSMColorThemeOptions tPage = themeBase.page;
+    final CSMStateThemeOptions tCritical = themeBase.criticalControlState;
+    final Widget? editionForm = adapter.composeEditor(record, context);
+
+    return ColoredBox(
+      color: tPage.main,
+      child: TWSFrameDecoration(
+        topPadding: 0,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
             children: <Widget>[
-              CSMPointerHandler(
-                cursor: SystemMouseCursors.click,
-                onClick: closeAction,
-                child: const Icon(
-                  Icons.close,
-                  size: 24,
+              // --> Details section actions
+              CSMSpacingRow(
+                spacing: 8,
+                mainAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  // --> Close details action
+                  _TWSArticleTableDetailsAction(
+                    hint: 'Close record details',
+                    icon: Icons.close,
+                    action: closeAction,
+                  ),
+                  // --> Remove action.
+                  _TWSArticleTableDetailsAction(
+                    hint: 'Remove record',
+                    icon: Icons.remove,
+                    fore: tCritical.main.background,
+                    action: () => adapter.onRemoveRequest(record, context),
+                  ),
+                  if (editionForm != null)
+                    _TWSArticleTableDetailsAction(
+                      hint: 'Edit record',
+                      icon: Icons.edit,
+                      action: () {},
+                    ),
+                ],
+              ),
+              // --> Details custom content
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 12,
+                  ),
+                  child: adapter.composeViewer(record, context),
                 ),
               ),
             ],
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
