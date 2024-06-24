@@ -6,7 +6,7 @@ class Sources {
   static final TWSAdministrationSource administration = TWSAdministrationSource(
   kDebugMode,
   development: const CSMUri(
-    '192.168.100.31',
+    '192.168.1.90',
     '',
     port: 5196,
     protocol: CSMProtocols.http,
