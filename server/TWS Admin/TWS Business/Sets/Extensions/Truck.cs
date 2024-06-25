@@ -15,7 +15,7 @@ public partial class Truck
         Container = [
                 .. Container,
             (nameof(Vin), [Unique, new LengthValidator(17, 17)]),
-            (nameof(Manufacturer), [Unique, new PointerValidator(true)]),
+            (nameof(Manufacturer), [Pointer]),
             (nameof(Motor), [Unique, new LengthValidator(15, 16)]),
             (nameof(Sct), [Unique, Pointer]),
             (nameof(Maintenance), [Pointer]),

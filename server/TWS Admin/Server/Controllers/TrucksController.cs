@@ -6,6 +6,7 @@ using Foundation.Migrations.Records;
 using Microsoft.AspNetCore.Mvc;
 
 using Server.Controllers.Authentication;
+using TWS_Business.Sets;
 
 namespace Server.Controllers;
 /// <summary>
@@ -24,8 +25,8 @@ public class TrucksController : ControllerBase {
         => Ok(await Service.View(Options));
 
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
-    public async Task<IActionResult> Create(TruckAssembly truck)
-        => Ok(await Service.Create(truck));
+    public async Task<IActionResult> Create(Truck[] trucks)
+        => Ok(await Service.Create(trucks));
 
 
 }
