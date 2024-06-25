@@ -6,26 +6,35 @@ import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 /// [TWSDatepicker] Custom component for TWS Environment.
 /// This component shows a datepicker dialog to select a date.
 class TWSDatepicker extends StatefulWidget {
-  /// [width] Text field width.
-  final double? width;
-  /// [height] Text field heigth.
-  final double? height;
-  /// [title] Text field title.
+  /// First selectable date.
+  final DateTime firstDate;
+  /// Last selectable date.
+  final DateTime lastDate;
+  /// Text field width.
+  final double width;
+  /// Text field heigth.
+  final double height;
+  /// Text field title.
   final String? title;
-  /// [hintText] Text field hintext.
+  /// Text field hintext.
   final String? hintText;
-  /// [focusNode] Optional focus node.
+  /// Optional focus node.
   final FocusNode? focusNode;
-  /// [controller] Optional Text controller.
+  /// Default pre-selected Date.
+  final DateTime? initialDate;
+  /// Optional Text controller.
   final TextEditingController? controller;
-  /// [onChanged] Callback that return the selected options in the datepicker dialog.
+  /// Callback that return the selected options in the datepicker dialog.
   final void Function(String text)? onChanged;
-  /// [validator] Validator for the text input.
+  /// Validator for the text input.
   final String? Function(String? text)? validator;
 
   const TWSDatepicker({super.key,
-    this.width,
-    this.height,
+    required this.firstDate,
+    required this.lastDate,
+    this.initialDate,
+    this.width = 200,
+    this.height = 40,
     this.title,
     this.hintText,
     this.focusNode,
@@ -51,11 +60,24 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
   void initState() {
     ctrl = widget.controller ?? TextEditingController();
     fNode = widget.focusNode ?? FocusNode();
-    theme = getTheme();
+    theme = getTheme(
+      updateEfect: themeUpdateListener,
+    );      
+    initializeThemes();
+    super.initState();
+  }
+
+  void initializeThemes() {
     colorStruct = theme.primaryControlColor;
     disabledColorStruct = theme.primaryDisabledControlColor;
     errorColorStruct = theme.primaryErrorControlColor;
-    super.initState();
+  }
+
+  void themeUpdateListener() {
+    setState(() {
+      theme = getTheme();
+      initializeThemes();
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -90,56 +112,56 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
               setState(() {
                 ctrl.text = "";
               });
-             },
-            ): null,
+            },
+          ): null,
           labelText: widget.title,
           hintText: widget.hintText,
           isDense: true,
-            labelStyle: TextStyle(
-              color: colorStruct.foreAlt,
-            ),
-            errorStyle: TextStyle(
-              color: errorColorStruct.fore,
-            ),
-            hintStyle: TextStyle(
-              color: colorStruct.fore,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: colorStruct.highlight.withOpacity(.6),
-                width: borderWidth,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: errorColorStruct.highlight.withOpacity(.7),
-                width: borderWidth,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: errorColorStruct.highlight,
-                width: borderWidth,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: colorStruct.highlight,
-                width: borderWidth,
-              ),
+          labelStyle: TextStyle(
+            color: colorStruct.foreAlt
+          ),
+          errorStyle: TextStyle(
+            color: errorColorStruct.fore
+          ),
+          hintStyle: TextStyle(
+            color: colorStruct.fore
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: colorStruct.highlight.withOpacity(.6),
+              width: borderWidth
             ),
           ),
-        ),
-      );
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: errorColorStruct.highlight.withOpacity(.7),
+              width: borderWidth
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: errorColorStruct.highlight,
+              width: borderWidth
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: colorStruct.highlight,
+              width: borderWidth
+            )
+          )
+        )
+      )
+    );
   }
   /// [_showPicker] Method that build the showpicker dialog.
   Future<void> _showPicker() async {
     DateTime? date = await showDatePicker(
       context: context,
       initialDatePickerMode: DatePickerMode.year,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000), 
-      lastDate: DateTime(2030),
+      initialDate: widget.initialDate,
+      firstDate: widget.firstDate, 
+      lastDate: widget.lastDate,
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -147,21 +169,21 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
               surface: colorStruct.main, //Background color
               primary: colorStruct.fore, // header background color
               onPrimary: colorStruct.foreAlt ?? Colors.white, // header text color
-              onSurface: colorStruct.foreAlt ?? Colors.white, // body text color
+              onSurface: colorStruct.foreAlt ?? Colors.white // body text color
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: colorStruct.foreAlt ?? Colors.white, // button text color
-              ),
-            ),
+                foregroundColor: colorStruct.foreAlt ?? Colors.white // button text color
+              )
+            )
           ),
-          child: child!,
+          child: child!
         );
-      },
+      }
     );
     if(date != null) {
       setState(() {
-        ctrl.text = date.getStringDate();
+        ctrl.text = date.dateOnlyString;
       });
     }
   }

@@ -7,27 +7,36 @@ import 'package:tws_main/view/widgets/tws_input_text.dart';
 
 /// [TWSAutoCompleteField] Custom component for TWS enviroment.
 /// This component stores a list of posibles options to select for the user.
-/// Performs a input filter based on user input text. 
+/// Performs a input filter based on user input text.
 class TWSAutoCompleteField extends StatefulWidget {
-  /// [width] Button width on non-selected state.
+  ///Button width on non-selected state.
   final double width;
-  /// [height] Button heigth.
+
+  /// Button heigth.
   final double height;
-  /// [menuWidth] Overlay menu Width. Main button will expand to this size when is selected.
+
+  /// Overlay menu Width. Main button will expand to this size when is selected.
   final double menuWidth;
+
   /// [menuHeight] Overlay menu height.
   final double menuHeight;
-  /// [optionsBuilder] Iterarive builder that recieve an [TWSAutocompleteItemProperties] object to build the list options 
+
+  /// Iterarive builder that recieve an [TWSAutocompleteItemProperties] object to build the list options
   /// components for the suggestions overlay menu.
   final TWSAutocompleteItemProperties Function(int) optionsBuilder;
-  /// [listLength] length for the expected [TWSAutocompleteItemProperties] list.
+
+  /// length for the expected [TWSAutocompleteItemProperties] list.
   final int listLength;
-  /// [onChanged] Return the input text and the item property for last suggested item available based on the user input.
-  final void Function(String input, TWSAutocompleteItemProperties? selectedItem) onChanged;
-  /// [validator] Optinal validator method for [TWSInputText] internal component.
+
+  /// Return the input text and the item property for last suggested item available based on the user input.
+  final void Function(String input, TWSAutocompleteItemProperties? selectedItem)
+      onChanged;
+
+  /// Optinal validator method for [TWSInputText] internal component.
   final String? Function(String?)? validator;
 
-  const TWSAutoCompleteField({super.key,
+  const TWSAutoCompleteField({
+    super.key,
     required this.onChanged,
     required this.optionsBuilder,
     required this.listLength,
@@ -35,7 +44,7 @@ class TWSAutoCompleteField extends StatefulWidget {
     this.height = 40,
     this.menuWidth = 220,
     this.menuHeight = 200,
-    this.validator,
+    this.validator
   });
 
   @override
@@ -43,7 +52,7 @@ class TWSAutoCompleteField extends StatefulWidget {
 }
 
 class _TWSAutoCompleteFieldState extends State<TWSAutoCompleteField> {
-  final TWSAThemeBase theme = getTheme();
+  late final TWSAThemeBase theme;
   late CSMColorThemeOptions primaryColorTheme;
   // Link to attach ovelay component UI to the to the TWSInputText.
   final LayerLink link = LayerLink();
@@ -55,11 +64,9 @@ class _TWSAutoCompleteFieldState extends State<TWSAutoCompleteField> {
   // Flag for Overlay Menu first build.
   bool firstbuild = true;
   // Original Options list given in builder parameter.
-  List<TWSAutocompleteItemProperties> rawOptionsList =
-      <TWSAutocompleteItemProperties>[];
+  List<TWSAutocompleteItemProperties> rawOptionsList = <TWSAutocompleteItemProperties>[];
   // UI list. List to display on overlay menu, that shows the suggestions options.
-  List<TWSAutocompleteItemProperties> suggestionsList =
-      <TWSAutocompleteItemProperties>[];
+  List<TWSAutocompleteItemProperties> suggestionsList = <TWSAutocompleteItemProperties>[];
   // Flag to indicate if the component is hovered.
   bool isHovered = false;
 
@@ -76,7 +83,7 @@ class _TWSAutoCompleteFieldState extends State<TWSAutoCompleteField> {
         // Do a serching for the method input variable.
         suggestionsList =
             rawOptionsList.where((TWSAutocompleteItemProperties properties) {
-          return properties.showValue.contains(input);
+          return properties.label.contains(input);
         }).toList();
         // Validate if the searching results is not empty.
         if (suggestionsList.isNotEmpty) {
@@ -95,10 +102,20 @@ class _TWSAutoCompleteFieldState extends State<TWSAutoCompleteField> {
 
   @override
   void initState() {
+    theme = getTheme(
+      updateEfect: themeUpdateListener,
+    );
     primaryColorTheme = theme.primaryControlColor;
     ctrl = TextEditingController();
     overlayController = OverlayPortalController();
     super.initState();
+  }
+
+  void themeUpdateListener() {
+    setState(() {
+      theme = getTheme();
+      primaryColorTheme = theme.primaryControlColor;
+    });
   }
 
   @override
@@ -131,92 +148,97 @@ class _TWSAutoCompleteFieldState extends State<TWSAutoCompleteField> {
                   },
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(
-                      maxHeight: 200,
+                      maxHeight: 200
                     ),
                     child: ClipRRect(
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(5)),
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(5)
+                          ),
                           color: primaryColorTheme.main
                         ),
                         child: Material(
                           color: Colors.transparent,
                           child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: firstbuild
-                                  ? widget.listLength
-                                  : suggestionsList.length,
-                              itemBuilder: (_, int index) {
-                                late TWSAutocompleteItemProperties properties;
-                                //Only do the builder callback once.
-                                //Stores the properties result to avoid unnecesary callbacks on rebuild.
-                                if (firstbuild) {
-                                  properties = widget.optionsBuilder(index);
-                                  rawOptionsList.add(properties);
-                                } else {
-                                  properties = suggestionsList[index];
-                                }
-                                //Set the firstbuild to false and assign the default suggestion list value.
-                                if (index >= widget.listLength - 1 && firstbuild) {
-                                  firstbuild = false;
-                                  suggestionsList = rawOptionsList;
-                                }
-                                // Return the individual option component.
-                                return ListTile(
-                                  hoverColor: Colors.blue,
-                                  dense: true,
-                                  title: Tooltip(
-                                    message: properties.showValue,
-                                    child: Text(
-                                      style: TextStyle(
-                                        color: primaryColorTheme.hightlightAlt ?? Colors.white
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                      properties.showValue
+                            shrinkWrap: true,
+                            itemCount: firstbuild
+                              ? widget.listLength
+                              : suggestionsList.length,
+                            itemBuilder: (_, int index) {
+                              late TWSAutocompleteItemProperties properties;
+                              //Only do the builder callback once.
+                              //Stores the properties result to avoid unnecesary callbacks on rebuild.
+                              if (firstbuild) {
+                                properties = widget.optionsBuilder(index);
+                                rawOptionsList.add(properties);
+                              } else {
+                                properties = suggestionsList[index];
+                              }
+                              //Set the firstbuild to false and assign the default suggestion list value.
+                              if (index >= widget.listLength - 1 && firstbuild) {
+                                firstbuild = false;
+                                suggestionsList = rawOptionsList;
+                              }
+                              // Return the individual option component.
+                              return ListTile(
+                                hoverColor: Colors.blue,
+                                dense: true,
+                                title: Tooltip(
+                                  message: properties.label,
+                                  child: Text(
+                                    style: TextStyle(
+                                      color: primaryColorTheme .hightlightAlt ?? Colors.white
                                     ),
-                                  ),
-                                  onTap: () {
-                                    // Set the controller text to selected item on overlay menu.
-                                    ctrl.text = properties.showValue;
-                                    // Do a search query because the controller.text not trigger the OnChange callback.
-                                    _search(properties.showValue);
-                                    overlayController.hide();
-                                  },
-                                );
-                              }),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+                                    overflow: TextOverflow.ellipsis,
+                                    properties.label
+                                  )
+                                ),
+                                onTap: () {
+                                  // Set the controller text to selected item on overlay menu.
+                                  ctrl.text = properties.label;
+                                  // Do a search query because the controller.text not trigger the OnChange callback.
+                                  _search(properties.label);
+                                  overlayController.hide();
+                                }
+                              );
+                            }
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
             );
           },
           controller: overlayController,
           // [TapRegion] Catch header user button [OnTap] events.
           child: TapRegion(
-              onTapInside: (_) {
-                if (!overlayController.isShowing) {
-                  setState(() {
-                    overlayController.show();
-                  });
-                }
-              },
-              child: CompositedTransformTarget(
-                  link: link,
-                  child: TWSInputText(
-                      validator: (String? text) {
-                        if (_verifyQuery(firstSuggestion?.showValue ?? "")) return "Not exist an item with this value.";
-                        if (widget.validator != null) return widget.validator!(text);
-                        return null;
-                      },
-                      onChanged: (String text) => _search(text),
-                      onTapOutside: (_) {},
-                      controller: ctrl,
-                      width: widget.width,
-                      height: widget.height))),
-        ),
-      ),
+            onTapInside: (_) {
+              if (!overlayController.isShowing) {
+                setState(() {
+                  overlayController.show();
+                });
+              }
+            },
+            child: CompositedTransformTarget(
+              link: link,
+              child: TWSInputText(
+                validator: (String? text) {
+                  if (_verifyQuery(firstSuggestion?.label ?? "")) return "Not exist an item with this value.";
+                  if (widget.validator != null) return widget.validator!(text);
+                  return null;
+                },
+                onChanged: (String text) => _search(text),
+                controller: ctrl,
+                width: widget.width,
+                height: widget.height
+              )
+            )
+          )
+        )
+      )
     );
   }
 }

@@ -6,20 +6,20 @@ import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 ///[TWSSwitchButton] Custom widget for TWS environment.
 ///This widget returns a boolean, based on the its state.
 class TWSSwitchButton extends StatefulWidget {
-  /// [switchHeight] switch button heigth
-  final double switchHeight;
-  /// [value] switch state.
+  /// switch button heigth
+  final double height;
+  /// switch state.
   final bool value;
-  /// [title] Text to show on top of the component.
+  /// Text to show on top of the component.
   final String title;
-  /// [padding] Internal Padding value.
+  /// Internal Padding value.
   final EdgeInsetsGeometry padding;
-  /// [onChanged] Callback for switch state, returning the state value. 
+  /// Callback for switch state, returning the state value. 
   final void Function(bool) onChanged;
   const TWSSwitchButton({super.key,
     required this.title,
     required this.onChanged,
-    this.switchHeight = 35,
+    this.height = 35,
     this.value = false,
     this.padding = const EdgeInsets.all(5.0)
   });
@@ -36,11 +36,19 @@ class _TWSSwitchButtonState extends State<TWSSwitchButton> {
   @override
   void initState() {
     _value = widget.value;
-    theme = getTheme();
+    theme = getTheme(
+      updateEfect: themeUpdateListener,
+    );
     colorStruct = theme.primaryControlColor;
     super.initState();
   }
 
+  void themeUpdateListener() {
+    setState(() {
+      theme = getTheme();
+      colorStruct = theme.primaryControlColor;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +63,7 @@ class _TWSSwitchButtonState extends State<TWSSwitchButton> {
             ),
           ),
           SizedBox(
-            height: widget.switchHeight,
+            height: widget.height,
             child: FittedBox(
               fit: BoxFit.fill,
               child: Switch(
@@ -68,12 +76,12 @@ class _TWSSwitchButtonState extends State<TWSSwitchButton> {
                     widget.onChanged(change);
                     print(_value);
                   });
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
+                }
+              )
+            )
+          )
+        ]
+      )
     );
   }
 }
