@@ -8,11 +8,13 @@ import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
 import 'package:tws_main/view/frames/business/business_frame.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_data_adapter.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 part 'options/trucks_article_table_adapter.dart';
 
 class TrucksArticle extends CSMPageBase {
+  static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
   const TrucksArticle({super.key});
 
   @override
@@ -21,9 +23,7 @@ class TrucksArticle extends CSMPageBase {
       currentRoute: TWSARoutes.trucksArticle,
       actionsOptions: ActionRibbonOptions(
         maintenanceGroupConfig: MaintenanceGroupOptions(
-          onCreate: () {
-            
-          },
+          onCreate: () => CSMRouter.i.drive(TWSARoutes.trucksCreateWhisper),
         ),
       ),
       article: TWSArticleTable<Truck>(
