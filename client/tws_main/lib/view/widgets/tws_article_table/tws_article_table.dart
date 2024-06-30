@@ -101,9 +101,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
         final double viewWidth = pageBounds.maxWidth;
         final double tableWidth = viewWidth - detailsWidth;
         final double cellWidth = tableWidth / widget.fields.length;
-
-        final Size viewSize = pageBounds.biggest;
-
+        
         return SizedBox(
           width: viewWidth,
           child: AnimatedBuilder(
