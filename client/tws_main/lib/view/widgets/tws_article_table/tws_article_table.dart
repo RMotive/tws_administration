@@ -1,4 +1,3 @@
-
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
@@ -277,20 +276,20 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                   ),
                   // --> Item detail
                   if (selected != null)
-                  Positioned(
-                    left: animationComputationValue,
-                    width: detailsFullDisplay ? viewSize.width : _kDetailsWidth,
-                    height: viewSize.height,
+                    Positioned(
+                      left: animationComputationValue,
+                      width: detailsFullDisplay ? viewSize.width : _kDetailsWidth,
+                      height: viewSize.height,
                       child: _TWSArticleTableDetails<TArticle>(
                         adapter: widget.adapter,
                         record: selected!.$2,
-                      closeAction: () {
-                        if (selected != null) {
+                        closeAction: () {
+                          if (selected != null) {
                             _selectRecord(selected!.$1, selected!.$2);
-                        }
-                      },
+                          }
+                        },
+                      ),
                     ),
-                  ),
                 ],
               );
             },

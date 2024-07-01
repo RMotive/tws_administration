@@ -9,10 +9,12 @@ import 'package:tws_main/view/frames/article/actions/maintenance_group_options.d
 import 'package:tws_main/view/frames/business/business_frame.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_adapter.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 part 'options/trucks_article_table_adapter.dart';
 
 class TrucksArticle extends CSMPageBase {
+  static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
   const TrucksArticle({super.key});
 
   @override
@@ -21,9 +23,7 @@ class TrucksArticle extends CSMPageBase {
       currentRoute: TWSARoutes.trucksArticle,
       actionsOptions: ActionRibbonOptions(
         maintenanceGroupConfig: MaintenanceGroupOptions(
-          onCreate: () {
-            
-          },
+          onCreate: () => CSMRouter.i.drive(TWSARoutes.trucksCreateWhisper),
         ),
       ),
       article: TWSArticleTable<Truck>(
@@ -35,7 +35,7 @@ class TrucksArticle extends CSMPageBase {
           ),
           TWSArticleTableFieldOptions<Truck>(
             'Manufacturer',
-            (Truck item, int index, BuildContext ctx) => item.manufacturerNavigation?.brand  ?? '---',
+            (Truck item, int index, BuildContext ctx) => item.manufacturerNavigation?.brand ?? '---',
           ),
           TWSArticleTableFieldOptions<Truck>(
             'Motor',
@@ -71,11 +71,11 @@ class TrucksArticle extends CSMPageBase {
             'Plates',
             (Truck item, int index, BuildContext ctx) {
               String plates = '---';
-              if(item.plates.isNotEmpty){
+              if (item.plates.isNotEmpty) {
                 plates = '';
-                for(int cont = 0; cont < item.plates.length; cont++) {
+                for (int cont = 0; cont < item.plates.length; cont++) {
                   plates += item.plates[cont].identifier;
-                  if(item.plates.length > cont) plates += '\n';
+                  if (item.plates.length > cont) plates += '\n';
                 }
               }
               return plates;
