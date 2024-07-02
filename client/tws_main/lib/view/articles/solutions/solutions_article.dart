@@ -11,6 +11,8 @@ import 'package:tws_main/view/widgets/tws_article_table/tws_article_table.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_adapter.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_agent.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
+import 'package:tws_main/view/widgets/tws_confirmation_dialog.dart';
+import 'package:tws_main/view/widgets/tws_input_text.dart';
 import 'package:tws_main/view/widgets/tws_property_viewer.dart';
 
 part 'options/solutions_article_table_adapter.dart';

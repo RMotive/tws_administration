@@ -20,7 +20,7 @@ final class TWSArticleCreationStackItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CSMColorThemeOptions pageTheme = getTheme<TWSAThemeBase>().page;
-    final CSMColorThemeOptions dangerTheme = getTheme<TWSAThemeBase>().primaryErrorControlColor;
+    final CSMColorThemeOptions dangerTheme = getTheme<TWSAThemeBase>().primaryCriticalControl;
 
     return DecoratedBox(
       position: DecorationPosition.foreground,

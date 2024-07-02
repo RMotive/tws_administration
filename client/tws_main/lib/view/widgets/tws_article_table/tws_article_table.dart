@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
@@ -12,9 +14,12 @@ import 'package:tws_main/view/widgets/tws_paging_selector.dart';
 
 part 'tws_article_table_details/tws_article_table_details.dart';
 part 'tws_article_table_details/tws_article_table_details_action.dart';
+part 'tws_article_table_details/tws_article_table_details_state.dart';
+part 'tws_article_table_details/tws_article_table_editor.dart';
+
+part 'tws_article_table_header/tws_article_table_header.dart';
 
 part 'tws_article_table_error.dart';
-part 'tws_article_table_header/tws_article_table_header.dart';
 part 'tws_article_table_loading.dart';
 
 class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidget {

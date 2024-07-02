@@ -9,7 +9,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Feature> {
   }
   
   @override
-  Widget? composeEditor(Feature set, BuildContext context) {
+  TWSArticleTableEditor? composeEditor(Feature set, Function closeReinvoke, BuildContext context) {
     throw UnimplementedError();
   }
 

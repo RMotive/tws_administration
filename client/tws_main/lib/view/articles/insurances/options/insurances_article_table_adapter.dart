@@ -21,7 +21,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Insurance> {
   }
   
   @override
-  Widget? composeEditor(Insurance set, BuildContext context) {
+  TWSArticleTableEditor? composeEditor(Insurance set, Function closeReinvoke, BuildContext context) {
     throw UnimplementedError();
   }
 

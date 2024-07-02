@@ -21,7 +21,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<SCT> {
   }
   
   @override
-  Widget? composeEditor(SCT set, BuildContext context) {
+  TWSArticleTableEditor? composeEditor(SCT set, Function clsoeReinvoke, BuildContext context) {
     // TODO: implement composeEditor
     throw UnimplementedError();
   }

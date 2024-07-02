@@ -21,7 +21,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Maintenance> {
   }
   
   @override
-  Widget? composeEditor(Maintenance set, BuildContext context) {
+  TWSArticleTableEditor? composeEditor(Maintenance set, Function closeReinvoke, BuildContext context) {
     throw UnimplementedError();
   }
 

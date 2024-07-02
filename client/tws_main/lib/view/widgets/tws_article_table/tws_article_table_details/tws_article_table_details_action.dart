@@ -29,10 +29,13 @@ class _TWSArticleTableDetailsAction extends StatelessWidget {
             shape: BoxShape.circle,
             color: tPage.fore,
           ),
-          child: Icon(
-            icon,
-            color: fore ?? tPrimary.main,
-            size: 24,
+          child: Padding(
+            padding: const EdgeInsets.all(3),
+            child: Icon(
+              icon,
+              color: fore ?? tPrimary.main,
+              size: 18,
+            ),
           ),
         ),
       ),

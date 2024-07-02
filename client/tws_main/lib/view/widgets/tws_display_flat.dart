@@ -20,7 +20,7 @@ class TWSDisplayFlat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CSMColorThemeOptions errorStruct = getTheme<TWSAThemeBase>().primaryErrorControlColor;
+    CSMColorThemeOptions errorStruct = getTheme<TWSAThemeBase>().primaryCriticalControl;
     Color baseColor = errorStruct.highlight;
 
     return ConstrainedBox(

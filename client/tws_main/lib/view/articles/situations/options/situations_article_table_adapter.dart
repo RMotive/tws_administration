@@ -21,7 +21,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Situation> {
   }
   
   @override
-  Widget? composeEditor(Situation set, BuildContext context) {
+  TWSArticleTableEditor? composeEditor(Situation set, Function closeReinvoke, BuildContext context) {
     // TODO: implement composeEditor
     throw UnimplementedError();
   }
