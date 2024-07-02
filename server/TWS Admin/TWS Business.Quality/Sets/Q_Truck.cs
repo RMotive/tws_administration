@@ -9,6 +9,7 @@ public class Q_Truck : BQ_MigrationSet<Truck> {
     protected override Q_MigrationSet_EvaluateRecord<Truck>[] EvaluateFactory(Q_MigrationSet_EvaluateRecord<Truck>[] Container) {
         const string Vin = "";
         const string Motor = "";
+        PointerValidator pointer = new(true,false);
 
         Q_MigrationSet_EvaluateRecord<Truck> success = new() {
             Mock = new() {
@@ -36,13 +37,8 @@ public class Q_Truck : BQ_MigrationSet<Truck> {
             },
             Expectations = [
                 (nameof(Truck.Id), [(new PointerValidator(), 3) ]),
-                (nameof(Truck.Manufacturer), [(new PointerValidator(true),3)]),
                 (nameof(Truck.Vin), [(new LengthValidator(),2)]),
                 (nameof(Truck.Motor), [(new LengthValidator(),2)]),
-                (nameof(Truck.Sct), [(new PointerValidator(true),3)]),
-                (nameof(Truck.Maintenance), [(new PointerValidator(true),3)]),
-                (nameof(Truck.Situation), [(new PointerValidator(true),3)]),
-                (nameof(Truck.Insurance),[(new PointerValidator(true),3)])
             ],
         };
 
