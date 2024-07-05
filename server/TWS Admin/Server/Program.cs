@@ -17,6 +17,9 @@ using Server.Managers;
 using Server.Middlewares;
 using Server.Models;
 
+using TWS_Security;
+using TWS_Security.Depots;
+
 namespace Server;
 
 public partial class Program {
@@ -79,10 +82,21 @@ public partial class Program {
 
             // --> Adding customer services
             {
-                builder.Services.AddTransient<ISolutionsService>((IServiceProvider sp) => new SolutionsService(new(Disposer.Push)));
-                builder.Services.AddTransient<ISecurityService>((SP) => new SecurityService(new(Disposer.Push)));
-
+                // --> Application
                 builder.Services.AddSingleton(Disposer);
+
+                // --> Sources contexts
+                builder.Services.AddDbContext<TWSSecuritySource>();
+
+                // --> Depots
+                builder.Services.AddSingleton<SolutionsDepot>();
+                builder.Services.AddSingleton<AccountsDepot>();
+
+                // --> Services
+                builder.Services.AddScoped<ISolutionsService, SolutionsService>();
+                builder.Services.AddScoped<ISecurityService, SecurityService>();
+
+
 
                 builder.Services.AddSingleton<IManufacturersService>(new ManufacturersService(new()));
                 builder.Services.AddSingleton<IInsurancesService>(new InsuranceService(new()));
@@ -92,6 +106,10 @@ public partial class Program {
                 builder.Services.AddSingleton<IPlatesService>(new PlatesServices(new()));
                 builder.Services.AddSingleton<IContactService>(new ContactService(new()));
                 builder.Services.AddSingleton<ITrucksService>(new TrucksService(new(), new(), new(), new(), new(), new(), new()));
+
+
+
+                builder.Services.AddScoped<IManufacturersService, ManufacturersService>();
             }
             // --> Adding middleware services
             {

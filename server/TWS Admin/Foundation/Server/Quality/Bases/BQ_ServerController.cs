@@ -26,12 +26,10 @@ public abstract class BQ_ServerController<TEntry>
 
     readonly string Service;
     readonly QM_ServerHost Host;
-    readonly WebApplicationFactory<TEntry> Factory;
 
     public BQ_ServerController(string Service, WebApplicationFactory<TEntry> Factory) {
         this.Service = Service;
         this.Host = new(Factory.CreateClient());
-        this.Factory = Factory;
     }
 
     #region Protected Abstract Methods

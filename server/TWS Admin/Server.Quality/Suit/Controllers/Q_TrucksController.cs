@@ -36,7 +36,7 @@ public class Q_TrucksController : BQ_CustomServerController {
     }
 
     [Fact]
-    public async void View() {
+    public async Task View() {
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
             Page = 1,
             Range = 2,
@@ -52,7 +52,7 @@ public class Q_TrucksController : BQ_CustomServerController {
     }
 
     [Fact]
-    public async void Create() {
+    public async Task Create() {
         DateOnly date = new(2024, 12, 12);
 
         string testTag = Guid.NewGuid().ToString()[..3];

@@ -41,8 +41,7 @@ public class TrucksService : ITrucksService {
 
     public async Task<MigrationView<Truck>> View(MigrationViewOptions options) {
 
-        Func<IQueryable<Truck>, IQueryable<Truck>> include =
-            query => query
+        static IQueryable<Truck> include(IQueryable<Truck> query) => query
             .Include(t => t.InsuranceNavigation)
             .Include(t => t.ManufacturerNavigation)
             .Include(t => t.MaintenanceNavigation)
@@ -92,7 +91,7 @@ public class TrucksService : ITrucksService {
                     State = p.State,
                     Country = p.Country,
                     Expiration = p.Expiration,
-                    Truck = p.Truck 
+                    Truck = p.Truck
                 })
             });
 
@@ -115,7 +114,7 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback, T? navigation) where T : IMigrationSet {
+    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : IMigrationSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
@@ -151,7 +150,7 @@ public class TrucksService : ITrucksService {
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
             if (truck.Manufacturer.Id == 0) {
-                assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify, assembly.ManufacturerNavigation) ?? 0;
+                assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify) ?? 0;
             } else {
                 /// Pointer Validation
                 MigrationTransactionResult<Manufacturer> fetch = await Manufacturers.Read(i => i.Id == truck.Manufacturer.Id, MigrationReadBehavior.First);
@@ -168,7 +167,7 @@ public class TrucksService : ITrucksService {
             /// Validate which Situation value use to assign the manufacturer value to the truck.
             if(truck.Situation != null) {
                 if (truck.Situation.Id == 0) {
-                    assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify, assembly.SituationNavigation) ?? 0;
+                    assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify) ?? 0;
                 } else {
                     /// Pointer Validation
                     MigrationTransactionResult<Situation> fetch = await Situations.Read(i => i.Id == truck.Situation.Id, MigrationReadBehavior.First);
@@ -187,9 +186,9 @@ public class TrucksService : ITrucksService {
 
 
             /// Create Optional fields bundle.
-            assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify, assembly.InsuranceNavigation);
-            assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify, assembly.MaintenanceNavigation);
-            assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify, assembly.SctNavigation);
+            assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify);
+            assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify);
+            assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify);
 
             IMigrationDepot_Delete<Manufacturer> interfaceSol = Manufacturers;
 
@@ -212,7 +211,7 @@ public class TrucksService : ITrucksService {
                 truck.Plates = generatedPlates;
             }
             return truck;
-        } catch (Exception ex) {
+        } catch (Exception) {
             // Undo all changes on data source
             /// Remove the last items to avoid key dependencies errors on data source.
             nullify.Reverse();

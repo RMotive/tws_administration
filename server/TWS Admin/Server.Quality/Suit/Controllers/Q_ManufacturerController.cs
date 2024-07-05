@@ -40,7 +40,7 @@ public class Q_ManufacturerController
         return Response.Estela.Token.ToString();
     }
     [Fact]
-    public async void View() {
+    public async Task View() {
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
             Page = 1,
             Range = 10,
@@ -56,7 +56,7 @@ public class Q_ManufacturerController
     }
 
     [Fact]
-    public async void Create() {
+    public async Task Create() {
         DateOnly date = new(2024, 10, 10);
 
         Manufacturer mock = new() {

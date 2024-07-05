@@ -37,7 +37,7 @@ public class Q_SituationController : BQ_ServerController<Program> {
     }
 
     [Fact]
-    public async void View() {
+    public async Task View() {
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
             Page = 1,
             Range = 5,
@@ -53,7 +53,7 @@ public class Q_SituationController : BQ_ServerController<Program> {
     }
 
     [Fact]
-    public async void Create() {
+    public async Task Create() {
         string testTag = Guid.NewGuid().ToString()[..3];
         string name = " name ctl" + testTag;
         string description = "desc ctl" + testTag;

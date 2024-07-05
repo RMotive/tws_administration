@@ -24,7 +24,7 @@ public class SecurityService
     }
 
     public async Task<Session> Authenticate(Credentials Credentials) {
-        Func<IQueryable<Account>, IQueryable<Account>> include = query => query
+        static IQueryable<Account> include(IQueryable<Account> query) => query
         .Include(c => c.ContactNavigation)
         .Select(a => new Account() {
             Id = a.Id,
@@ -39,10 +39,7 @@ public class SecurityService
                 Email = a.ContactNavigation.Email,
                 Phone = a.ContactNavigation.Phone
             },
-           
-
-        })
-        ;
+        });
 
         MigrationTransactionResult<Account> result = await Accounts.Read(i => i.User == Credentials.Identity, MigrationReadBehavior.First, include);
         if (result.Failed)
