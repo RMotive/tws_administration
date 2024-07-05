@@ -17,6 +17,7 @@ class TWSInputText extends StatefulWidget {
   final bool isEnabled;
   final int? maxLength;
   final int? maxLines;
+  final void Function()? OnTap;
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final String? Function(String? text)? validator;
@@ -34,6 +35,7 @@ class TWSInputText extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.onChanged,
+    this.OnTap,
     this.onTapOutside,
     this.maxLines = 1,
     this.isEnabled = true,
@@ -108,6 +110,7 @@ class _TWSInputTextState extends State<TWSInputText> {
           cursorColor: colorStruct.foreAlt,
           enabled: widget.isEnabled,
           onChanged: widget.onChanged,
+          onTap: widget.OnTap,
           onTapOutside: widget.onTapOutside,
           maxLength: widget.maxLength,
           maxLines: widget.maxLines,

@@ -3,32 +3,69 @@ part of '../whispers/truck_create_whisper.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-Future<MigrationView<TSet>> consumeOptions<TSet extends CSMEncodeInterface>(int page, int range, List<MigrationViewOrderOptions> orderings) async {
-    final MigrationViewOptions options = MigrationViewOptions(null, orderings, page, range, false);
-    final MainResolver<MigrationView<dynamic>> resolver;
-    final MigrationView<dynamic> view;
-    String auth = _sessionStorage.session!.token;
+final class _ManufacturerViewAdapter implements TWSFutureAutocompleteAdapter<Manufacturer>{
+  const _ManufacturerViewAdapter();
 
-    switch(TSet){
-      case const (Manufacturer):
-        resolver = await Sources.administration.manufacturers.view(options, auth);
-        view = await resolver.act(const MigrationViewDecode<Manufacturer>(ManufacturerDecoder())).catchError(
+  @override
+  Future<MigrationView<Manufacturer>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) async {
+    String auth = _sessionStorage.session!.token;
+    final MigrationViewOptions options = MigrationViewOptions(null, orderings, page, range, false);
+    final MainResolver<MigrationView<Manufacturer>> resolver = await Sources.administration.manufacturers.view(options, auth);
+    final MigrationView<Manufacturer> view = await resolver.act(const MigrationViewDecode<Manufacturer>(ManufacturerDecoder())).catchError(
           (Object x, StackTrace s) {
             const CSMAdvisor('manufacturer-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
             throw x;
           },
         );
-      break;
-      default:
-       resolver = await Sources.administration.situations.view(options, auth);
-        view = await resolver.act(const MigrationViewDecode<Situation>(SituationDecoder())).catchError(
+    return view;
+  }
+}
+
+final class _SituationsViewAdapter implements TWSFutureAutocompleteAdapter<Situation>{
+  const _SituationsViewAdapter();
+  
+  @override
+  Future<MigrationView<Situation>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) async {
+    String auth = _sessionStorage.session!.token;
+    final MigrationViewOptions options = MigrationViewOptions(null, orderings, page, range, false);
+    final MainResolver<MigrationView<Situation>> resolver = await Sources.administration.situations.view(options, auth);
+    final MigrationView<Situation> view = await resolver.act(const MigrationViewDecode<Situation>(SituationDecoder())).catchError(
           (Object x, StackTrace s) {
-            const CSMAdvisor('situation-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
+            const CSMAdvisor('manufacturer-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
             throw x;
           },
         );
-      break;
-    }
-    
-    return view as MigrationView<TSet>;
+    return view;
   }
+}
+
+// Future<MigrationView<TSet>> _consumeOptions<TSet extends CSMEncodeInterface>(int page, int range, List<MigrationViewOrderOptions> orderings) async {
+//     print('Fetching consume data......');
+//     final MigrationViewOptions options = MigrationViewOptions(null, orderings, page, range, false);
+//     final MainResolver<MigrationView<dynamic>> resolver;
+//     final MigrationView<dynamic> view;
+//     String auth = _sessionStorage.session!.token;
+
+//     switch(TSet){
+//       case const (Manufacturer):
+//         resolver = await Sources.administration.manufacturers.view(options, auth);
+//         view = await resolver.act(const MigrationViewDecode<Manufacturer>(ManufacturerDecoder())).catchError(
+//           (Object x, StackTrace s) {
+//             const CSMAdvisor('manufacturer-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
+//             throw x;
+//           },
+//         );
+//       break;
+//       default:
+//        resolver = await Sources.administration.situations.view(options, auth);
+//         view = await resolver.act(const MigrationViewDecode<Situation>(SituationDecoder())).catchError(
+//           (Object x, StackTrace s) {
+//             const CSMAdvisor('situation-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
+//             throw x;
+//           },
+//         );
+//       break;
+//     }
+    
+//     return view as MigrationView<TSet>;
+//   }

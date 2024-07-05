@@ -15,8 +15,6 @@ class TWSAutoCompleteField extends StatefulWidget {
   final String? hint;
   final bool isEnabled;
   
-  /// Overlay menu Width. Main button will expand to this size when is selected.
-  final double menuWidth;
   /// [menuHeight] Overlay menu height.
   final double menuHeight;
 
@@ -43,7 +41,6 @@ class TWSAutoCompleteField extends StatefulWidget {
     this.hint,
     this.width = 80,
     this.height = 40,
-    this.menuWidth = 220,
     this.menuHeight = 200,
     this.validator,
     this.isEnabled = true
