@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-
+using CSMFoundation.Core.Bases;
 using Foundation.Migrations.Exceptions;
 using Foundation.Migrations.Interfaces;
 using Foundation.Migrations.Validators;

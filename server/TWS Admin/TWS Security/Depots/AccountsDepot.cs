@@ -1,5 +1,6 @@
-﻿using Foundation.Migrations.Bases;
-using Foundation.Migrations.Interfaces;
+﻿using CSMFoundation.Migration.Interfaces;
+
+using Foundation.Migrations.Bases;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,16 @@ public class AccountsDepot
     /// <summary>
     ///     Generates a new depot handler for <see cref="Account"/>.
     /// </summary>
-    public AccountsDepot(Action<DbContext, IMigrationSet[]>? Disposition = null) : base(new(), Disposition) { }
+    public AccountsDepot(TWSSecuritySource Source, IMigrationDisposer? Disposer = null) 
+        : base(Source, Disposer) {     
+    }
+    /// <summary>
+    ///     Generates a new depot handler for <see cref="Account"/>.
+    /// </summary>
+    public AccountsDepot()
+        : base(new(), null) {
+    }
+
 
     public async Task<Permit[]> GetPermits(int Account) {
         IQueryable<AccountsPermit> accountPermits = Source.AccountsPermits

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 
-namespace Foundation;
+namespace CSMFoundation.Core.Bases;
 
 /// <summary>
 ///     Represents an inheritance link between datasource objects

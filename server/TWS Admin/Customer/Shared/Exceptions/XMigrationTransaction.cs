@@ -1,8 +1,7 @@
 ﻿using System.Net;
-
+using CSMFoundation.Core.Constants;
 using Foundation.Migrations.Records;
 using Foundation.Server.Bases;
-using Foundation.Shared.Constants;
 
 namespace Customer.Shared.Exceptions;
 public class XMigrationTransaction

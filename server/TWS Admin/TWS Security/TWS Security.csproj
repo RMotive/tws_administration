@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Foundation\Foundation.csproj" />
+    <ProjectReference Include="..\Foundation\CSMFoundation.csproj" />
   </ItemGroup>
 
 </Project>

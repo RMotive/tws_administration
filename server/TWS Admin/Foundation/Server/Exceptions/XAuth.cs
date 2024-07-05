@@ -1,7 +1,6 @@
 ﻿using System.Net;
-
+using CSMFoundation.Core.Constants;
 using Foundation.Server.Bases;
-using Foundation.Shared.Constants;
 
 namespace Foundation.Server.Exceptions;
 public class XAuth

@@ -8,7 +8,9 @@ namespace TWS_Security;
 public partial class TWSSecuritySource
     : BMigrationSource<TWSSecuritySource> {
     public TWSSecuritySource()
-        : base() { }
+        : base() {
+
+    }
 
     protected override IMigrationSet[] EvaluateFactory() {
         return [

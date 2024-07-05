@@ -1,14 +1,15 @@
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+using CSMFoundation.Core.Exceptions;
+using CSMFoundation.Migration.Interfaces;
+
 using Customer.Services;
 using Customer.Services.Interfaces;
 
 using Foundation.Advising.Interfaces;
 using Foundation.Advising.Managers;
 using Foundation.Server.Utils;
-using Foundation.Shared.Exceptions;
 using Foundation.Utils;
 
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -83,20 +84,22 @@ public partial class Program {
             // --> Adding customer services
             {
                 // --> Application
-                builder.Services.AddSingleton(Disposer);
+                builder.Services.AddSingleton<AnalyticsMiddleware>();
+                builder.Services.AddSingleton<FramingMiddleware>();
+                builder.Services.AddSingleton<AdvisorMiddleware>();
+                builder.Services.AddSingleton<DispositionMiddleware>();
+                builder.Services.AddSingleton<IMigrationDisposer>(Disposer);
 
                 // --> Sources contexts
                 builder.Services.AddDbContext<TWSSecuritySource>();
 
                 // --> Depots
-                builder.Services.AddSingleton<SolutionsDepot>();
-                builder.Services.AddSingleton<AccountsDepot>();
+                builder.Services.AddScoped<SolutionsDepot>();
+                builder.Services.AddScoped<AccountsDepot>();
 
                 // --> Services
                 builder.Services.AddScoped<ISolutionsService, SolutionsService>();
                 builder.Services.AddScoped<ISecurityService, SecurityService>();
-
-
 
                 builder.Services.AddSingleton<IManufacturersService>(new ManufacturersService(new()));
                 builder.Services.AddSingleton<IInsurancesService>(new InsuranceService(new()));
@@ -106,17 +109,6 @@ public partial class Program {
                 builder.Services.AddSingleton<IPlatesService>(new PlatesServices(new()));
                 builder.Services.AddSingleton<IContactService>(new ContactService(new()));
                 builder.Services.AddSingleton<ITrucksService>(new TrucksService(new(), new(), new(), new(), new(), new(), new()));
-
-
-
-                builder.Services.AddScoped<IManufacturersService, ManufacturersService>();
-            }
-            // --> Adding middleware services
-            {
-                builder.Services.AddSingleton(new AnalyticsMiddleware());
-                builder.Services.AddSingleton(new FramingMiddleware());
-                builder.Services.AddSingleton(new AdvisorMiddleware());
-                builder.Services.AddSingleton(new DispositionMiddleware(Disposer));
             }
             WebApplication app = builder.Build();
             app.MapControllers();
@@ -130,6 +122,8 @@ public partial class Program {
 
             app.Lifetime.ApplicationStopping.Register(OnProcessExit);
             app.UseCors();
+
+            AdvisorManager.Announce($"Server ready to listen 🚀");
             app.Run();
         } catch (Exception X) when (X is IAdvisingException AX) {
             AdvisorManager.Exception(AX);

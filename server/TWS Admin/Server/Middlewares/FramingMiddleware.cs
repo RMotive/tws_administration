@@ -1,9 +1,8 @@
 ﻿using System.Net;
 using System.Text.Json;
-
+using CSMFoundation.Core.Exceptions;
 using Foundation.Server.Interfaces;
 using Foundation.Server.Records;
-using Foundation.Shared.Exceptions;
 
 using Microsoft.AspNetCore.Http.Extensions;
 

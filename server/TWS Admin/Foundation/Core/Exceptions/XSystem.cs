@@ -1,8 +1,7 @@
 ﻿using System.Net;
-
 using Foundation.Server.Bases;
 
-namespace Foundation.Shared.Exceptions;
+namespace CSMFoundation.Core.Exceptions;
 public class XSystem
     : BServerTransactionException<XSystemSituations> {
     public XSystem(Exception Exception)

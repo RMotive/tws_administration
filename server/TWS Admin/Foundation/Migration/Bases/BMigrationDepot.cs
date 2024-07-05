@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
+using CSMFoundation.Migration.Interfaces;
+
 using Foundation.Migration.Enumerators;
 using Foundation.Migration.Interfaces.Depot;
 using Foundation.Migrations.Interfaces;
@@ -28,7 +30,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     where TMigrationSource : BMigrationSource<TMigrationSource>
     where TMigrationSet : class, IMigrationSet {
 
-    readonly protected Action<DbContext, IMigrationSet[]>? Dispose;
+    readonly protected IMigrationDisposer? Disposer;
     /// <summary>
     ///     Source to handle direct transactions (not-safe)
     /// </summary>
@@ -43,9 +45,9 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     /// <param name="source">
     ///     The <typeparamref name="TMigrationSource"/> that stores and handles the transactions for this <see cref="TMigrationSet"/> concept.
     /// </param>
-    public BMigrationDepot(TMigrationSource source, Action<DbContext, IMigrationSet[]>? Dispose) {
+    public BMigrationDepot(TMigrationSource source, IMigrationDisposer? Disposer) {
         this.Source = source;
-        this.Dispose = Dispose;
+        this.Disposer = Disposer;
         Set = Source.Set<TMigrationSet>();
     }
 
@@ -132,7 +134,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         await Source.SaveChangesAsync();
         Source.ChangeTracker.Clear();
 
-        Dispose?.Invoke(Source, [Set]);
+        Disposer?.Push(Source, [Set]);
         return Set;
     }
     /// <summary>
@@ -174,7 +176,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         await this.Set.AddRangeAsync(safe);
         await Source.SaveChangesAsync();
 
-        Dispose?.Invoke(Source, Sets);
+        Disposer?.Push(Source, Sets);
         return new(safe, fails);
     }
 

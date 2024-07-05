@@ -1,17 +1,16 @@
-﻿using Foundation.Advising.Managers;
+﻿using CSMFoundation.Migration.Interfaces;
+
+using Foundation.Advising.Managers;
 using Foundation.Migrations.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace Server.Managers;
 
-public sealed partial class DispositionManager {
+public class DispositionManager : IMigrationDisposer {
 
     readonly Dictionary<DbContext, List<IMigrationSet>> DispositionStack = [];
     bool Active = false;
-    public DispositionManager() {
-
-    }
 
     public void Push(DbContext Source, IMigrationSet Record) {
         if (!Active) return;
