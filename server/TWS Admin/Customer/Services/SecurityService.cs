@@ -7,7 +7,9 @@ using Customer.Shared.Exceptions;
 
 using Foundation.Migration.Enumerators;
 using Foundation.Migrations.Records;
+
 using Microsoft.EntityFrameworkCore;
+
 using TWS_Security.Depots;
 using TWS_Security.Sets;
 
@@ -24,7 +26,7 @@ public class SecurityService
     }
 
     public async Task<Session> Authenticate(Credentials Credentials) {
-        Func<IQueryable<Account>, IQueryable<Account>> include = query => query
+        static IQueryable<Account> include(IQueryable<Account> query) => query
         .Include(c => c.ContactNavigation)
         .Select(a => new Account() {
             Id = a.Id,
@@ -39,7 +41,7 @@ public class SecurityService
                 Email = a.ContactNavigation.Email,
                 Phone = a.ContactNavigation.Phone
             },
-           
+
 
         })
         ;

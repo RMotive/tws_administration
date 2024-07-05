@@ -77,7 +77,7 @@ public class Q_FramingMiddleware
     }
 
     [Fact]
-    public async void SystemException() {
+    public async Task SystemException() {
         using HttpClient Server = (await Host.StartAsync()).GetTestClient();
 
         HttpResponseMessage Response = await Server.GetAsync(SYSTEM_EXCEPTION_EP);
@@ -96,7 +96,7 @@ public class Q_FramingMiddleware
         Assert.Equal(expectedExcep, actualExcep);
     }
     [Fact]
-    public async void FoundationException() {
+    public async Task FoundationException() {
         using HttpClient Server = (await Host.StartAsync()).GetTestClient();
 
         HttpResponseMessage Response = await Server.GetAsync(FOUNDATION_EXCEPTION_EP);

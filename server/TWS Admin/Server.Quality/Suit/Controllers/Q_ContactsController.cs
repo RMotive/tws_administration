@@ -17,7 +17,7 @@ public class Q_ContactsController
     }
 
     [Fact]
-    public async void Create() {
+    public async Task Create() {
         {
             Contact[] mocks = [];
             for (int i = 0; i < 3; i++) {

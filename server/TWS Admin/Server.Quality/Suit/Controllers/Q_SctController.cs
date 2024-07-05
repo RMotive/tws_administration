@@ -37,7 +37,7 @@ public class Q_SctController : BQ_ServerController<Program> {
     }
 
     [Fact]
-    public async void View() {
+    public async Task View() {
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
             Page = 1,
             Range = 10,
