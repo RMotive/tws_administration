@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Controllers.Authentication;
 using TWS_Security.Sets;
-using Foundation.Migrations.Records;
+using CSMFoundation.Migration.Records;
 
 namespace Server.Controllers;
 

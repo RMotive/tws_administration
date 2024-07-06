@@ -1,5 +1,5 @@
-﻿using Foundation.Migrations.Bases;
-using Foundation.Migrations.Interfaces;
+﻿using CSMFoundation.Migration.Bases;
+using CSMFoundation.Migration.Interfaces;
 using TWS_Business.Sets;
 
 namespace TWS_Business

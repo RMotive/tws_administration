@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-using Foundation.Server.Bases;
+using CSMFoundation.Server.Bases;
 
-namespace Foundation.Server.Exceptions;
+namespace CSMFoundation.Server.Exceptions;
 public class XDisposition
     : BServerTransactionException<XDispositionSituation> {
     public XDisposition(XDispositionSituation Situation)

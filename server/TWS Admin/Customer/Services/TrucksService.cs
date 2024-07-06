@@ -1,15 +1,13 @@
-﻿
-using System.Diagnostics;
+﻿using CSMFoundation.Migration.Enumerators;
+using CSMFoundation.Migration.Interfaces;
+using CSMFoundation.Migration.Interfaces.Depot;
+using CSMFoundation.Migration.Records;
 
+using Customer.Core.Exceptions;
 using Customer.Services.Exceptions;
 using Customer.Services.Interfaces;
 using Customer.Services.Records;
-using Customer.Shared.Exceptions;
 
-using Foundation.Migration.Enumerators;
-using Foundation.Migration.Interfaces.Depot;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Records;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -165,7 +163,7 @@ public class TrucksService : ITrucksService {
             }
 
             /// Validate which Situation value use to assign the manufacturer value to the truck.
-            if(truck.Situation != null) {
+            if (truck.Situation != null) {
                 if (truck.Situation.Id == 0) {
                     assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify) ?? 0;
                 } else {
@@ -181,7 +179,7 @@ public class TrucksService : ITrucksService {
                     truck.Situation = fetch.Successes[0];
                 }
             }
-            
+
 
 
 

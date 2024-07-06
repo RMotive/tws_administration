@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 
-using Foundation.Server.Bases;
-using Foundation.Server.Records;
-using Foundation.Servers.Quality.Bases;
+using CSMFoundation.Server.Bases;
+using CSMFoundation.Server.Records;
+using CSMFoundation.Servers.Quality.Bases;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

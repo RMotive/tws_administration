@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 
-namespace Foundation.Servers.Quality.Bases;
+namespace CSMFoundation.Servers.Quality.Bases;
 /// <summary>
 ///     Defines base behavior for <see cref="BQ_ServerMiddleware"/> implementations
 ///     that qualifies server [Middleware] operations and configurations.

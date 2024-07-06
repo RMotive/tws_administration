@@ -1,4 +1,4 @@
-﻿namespace Foundation.Migration.Records;
+﻿namespace CSMFoundation.Migration.Records;
 public class MigrationConnectionOptions {
     required public string Host { get; init; }
     required public string Source { get; init; }

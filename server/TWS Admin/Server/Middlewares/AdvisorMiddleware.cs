@@ -1,7 +1,7 @@
 ﻿
 using System.Text.Json;
 
-using Foundation.Advising.Managers;
+using CSMFoundation.Advising.Managers;
 
 using JObject = System.Collections.Generic.Dictionary<string, dynamic>;
 

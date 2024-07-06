@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-using Foundation.Migrations.Interfaces;
+using CSMFoundation.Migration.Interfaces;
 
-namespace Foundation.Migrations.Records;
+namespace CSMFoundation.Migration.Records;
 public record MigrationTransactionFailure {
     public IMigrationSet Set { get; init; }
 

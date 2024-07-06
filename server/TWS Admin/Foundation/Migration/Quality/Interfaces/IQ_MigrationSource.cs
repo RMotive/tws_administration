@@ -1,4 +1,4 @@
-﻿namespace Foundation.Migrations.Quality.Interfaces;
+﻿namespace CSMFoundation.Migration.Quality.Interfaces;
 /// <summary>
 ///     Interface Quality for [MigrationSource].
 ///     

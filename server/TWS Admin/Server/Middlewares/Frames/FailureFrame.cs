@@ -1,5 +1,5 @@
-﻿using Foundation.Server.Records;
-using Foundation.Servers.Interfaces;
+﻿using CSMFoundation.Server.Records;
+using CSMFoundation.Servers.Interfaces;
 
 namespace Server.Middlewares.Frames;
 

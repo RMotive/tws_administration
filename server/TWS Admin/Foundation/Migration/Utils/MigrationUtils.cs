@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text.Json;
 
-using Foundation.Migration.Records;
-using Foundation.Server.Enumerators;
-using Foundation.Server.Managers;
+using CSMFoundation.Migration.Records;
+using CSMFoundation.Server.Enumerators;
+using CSMFoundation.Server.Managers;
 
-namespace Foundation.Migration.Utils;
+namespace CSMFoundation.Migration.Utils;
 public class MigrationUtils {
     private const string DirectoryName = "Connection";
     private const string QualityPrefix = "quality_";

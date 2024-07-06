@@ -1,6 +1,6 @@
-﻿using Foundation.Migrations.Records;
+﻿using CSMFoundation.Migration.Records;
 
-namespace Foundation.Migrations.Interfaces.Depot;
+namespace CSMFoundation.Migration.Interfaces.Depot;
 /// <summary>
 ///     Describes how a <see cref="IMigrationDepot_View{TMigrationSet}"/> implementation should
 ///     behave, providing {View} operations, a View operation is the creation of complex 
@@ -11,6 +11,11 @@ namespace Foundation.Migrations.Interfaces.Depot;
 /// </typeparam>
 public interface IMigrationDepot_View<TMigrationSet>
     where TMigrationSet : IMigrationSet {
-
-    public Task<MigrationView<TMigrationSet>> View(MigrationViewOptions Options, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? Include = null);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Options"></param>
+    /// <param name="Include"></param>
+    /// <returns></returns>
+    Task<MigrationView<TMigrationSet>> View(MigrationViewOptions Options, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? Include = null);
 }

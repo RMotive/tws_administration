@@ -1,6 +1,6 @@
-﻿using Foundation.Migrations.Enumerators;
+﻿using CSMFoundation.Migration.Enumerators;
 
-namespace Foundation.Migrations.Records;
+namespace CSMFoundation.Migration.Records;
 /// <summary>
 ///     Stores a ordering step options for the <see cref="MigrationView{TMigrationSet}"/>
 ///     builder, indicating how the current ordering step should behave.

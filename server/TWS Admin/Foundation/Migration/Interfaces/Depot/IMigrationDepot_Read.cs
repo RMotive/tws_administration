@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 
-using Foundation.Migration.Enumerators;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Records;
+using CSMFoundation.Migration.Enumerators;
+using CSMFoundation.Migration.Interfaces;
+using CSMFoundation.Migration.Records;
 
-namespace Foundation.Migration.Interfaces.Depot;
+namespace CSMFoundation.Migration.Interfaces.Depot;
 public interface IMigrationDepot_Read<TMigrationSet>
     where TMigrationSet : IMigrationSet {
 

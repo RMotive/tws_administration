@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using CSMFoundation.Core.Constants;
-using Foundation.Server.Bases;
+using CSMFoundation.Server.Bases;
 
-namespace Foundation.Server.Exceptions;
+namespace CSMFoundation.Server.Exceptions;
 public class XAuth
     : BServerTransactionException<XAuthSituation> {
     public XAuth(XAuthSituation Situation)

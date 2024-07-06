@@ -1,3 +1,3 @@
-﻿namespace Foundation.Migrations.Interfaces;
+﻿namespace CSMFoundation.Migration.Interfaces;
 public interface IMigrationSource {
 }

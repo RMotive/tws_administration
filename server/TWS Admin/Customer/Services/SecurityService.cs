@@ -1,13 +1,15 @@
-﻿using Customer.Managers;
+﻿using CSMFoundation.Migration.Enumerators;
+using CSMFoundation.Migration.Records;
+
+using Customer.Core.Exceptions;
+using Customer.Managers;
 using Customer.Managers.Records;
 using Customer.Services.Exceptions;
 using Customer.Services.Interfaces;
 using Customer.Services.Records;
-using Customer.Shared.Exceptions;
 
-using Foundation.Migration.Enumerators;
-using Foundation.Migrations.Records;
 using Microsoft.EntityFrameworkCore;
+
 using TWS_Security.Depots;
 using TWS_Security.Sets;
 

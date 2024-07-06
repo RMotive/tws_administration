@@ -1,4 +1,4 @@
-using Foundation.Migrations.Quality.Bases;
+using CSMFoundation.Migration.Quality.Bases;
 
 namespace TWS_Business.Quality;
 

@@ -1,4 +1,4 @@
-﻿using Foundation.Servers.Interfaces;
+﻿using CSMFoundation.Servers.Interfaces;
 
 namespace Server.Middlewares.Frames;
 

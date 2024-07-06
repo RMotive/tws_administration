@@ -1,6 +1,6 @@
-﻿using Foundation.Migrations.Interfaces;
+﻿using CSMFoundation.Migration.Interfaces;
 
-namespace Foundation.Migrations.Exceptions;
+namespace CSMFoundation.Migration.Exceptions;
 public class XBMigrationSet_EvaluateDefinition
     : Exception {
     public enum Reasons {

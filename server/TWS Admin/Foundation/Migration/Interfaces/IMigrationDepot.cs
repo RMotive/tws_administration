@@ -1,7 +1,6 @@
-﻿using Foundation.Migration.Interfaces.Depot;
-using Foundation.Migrations.Interfaces.Depot;
+﻿using CSMFoundation.Migration.Interfaces.Depot;
 
-namespace Foundation.Migrations.Interfaces;
+namespace CSMFoundation.Migration.Interfaces;
 /// <summary>
 ///     Determines how a complex <see cref="IMigrationDepot{TMigrationSet}"/> 
 ///     implementation should behave.
@@ -19,5 +18,6 @@ public interface IMigrationDepot<TMigrationSet>
     : IMigrationDepot_View<TMigrationSet>
     , IMigrationDepot_Read<TMigrationSet>
     , IMigrationDepot_Create<TMigrationSet>
+    , IMigrationDepot_Update<TMigrationSet>
     , IMigrationDepot_Delete<TMigrationSet>
     where TMigrationSet : IMigrationSet { }

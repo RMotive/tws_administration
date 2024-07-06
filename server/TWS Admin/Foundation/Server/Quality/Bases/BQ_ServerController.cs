@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-using Foundation.Server.Records;
+using CSMFoundation.Server.Records;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
@@ -9,7 +9,7 @@ using Server.Quality.Helpers;
 
 using Xunit;
 
-namespace Foundation.Servers.Quality.Bases;
+namespace CSMFoundation.Servers.Quality.Bases;
 /// <summary>
 ///     Defines base behaviors for quality operations to 
 ///     <see cref="BQ_Controller"/> implementations.

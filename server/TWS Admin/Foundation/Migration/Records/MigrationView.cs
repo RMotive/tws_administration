@@ -1,6 +1,6 @@
-﻿using Foundation.Migrations.Interfaces;
+﻿using CSMFoundation.Migration.Interfaces;
 
-namespace Foundation.Migrations.Records;
+namespace CSMFoundation.Migration.Records;
 
 /// <summary>
 ///     Stores a result <see cref="MigrationView{TMigrationSet}"/> 

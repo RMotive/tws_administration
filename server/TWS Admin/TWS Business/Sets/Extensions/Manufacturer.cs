@@ -1,6 +1,6 @@
-﻿using Foundation.Migrations.Bases;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Validators;
+﻿using CSMFoundation.Migration.Bases;
+using CSMFoundation.Migration.Interfaces;
+using CSMFoundation.Migration.Validators;
 using System.Text.Json.Serialization;
 
 namespace TWS_Business.Sets;

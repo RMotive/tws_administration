@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 
-using Foundation.Advising.Managers;
-using Foundation.Migration.Records;
-using Foundation.Migration.Utils;
-using Foundation.Migrations.Interfaces;
+using CSMFoundation.Advising.Managers;
+using CSMFoundation.Migration.Records;
+using CSMFoundation.Migration.Utils;
+using CSMFoundation.Migration.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Foundation.Migrations.Bases;
+namespace CSMFoundation.Migration.Bases;
 public abstract class BMigrationSource<TSource>
     : DbContext, IMigrationSource
     where TSource : DbContext {

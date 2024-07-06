@@ -1,7 +1,7 @@
 ﻿using Customer.Services.Interfaces;
 using Customer.Services.Records;
 
-using Foundation.Migrations.Records;
+using CSMFoundation.Migration.Records;
 
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,16 +1,13 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
+using CSMFoundation.Migration.Enumerators;
 using CSMFoundation.Migration.Interfaces;
-
-using Foundation.Migration.Enumerators;
-using Foundation.Migration.Interfaces.Depot;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Records;
+using CSMFoundation.Migration.Records;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Foundation.Migrations.Bases;
+namespace CSMFoundation.Migration.Bases;
 /// <summary>
 ///     Defines base behaviors for a <see cref="IMigrationDepot{TMigrationSet}"/>
 ///     implementation describing <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/>
@@ -51,7 +48,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         Set = Source.Set<TMigrationSet>();
     }
 
-    #region View Interface
+    #region View 
 
     public Task<MigrationView<TMigrationSet>> View(MigrationViewOptions Options, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? include = null) {
         int range = Options.Range;
@@ -69,7 +66,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             .Skip(start)
             .Take(records);
 
-        if(include != null) {
+        if (include != null) {
             query = include(query);
         }
         int orderActions = Options.Orderings.Length;
@@ -116,7 +113,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
     #endregion
 
-    #region Create Interface
+    #region Create
 
     /// <summary>
     ///     Creates a new record into the datasource.
@@ -182,10 +179,10 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
     #endregion
 
-    #region Read interface
+    #region Read
     public async Task<MigrationTransactionResult<TMigrationSet>> Read(Expression<Func<TMigrationSet, bool>> Predicate, MigrationReadBehavior Behavior, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? Include = null) {
         IQueryable<TMigrationSet> query = Set.Where(Predicate);
-        
+
         if (Include != null)
             query = Include(query);
 
@@ -216,7 +213,33 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     }
     #endregion
 
-    #region Delete interface
+    #region Update 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Set"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public async Task<MigrationUpdateResult<TMigrationSet>> Update(TMigrationSet Record) {
+        TMigrationSet? previous = await Set
+            .Where(i => i.Id == Record.Id)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+
+        Set.Update(Record);
+        await Source.SaveChangesAsync();
+
+        Disposer?.Push(Source, Record);
+        return new MigrationUpdateResult<TMigrationSet> {
+            Previous = previous,
+            Updated = Record,
+        };
+    }
+
+    #endregion
+
+    #region Delete
 
     public Task<MigrationTransactionResult<TMigrationSet>> Delete(TMigrationSet[] Sets) {
 
@@ -244,6 +267,6 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         Source.ChangeTracker.Clear();
         return Set;
     }
-    #endregion
 
+    #endregion
 }

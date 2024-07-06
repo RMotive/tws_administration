@@ -3,9 +3,9 @@
 using Customer.Managers.Records;
 using Customer.Services.Records;
 
-using Foundation.Migrations.Records;
-using Foundation.Server.Records;
-using Foundation.Servers.Quality.Bases;
+using CSMFoundation.Migration.Records;
+using CSMFoundation.Server.Records;
+using CSMFoundation.Servers.Quality.Bases;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
@@ -14,7 +14,7 @@ using TWS_Business.Sets;
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
-using View = Foundation.Migrations.Records.MigrationView<TWS_Business.Sets.Situation>;
+using View = CSMFoundation.Migration.Records.MigrationView<TWS_Business.Sets.Situation>;
 
 namespace Server.Quality.Controllers;
 public class Q_SituationController : BQ_ServerController<Program> {

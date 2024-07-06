@@ -3,7 +3,7 @@
 using Customer.Managers.Records;
 using Customer.Services.Records;
 
-using Foundation.Server.Records;
+using CSMFoundation.Server.Records;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 

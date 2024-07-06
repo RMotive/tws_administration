@@ -1,6 +1,6 @@
 ﻿using CSMFoundation.Migration.Interfaces;
 
-using Foundation.Migrations.Bases;
+using CSMFoundation.Migration.Bases;
 
 using TWS_Security.Sets;
 

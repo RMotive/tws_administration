@@ -1,4 +1,4 @@
-﻿using Foundation.Migrations.Interfaces;
+﻿using CSMFoundation.Migration.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 

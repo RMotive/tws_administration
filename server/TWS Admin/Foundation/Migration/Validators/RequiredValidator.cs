@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
-using Foundation.Migrations.Exceptions;
-using Foundation.Migrations.Interfaces;
+using CSMFoundation.Migration.Exceptions;
+using CSMFoundation.Migration.Interfaces;
 
-namespace Foundation.Migrations.Validators;
+namespace CSMFoundation.Migration.Validators;
 /// <summary>
 ///     <list type="number">
 ///         <listheader> <term> Coding: </term> </listheader>

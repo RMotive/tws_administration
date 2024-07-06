@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Foundation.Server.Utils;
+namespace CSMFoundation.Server.Utils;
 static public class ServerUtils {
     static public string GetHost() {
         string hn = Dns.GetHostName();

@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using CSMFoundation.Core.Constants;
-using Foundation.Migrations.Records;
-using Foundation.Server.Bases;
+using CSMFoundation.Migration.Records;
+using CSMFoundation.Server.Bases;
 
-namespace Customer.Shared.Exceptions;
+namespace Customer.Core.Exceptions;
 public class XMigrationTransaction
     : BServerTransactionException<XTransactionSituation> {
     public XMigrationTransaction(MigrationTransactionFailure[] Failures)

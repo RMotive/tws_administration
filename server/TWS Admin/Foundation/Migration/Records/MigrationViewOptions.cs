@@ -1,5 +1,5 @@
 ﻿
-namespace Foundation.Migrations.Records;
+namespace CSMFoundation.Migration.Records;
 /// <summary>
 ///     Defines options to build a <see cref="MigrationView"/> 
 ///     specifing the behavior to the builder.

@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 using CSMFoundation.Core.Bases;
-using Foundation.Migrations.Exceptions;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Validators;
+using CSMFoundation.Migration.Exceptions;
+using CSMFoundation.Migration.Interfaces;
+using CSMFoundation.Migration.Validators;
 
 using Microsoft.IdentityModel.Tokens;
 
-namespace Foundation.Migrations.Bases;
+namespace CSMFoundation.Migration.Bases;
 public abstract class BMigrationSet
     : BObject<IMigrationSet>, IMigrationSet {
     public abstract int Id { get; set; }

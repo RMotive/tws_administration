@@ -1,7 +1,7 @@
 ﻿
 using CSMFoundation.Migration.Interfaces;
 
-using Foundation.Server.Exceptions;
+using CSMFoundation.Server.Exceptions;
 
 using Microsoft.Extensions.Primitives;
 

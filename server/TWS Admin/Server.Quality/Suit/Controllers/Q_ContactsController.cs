@@ -1,6 +1,6 @@
 ﻿
 
-using Foundation.Server.Records;
+using CSMFoundation.Server.Records;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Server.Quality.Bases;
 using System.Net;

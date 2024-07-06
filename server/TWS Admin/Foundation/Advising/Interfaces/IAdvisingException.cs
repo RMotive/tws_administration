@@ -1,4 +1,4 @@
-﻿namespace Foundation.Advising.Interfaces;
+﻿namespace CSMFoundation.Advising.Interfaces;
 public interface IAdvisingException {
     public string Subject { get; }
     public string Message { get; }

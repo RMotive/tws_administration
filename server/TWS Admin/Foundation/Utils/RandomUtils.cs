@@ -1,4 +1,4 @@
-﻿namespace Foundation.Utils;
+﻿namespace CSMFoundation.Utils;
 public static class RandomUtils {
     private static readonly Random Randomizer = new();
 

@@ -2,17 +2,17 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-using Foundation.Migrations.Bases;
-using Foundation.Migrations.Enumerators;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Quality.Interfaces;
-using Foundation.Migrations.Records;
+using CSMFoundation.Migration.Bases;
+using CSMFoundation.Migration.Enumerators;
+using CSMFoundation.Migration.Interfaces;
+using CSMFoundation.Migration.Quality.Interfaces;
+using CSMFoundation.Migration.Records;
 
 using Microsoft.EntityFrameworkCore;
 
 using Xunit;
 
-namespace Foundation.Migrations.Quality.Bases;
+namespace CSMFoundation.Migration.Quality.Bases;
 
 public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrationSource>
     : IQ_MigrationDepot

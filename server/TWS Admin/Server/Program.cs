@@ -1,16 +1,15 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+using CSMFoundation.Advising.Interfaces;
+using CSMFoundation.Advising.Managers;
 using CSMFoundation.Core.Exceptions;
 using CSMFoundation.Migration.Interfaces;
+using CSMFoundation.Server.Utils;
+using CSMFoundation.Utils;
 
 using Customer.Services;
 using Customer.Services.Interfaces;
-
-using Foundation.Advising.Interfaces;
-using Foundation.Advising.Managers;
-using Foundation.Server.Utils;
-using Foundation.Utils;
 
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
@@ -24,19 +23,10 @@ using TWS_Security.Depots;
 namespace Server;
 
 public partial class Program {
-    private enum CtrlType {
-        CTRL_C_EVENT = 0,
-        CTRL_BREAK_EVENT = 1,
-        CTRL_CLOSE_EVENT = 2,
-        CTRL_LOGOFF_EVENT = 5,
-        CTRL_SHUTDOWN_EVENT = 6
-    }
-
     const string SETTINGS_LOCATION = "\\Properties\\server_properties.json";
     const string CORS_BLOCK_MESSAGE = "Request blocked by cors, is not part of allowed hosts";
 
-    static readonly DispositionManager Disposer = new();
-
+    static IMigrationDisposer? Disposer;
     private static Settings? SettingsStore { get; set; }
     public static Settings Settings { get { return SettingsStore ??= RetrieveSettings(); } }
 
@@ -88,7 +78,7 @@ public partial class Program {
                 builder.Services.AddSingleton<FramingMiddleware>();
                 builder.Services.AddSingleton<AdvisorMiddleware>();
                 builder.Services.AddSingleton<DispositionMiddleware>();
-                builder.Services.AddSingleton<IMigrationDisposer>(Disposer);
+                builder.Services.AddSingleton<IMigrationDisposer, DispositionManager>();
 
                 // --> Sources contexts
                 builder.Services.AddDbContext<TWSSecuritySource>();
@@ -120,8 +110,11 @@ public partial class Program {
                 app.UseMiddleware<DispositionMiddleware>();
             }
 
+            Disposer = app.Services.GetService<IMigrationDisposer>()
+                ?? throw new Exception("Required disposer service");
             app.Lifetime.ApplicationStopping.Register(OnProcessExit);
             app.UseCors();
+
 
             AdvisorManager.Announce($"Server ready to listen 🚀");
             app.Run();
@@ -142,7 +135,7 @@ public partial class Program {
     }
     static void OnProcessExit() {
         AdvisorManager.Announce("Disposing quality context records");
-        Disposer.Dispose();
+        Disposer?.Dispose();
     }
     static Settings RetrieveSettings() {
         string ws = Directory.GetCurrentDirectory();

@@ -1,7 +1,8 @@
 ﻿using System.Net;
 
-using Foundation.Migrations.Records;
-using Foundation.Server.Records;
+using CSMFoundation.Migration.Records;
+using CSMFoundation.Server.Records;
+using CSMFoundation.Utils;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
@@ -12,7 +13,7 @@ using TWS_Security.Sets;
 
 using Xunit;
 
-using View = Foundation.Migrations.Records.MigrationView<TWS_Security.Sets.Solution>;
+using View = CSMFoundation.Migration.Records.MigrationView<TWS_Security.Sets.Solution>;
 
 namespace Server.Quality.Controllers;
 
@@ -64,4 +65,66 @@ public class Q_SolutionsController
         #endregion
     }
 
+    [Fact]
+    public async Task Update() {
+        #region First (Correctly creates when doesn't exist)
+        {
+            (HttpStatusCode Status, ServerGenericFrame Respone) creationFact = await Post("Update", new Solution {
+                Id = 0,
+                Name = RandomUtils.String(10),
+                Sign = RandomUtils.String(5),
+                Description = RandomUtils.String(10),
+            }, true);
+
+            Assert.Equal(HttpStatusCode.OK, creationFact.Status);
+            MigrationUpdateResult<Solution> creationResult = Framing<SuccessFrame<MigrationUpdateResult<Solution>>>(creationFact.Respone).Estela;
+
+            Assert.Null(creationResult.Previous);
+
+            Solution updated = creationResult.Updated;
+            Assert.True(updated.Id > 0);
+        }
+        #endregion
+
+        #region Second (Updates an exist record)
+        {
+            Solution mock = new() {
+                Name = RandomUtils.String(10),
+                Sign = RandomUtils.String(5),
+                Description = RandomUtils.String(10),
+            };
+            (HttpStatusCode Status, ServerGenericFrame Response) creationResponse = await Post("Update", mock, true);
+
+            Assert.Equal(HttpStatusCode.OK, creationResponse.Status);
+
+            MigrationUpdateResult<Solution> creationResult = Framing<SuccessFrame<MigrationUpdateResult<Solution>>>(creationResponse.Response).Estela;
+            Assert.Null(creationResult.Previous);
+
+            Solution creationRecord = creationResult.Updated;
+            Assert.Multiple([
+                () => Assert.True(creationRecord.Id > 0),
+                () => Assert.Equal(mock.Name, creationRecord.Name),
+                () => Assert.Equal(mock.Sign, creationRecord.Sign),
+                () => Assert.Equal(mock.Description, creationRecord.Description),
+            ]);
+
+            mock.Id = creationRecord.Id;
+            mock.Name = RandomUtils.String(10);
+            (HttpStatusCode Status, ServerGenericFrame Response) updateResponse = await Post("Update", mock, true);
+
+            Assert.Equal(HttpStatusCode.OK, updateResponse.Status);
+            MigrationUpdateResult<Solution> updateResult = Framing<SuccessFrame<MigrationUpdateResult<Solution>>>(updateResponse.Response).Estela;
+
+            Assert.NotNull(updateResult.Previous);
+
+            Solution updateRecord = updateResult.Updated;
+            Assert.Multiple([
+                () => Assert.Equal(creationRecord.Id, updateRecord.Id),
+                () => Assert.Equal(creationRecord.Sign, updateRecord.Sign),
+                () => Assert.Equal(creationRecord.Description, updateRecord.Description),
+                () => Assert.NotEqual(creationRecord.Name, updateRecord.Name),
+            ]);
+        }
+        #endregion
+    }
 }

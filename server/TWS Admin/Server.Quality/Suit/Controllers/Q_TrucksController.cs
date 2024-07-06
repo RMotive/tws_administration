@@ -3,8 +3,8 @@
 using Customer.Managers.Records;
 using Customer.Services.Records;
 
-using Foundation.Migrations.Records;
-using Foundation.Server.Records;
+using CSMFoundation.Migration.Records;
+using CSMFoundation.Server.Records;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
@@ -16,7 +16,7 @@ using TWS_Business.Sets;
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
-using View = Foundation.Migrations.Records.MigrationView<TWS_Business.Sets.Truck>;
+using View = CSMFoundation.Migration.Records.MigrationView<TWS_Business.Sets.Truck>;
 
 namespace Server.Quality.Controllers;
 public class Q_TrucksController : BQ_CustomServerController {

@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-using Foundation.Server.Enumerators;
+using CSMFoundation.Server.Enumerators;
 
-namespace Foundation.Server.Managers;
+namespace CSMFoundation.Server.Managers;
 public class EnvironmentManager {
     private static ServerEnvironments? _Mode;
 

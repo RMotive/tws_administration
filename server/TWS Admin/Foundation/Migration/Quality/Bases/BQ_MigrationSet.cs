@@ -1,10 +1,10 @@
-﻿using Foundation.Migrations.Exceptions;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Quality.Records;
+﻿using CSMFoundation.Migration.Exceptions;
+using CSMFoundation.Migration.Interfaces;
+using CSMFoundation.Migration.Quality.Records;
 
 using Xunit;
 
-namespace Foundation.Migrations.Quality.Bases;
+namespace CSMFoundation.Migration.Quality.Bases;
 /// <summary>
 ///     Base Quality for [Q_Entity].
 ///     

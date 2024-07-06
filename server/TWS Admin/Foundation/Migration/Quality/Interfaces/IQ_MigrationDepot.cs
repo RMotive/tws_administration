@@ -1,3 +1,3 @@
-﻿namespace Foundation.Migrations.Quality.Interfaces;
+﻿namespace CSMFoundation.Migration.Quality.Interfaces;
 public interface IQ_MigrationDepot {
 }

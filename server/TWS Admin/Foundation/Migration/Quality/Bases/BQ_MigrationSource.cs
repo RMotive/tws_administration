@@ -1,9 +1,9 @@
-﻿using Foundation.Migrations.Bases;
-using Foundation.Migrations.Quality.Interfaces;
+﻿using CSMFoundation.Migration.Bases;
+using CSMFoundation.Migration.Quality.Interfaces;
 
 using Xunit;
 
-namespace Foundation.Migrations.Quality.Bases;
+namespace CSMFoundation.Migration.Quality.Bases;
 
 /// <summary>
 ///     Base Quality for [MigrationSource].

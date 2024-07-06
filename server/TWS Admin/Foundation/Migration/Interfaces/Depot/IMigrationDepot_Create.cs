@@ -1,6 +1,6 @@
-﻿using Foundation.Migrations.Records;
+﻿using CSMFoundation.Migration.Records;
 
-namespace Foundation.Migrations.Interfaces.Depot;
+namespace CSMFoundation.Migration.Interfaces.Depot;
 /// <summary>
 ///     Describes the behavior for a <see cref="IMigrationDepot_Create{TMigrationSet}"/>,
 ///     this means is able to handle a <see cref="TMigrationSet"/> live migration entity mirror between

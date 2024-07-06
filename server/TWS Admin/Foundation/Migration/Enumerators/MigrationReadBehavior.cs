@@ -1,4 +1,4 @@
-﻿namespace Foundation.Migration.Enumerators;
+﻿namespace CSMFoundation.Migration.Enumerators;
 public enum MigrationReadBehavior {
     First,
     Last,

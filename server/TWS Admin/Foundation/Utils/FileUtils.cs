@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Foundation.Utils;
+namespace CSMFoundation.Utils;
 public class FileUtils {
     public static string FormatLocation(string Location) {
         string wd = Directory.GetCurrentDirectory();

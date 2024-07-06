@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-using Foundation.Server.Bases;
+using CSMFoundation.Server.Bases;
 
 namespace Server.Quality.Quality.Middlewares.Resources.Exceptions;
 public class XQ_Exception

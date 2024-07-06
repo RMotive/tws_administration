@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Net;
 
-using Foundation.Server.Interfaces;
-using Foundation.Server.Records;
+using CSMFoundation.Server.Interfaces;
+using CSMFoundation.Server.Records;
 
-namespace Foundation.Server.Bases;
+namespace CSMFoundation.Server.Bases;
 public class BServerTransactionException<TSituation>
     : Exception, IServerTransactionException<TSituation>
     where TSituation : Enum {

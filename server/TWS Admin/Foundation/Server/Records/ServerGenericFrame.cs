@@ -1,6 +1,6 @@
-﻿using Foundation.Servers.Interfaces;
+﻿using CSMFoundation.Servers.Interfaces;
 
-namespace Foundation.Server.Records;
+namespace CSMFoundation.Server.Records;
 public record ServerGenericFrame
     : IServerFrame<Dictionary<string, object>> {
     required public Dictionary<string, object> Estela { get; init; }

@@ -1,6 +1,6 @@
 ﻿using Customer.Services.Interfaces;
 
-using Foundation.Migrations.Records;
+using CSMFoundation.Migration.Records;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +10,7 @@ using TWS_Security.Sets;
 
 namespace Server.Controllers;
 
-[ApiController, Route("[Controller]")]
+[ApiController, Route("[Controller]/[Action]")]
 public class SolutionsController
     : ControllerBase {
 
@@ -19,11 +19,15 @@ public class SolutionsController
         this.Service = Service;
     }
 
-    [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
+    [HttpPost(), Auth(["ABC1", "ABC2"])]
     public async Task<IActionResult> View(MigrationViewOptions Options)
     => Ok(await Service.View(Options));
 
-    [HttpPost("[Action]"), Auth([])]
+    [HttpPost(), Auth([])]
     public async Task<IActionResult> Create(Solution[] Solutions)
     => Ok(await Service.Create(Solutions));
+
+    [HttpPost(), Auth([])]
+    public async Task<IActionResult> Update(Solution Solution)
+    => Ok(await Service.Update(Solution));
 }

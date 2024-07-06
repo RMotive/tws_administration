@@ -1,6 +1,6 @@
-﻿using Foundation.Migrations.Interfaces;
+﻿using CSMFoundation.Migration.Interfaces;
 
-namespace Foundation.Migrations.Records;
+namespace CSMFoundation.Migration.Records;
 public record MigrationTransactionResult<TSet>
     where TSet : IMigrationSet {
     public TSet[] Successes { get; init; }

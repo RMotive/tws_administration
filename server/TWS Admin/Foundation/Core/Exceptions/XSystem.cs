@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Foundation.Server.Bases;
+using CSMFoundation.Server.Bases;
 
 namespace CSMFoundation.Core.Exceptions;
 public class XSystem

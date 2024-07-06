@@ -1,4 +1,4 @@
-﻿namespace Foundation.Migrations.Interfaces;
+﻿namespace CSMFoundation.Migration.Interfaces;
 public interface IMigrationSet {
     public int Id { get; set; }
 

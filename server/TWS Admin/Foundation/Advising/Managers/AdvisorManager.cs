@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 
-using Foundation.Advising.Interfaces;
+using CSMFoundation.Advising.Interfaces;
 
 using Detail = System.Collections.Generic.KeyValuePair<string, dynamic>;
 using Details = System.Collections.Generic.Dictionary<string, dynamic>;
 
-namespace Foundation.Advising.Managers;
+namespace CSMFoundation.Advising.Managers;
 public class AdvisorManager {
     private static void Restore() {
         Console.ResetColor();

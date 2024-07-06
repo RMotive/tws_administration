@@ -1,6 +1,6 @@
-﻿using Foundation.Migrations.Quality.Bases;
-using Foundation.Migrations.Quality.Records;
-using Foundation.Migrations.Validators;
+﻿using CSMFoundation.Migration.Quality.Bases;
+using CSMFoundation.Migration.Quality.Records;
+using CSMFoundation.Migration.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
