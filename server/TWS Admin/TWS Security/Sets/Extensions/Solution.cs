@@ -8,12 +8,10 @@ public partial class Solution
     : BMigrationSet {
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container) {
-        RequiredValidator Required = new();
-
         Container = [
             ..Container,
-            (nameof(Name), [Required, new UniqueValidator(), new LengthValidator(1, 40),]),
-            (nameof(Sign), [Required, new UniqueValidator(), new LengthValidator(5, 5),]),
+            (nameof(Name), [new UniqueValidator(), new LengthValidator(1, 40)]),
+            (nameof(Sign), [new UniqueValidator(), new LengthValidator(5, 5)]),
         ];
 
         return Container;

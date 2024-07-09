@@ -5,21 +5,22 @@ class _MasterLayoutHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CSMColorThemeOptions themeStruct = getTheme<TWSAThemeBase>().masterLayoutStruct;
+    final CSMColorThemeOptions themeStruct = getTheme<TWSAThemeBase>().masterLayout;
     final MasterLayoutMenuState masterLayoutMenu = masterLayoutMenuState;
 
     return ColoredBox(
       color: themeStruct.main,
       child: SizedBox(
         height: 50,
-        child: Row(
-          children: <Widget>[
-            Visibility(
-              visible: masterLayoutMenu.drawerActive,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                ),
+        child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Visibility(
+                visible: masterLayoutMenu.drawerActive,
                 child: MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
@@ -33,8 +34,14 @@ class _MasterLayoutHeader extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: MasterUserButton(
+                  themeOptions: themeStruct
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

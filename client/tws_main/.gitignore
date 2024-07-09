@@ -1,3 +1,6 @@
+**/secrets/
+
+
 # Miscellaneous
 *.class
 *.log
@@ -27,6 +30,7 @@ migrate_working_dir/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+pubspec.lock
 .packages
 .pub-cache/
 .pub/

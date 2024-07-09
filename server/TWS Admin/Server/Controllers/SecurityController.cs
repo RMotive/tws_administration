@@ -1,6 +1,5 @@
-﻿using Customer;
-using Customer.Contracts.Services.Interfaces;
-using Customer.Models;
+﻿using Customer.Services.Interfaces;
+using Customer.Services.Records;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,19 +8,17 @@ namespace Server.Controllers;
 /// <summary>
 ///     Represents the controller to perform secutiry operations.
 /// </summary>
-[ApiController, Route("[controller]")]
+[ApiController, Route("[Controller]")]
 public class SecurityController
     : ControllerBase {
-    private readonly ISecurityService Service;
 
-    public SecurityController(ISecurityService service) {
-        Service = service;
+
+    readonly ISecurityService Service;
+    public SecurityController(ISecurityService Service) {
+        this.Service = Service;
     }
 
-    [HttpPost("[action]")]
-    public async Task<IActionResult> InitSession([FromBody] AccountIdentityScheme accountIdentity) {
-        AccountIdentityModel RequestConvertedModel = accountIdentity.GenerateModel();
-        ForeignSessionModel OperationResult = await Service.InitSession(RequestConvertedModel);
-        return Ok(OperationResult);
-    }
+    [HttpPost("[Action]")]
+    public async Task<IActionResult> Authenticate([FromBody] Credentials Credentials)
+    => Ok(await Service.Authenticate(Credentials));
 }

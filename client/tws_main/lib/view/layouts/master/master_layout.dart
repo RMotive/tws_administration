@@ -1,14 +1,11 @@
 import 'dart:ui';
-import 'package:cosmos_foundation/common/common_module.dart';
-import 'package:cosmos_foundation/common/tools/csm_responsive.dart';
-import 'package:cosmos_foundation/router/router_module.dart';
-import 'package:cosmos_foundation/theme/theme_module.dart';
-import 'package:cosmos_foundation/widgets/csm_responsive_view.dart';
-import 'package:cosmos_foundation/widgets/csm_spacing_column.dart';
-import 'package:cosmos_foundation/widgets/enums/csm_states.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/router/twsa_k_routes.dart';
+import 'package:tws_administration_service/tws_administration_service.dart';
+import 'package:tws_main/core/router/twsa_routes.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_main/data/storages/session_storage.dart';
 import 'package:tws_main/view/layouts/master/master_layout_menu/master_layout_menu_state.dart';
 
 part 'master_layout_menu/master_layout_menu.dart';
@@ -17,8 +14,15 @@ part 'master_layout_menu/master_layout_menu_button_options.dart';
 
 part 'master_layout_header/master_layout_header.dart';
 
+part 'master_layout_header/master_layout_user/content_menu/menu_option.dart';
+part 'master_layout_header/master_layout_user/master_user_button.dart';
+part 'master_layout_header/master_layout_user/content_menu/content_menu.dart';
+part 'master_layout_header/master_layout_user/master_user_button_state.dart';
+
 part 'master_layout_small.dart';
 part 'master_layout_large.dart';
+
+
 
 const double _minMenuWidth = 175;
 const double _maxMenuWidth = 250;
@@ -38,12 +42,17 @@ class MasterLayout extends CSMLayoutBase {
       _MasterLayoutMenuButtonOptions(
         label: 'Overview',
         icon: Icons.dashboard_outlined,
-        route: TWSAKRoutes.overviewPage,
+        route: TWSARoutes.overviewPage,
       ),
       _MasterLayoutMenuButtonOptions(
         label: 'Security',
         icon: Icons.security_outlined,
-        route: TWSAKRoutes.securityPage,
+        route: TWSARoutes.securityPage,
+      ),
+      _MasterLayoutMenuButtonOptions(
+        label: 'Business',
+        icon: Icons.emoji_transportation,
+        route: TWSARoutes.businessPage,
       )
     ];
 

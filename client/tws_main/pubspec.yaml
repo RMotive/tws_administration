@@ -1,7 +1,7 @@
 name: tws_main
 description: A new Flutter project.
 publish_to: 'none'
-version: 0.1.0
+version: 1.0.0-alpha
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
@@ -11,18 +11,21 @@ dependencies:
     sdk: flutter
   flutter_web_plugins: 
     sdk: flutter
-  cosmos_foundation:
-    git:
-      url: https://github.com/RMotive/CMSF-Cosmos_Foundation
-      path: package/cosmos_foundation/
-  go_router: ^13.0.1
+  go_router: ^14.0.2
   http: ^1.2.0
   localstorage: ^5.0.0
+
+  csm_foundation_view:
+    git:
+      url: https://github.com/RMotive/csm_foundation_view
+  tws_administration_service:
+    git:
+      url: https://github.com/RMotive/tws_administration_service
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true

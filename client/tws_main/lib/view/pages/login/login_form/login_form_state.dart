@@ -1,26 +1,24 @@
 part of '../login_page.dart';
 
-// TODO: Change this to the new feature from csm_foundation (V2.0.3) [CSMState] and [CSMStateHandler] and [CSMForm] with [CSMFormOptions]
-
 /// A class that handles and notifies state changes when is needed.
 ///
 /// State classes handles all behaviors and elements that are used by te UI but aren't explicit
 /// UI.
 ///
 /// Handles state for [_LoginForm]
-class _LoginFormState extends ChangeNotifier {
+class _LoginFormState extends CSMStateBase {
   //* --> UI Resources -->
   /// Specifies the max amount of width that all controls in the form will take.
   final double maxControlsWidth = 275;
 
   /// Service to handle local session storage.
-  final SessionStorage _sessionStorage = SessionStorage.instance;
+  //final SessionStorage _sessionStorage = SessionStorage.instance;
 
   /// Service to handle route driving.
-  final CSMRouter _router = CSMRouter.i;
+  // final CSMRouter _router = CSMRouter.i;
 
   /// Service to handle [Security] operations with the business network services provider.
-  final TWSASecurityServiceBase _service = twsaRepo.securityService;
+  //final TWSASecurityServiceBase _service = twsaSource.security;
 
   /// Specific key for handling the state of the form.
   final GlobalKey<FormState> formKey = GlobalKey();
@@ -69,20 +67,20 @@ class _LoginFormState extends ChangeNotifier {
     _failureDisplay = "";
     _identityFailure = null;
     _passwordFailure = null;
-    notifyListeners();
+    effect();
   }
 
   /// (Render) Indicates the UI that the request performed was finished and renders the state changes.
   void _finishRequest() {
     _isRequesting = false;
-    notifyListeners();
+    effect();
   }
 
   /// (Render) Indicates the UI to display a failure related with state management and ends the request.
   void _wrongStateFailure() {
     _isRequesting = false;
     _failureDisplay = TWSAMessages.kStateManagementErrorDisplay;
-    notifyListeners();
+    effect();
   }
 
   //* --> UI METHODS --> Methods used directly by the UI.
@@ -111,41 +109,6 @@ class _LoginFormState extends ChangeNotifier {
     if (formValidationResult == null) return _wrongStateFailure();
     if (!formValidationResult) return _finishRequest();
 
-    final String identity = identityControl.text;
-    final Uint8List password = passwordControl.text.toByteArray();
-    final InitSessionInput operationInput = InitSessionInput(identity, password);
-    final TWSAResolver<InitSessionOutput> serviceResolver = await _service.initSession(operationInput);
-    serviceResolver.resolve(
-      InitSessionOutput.def(),
-      onConnectionFailure: () => _failureDisplay = TWSAMessages.kConnectionFailureDisplay,
-      onException: (Object _, StackTrace __) => _failureDisplay = TWSAMessages.kUnexpectedErrorDisplay,
-      onFailure: (TWSATemplate<TWSAFailure> failure, int status) {
-        Situation situation = failure.estela.situation;
-        switch (situation.code) {
-          case 1: // --> Here we know represents identity error
-            _identityFailure = situation.display;
-            _passwordFailure = "";
-            identityControl.focus();
-          case 2: // --> Here we know represents password error
-            _passwordFailure = situation.display;
-          default:
-            _failureDisplay = TWSAMessages.kUnhandledFailureCode;
-        }
-      },
-      onSuccess: (TWSATemplate<InitSessionOutput> success) async {
-        Session session = Session.fromOutput(success.estela);
-        try {
-          _sessionStorage.storeSession(session);
-          if (await _sessionStorage.isSession) {
-            _router.drive(TWSAKRoutes.loginPage);
-          } else {
-            _failureDisplay = "Invalid session to store";
-          }
-        } catch (_) {
-          _failureDisplay = "Modelling management exception";
-        }
-      },
-      onFinally: () => _finishRequest(),
-    );
+    _finishRequest();
   }
 }

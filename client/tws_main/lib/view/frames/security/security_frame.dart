@@ -1,6 +1,6 @@
-import 'package:cosmos_foundation/router/router_module.dart';
+import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/router/twsa_k_routes.dart';
+import 'package:tws_main/core/router/twsa_routes.dart';
 import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/article_frame.dart';
 import 'package:tws_main/view/frames/article/article_options.dart';
@@ -27,8 +27,18 @@ class SecurityFrame extends StatelessWidget {
           color: stateColor,
         );
       },
-      route: TWSAKRoutes.featuresArticle,
+      route: TWSARoutes.featuresArticle,
       title: 'Features',
+    ),
+    ArticleOptions(
+      icon: (Color? stateColor) {
+        return Icon(
+          Icons.business,
+          color: stateColor,
+        );
+      },
+      route: TWSARoutes.solutionsArticle,
+      title: 'Solutions',
     ),
   ];
 

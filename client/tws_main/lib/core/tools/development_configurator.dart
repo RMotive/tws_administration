@@ -1,9 +1,20 @@
-class DevelopmentConfigurator {
-  //final AccountIdentityModel _defaultAccount = AccountIdentityModel(developmentAccountIdentity, developmentAccountPassword);
+import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:tws_administration_service/tws_administration_service.dart';
+import 'package:tws_main/core/secrets/development_secrets.dart';
+import 'package:tws_main/data/services/sources.dart';
+import 'package:tws_main/data/storages/session_storage.dart';
 
-  void configure() {
-    configureAccount();
+class DevelopmentConfigurator {
+  static Future<void> configure() async {
+    await _configureAccount();
   }
 
-  void configureAccount() {}
+  static Future<void> _configureAccount() async {
+    SessionStorage sessionStorage = SessionStorage.i;
+    if (sessionStorage.isSession) return;
+
+    final MainResolver<Privileges> service = await Sources.administration.security.authenticate(DevelopmentSecrets.credentials).timeout(4.seconds);
+    Privileges privileges = await service.act(PrivilegesDecode());
+    sessionStorage.storeSession(privileges);
+  }
 }

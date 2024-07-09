@@ -1,6 +1,10 @@
-﻿namespace TWS_Security.Sets;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class AccountsPermit {
+namespace TWS_Security.Sets;
+
+public partial class AccountsPermit
+{
     public int Account { get; set; }
 
     public int Permit { get; set; }
