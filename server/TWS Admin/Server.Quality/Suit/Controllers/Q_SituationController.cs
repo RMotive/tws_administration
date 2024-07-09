@@ -1,16 +1,18 @@
 ﻿using System.Net;
 
-using Customer.Managers.Records;
-using Customer.Services.Records;
-
-using CSMFoundation.Migration.Records;
 using CSMFoundation.Server.Records;
 using CSMFoundation.Servers.Quality.Bases;
+using CSMFoundation.Source.Models.In;
+
+using Customer.Managers.Records;
+using Customer.Services.Records;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Middlewares.Frames;
+
 using TWS_Business.Sets;
+
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
@@ -38,7 +40,7 @@ public class Q_SituationController : BQ_ServerController<Program> {
 
     [Fact]
     public async Task View() {
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new SetViewOptions {
             Page = 1,
             Range = 5,
             Retroactive = false,
@@ -57,7 +59,7 @@ public class Q_SituationController : BQ_ServerController<Program> {
         string testTag = Guid.NewGuid().ToString()[..3];
         string name = " name ctl" + testTag;
         string description = "desc ctl" + testTag;
-        
+
         Situation mock = new() {
             Name = name,
             Description = description

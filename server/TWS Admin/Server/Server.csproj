@@ -22,7 +22,7 @@
     <ProjectReference Include="..\Customer\Customer.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\Foundation\CSMFoundation.csproj" />
+    <ProjectReference Include="..\Foundation\CSM Foundation.csproj" />
     <ProjectReference Include="..\TWS Security\TWS Security.csproj" />
   </ItemGroup>
 </Project>

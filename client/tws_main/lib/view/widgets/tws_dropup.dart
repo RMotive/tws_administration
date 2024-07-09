@@ -7,9 +7,11 @@ class TWSDropup<T> extends StatefulWidget {
   final List<T> items;
   final String? tooltip;
   final void Function(T item) onChange;
+  final bool disabled;
   const TWSDropup({
     super.key,
     this.tooltip,
+    this.disabled = false,
     required this.item,
     required this.items,
     required this.onChange,
@@ -117,6 +119,18 @@ class _TWSDropupState<T> extends State<TWSDropup<T>> with TickerProviderStateMix
     );
   }
 
+  Future<void> toogleDrawer([bool close = false]) async {
+    if (close) {
+      await animController.reverse();
+      overlay?.remove();
+      overlay = null;
+    } else {
+      overlay = composeOverlay();
+      Overlay.of(context).insert(overlay!);
+      animController.forward();
+    }
+  }
+
   void themeUpdate({TWSAThemeBase? theming}) {
     theming ??= getTheme();
     themeState = theming.primaryControlState;
@@ -132,6 +146,14 @@ class _TWSDropupState<T> extends State<TWSDropup<T>> with TickerProviderStateMix
     });
     if (currentItem != null) {
       widget.onChange(currentItem);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant TWSDropup<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.disabled && widget.disabled != oldWidget.disabled) {
+      updateState(CSMStates.hovered);
     }
   }
 
@@ -159,24 +181,15 @@ class _TWSDropupState<T> extends State<TWSDropup<T>> with TickerProviderStateMix
       updateEfect: themeUpdate,
     );
     themeUpdate(theming: theming);
+    if (widget.disabled) {
+      updateState(CSMStates.hovered);
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
     disposeEffect(themeUpdate);
-  }
-
-  Future<void> toogleDrawer([bool close = false]) async {
-    if (close) {
-      await animController.reverse();
-      overlay?.remove();
-      overlay = null;
-    } else {
-      overlay = composeOverlay();
-      Overlay.of(context).insert(overlay!);
-      animController.forward();
-    }
   }
 
   @override
@@ -187,6 +200,7 @@ class _TWSDropupState<T> extends State<TWSDropup<T>> with TickerProviderStateMix
         link: layerLink,
         child: CSMPointerHandler(
           onClick: () {
+            if (widget.disabled) return;
             if (state == CSMStates.selected) {
               updateState(CSMStates.hovered);
               toogleDrawer(true);
@@ -197,6 +211,7 @@ class _TWSDropupState<T> extends State<TWSDropup<T>> with TickerProviderStateMix
           },
           cursor: SystemMouseCursors.click,
           onHover: (bool $in) {
+            if (widget.disabled) return;
             if (state == CSMStates.selected) return;
             updateState($in ? CSMStates.hovered : CSMStates.none);
           },

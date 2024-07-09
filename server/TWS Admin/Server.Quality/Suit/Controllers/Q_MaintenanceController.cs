@@ -1,11 +1,10 @@
 ﻿using System.Net;
 
+using CSMFoundation.Server.Records;
+using CSMFoundation.Source.Models.In;
+
 using Customer.Managers.Records;
 using Customer.Services.Records;
-
-using CSMFoundation.Migration.Records;
-using CSMFoundation.Server.Records;
-using CSMFoundation.Servers.Quality.Bases;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
@@ -37,7 +36,7 @@ public class Q_MaintenanceController : BQ_CustomServerController {
 
     [Fact]
     public async Task View() {
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new SetViewOptions {
             Page = 1,
             Range = 10,
             Retroactive = false,

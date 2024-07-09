@@ -6,9 +6,10 @@ using CSMFoundation.Migration.Bases;
 using CSMFoundation.Migration.Enumerators;
 using CSMFoundation.Migration.Interfaces;
 using CSMFoundation.Migration.Quality.Interfaces;
-using CSMFoundation.Migration.Records;
 using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Options;
 using CSMFoundation.Source.Models.Out;
+
 using Microsoft.EntityFrameworkCore;
 
 using Xunit;
@@ -98,7 +99,7 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
                 Range = 20,
                 Retroactive = false,
                 Orderings = [
-                    new SetViewOrderOptions() {
+                    new SetViewOrderOptions {
                         Property = Ordering,
                         Behavior = MIgrationViewOrderBehaviors.UpDown,
                     },

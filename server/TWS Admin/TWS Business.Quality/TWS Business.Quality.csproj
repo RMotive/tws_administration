@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Customer\Customer.csproj" />
-    <ProjectReference Include="..\Foundation\CSMFoundation.csproj" />
+    <ProjectReference Include="..\Foundation\CSM Foundation.csproj" />
     <ProjectReference Include="..\Server\Server.csproj" />
     <ProjectReference Include="..\TWS Business\TWS Business.csproj" />
   </ItemGroup>

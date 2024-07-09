@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using CSMFoundation.Core.Utils;
 using CSMFoundation.Server.Records;
+using CSMFoundation.Source.Models.In;
 using CSMFoundation.Source.Models.Out;
 using Microsoft.AspNetCore.Mvc.Testing;
 
@@ -25,7 +26,7 @@ public class Q_SolutionsController
 
     [Fact]
     public async Task View() {
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new SetView {
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new SetViewOptions {
             Page = 1,
             Range = 10,
             Retroactive = false,
