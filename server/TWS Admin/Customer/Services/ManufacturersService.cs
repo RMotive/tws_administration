@@ -1,11 +1,11 @@
 ﻿
 
 using Customer.Services.Interfaces;
-
-using CSMFoundation.Migration.Records;
 using Microsoft.EntityFrameworkCore;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
+using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 
 namespace Customer.Services;
 public class ManufacturersService : IManufacturersService {
@@ -15,7 +15,7 @@ public class ManufacturersService : IManufacturersService {
         this.Manufacturers = manufacturers;
     }
 
-    public async Task<MigrationView<Manufacturer>> View(MigrationViewOptions Options) {
+    public async Task<SetViewOut<Manufacturer>> View(SetViewOptions Options) {
         return await Manufacturers.View(Options);
     }
 

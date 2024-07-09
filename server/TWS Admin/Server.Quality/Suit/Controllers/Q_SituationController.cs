@@ -14,7 +14,7 @@ using TWS_Business.Sets;
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
-using View = CSMFoundation.Migration.Records.MigrationView<TWS_Business.Sets.Situation>;
+using View = CSMFoundation.Source.Models.Out.SetViewOut<TWS_Business.Sets.Situation>;
 
 namespace Server.Quality.Controllers;
 public class Q_SituationController : BQ_ServerController<Program> {

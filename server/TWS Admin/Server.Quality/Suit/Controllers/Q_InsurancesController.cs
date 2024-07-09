@@ -15,7 +15,7 @@ using Xunit;
 
 
 using Account = Server.Quality.Secrets.Account;
-using View = CSMFoundation.Migration.Records.MigrationView<TWS_Business.Sets.Insurance>;
+using View = CSMFoundation.Source.Models.Out.SetViewOut<TWS_Business.Sets.Insurance>;
 
 namespace Server.Quality.Controllers;
 public class Q_InsurancesController

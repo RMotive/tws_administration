@@ -1,8 +1,8 @@
 ﻿
 using Customer.Services.Interfaces;
-using CSMFoundation.Migration.Records;
 using TWS_Security.Depots;
 using TWS_Security.Sets;
+using CSMFoundation.Source.Models.Out;
 
 namespace Customer.Services;
 public class ContactService
@@ -12,7 +12,7 @@ public class ContactService
     public ContactService(ContactsDepot contacts) {
         this.Contacts = contacts;
     }
-    public async Task<MigrationTransactionResult<Contact>> Create(Contact[] contact) {
+    public async Task<SourceTransactionOut<Contact>> Create(Contact[] contact) {
         return await this.Contacts.Create(contact);
     }
 }

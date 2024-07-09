@@ -9,14 +9,14 @@ namespace Server.Managers;
 public class DispositionManager : IMigrationDisposer {
 
     readonly IServiceProvider Servicer;
-    readonly Dictionary<DbContext, List<IMigrationSet>> DispositionStack = [];
+    readonly Dictionary<DbContext, List<ISourceSet>> DispositionStack = [];
     bool Active = false;
 
     public DispositionManager(IServiceProvider Servicer) {
         this.Servicer = Servicer;
     }
 
-    public void Push(DbContext Source, IMigrationSet Record) {
+    public void Push(DbContext Source, ISourceSet Record) {
         if (!Active) return;
         Type sourceType = Source.GetType();
 
@@ -27,10 +27,10 @@ public class DispositionManager : IMigrationDisposer {
             DispositionStack[source].Add(Record);
             return;
         }
-        List<IMigrationSet> recordsListed = [Record];
+        List<ISourceSet> recordsListed = [Record];
         DispositionStack.Add(Source, recordsListed);
     }
-    public void Push(DbContext Source, IMigrationSet[] Records) {
+    public void Push(DbContext Source, ISourceSet[] Records) {
         if (!Active) return;
         Type sourceType = Source.GetType();
 
@@ -41,7 +41,7 @@ public class DispositionManager : IMigrationDisposer {
             DispositionStack[source].AddRange(Records);
             return;
         }
-        List<IMigrationSet> recordsListed = [.. Records.ToList()];
+        List<ISourceSet> recordsListed = [.. Records.ToList()];
         DispositionStack.Add(Source, recordsListed);
     }
 
@@ -53,7 +53,7 @@ public class DispositionManager : IMigrationDisposer {
         if (DispositionStack.IsNullOrEmpty()) {
             AdvisorManager.Announce($"No records to dispose");
         }
-        foreach (KeyValuePair<DbContext, List<IMigrationSet>> disposeLine in DispositionStack) {
+        foreach (KeyValuePair<DbContext, List<ISourceSet>> disposeLine in DispositionStack) {
             using IServiceScope servicerScope = Servicer.CreateScope();
             DbContext source = disposeLine.Key;
             try {
@@ -69,7 +69,7 @@ public class DispositionManager : IMigrationDisposer {
             }
             int corrects = 0;
             int incorrects = 0;
-            foreach (IMigrationSet record in disposeLine.Value) {
+            foreach (ISourceSet record in disposeLine.Value) {
                 try {
                     source.Remove(record);
                     source.SaveChanges();

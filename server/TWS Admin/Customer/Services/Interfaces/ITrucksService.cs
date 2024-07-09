@@ -1,12 +1,12 @@
 ﻿using Customer.Services.Records;
 
-using CSMFoundation.Migration.Records;
-
 using TWS_Business.Sets;
+using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 
 namespace Customer.Services.Interfaces;
 public interface ITrucksService {
-    Task<MigrationView<Truck>> View(MigrationViewOptions options);
+    Task<SetViewOut<Truck>> View(SetViewOptions options);
 
     Task<TruckAssembly> Create(TruckAssembly truck);
 }

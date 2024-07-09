@@ -1,10 +1,8 @@
-﻿
-
-using CSMFoundation.Migration.Records;
-
+﻿using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 using TWS_Business.Sets;
 
 namespace Customer.Services.Interfaces;
 public interface ISctService {
-    Task<MigrationView<Sct>> View(MigrationViewOptions Options);
+    Task<SetViewOut<Sct>> View(SetViewOptions Options);
 }

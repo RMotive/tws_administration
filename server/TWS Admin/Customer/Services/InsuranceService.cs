@@ -1,9 +1,9 @@
 ﻿using Customer.Services.Interfaces;
-
-using CSMFoundation.Migration.Records;
 using Microsoft.EntityFrameworkCore;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
+using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 
 namespace Customer.Services;
 public class InsuranceService : IInsurancesService {
@@ -12,7 +12,7 @@ public class InsuranceService : IInsurancesService {
     public InsuranceService(InsurancesDepot Insurances) {
         this.Insurances = Insurances;
     }
-    public async Task<MigrationView<Insurance>> View(MigrationViewOptions options) {
+    public async Task<SetViewOut<Insurance>> View(SetViewOptions options) {
         
         return await Insurances.View(options, query => query
             .Include(m => m.Trucks)

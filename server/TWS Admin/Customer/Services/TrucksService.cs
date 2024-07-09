@@ -1,8 +1,8 @@
 ﻿using CSMFoundation.Migration.Enumerators;
 using CSMFoundation.Migration.Interfaces;
 using CSMFoundation.Migration.Interfaces.Depot;
-using CSMFoundation.Migration.Records;
-
+using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 using Customer.Core.Exceptions;
 using Customer.Services.Exceptions;
 using Customer.Services.Interfaces;
@@ -37,7 +37,7 @@ public class TrucksService : ITrucksService {
         this.Plates = Plates;
     }
 
-    public async Task<MigrationView<Truck>> View(MigrationViewOptions options) {
+    public async Task<SetViewOut<Truck>> View(SetViewOptions options) {
 
         static IQueryable<Truck> include(IQueryable<Truck> query) => query
             .Include(t => t.InsuranceNavigation)
@@ -112,7 +112,7 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : IMigrationSet {
+    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : ISourceSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
@@ -151,7 +151,7 @@ public class TrucksService : ITrucksService {
                 assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify) ?? 0;
             } else {
                 /// Pointer Validation
-                MigrationTransactionResult<Manufacturer> fetch = await Manufacturers.Read(i => i.Id == truck.Manufacturer.Id, MigrationReadBehavior.First);
+                SourceTransactionOut<Manufacturer> fetch = await Manufacturers.Read(i => i.Id == truck.Manufacturer.Id, MigrationReadBehavior.First);
                 if (fetch.Failed)
                     throw new XMigrationTransaction(fetch.Failures);
 
@@ -168,7 +168,7 @@ public class TrucksService : ITrucksService {
                     assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify) ?? 0;
                 } else {
                     /// Pointer Validation
-                    MigrationTransactionResult<Situation> fetch = await Situations.Read(i => i.Id == truck.Situation.Id, MigrationReadBehavior.First);
+                    SourceTransactionOut<Situation> fetch = await Situations.Read(i => i.Id == truck.Situation.Id, MigrationReadBehavior.First);
                     if (fetch.Failed)
                         throw new XMigrationTransaction(fetch.Failures);
 

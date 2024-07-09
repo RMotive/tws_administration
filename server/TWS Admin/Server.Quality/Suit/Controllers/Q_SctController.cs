@@ -14,7 +14,7 @@ using Server.Middlewares.Frames;
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
-using View = CSMFoundation.Migration.Records.MigrationView<TWS_Business.Sets.Sct>;
+using View = CSMFoundation.Source.Models.Out.SetViewOut<TWS_Business.Sets.Sct>;
 
 namespace Server.Quality.Controllers;
 public class Q_SctController : BQ_ServerController<Program> {

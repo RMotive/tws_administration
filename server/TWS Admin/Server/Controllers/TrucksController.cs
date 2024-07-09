@@ -1,11 +1,10 @@
 ﻿using Customer.Services.Interfaces;
 using Customer.Services.Records;
 
-using CSMFoundation.Migration.Records;
-
 using Microsoft.AspNetCore.Mvc;
 
 using Server.Controllers.Authentication;
+using CSMFoundation.Source.Models.In;
 
 namespace Server.Controllers;
 /// <summary>
@@ -20,7 +19,7 @@ public class TrucksController : ControllerBase {
     }
 
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
-    public async Task<IActionResult> View(MigrationViewOptions Options)
+    public async Task<IActionResult> View(SetViewOptions Options)
         => Ok(await Service.View(Options));
 
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]

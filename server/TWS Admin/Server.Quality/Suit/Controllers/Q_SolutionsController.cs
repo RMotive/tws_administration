@@ -1,9 +1,7 @@
 ﻿using System.Net;
-
-using CSMFoundation.Migration.Records;
+using CSMFoundation.Core.Utils;
 using CSMFoundation.Server.Records;
-using CSMFoundation.Utils;
-
+using CSMFoundation.Source.Models.Out;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Middlewares.Frames;
@@ -13,7 +11,7 @@ using TWS_Security.Sets;
 
 using Xunit;
 
-using View = CSMFoundation.Migration.Records.MigrationView<TWS_Security.Sets.Solution>;
+using View = CSMFoundation.Source.Models.Out.SetViewOut<TWS_Security.Sets.Solution>;
 
 namespace Server.Quality.Controllers;
 
@@ -27,7 +25,7 @@ public class Q_SolutionsController
 
     [Fact]
     public async Task View() {
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
+        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new SetView {
             Page = 1,
             Range = 10,
             Retroactive = false,
@@ -77,7 +75,7 @@ public class Q_SolutionsController
             }, true);
 
             Assert.Equal(HttpStatusCode.OK, creationFact.Status);
-            MigrationUpdateResult<Solution> creationResult = Framing<SuccessFrame<MigrationUpdateResult<Solution>>>(creationFact.Respone).Estela;
+            RecordUpdateOut<Solution> creationResult = Framing<SuccessFrame<RecordUpdateOut<Solution>>>(creationFact.Respone).Estela;
 
             Assert.Null(creationResult.Previous);
 
@@ -97,7 +95,7 @@ public class Q_SolutionsController
 
             Assert.Equal(HttpStatusCode.OK, creationResponse.Status);
 
-            MigrationUpdateResult<Solution> creationResult = Framing<SuccessFrame<MigrationUpdateResult<Solution>>>(creationResponse.Response).Estela;
+            RecordUpdateOut<Solution> creationResult = Framing<SuccessFrame<RecordUpdateOut<Solution>>>(creationResponse.Response).Estela;
             Assert.Null(creationResult.Previous);
 
             Solution creationRecord = creationResult.Updated;
@@ -113,7 +111,7 @@ public class Q_SolutionsController
             (HttpStatusCode Status, ServerGenericFrame Response) updateResponse = await Post("Update", mock, true);
 
             Assert.Equal(HttpStatusCode.OK, updateResponse.Status);
-            MigrationUpdateResult<Solution> updateResult = Framing<SuccessFrame<MigrationUpdateResult<Solution>>>(updateResponse.Response).Estela;
+            RecordUpdateOut<Solution> updateResult = Framing<SuccessFrame<RecordUpdateOut<Solution>>>(updateResponse.Response).Estela;
 
             Assert.NotNull(updateResult.Previous);
 

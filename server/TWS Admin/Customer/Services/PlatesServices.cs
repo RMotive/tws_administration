@@ -1,10 +1,10 @@
 ﻿
 using Customer.Services.Interfaces;
-
-using CSMFoundation.Migration.Records;
 using Microsoft.EntityFrameworkCore;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
+using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 
 namespace Customer.Services;
 public class PlatesServices
@@ -16,7 +16,7 @@ public class PlatesServices
         this.Plates = plates;
     }
 
-    public async Task<MigrationView<Plate>> View(MigrationViewOptions options) {
+    public async Task<SetViewOut<Plate>> View(SetViewOptions options) {
         return await Plates.View(options, query => query
             .Include(p => p.TruckNavigation)
             .Select(p => new Plate() {

@@ -1,10 +1,10 @@
 ﻿
 using Customer.Services.Interfaces;
-
-using CSMFoundation.Migration.Records;
 using Microsoft.EntityFrameworkCore;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
+using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 
 namespace Customer.Services;
 public class SctService : ISctService {
@@ -14,7 +14,7 @@ public class SctService : ISctService {
         this.sctDepot = Solutions;
     }
 
-    public async Task<MigrationView<Sct>> View(MigrationViewOptions options) {
+    public async Task<SetViewOut<Sct>> View(SetViewOptions options) {
         return await sctDepot.View(options, query => query
             .Include(m => m.Trucks)
             .Select(S => new Sct() {

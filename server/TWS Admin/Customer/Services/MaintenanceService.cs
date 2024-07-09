@@ -1,9 +1,9 @@
 ﻿using Customer.Services.Interfaces;
-
-using CSMFoundation.Migration.Records;
 using Microsoft.EntityFrameworkCore;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
+using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 
 namespace Customer.Services;
 public class MaintenanceService : IMaintenancesService {
@@ -13,7 +13,7 @@ public class MaintenanceService : IMaintenancesService {
         this.Maintenances = Maintenances;
     }
 
-    public async Task<MigrationView<Maintenance>> View(MigrationViewOptions Options) {
+    public async Task<SetViewOut<Maintenance>> View(SetViewOptions Options) {
         return await Maintenances.View(Options, query => query
             .Include(m => m.Trucks)
             .Select(M => new Maintenance() {

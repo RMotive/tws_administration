@@ -1,9 +1,9 @@
 ﻿using Customer.Services.Interfaces;
-
-using CSMFoundation.Migration.Records;
 using Microsoft.EntityFrameworkCore;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
+using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 
 namespace Customer.Services;
 public class SituationsService : ISituationsService {
@@ -14,7 +14,7 @@ public class SituationsService : ISituationsService {
         this.Situations = situations;
     }
 
-    public async Task<MigrationView<Situation>> View(MigrationViewOptions options) {
+    public async Task<SetViewOut<Situation>> View(SetViewOptions options) {
         return await Situations.View(options);
     }
 

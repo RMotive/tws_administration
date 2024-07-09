@@ -12,7 +12,7 @@ public partial class TWSSecuritySource
 
     }
 
-    protected override IMigrationSet[] EvaluateFactory() {
+    protected override ISourceSet[] EvaluateFactory() {
         return [
                 new Solution(),
         ];

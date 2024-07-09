@@ -39,11 +39,11 @@ final class TWSArticleTableEditor extends StatelessWidget {
         ),
 
         // --> Custom content
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 12,
-          ),
-          child: Expanded(
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 12,
+            ),
             child: SizedBox(
               child: form,
             ),

@@ -15,7 +15,7 @@ using Server.Quality.Bases;
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
-using View = CSMFoundation.Migration.Records.MigrationView<TWS_Business.Sets.Maintenance>;
+using View = CSMFoundation.Source.Models.Out.SetViewOut<TWS_Business.Sets.Maintenance>;
 
 namespace Server.Quality.Controllers;
 public class Q_MaintenanceController : BQ_CustomServerController {

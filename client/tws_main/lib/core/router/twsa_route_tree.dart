@@ -3,13 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tws_main/core/router/twsa_routes.dart';
 import 'package:tws_main/view/articles/features/features_article.dart';
 import 'package:tws_main/view/articles/features/whispers/create/features_create_whisper.dart';
-import 'package:tws_main/view/articles/insurances/insurances_article.dart';
-import 'package:tws_main/view/articles/maintenances/maintenences_article.dart';
 import 'package:tws_main/view/articles/manufacturers/manufacturers_article.dart';
 import 'package:tws_main/view/articles/manufacturers/whispers/manufactueres_create_whisper.dart';
-import 'package:tws_main/view/articles/plates/plates_article.dart';
-import 'package:tws_main/view/articles/plates/whispers/plates_create_whisper.dart';
-import 'package:tws_main/view/articles/scts/scts_article.dart';
 import 'package:tws_main/view/articles/situations/situations_article.dart';
 import 'package:tws_main/view/articles/solutions/solutions_article.dart';
 import 'package:tws_main/view/articles/solutions/whispers/solutions_create_whisper.dart';
@@ -149,40 +144,6 @@ class TWSARouteTree extends CSMRouterTreeBase {
                         ),
                       ],
                     ),
-
-                    // --> [Plates]
-                    CSMRouteNode(
-                      Routes.platesArticle,
-                      pageBuild: (_, __) => const PlatesArticle(),
-                      routes: <CSMRouteBase>[
-                        // -> [Create]
-                        CSMRouteWhisper<Object>(
-                          Routes.platesCreateWhisper,
-                          whisperOptions: const CSMRouteWhisperOptions(),
-                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const PlatesCreateWhisper(),
-                        ),
-                      ],
-                    ),
-
-                    // --> [Insurance]
-                    CSMRouteNode(
-                      Routes.insuranceArticle,
-                      pageBuild: (_, __) => const InsurancesArticle(),
-                      
-                    ),
-
-                    // --> [Maintenece]
-                    CSMRouteNode(
-                      Routes.maintencesArticle,
-                      pageBuild: (_, __) => const MaintenencesArticle(),   
-                    ),
-
-                    // --> [SCTS]
-                    CSMRouteNode(
-                      Routes.sctsArticle,
-                      pageBuild: (_, __) => const SCTsArticle(),
-                    ),
-
                     // --> [Situations]
                     CSMRouteNode(
                       Routes.situationsArticle,

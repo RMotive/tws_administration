@@ -1,12 +1,11 @@
 ﻿using Customer.Services.Interfaces;
 
-using CSMFoundation.Migration.Records;
-
 using Microsoft.AspNetCore.Mvc;
 
 using Server.Controllers.Authentication;
 
 using TWS_Security.Sets;
+using CSMFoundation.Source.Models.In;
 
 namespace Server.Controllers;
 
@@ -20,7 +19,7 @@ public class SolutionsController
     }
 
     [HttpPost(), Auth(["ABC1", "ABC2"])]
-    public async Task<IActionResult> View(MigrationViewOptions Options)
+    public async Task<IActionResult> View(SetViewOptions Options)
     => Ok(await Service.View(Options));
 
     [HttpPost(), Auth([])]

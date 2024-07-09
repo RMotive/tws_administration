@@ -1,9 +1,9 @@
 ﻿using Customer.Services.Interfaces;
 
-using CSMFoundation.Migration.Records;
-
 using TWS_Security.Depots;
 using TWS_Security.Sets;
+using CSMFoundation.Source.Models.Out;
+using CSMFoundation.Source.Models.In;
 
 namespace Customer.Services;
 /// <summary>
@@ -27,7 +27,7 @@ public class SolutionsService
     /// </summary>
     /// <param name="Options"></param>
     /// <returns></returns>
-    public async Task<MigrationView<Solution>> View(MigrationViewOptions Options) {
+    public async Task<SetViewOut<Solution>> View(SetViewOptions Options) {
         return await SolutionsDepot.View(Options);
     }
     /// <summary>
@@ -35,7 +35,7 @@ public class SolutionsService
     /// </summary>
     /// <param name="Solutions"></param>
     /// <returns></returns>
-    public async Task<MigrationTransactionResult<Solution>> Create(Solution[] Solutions) {
+    public async Task<SourceTransactionOut<Solution>> Create(Solution[] Solutions) {
         return await this.SolutionsDepot.Create(Solutions);
     }
     /// <summary>
@@ -43,7 +43,7 @@ public class SolutionsService
     /// </summary>
     /// <param name="Solution"></param>
     /// <returns></returns>
-    public async Task<MigrationUpdateResult<Solution>> Update(Solution Solution) { 
+    public async Task<RecordUpdateOut<Solution>> Update(Solution Solution) { 
         return await this.SolutionsDepot.Update(Solution);    
     }
 }

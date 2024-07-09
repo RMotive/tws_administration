@@ -1,6 +1,5 @@
 ﻿using CSMFoundation.Migration.Enumerators;
-using CSMFoundation.Migration.Records;
-
+using CSMFoundation.Source.Models.Out;
 using Customer.Core.Exceptions;
 using Customer.Managers;
 using Customer.Managers.Records;
@@ -43,7 +42,7 @@ public class SecurityService
             },
         });
 
-        MigrationTransactionResult<Account> result = await Accounts.Read(i => i.User == Credentials.Identity, MigrationReadBehavior.First, include);
+        SourceTransactionOut<Account> result = await Accounts.Read(i => i.User == Credentials.Identity, MigrationReadBehavior.First, include);
         if (result.Failed)
             throw new XMigrationTransaction(result.Failures);
 

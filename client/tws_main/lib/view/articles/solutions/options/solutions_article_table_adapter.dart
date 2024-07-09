@@ -88,7 +88,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
                   ],
                 ),
               ),
-              onAccept: () {},
+              onAccept: () async {},
             );
           },
         );

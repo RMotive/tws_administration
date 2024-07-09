@@ -10,7 +10,7 @@ namespace TWS_Business
         public TWSBusinessSource()
             : base() { }
 
-        protected override IMigrationSet[] EvaluateFactory()
+        protected override ISourceSet[] EvaluateFactory()
         {
             return [
                 new Plate(),

@@ -1,6 +1,6 @@
 ﻿
+using CSMFoundation.Core.Utils;
 using CSMFoundation.Migration.Quality.Bases;
-using CSMFoundation.Utils;
 using TWS_Security.Depots;
 using TWS_Security.Sets;
 

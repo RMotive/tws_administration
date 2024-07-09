@@ -1,10 +1,10 @@
-﻿using CSMFoundation.Migration.Records;
-
+﻿using CSMFoundation.Source.Models.In;
+using CSMFoundation.Source.Models.Out;
 using TWS_Security.Sets;
 
 namespace Customer.Services.Interfaces;
 public interface ISolutionsService {
-    Task<MigrationView<Solution>> View(MigrationViewOptions Options);
-    Task<MigrationTransactionResult<Solution>> Create(Solution[] Solutions);
-    Task<MigrationUpdateResult<Solution>> Update(Solution Solution);
+    Task<SetViewOut<Solution>> View(SetViewOptions Options);
+    Task<SourceTransactionOut<Solution>> Create(Solution[] Solutions);
+    Task<RecordUpdateOut<Solution>> Update(Solution Solution);
 }
