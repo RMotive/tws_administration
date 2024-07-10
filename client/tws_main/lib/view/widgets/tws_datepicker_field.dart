@@ -15,7 +15,7 @@ class TWSDatepicker extends StatefulWidget {
   /// Text field heigth.
   final double height;
   /// Text field title.
-  final String? title;
+  final String? label;
   /// Text field hintext.
   final String? hintText;
   /// Optional focus node.
@@ -24,6 +24,8 @@ class TWSDatepicker extends StatefulWidget {
   final DateTime? initialDate;
   /// Optional Text controller.
   final TextEditingController? controller;
+  /// Defines if the user can interact with the widget.
+  final bool isEnabled;
   /// Callback that return the selected options in the datepicker dialog.
   final void Function(String text)? onChanged;
   /// Validator for the text input.
@@ -35,9 +37,10 @@ class TWSDatepicker extends StatefulWidget {
     this.initialDate,
     this.width = 200,
     this.height = 40,
-    this.title,
+    this.label,
     this.hintText,
     this.focusNode,
+    this.isEnabled = true,
     this.controller,
     this.onChanged,
     this.validator
@@ -58,15 +61,26 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
 
   @override
   void initState() {
+    super.initState();
     ctrl = widget.controller ?? TextEditingController();
     fNode = widget.focusNode ?? FocusNode();
     theme = getTheme(
       updateEfect: themeUpdateListener,
-    );      
+    );
     initializeThemes();
-    super.initState();
+    ctrl.addListener(() => setState(() {}));
   }
+  
+  @override
+  void didUpdateWidget(covariant TWSDatepicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
+    if (widget.controller != oldWidget.controller) {
+      ctrl = widget.controller ?? TextEditingController();
+    }
+
+    ctrl.addListener(() => setState(() {}));
+  }
   void initializeThemes() {
     colorStruct = theme.primaryControlColor;
     disabledColorStruct = theme.primaryDisabledControlColor;
@@ -97,7 +111,6 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
           color: colorStruct.foreAlt?.withOpacity(.7),
         ),
         onTap: () => _showPicker(),
-        onChanged:widget.onChanged,
         decoration: InputDecoration(
           suffixIcon: const Icon(Icons.calendar_month),
           suffixIconColor: colorStruct.main,
@@ -114,7 +127,7 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
               });
             },
           ): null,
-          labelText: widget.title,
+          labelText: widget.label,
           hintText: widget.hintText,
           isDense: true,
           labelStyle: TextStyle(
@@ -184,6 +197,7 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
     if(date != null) {
       setState(() {
         ctrl.text = date.dateOnlyString;
+        if(widget.onChanged != null) widget.onChanged!(ctrl.text);
       });
     }
   }

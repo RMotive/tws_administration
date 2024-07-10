@@ -2,6 +2,7 @@
 part of '../whispers/truck_create_whisper.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
+final TrucksServiceBase _trucksService = Sources.administration.trucks;
 
 final class _ManufacturerViewAdapter implements TWSFutureAutocompleteAdapter<Manufacturer>{
   const _ManufacturerViewAdapter();

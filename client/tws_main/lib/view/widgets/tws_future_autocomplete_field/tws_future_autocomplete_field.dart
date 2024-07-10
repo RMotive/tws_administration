@@ -24,6 +24,8 @@ class TWSFutureAutoCompleteField<TSet extends CSMEncodeInterface> extends Statef
   final String? hint;
   /// Defines if the user can interact with the widget.
   final bool isEnabled;
+  /// Set has non-required field.
+  final bool isOptional;
   /// Optional Focus node to manage
   final FocusNode? focus;
   /// Variable that stores a [TWSFutureAutocompleteAdapter] class to consume the data. 
@@ -43,10 +45,11 @@ class TWSFutureAutoCompleteField<TSet extends CSMEncodeInterface> extends Statef
     required this.onChanged,
     required this.optionsBuilder,
     required this.adapter,
+    this.isOptional = false,
     this.focus,
     this.label,
     this.hint,
-    this.width = 80,
+    this.width = 150,
     this.height = 40,
     this.menuHeight = 200,
     this.validator,
@@ -74,7 +77,7 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
   /// Main controller for the TWSInputText.
   late TextEditingController ctrl;
   /// Stores the current first suggestion for the user input.
-  TWSAutocompleteItemProperties<TSet>? firstSuggestion;
+  TWSAutocompleteItemProperties<TSet>? selectedOption;
   /// Flag for Overlay Menu first build.
   bool firstbuild = true;
   /// Original Options list given in builder parameter.
@@ -88,37 +91,30 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
   bool show = false;
   
   /// Methoth that verify if the [TWSTextField] component has a valid input selection.
-  bool _verifyQuery(String suggest) {
-    if (ctrl.text == suggest && ctrl.text.isNotEmpty) return true;
+  bool _verifySelection() {
+    if(selectedOption != null) return true;
     return false;
   }
 
   /// Method to filter the Original options list based on user input.
   void _search(String input) {
+    selectedOption = null;
     String query = input.toLowerCase();
+    if(query.isNotEmpty) {
+      // Do a serching for the method input variable.
+      suggestionsList = rawOptionsList.where((TWSAutocompleteItemProperties<TSet> properties) {
+        return properties.label.toLowerCase().contains(query);
+      }).toList();
 
-    setState(() {
-      if(query.isNotEmpty) {
-        // Do a serching for the method input variable.
-        suggestionsList = rawOptionsList.where((TWSAutocompleteItemProperties<TSet> properties) {
-          return properties.label.toLowerCase().contains(query);
-        }).toList();
-        // Validate if the searching results is not empty.
-        if (suggestionsList.isNotEmpty) {
-          firstSuggestion = suggestionsList.first;
-        } else {
-          firstSuggestion = null;
-        }
-      } else {
-        // if the input is empty, then the default suggestions list is the original options list.
-        suggestionsList = rawOptionsList;
-        firstSuggestion = null;
+      if(!firstbuild && suggestionsList.isNotEmpty && suggestionsList.first.label.toLowerCase() == query){
+        selectedOption = suggestionsList.first;
+        widget.onChanged(input, selectedOption);
       }
-    });
-
-    // Return on callback method, the search first result and the input text.
-    widget.onChanged(input, firstSuggestion);
-      
+    } else {
+      // if the input is empty, then the default suggestions list is the original options list.
+      suggestionsList = rawOptionsList;
+    }   
+    if(!firstbuild) setState(() {});
   }
 
   @override
@@ -143,7 +139,9 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
     ctrl.dispose();
     super.dispose();
   }
-
+  void initOptions(){
+    
+  }
   void themeUpdateListener() {
     setState(() {
       theme = getTheme();
@@ -167,6 +165,32 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
     return SizedBox(
       width: widget.width,
       child: OverlayPortal(
+        controller: overlayController,
+        child: CompositedTransformTarget(
+          link: link,
+          child: TWSInputText( 
+            controller: ctrl,
+            isOptional: widget.isOptional,
+            width: widget.width,
+            height: widget.height,
+            showErrorColor: selectedOption == null && !firstbuild,
+            onChanged: (String text) => _search(text),
+            onTap: () => setState(() => show = true),
+            onTapOutside: (_) {
+              if(!isOvelayHovered) setState(() => show = false);
+              if(!show) focus.unfocus();
+            },
+            focusNode: focus,
+            label: widget.label,
+            hint: widget.hint,
+            isEnabled: widget.isEnabled,
+            validator: (String? text) {
+              if (_verifySelection()) return "Not exist an item with this value.";
+              if (widget.validator != null) return widget.validator!(text);
+              return null;
+            },           
+          )
+        ),
         overlayChildBuilder: (_) {
           // Getting the visual boundries for this component.
           final RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -230,9 +254,10 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                                 properties = widget.optionsBuilder(i, data.sets[i]);
                                 rawOptionsList.add(properties);
                               }
-                              suggestionsList = rawOptionsList;
+                              _search(ctrl.text);
                               firstbuild = false;
-                            }                  
+                            }
+
                             return suggestionsList.isNotEmpty? Scrollbar(
                               trackVisibility: true,
                               thumbVisibility: true,
@@ -245,23 +270,30 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                                   controller: scrollController,
                                   itemCount: suggestionsList.length,
                                   itemBuilder: (_, int index) {
-                                    // Return the individual option component.
+                                    final TWSAutocompleteItemProperties<TSet> currentItem = suggestionsList[index];
+                                    // Build the individual option component.
                                     return ListTile(
                                       hoverColor: primaryColorTheme.fore,
                                       dense: true,
                                       title: Text(
                                         softWrap: false,
-                                        suggestionsList[index].label,
+                                        currentItem.label,
                                         style: TextStyle(
                                           color: highContrastColor,
                                         ),
                                       ),
                                       onTap: () {
-                                        // Set the controller text to selected item on overlay menu.
-                                        ctrl.text = suggestionsList[index].label;
-                                        // Do a search query because the controller.text not trigger the OnChange callback.
-                                        _search(suggestionsList[index].label);
-                                        show = false;
+                                        setState(() {
+                                          // Set the controller text to selected item on overlay menu.
+                                          ctrl.text = currentItem.label;
+                                          // Do a search query because the controller.text not trigger the OnChange callback.
+                                          _search(currentItem.label);
+                                          show = false;
+                                          // return selected option.
+                                          selectedOption = currentItem; 
+                                          widget.onChanged(ctrl.text, selectedOption);
+                                        });
+                                       
                                       }
                                     );   
                                   }
@@ -269,7 +301,6 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                               )
                           ) : SizedBox(
                             height: tileHeigth,
-                            width: widget.width,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -302,31 +333,7 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
             )
           )
         );
-      },
-      controller: overlayController,
-      child: CompositedTransformTarget(
-        link: link,
-        child: TWSInputText(
-          OnTap: () => setState(() => show = true),
-          onTapOutside: (_) {
-            if(!isOvelayHovered) setState(() => show = false);
-            if(!show) focus.unfocus();
-          },
-          focusNode: focus,
-          label: widget.label,
-          hint: widget.hint,
-          isEnabled: widget.isEnabled,
-          validator: (String? text) {
-            if (_verifyQuery(firstSuggestion?.label ?? "")) return "Not exist an item with this value.";
-            if (widget.validator != null) return widget.validator!(text);
-            return null;
-          },
-          onChanged: (String text) => _search(text),
-          controller: ctrl,
-          width: widget.width,
-          height: widget.height
-        )
-      )
-            )
+      }
+    )
   );
 }}

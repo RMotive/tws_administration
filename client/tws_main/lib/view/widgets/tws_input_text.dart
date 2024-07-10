@@ -15,9 +15,11 @@ class TWSInputText extends StatefulWidget {
   final String? errorText;
   final bool isPrivate;
   final bool isEnabled;
+  final bool showErrorColor;
   final int? maxLength;
   final int? maxLines;
-  final void Function()? OnTap;
+  final bool isOptional;
+  final void Function()? onTap;
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final String? Function(String? text)? validator;
@@ -35,7 +37,9 @@ class TWSInputText extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.onChanged,
-    this.OnTap,
+    this.isOptional = false,
+    this.showErrorColor = false,
+    this.onTap,
     this.onTapOutside,
     this.maxLines = 1,
     this.isEnabled = true,
@@ -64,8 +68,6 @@ class _TWSInputTextState extends State<TWSInputText> {
       updateEfect: themeUpdateListener,
     );
     initializeThemes();
-
-
     ctrl.addListener(() => setState(() {}));
   }
 
@@ -110,7 +112,7 @@ class _TWSInputTextState extends State<TWSInputText> {
           cursorColor: colorStruct.foreAlt,
           enabled: widget.isEnabled,
           onChanged: widget.onChanged,
-          onTap: widget.OnTap,
+          onTap: widget.onTap,
           onTapOutside: widget.onTapOutside,
           maxLength: widget.maxLength,
           maxLines: widget.maxLines,
@@ -119,7 +121,20 @@ class _TWSInputTextState extends State<TWSInputText> {
           ),
           decoration: InputDecoration(
             hintText: widget.hint,
-            labelText: widget.label,
+            labelText: !widget.isOptional? widget.label : null,
+            label: widget.isOptional? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(widget.label ?? ""),
+                Text(
+                  " (Optional)",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: colorStruct.foreAlt?.withOpacity(.5)
+                  ),
+                )
+              ],
+            ): null,
             errorText: widget.errorText,
             isDense: true,
             counterStyle: TextStyle(
@@ -136,7 +151,7 @@ class _TWSInputTextState extends State<TWSInputText> {
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: colorStruct.highlight.withOpacity(.6),
+                color: widget.showErrorColor? errorColorStruct.fore :colorStruct.highlight.withOpacity(.6),
                 width: borderWidth,
               ),
             ),
