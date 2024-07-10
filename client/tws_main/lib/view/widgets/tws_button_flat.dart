@@ -9,7 +9,8 @@ class TWSButtonFlat extends StatelessWidget {
   final double? width;
   final double? height;
   final String label;
-  final bool showLoading;
+  final bool waiting;
+  final bool disabled;
   final CSMColorThemeOptions? themeOptions;
   final Function() onTap;
 
@@ -19,7 +20,8 @@ class TWSButtonFlat extends StatelessWidget {
     this.themeOptions,
     this.height = 40,
     this.label = 'Hello!',
-    this.showLoading = false,
+    this.waiting = false,
+    this.disabled = false,
     required this.onTap,
   });
 
@@ -30,6 +32,10 @@ class TWSButtonFlat extends StatelessWidget {
     Color bgStateColorize(StatesSet currentStates) {
       final Color hlightColor = colorStruct.highlight;
       final Color reducedColor = hlightColor.withOpacity(.6);
+      if (disabled) {
+        return reducedColor;
+      }
+
       return switch (currentStates) {
         (StatesSet state) when state.contains(MStates.hovered) => hlightColor,
         _ => reducedColor,
@@ -38,6 +44,9 @@ class TWSButtonFlat extends StatelessWidget {
 
     Color olStateColorize(StatesSet currentStates) {
       final Color hlightColor = colorStruct.hightlightAlt ?? Colors.blue.shade900;
+      if (disabled) {
+        return Colors.transparent;
+      }
       return switch (currentStates) {
         (StatesSet state) when state.contains(MStates.pressed) => hlightColor,
         _ => Colors.transparent,
@@ -54,22 +63,29 @@ class TWSButtonFlat extends StatelessWidget {
           overlayColor: WidgetStateColor.resolveWith(olStateColorize),
           shape: WidgetStateProperty.all(const LinearBorder()),
         ),
-        onPressed: showLoading ? null : onTap,
-        child: Visibility(
-          visible: !showLoading,
-          replacement: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
+        onPressed: (waiting || disabled) ? null : onTap,
+        child: Center(
+          child: Visibility(
+            visible: !waiting,
+            replacement: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 18,
+                vertical: 8,
+              ),
+              child: FittedBox(
+                fit: BoxFit.fitHeight,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  backgroundColor: Colors.transparent,
+                  color: colorStruct.foreAlt,
+                ),
+              ),
             ),
-            child: LinearProgressIndicator(
-              backgroundColor: Colors.transparent,
-              color: colorStruct.foreAlt,
-            ),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: colorStruct.foreAlt,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: colorStruct.foreAlt,
+              ),
             ),
           ),
         ),

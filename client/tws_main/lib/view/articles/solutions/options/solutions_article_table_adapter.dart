@@ -1,6 +1,7 @@
 part of '../solutions_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
+final SolutionsServiceBase _solutionsService = Sources.administration.solutions;
 
 final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
   const _TableAdapter();
@@ -52,6 +53,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
         showDialog(
           context: context,
           useRootNavigator: true,
+          barrierDismissible: false,
           builder: (BuildContext context) {
             return TWSConfirmationDialog(
               accept: 'Update',
@@ -88,7 +90,20 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
                   ],
                 ),
               ),
-              onAccept: () async {},
+              onAccept: () async {
+                final String auth = _sessionStorage.getTokenStrict();
+                MainResolver<MigrationUpdateResult<Solution>> resolverUpdateOut = await _solutionsService.update(set, auth);
+                try {
+                  resolverUpdateOut.act(const MigrationUpdateResultDecoder<Solution>(SolutionDecoder())).then(
+                    (MigrationUpdateResult<Solution> updateOut) {
+                      const CSMAdvisor('solution-update').success('succesf', info: updateOut.updated.encode());
+                      Navigator.of(context).pop();
+                    },
+                  );
+                } catch (x) {
+                  debugPrint(x.toString());
+                }
+              },
             );
           },
         );
@@ -100,29 +115,26 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
             label: 'Sign',
             isEnabled: false,
             maxLength: 5,
-            controller: TextEditingController.fromValue(
-              TextEditingValue(
-                text: set.sign,
-              ),
+            controller: TextEditingController(
+              text: set.sign,
             ),
           ),
           TWSInputText(
             label: 'Name',
             isEnabled: false,
-            controller: TextEditingController.fromValue(
-              TextEditingValue(
-                text: set.name,
-              ),
+            controller: TextEditingController(
+              text: set.name,
             ),
           ),
           TWSInputText(
             label: 'Description',
             height: 150,
-            controller: TextEditingController.fromValue(
-              TextEditingValue(
-                text: set.description ?? '',
-              ),
+            controller: TextEditingController(
+              text: set.description,
             ),
+            onChanged: (String text) {
+              set.description = text.isEmpty ? null : text;
+            },
             maxLines: null,
           ),
         ],
