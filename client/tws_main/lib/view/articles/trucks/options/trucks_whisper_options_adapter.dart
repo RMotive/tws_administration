@@ -32,7 +32,7 @@ final class _SituationsViewAdapter implements TWSFutureAutocompleteAdapter<Situa
     final MainResolver<MigrationView<Situation>> resolver = await Sources.administration.situations.view(options, auth);
     final MigrationView<Situation> view = await resolver.act(const MigrationViewDecode<Situation>(SituationDecoder())).catchError(
           (Object x, StackTrace s) {
-            const CSMAdvisor('manufacturer-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
+            const CSMAdvisor('situation-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
             throw x;
           },
         );

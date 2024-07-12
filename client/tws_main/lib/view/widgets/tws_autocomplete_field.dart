@@ -73,6 +73,8 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
   /// Stores the current first suggestion for the user input.
   TSet? selectedOption;
   /// Flag for Overlay Menu first build.
+  bool overlayFirstBuild = true;
+  /// Flag for Overlay Menu first build.
   bool firstbuild = true;
   /// Original Options list given in builder parameter.
   List<TSet> rawOptionsList = <TSet>[];
@@ -109,8 +111,6 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
   @override
   void didUpdateWidget(covariant TWSAutoCompleteField<TSet> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    print("NewValue = ${widget.initialValue} VS OldValue = ${oldWidget.initialValue}");
-
     if(selectedOption != widget.initialValue) {
       setSelection();
     }
@@ -119,9 +119,10 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
   void setSelection(){
     if(widget.initialValue != null){
       String value = widget.displayValue(widget.initialValue as TSet);
-      _search(value, false);
+      _search(value, firstbuild);
     }else{
-      suggestionsList = widget.optionsBuilder("");
+      ctrl.text = "";
+      _search("", false);
     }
   }
   void themeUpdateListener() {
@@ -159,8 +160,8 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
       if(suggestionsList.isNotEmpty && query == widget.displayValue(suggestionsList.first).toLowerCase()){
         selectedOption = suggestionsList.first;
         ctrl.text = input;
-        if(notifyChange) widget.onChanged(selectedOption);
-      } 
+      }
+      if(notifyChange) widget.onChanged(selectedOption);
     });
   }
 
@@ -179,7 +180,7 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
             isOptional: widget.isOptional,
             width: widget.width,
             height: widget.height,
-            showErrorColor: selectedOption == null && !firstbuild,
+            showErrorColor: (selectedOption == null && !widget.isOptional) && !firstbuild,
             onChanged: (String text) => _search(text, true),
             onTap: () => setState(() => show = true),
             onTapOutside: (_) {

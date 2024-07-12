@@ -4,7 +4,6 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_main/view/widgets/tws_autocomplete_field.dart/tws_autocomplete_item_properties.dart';
 import 'package:tws_main/view/widgets/tws_display_flat.dart';
 import 'package:tws_main/view/widgets/tws_future_autocomplete_field/tws_future_autocomplete_adapter.dart';
 import 'package:tws_main/view/widgets/tws_input_text.dart';
@@ -22,6 +21,8 @@ class TWSFutureAutoCompleteField<TSet extends CSMEncodeInterface> extends Statef
   final String? label;
   /// Placeholder Text.
   final String? hint;
+  /// Set an initial value. Use ONLY for forms state management.
+  final TSet? initialValue;
   /// Defines if the user can interact with the widget.
   final bool isEnabled;
   /// Set has non-required field.
@@ -30,21 +31,21 @@ class TWSFutureAutoCompleteField<TSet extends CSMEncodeInterface> extends Statef
   final FocusNode? focus;
   /// Variable that stores a [TWSFutureAutocompleteAdapter] class to consume the data. 
   final TWSFutureAutocompleteAdapter<TSet> adapter;
+   /// Method that returns the value to show from [TSet] Object.
+  final String Function(TSet) displayValue;
   /// Overlay menu height.
   final double menuHeight;
-  /// Iterarive builder that recieve an [TWSFautocompleteItemProperties] object to build the list options
-  /// components for the suggestions overlay menu.
-  final TWSAutocompleteItemProperties<TSet> Function(int, TSet) optionsBuilder;
   /// Return the input text and the item property for last suggested item available based on the user input.
-  final void Function(String input, TWSAutocompleteItemProperties<TSet>? selectedItem) onChanged;
+  final void Function(TSet? selection)  onChanged;
   /// Optinal validator method for [TWSInputText] internal component.
   final String? Function(String?)? validator;
 
   const TWSFutureAutoCompleteField({
     super.key,
     required this.onChanged,
-    required this.optionsBuilder,
+    required this.displayValue,
     required this.adapter,
+    this.initialValue,
     this.isOptional = false,
     this.focus,
     this.label,
@@ -76,15 +77,18 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
   late OverlayPortalController overlayController;
   /// Main controller for the TWSInputText.
   late TextEditingController ctrl;
-  /// Stores the current first suggestion for the user input.
-  TWSAutocompleteItemProperties<TSet>? selectedOption;
+  /// Stores the current selected item.
+  TSet? selectedOption;
+  /// 
+  TSet? previousSelection;
   /// Flag for Overlay Menu first build.
+  bool overlayFirstBuild = true;
+  /// Flag for componet first build.
   bool firstbuild = true;
   /// Original Options list given in builder parameter.
-  List<TWSAutocompleteItemProperties<TSet>> rawOptionsList = <TWSAutocompleteItemProperties<TSet>>[];
+  List<TSet> rawOptionsList = <TSet>[];
   /// UI list. List to display on overlay menu, that shows the suggestions options.
-  List<TWSAutocompleteItemProperties<TSet>> suggestionsList = <TWSAutocompleteItemProperties<TSet>>[];
-
+  List<TSet> suggestionsList = <TSet>[];
   /// Flag to indicate if the overlay component is hovered.
   bool isOvelayHovered = false;
   /// Defines if the overlay is showing.
@@ -97,24 +101,34 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
   }
 
   /// Method to filter the Original options list based on user input.
-  void _search(String input) {
+  void _search(String input, bool notifyChange) {
     selectedOption = null;
     String query = input.toLowerCase();
-    if(query.isNotEmpty) {
+    if(query.isNotEmpty){
       // Do a serching for the method input variable.
-      suggestionsList = rawOptionsList.where((TWSAutocompleteItemProperties<TSet> properties) {
-        return properties.label.toLowerCase().contains(query);
+      suggestionsList = rawOptionsList.where((TSet set) {
+        return widget.displayValue(set).toLowerCase().contains(query);
       }).toList();
 
-      if(!firstbuild && suggestionsList.isNotEmpty && suggestionsList.first.label.toLowerCase() == query){
+      if(!firstbuild && suggestionsList.isNotEmpty && widget.displayValue(suggestionsList.first).toLowerCase() == query){
         selectedOption = suggestionsList.first;
-        widget.onChanged(input, selectedOption);
+        ctrl.text = input;
       }
     } else {
       // if the input is empty, then the default suggestions list is the original options list.
       suggestionsList = rawOptionsList;
-    }   
-    if(!firstbuild) setState(() {});
+
+    }
+    print("Seleccion previa : $previousSelection");
+    print("seleccion actual: $selectedOption");
+    print(previousSelection != selectedOption);
+    if(!firstbuild && !overlayFirstBuild) {
+      setState(() {
+        if(previousSelection != selectedOption) widget.onChanged(selectedOption);
+      });
+    } 
+    previousSelection = selectedOption;
+    
   }
 
   @override
@@ -131,7 +145,15 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
     focus.addListener(focusManager);
     super.initState();
   }
-
+  @override
+  void didUpdateWidget(covariant TWSFutureAutoCompleteField<TSet> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    overlayFirstBuild = true;
+    if(selectedOption != widget.initialValue) {
+      setSelection();
+    }
+  }
+  
   @override
   void dispose() {
     focus.dispose();
@@ -139,7 +161,15 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
     ctrl.dispose();
     super.dispose();
   }
-  void initOptions(){
+  /// Method that manage and assign the [initialValue] property.
+  void setSelection(){
+    if(widget.initialValue != null){
+      String value = widget.displayValue(widget.initialValue as TSet);
+      _search(value, true);
+    }else{
+      ctrl.text = "";
+      _search("", false);
+    }
     
   }
   void themeUpdateListener() {
@@ -152,6 +182,7 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
   void focusManager(){
     if(focus.hasPrimaryFocus){
       if(firstbuild) overlayController.show();
+      overlayFirstBuild =false;
       setState(() => show = true);
     }else{
       setState(() => show = false);
@@ -173,8 +204,8 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
             isOptional: widget.isOptional,
             width: widget.width,
             height: widget.height,
-            showErrorColor: selectedOption == null && !firstbuild,
-            onChanged: (String text) => _search(text),
+            showErrorColor: (selectedOption == null && !widget.isOptional) && !overlayFirstBuild,
+            onChanged: (String text) => _search(text, true),
             onTap: () => setState(() => show = true),
             onTapOutside: (_) {
               if(!isOvelayHovered) setState(() => show = false);
@@ -249,13 +280,12 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                             //Only do the builder callback once.
                             //Stores the properties result to avoid unnecesary callbacks on rebuild.
                             if(firstbuild){
-                              for(int i = 0; i < data.sets.length-1; i++){
-                                late TWSAutocompleteItemProperties<TSet> properties;
-                                properties = widget.optionsBuilder(i, data.sets[i]);
-                                rawOptionsList.add(properties);
-                              }
-                              _search(ctrl.text);
+
+                              rawOptionsList = data.sets;
+
+                              _search(ctrl.text, false);
                               firstbuild = false;
+                              overlayFirstBuild = false;
                             }
 
                             return suggestionsList.isNotEmpty? Scrollbar(
@@ -270,28 +300,23 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                                   controller: scrollController,
                                   itemCount: suggestionsList.length,
                                   itemBuilder: (_, int index) {
-                                    final TWSAutocompleteItemProperties<TSet> currentItem = suggestionsList[index];
+                                    final TSet currentItem = suggestionsList[index];
+                                    final String label = widget.displayValue(currentItem);
                                     // Build the individual option component.
                                     return ListTile(
                                       hoverColor: primaryColorTheme.fore,
                                       dense: true,
                                       title: Text(
                                         softWrap: false,
-                                        currentItem.label,
+                                        label,
                                         style: TextStyle(
                                           color: highContrastColor,
                                         ),
                                       ),
                                       onTap: () {
                                         setState(() {
-                                          // Set the controller text to selected item on overlay menu.
-                                          ctrl.text = currentItem.label;
-                                          // Do a search query because the controller.text not trigger the OnChange callback.
-                                          _search(currentItem.label);
+                                          _search(label, true);
                                           show = false;
-                                          // return selected option.
-                                          selectedOption = currentItem; 
-                                          widget.onChanged(ctrl.text, selectedOption);
                                         });
                                        
                                       }

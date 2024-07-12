@@ -104,13 +104,14 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
         validator: widget.validator,
         controller: ctrl,
         focusNode: fNode,
+        enabled: widget.isEnabled,
         cursorOpacityAnimates: true,
         cursorWidth: 3,
         cursorColor: colorStruct.foreAlt,
         style: TextStyle(
           color: colorStruct.foreAlt?.withOpacity(.7),
         ),
-        onTap: () => _showPicker(),
+        onTap: () => _showDatePicker(),
         decoration: InputDecoration(
           suffixIcon: const Icon(Icons.calendar_month),
           suffixIconColor: colorStruct.main,
@@ -145,6 +146,12 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
               width: borderWidth
             ),
           ),
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: disabledColorStruct.highlight,
+              width: borderWidth,
+            ),
+          ),
           errorBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: errorColorStruct.highlight.withOpacity(.7),
@@ -167,8 +174,8 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
       )
     );
   }
-  /// [_showPicker] Method that build the showpicker dialog.
-  Future<void> _showPicker() async {
+  /// [_showDatePicker] Method that build the showpicker dialog.
+  Future<void> _showDatePicker() async {
     DateTime? date = await showDatePicker(
       context: context,
       initialDatePickerMode: DatePickerMode.year,
