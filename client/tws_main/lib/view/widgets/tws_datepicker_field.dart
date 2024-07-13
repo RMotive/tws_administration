@@ -117,9 +117,10 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
           suffixIconColor: colorStruct.main,
           prefixIcon: ctrl.text.isNotEmpty? IconButton(
             tooltip: "Delete selection",
-            icon:Icon(
-              color: errorColorStruct.highlight,
-              Icons.cancel
+            icon: Icon(
+              Icons.cancel,
+              color: colorStruct.highlight,
+              size: 20,
             ), 
             onPressed: () { 
               // update the widget state to hide the delete button.
@@ -130,7 +131,6 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
           ): null,
           labelText: widget.label,
           hintText: widget.hintText,
-          isDense: true,
           labelStyle: TextStyle(
             color: colorStruct.foreAlt
           ),

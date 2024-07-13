@@ -1,7 +1,9 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
+import 'package:tws_main/core/constants/twsa_colors.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/view/widgets/tws_input_text.dart';
+import 'package:tws_main/view/widgets/tws_list_tile.dart';
 
 /// [TWSAutoCompleteField] Custom component for TWS enviroment.
 /// This component stores a list of posibles options to select for the user.
@@ -62,6 +64,7 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
   late final ScrollController scrollController; 
   /// Color pallet for the component.
   late final CSMColorThemeOptions primaryColorTheme;
+  late final CSMColorThemeOptions pageColorTheme;
   /// focus Node declaration.
   late final FocusNode focus;
   /// Link to attach ovelay component UI to the to the TWSInputText.
@@ -85,7 +88,6 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
   /// Defines if the overlay is showing.
   bool show = false;
   
-  
   @override
   void initState() {
     theme = getTheme(
@@ -93,6 +95,7 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
     );
     scrollController = ScrollController();
     primaryColorTheme = theme.primaryControlColor;
+    pageColorTheme = theme.page;
     ctrl = TextEditingController();
     focus = widget.focus ?? FocusNode();
     overlayController = OverlayPortalController();
@@ -129,6 +132,7 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
     setState(() {
       theme = getTheme();
       primaryColorTheme = theme.primaryControlColor;
+      
     });
   }
 
@@ -167,7 +171,6 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
 
   @override
   Widget build(BuildContext context) {
-    final Color highContrastColor = primaryColorTheme.hightlightAlt ?? Colors.white;
     const double tileHeigth = 35;
     return SizedBox(
       width: widget.width,
@@ -180,7 +183,7 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
             isOptional: widget.isOptional,
             width: widget.width,
             height: widget.height,
-            showErrorColor: (selectedOption == null && !widget.isOptional) && !firstbuild,
+            showErrorColor: (selectedOption == null && (!widget.isOptional || ctrl.text.isNotEmpty)) && !firstbuild,
             onChanged: (String text) => _search(text, true),
             onTap: () => setState(() => show = true),
             onTapOutside: (_) {
@@ -220,11 +223,16 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
                     ),
                     child: ClipRRect(
                       child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.vertical(
+                        decoration: const BoxDecoration(
+                          color: TWSAColors.ligthGrey,
+                          borderRadius: BorderRadius.vertical(
                             bottom: Radius.circular(5)
                           ),
-                          color: primaryColorTheme.main
+                          border: Border(
+                            right: BorderSide(width: 2, color: TWSAColors.oceanBlue),
+                            left: BorderSide(width: 2, color: TWSAColors.oceanBlue),
+                            bottom: BorderSide(width: 2, color: TWSAColors.oceanBlue)
+                          )
                         ),
                         child: suggestionsList.isNotEmpty? Scrollbar(
                           trackVisibility: true,
@@ -234,32 +242,24 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
                             color: Colors.transparent,
                             child: ListView.builder(
                               shrinkWrap: true,
-                              itemExtent: 35,
+                              itemExtent: tileHeigth,
                               controller: scrollController,
                               itemCount: suggestionsList.length,
                               itemBuilder: (_, int index) {
-                                // suggestionsList = rawOptionsList.map((TSet option) => widget.displayValue(option)).toList();
-
                                 late TSet item = suggestionsList[index];
                                 final String displayValue = widget.displayValue(item);
                                 // Build the individual option component.
-                                return ListTile(
-                                  hoverColor: primaryColorTheme.fore,
-                                  dense: true,
-                                  title: Text(
-                                    softWrap: false,
-                                    displayValue,
-                                    style: TextStyle(
-                                      color: highContrastColor,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    _search(displayValue, true);
-                                    setState(() => show = false);
-                                  }
-                                );   
-                              }
-                            ),
+                                return TWSListTile(
+                                label: displayValue,
+                                onHoverColor: primaryColorTheme.main,
+                                onHoverTextColor: pageColorTheme.fore,
+                                textColor: pageColorTheme.hightlightAlt ?? TWSAColors.lightDark,
+                                onTap: () {
+                                  _search(displayValue, true);
+                                  setState(() => show = false);
+                                },
+                              );
+                            }),
                           )
                       ) : SizedBox(
                         height: tileHeigth,
@@ -269,7 +269,7 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
                           children: <Widget>[
                             Icon(
                               Icons.error_outline,
-                              color: highContrastColor,
+                              color:  pageColorTheme.hightlightAlt ?? Colors.black,
                             ),
                             const SizedBox(
                               width: 5,
@@ -279,7 +279,7 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
                                 "Not matches found",
                                 style: TextStyle(
                                   overflow: TextOverflow.ellipsis,
-                                  color: highContrastColor
+                                  color:  pageColorTheme.hightlightAlt ?? Colors.black
                                 ),
                               ),
                             ),

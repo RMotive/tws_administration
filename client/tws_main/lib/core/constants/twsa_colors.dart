@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class TWSAColors {
   static const Color lightDark = Color(0xff343635);
   static const Color darkGrey = Color(0xff525254);
+  static const Color ligthGrey = Color(0xff878888);
   static const Color deepPurple = Color(0xff1b1c24);
   static const Color warmWhite = Color(0xffdddddd);
 

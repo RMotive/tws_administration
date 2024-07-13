@@ -2,11 +2,16 @@ import 'dart:async';
 
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
+import 'package:tws_main/core/constants/twsa_colors.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_main/view/widgets/tws_display_flat.dart';
 import 'package:tws_main/view/widgets/tws_future_autocomplete_field/tws_future_autocomplete_adapter.dart';
 import 'package:tws_main/view/widgets/tws_input_text.dart';
+import 'package:tws_main/view/widgets/tws_list_tile.dart';
 
 /// [TWSFutureAutoCompleteField] Custom component for TWS enviroment.
 /// This component stores a list of posibles options to select for the user.
@@ -25,8 +30,10 @@ class TWSFutureAutoCompleteField<TSet extends CSMEncodeInterface> extends Statef
   final TSet? initialValue;
   /// Defines if the user can interact with the widget.
   final bool isEnabled;
-  /// Set has non-required field.
+  /// Set has non-required field, changing the border color when input is empty.
   final bool isOptional;
+  /// Set the text to show when [IsOptional] is true.
+  final String? isOptionalLabel;
   /// Optional Focus node to manage
   final FocusNode? focus;
   /// Variable that stores a [TWSFutureAutocompleteAdapter] class to consume the data. 
@@ -45,6 +52,7 @@ class TWSFutureAutoCompleteField<TSet extends CSMEncodeInterface> extends Statef
     required this.onChanged,
     required this.displayValue,
     required this.adapter,
+    this.isOptionalLabel,
     this.initialValue,
     this.isOptional = false,
     this.focus,
@@ -69,6 +77,7 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
   late final ScrollController scrollController; 
   /// Color pallet for the component.
   late final CSMColorThemeOptions primaryColorTheme;
+  late final CSMColorThemeOptions pageColorTheme;
   /// focus Node declaration.
   late final FocusNode focus;
   /// Link to attach ovelay component UI to the to the TWSInputText.
@@ -138,6 +147,7 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
     );
     scrollController = ScrollController();
     primaryColorTheme = theme.primaryControlColor;
+    pageColorTheme = theme.page;
     ctrl = TextEditingController();
     focus = widget.focus ?? FocusNode();
     overlayController = OverlayPortalController();
@@ -204,7 +214,8 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
             isOptional: widget.isOptional,
             width: widget.width,
             height: widget.height,
-            showErrorColor: (selectedOption == null && !widget.isOptional) && !overlayFirstBuild,
+            suffixLabel: widget.isOptionalLabel,
+            showErrorColor: (selectedOption == null && (!widget.isOptional || ctrl.text.isNotEmpty)) && !overlayFirstBuild,
             onChanged: (String text) => _search(text, true),
             onTap: () => setState(() => show = true),
             onTapOutside: (_) {
@@ -244,11 +255,16 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                     ),
                     child: ClipRRect(
                       child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.vertical(
+                        decoration: const BoxDecoration(
+                          color: TWSAColors.ligthGrey,
+                          borderRadius: BorderRadius.vertical(
                             bottom: Radius.circular(5)
                           ),
-                          color: primaryColorTheme.main
+                          border: Border(
+                            right: BorderSide(width: 2, color: TWSAColors.oceanBlue),
+                            left: BorderSide(width: 2, color: TWSAColors.oceanBlue),
+                            bottom: BorderSide(width: 2, color: TWSAColors.oceanBlue)
+                          )
                         ),
                         child: CSMConsumer<MigrationView<TSet>>(
                           consume: consume,
@@ -256,15 +272,11 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                           emptyCheck: (MigrationView<TSet> data) => data.sets.isEmpty,
                           loadingBuilder: (_) {
                             return Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: CircularProgressIndicator(
-                                  backgroundColor: primaryColorTheme.main,
-                                  color: highContrastColor,
-                                  strokeWidth: 3,
-                                ),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                              child: CircularProgressIndicator(
+                                backgroundColor: TWSAColors.darkGrey,
+                                color: highContrastColor,
+                                strokeWidth: 4,
                               ),
                             );
                           },
@@ -280,9 +292,7 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                             //Only do the builder callback once.
                             //Stores the properties result to avoid unnecesary callbacks on rebuild.
                             if(firstbuild){
-
                               rawOptionsList = data.sets;
-
                               _search(ctrl.text, false);
                               firstbuild = false;
                               overlayFirstBuild = false;
@@ -303,24 +313,18 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                                     final TSet currentItem = suggestionsList[index];
                                     final String label = widget.displayValue(currentItem);
                                     // Build the individual option component.
-                                    return ListTile(
-                                      hoverColor: primaryColorTheme.fore,
-                                      dense: true,
-                                      title: Text(
-                                        softWrap: false,
-                                        label,
-                                        style: TextStyle(
-                                          color: highContrastColor,
-                                        ),
-                                      ),
+                                    return TWSListTile(
+                                      label: label,
+                                      onHoverColor: primaryColorTheme.main,
+                                      onHoverTextColor: pageColorTheme.fore,
+                                      textColor: pageColorTheme.hightlightAlt ?? Colors.black,
                                       onTap: () {
                                         setState(() {
                                           _search(label, true);
                                           show = false;
                                         });
-                                       
-                                      }
-                                    );   
+                                      },
+                                    ); 
                                   }
                                 ),
                               )
@@ -334,9 +338,7 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                                   Icons.error_outline,
                                   color: highContrastColor,
                                 ),
-                                const SizedBox(
-                                  width: 5,
-                                ), 
+                                const SizedBox(width: 5), 
                                 Flexible(
                                   child: Text(
                                     "Not matches found",
