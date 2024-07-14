@@ -1,11 +1,7 @@
-﻿using CSMFoundation.Migration.Quality.Bases;
-using CSMFoundation.Migration.Quality.Records;
-using CSMFoundation.Migration.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CSM_Foundation.Source.Quality.Bases;
+using CSM_Foundation.Source.Quality.Records;
+using CSM_Foundation.Source.Validators;
+
 using TWS_Security.Sets;
 
 namespace TWS_Security.Quality.Sets;

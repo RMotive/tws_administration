@@ -1,7 +1,6 @@
-﻿using CSMFoundation.Migration.Interfaces;
-using CSMFoundation.Migration.Models;
+﻿using CSM_Foundation.Source.Interfaces;
 
-namespace CSMFoundation.Source.Models.Out;
+namespace CSM_Foundation.Source.Models.Out;
 public record SourceTransactionOut<TSet>
     where TSet : ISourceSet {
     public TSet[] Successes { get; init; }
@@ -14,8 +13,8 @@ public record SourceTransactionOut<TSet>
     public SourceTransactionOut(TSet[] Successes, SourceTransactionFailure[] Failures) {
         this.Successes = Successes;
         this.Failures = Failures;
-        this.QSuccesses = this.Successes.Length;
-        this.QFailures = this.Failures.Length;
+        QSuccesses = this.Successes.Length;
+        QFailures = this.Failures.Length;
         QTransactions = QSuccesses + QFailures;
         Failed = QFailures > 0;
     }

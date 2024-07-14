@@ -1,22 +1,22 @@
 ﻿using System.Net;
 
-using CSMFoundation.Server.Records;
-using CSMFoundation.Servers.Quality.Bases;
-using CSMFoundation.Source.Models.In;
-
-using Customer.Managers.Records;
-using Customer.Services.Records;
+using CSM_Foundation.Server.Quality.Bases;
+using CSM_Foundation.Server.Records;
+using CSM_Foundation.Source.Models.Options;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Middlewares.Frames;
 
+using TWS_Customer.Managers.Records;
+using TWS_Customer.Services.Records;
+
 using Xunit;
 
 using Account = Server.Quality.Secrets.Account;
-using View = CSMFoundation.Source.Models.Out.SetViewOut<TWS_Business.Sets.Insurance>;
+using View = CSM_Foundation.Source.Models.Out.SetViewOut<TWS_Business.Sets.Insurance>;
 
-namespace Server.Quality.Controllers;
+namespace Server.Quality.Suit.Controllers;
 public class Q_InsurancesController
      : BQ_ServerController<Program> {
     private class Frame : SuccessFrame<View> { }
@@ -32,22 +32,20 @@ public class Q_InsurancesController
             Password = Account.Password,
         });
 
-        if (Status != HttpStatusCode.OK)
-            throw new ArgumentNullException(nameof(Status));
-        return Response.Estela.Token.ToString();
+        return Status != HttpStatusCode.OK ? throw new ArgumentNullException(nameof(Status)) : Response.Estela.Token.ToString();
     }
 
     [Fact]
     public async Task View() {
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new SetViewOptions {
+        (HttpStatusCode Status, ServerGenericFrame Response) = await Post("View", new SetViewOptions {
             Page = 1,
             Range = 10,
             Retroactive = false,
         }, true);
 
-        Assert.Equal(HttpStatusCode.OK, fact.Status);
+        Assert.Equal(HttpStatusCode.OK, Status);
 
-        View Estela = Framing<SuccessFrame<View>>(fact.Response).Estela;
+        View Estela = Framing<SuccessFrame<View>>(Response).Estela;
         Assert.True(Estela.Sets.Length > 0);
         Assert.Equal(1, Estela.Page);
         Assert.True(Estela.Pages > 0);

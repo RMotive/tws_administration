@@ -1,4 +1,4 @@
-﻿namespace CSMFoundation.Migration.Quality.Interfaces;
+﻿namespace CSM_Foundation.Source.Quality.Interfaces;
 
 /// <summary>
 ///     Interface Quality for [Q_Entity].

@@ -1,6 +1,7 @@
 ﻿
-using CSMFoundation.Core.Utils;
-using CSMFoundation.Migration.Quality.Bases;
+using CSM_Foundation.Core.Utils;
+using CSM_Foundation.Source.Quality.Bases;
+
 using TWS_Security.Depots;
 using TWS_Security.Sets;
 
@@ -9,7 +10,7 @@ namespace TWS_Security.Quality.Depots;
 /// <summary>
 ///     Qualifies the <see cref="ContactsDepot"/>.
 /// </summary>
-public class Q_ContactsDepot 
+public class Q_ContactsDepot
     : BQ_MigrationDepot<Contact, ContactsDepot, TWSSecuritySource> {
     public Q_ContactsDepot()
         : base(nameof(Contact.Name)) {

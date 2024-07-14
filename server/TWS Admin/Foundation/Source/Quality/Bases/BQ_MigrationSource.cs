@@ -1,9 +1,9 @@
-﻿using CSMFoundation.Migration.Bases;
-using CSMFoundation.Migration.Quality.Interfaces;
+﻿using CSM_Foundation.Source.Bases;
+using CSM_Foundation.Source.Quality.Interfaces;
 
 using Xunit;
 
-namespace CSMFoundation.Migration.Quality.Bases;
+namespace CSM_Foundation.Source.Quality.Bases;
 
 /// <summary>
 ///     Base Quality for [MigrationSource].
@@ -18,7 +18,7 @@ namespace CSMFoundation.Migration.Quality.Bases;
 /// </typeparam>
 public abstract class BQ_MigrationSource<TSource>
     : IQ_MigrationSource
-    where TSource : BMigrationSource<TSource> {
+    where TSource : BSource<TSource> {
     /// <summary>
     ///     EF [MigrationSource]. 
     /// </summary>

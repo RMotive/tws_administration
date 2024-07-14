@@ -1,24 +1,25 @@
 ﻿using System.Runtime.CompilerServices;
 
-using CSMFoundation.Advising.Managers;
-using CSMFoundation.Migration.Utils;
-using CSMFoundation.Migration.Interfaces;
+using CSM_Foundation.Advisor.Managers;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Utils;
 
 using Microsoft.EntityFrameworkCore;
-using CSMFoundation.Source.Models.Options;
 
-namespace CSMFoundation.Migration.Bases;
-public abstract class BMigrationSource<TSource>
+namespace CSM_Foundation.Source.Bases;
+public abstract class BSource<TSource>
     : DbContext, IMigrationSource
     where TSource : DbContext {
 
     private readonly SourceLinkOptions Connection;
 
-    public BMigrationSource([CallerFilePath] string? callerPath = null) {
+    public BSource([CallerFilePath] string? callerPath = null)
+        : base() {
         Connection = MigrationUtils.Retrieve(callerPath);
         ValidateHealth();
     }
-    public BMigrationSource(DbContextOptions<TSource> Options, [CallerFilePath] string? callerPath = null)
+    public BSource(DbContextOptions<TSource> Options, [CallerFilePath] string? callerPath = null)
         : base(Options) {
         Connection = MigrationUtils.Retrieve(callerPath);
         ValidateHealth();
@@ -36,19 +37,21 @@ public abstract class BMigrationSource<TSource>
         ISourceSet[] sets = EvaluateFactory();
 
         foreach (ISourceSet set in sets) {
-            set.EvaluateDefinition();
+            _ = set.EvaluateDefinition();
         }
     }
     /// <summary>
     /// 
     /// </summary>
     /// <param name="optionsBuilder"></param>
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    => optionsBuilder.UseSqlServer(Connection.GenerateConnectionString());
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        _ = optionsBuilder.UseSqlServer(Connection.GenerateConnectionString());
+    }
+
     /// <summary>
     /// 
     /// </summary>
-    void ValidateHealth() {
+    private void ValidateHealth() {
         AdvisorManager.Announce($"[{GetType().Name}] Running connection checker...");
 
         if (Database.CanConnect()) {

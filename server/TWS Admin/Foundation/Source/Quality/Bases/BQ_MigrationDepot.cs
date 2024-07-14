@@ -2,30 +2,28 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-using CSMFoundation.Migration.Bases;
-using CSMFoundation.Migration.Enumerators;
-using CSMFoundation.Migration.Interfaces;
-using CSMFoundation.Migration.Quality.Interfaces;
-using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Options;
-using CSMFoundation.Source.Models.Out;
+using CSM_Foundation.Source.Bases;
+using CSM_Foundation.Source.Enumerators;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+using CSM_Foundation.Source.Quality.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
 using Xunit;
 
-namespace CSMFoundation.Migration.Quality.Bases;
+namespace CSM_Foundation.Source.Quality.Bases;
 
 public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrationSource>
     : IQ_MigrationDepot
     where TMigrationSet : class, ISourceSet, new()
     where TMigrationDepot : IMigrationDepot<TMigrationSet>, new()
-    where TMigrationSource : BMigrationSource<TMigrationSource>, new() {
-
-    readonly string Ordering;
-    readonly TMigrationDepot Depot;
-    readonly TMigrationSource Source;
-    readonly DbSet<TMigrationSet> Set;
+    where TMigrationSource : BSource<TMigrationSource>, new() {
+    private readonly string Ordering;
+    private readonly TMigrationDepot Depot;
+    private readonly TMigrationSource Source;
+    private readonly DbSet<TMigrationSet> Set;
     /// <summary>
     ///     Generates a new behavior base for <see cref="BQ_MigrationDepot{TMigrationSet, TMigrationDepot, TMigrationSource}"/>.
     /// </summary>
@@ -40,12 +38,12 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
     }
 
     protected void Restore(ISourceSet Set) {
-        Source.Remove(Set);
-        Source.SaveChanges();
+        _ = Source.Remove(Set);
+        _ = Source.SaveChanges();
     }
     protected void Restore(ISourceSet[] Sets) {
         Source.RemoveRange(Sets);
-        Source.SaveChanges();
+        _ = Source.SaveChanges();
     }
     /// <summary>
     ///     
@@ -76,7 +74,7 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
                     }
 
                     await Set.AddRangeAsync(firstFactMocks);
-                    await Source.SaveChangesAsync();
+                    _ = await Source.SaveChangesAsync();
                 }
             } catch { Restore(firstFactMocks); throw; }
         }

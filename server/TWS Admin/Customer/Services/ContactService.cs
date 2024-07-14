@@ -1,18 +1,19 @@
 ﻿
-using Customer.Services.Interfaces;
+using CSM_Foundation.Source.Models.Out;
+
+using TWS_Customer.Services.Interfaces;
+
 using TWS_Security.Depots;
 using TWS_Security.Sets;
-using CSMFoundation.Source.Models.Out;
 
-namespace Customer.Services;
+namespace TWS_Customer.Services;
 public class ContactService
     : IContactService {
-
-    readonly ContactsDepot Contacts;
+    private readonly ContactsDepot Contacts;
     public ContactService(ContactsDepot contacts) {
-        this.Contacts = contacts;
+        Contacts = contacts;
     }
     public async Task<SourceTransactionOut<Contact>> Create(Contact[] contact) {
-        return await this.Contacts.Create(contact);
+        return await Contacts.Create(contact);
     }
 }

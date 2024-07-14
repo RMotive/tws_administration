@@ -1,10 +1,10 @@
-﻿using CSMFoundation.Migration.Exceptions;
-using CSMFoundation.Migration.Interfaces;
-using CSMFoundation.Migration.Quality.Records;
+﻿using CSM_Foundation.Source.Exceptions;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Quality.Records;
 
 using Xunit;
 
-namespace CSMFoundation.Migration.Quality.Bases;
+namespace CSM_Foundation.Source.Quality.Bases;
 /// <summary>
 ///     Base Quality for [Q_Entity].
 ///     
@@ -21,7 +21,7 @@ public abstract class BQ_MigrationSet<TSet>
     [Fact]
     public void EvaluateDefinition() {
         TSet mock = new();
-        mock.EvaluateDefinition();
+        _ = mock.EvaluateDefinition();
     }
 
     [Fact]
@@ -41,7 +41,10 @@ public abstract class BQ_MigrationSet<TSet>
             // --> Here are asserts to perform
             try {
                 mock.EvaluateRead();
-                if (asserts.Length == 0) continue;
+                if (asserts.Length == 0) {
+                    continue;
+                }
+
                 Assert.Fail("Asserts expected but none caught");
             } catch (XBMigrationSet_Evaluate x) {
                 (string property, XIValidator_Evaluate[] faults)[] unvalidations = x.Unvalidations;
@@ -53,13 +56,13 @@ public abstract class BQ_MigrationSet<TSet>
                 asserts = [.. asserts.OrderBy(x => x.property)];
 
                 for (int i = 0; i < unvalidations.Length; i++) {
-                    (string Property, XIValidator_Evaluate[] Faults) unvalidation = unvalidations[i];
+                    (string Property, XIValidator_Evaluate[] Faults) = unvalidations[i];
                     (string Property, (IValidator Validator, int Code)[] Reasons) assert = asserts[i];
 
-                    Assert.Equal(assert.Property, unvalidation.Property);
-                    Assert.Equal(assert.Reasons.Length, unvalidation.Faults.Length);
+                    Assert.Equal(assert.Property, Property);
+                    Assert.Equal(assert.Reasons.Length, Faults.Length);
 
-                    XIValidator_Evaluate[] faults = unvalidation.Faults;
+                    XIValidator_Evaluate[] faults = Faults;
                     (IValidator Validator, int Code)[] reasons = assert.Reasons;
 
                     faults = [.. faults.OrderBy(i => i.Code)];
@@ -67,11 +70,11 @@ public abstract class BQ_MigrationSet<TSet>
 
                     for (int j = 0; j < faults.Length; j++) {
                         XIValidator_Evaluate fault = faults[j];
-                        (IValidator Validator, int Code) reason = reasons[j];
+                        (IValidator Validator, int Code) = reasons[j];
 
 
-                        Assert.Equal(reason.Code, fault.Code);
-                        Assert.IsType(reason.Validator.GetType(), fault.Validator);
+                        Assert.Equal(Code, fault.Code);
+                        Assert.IsType(Validator.GetType(), fault.Validator);
                     }
                 }
             }

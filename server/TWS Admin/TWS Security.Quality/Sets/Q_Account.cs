@@ -1,6 +1,6 @@
-﻿using CSMFoundation.Migration.Quality.Bases;
-using CSMFoundation.Migration.Quality.Records;
-using CSMFoundation.Migration.Validators;
+﻿using CSM_Foundation.Source.Quality.Bases;
+using CSM_Foundation.Source.Quality.Records;
+using CSM_Foundation.Source.Validators;
 
 using TWS_Security.Sets;
 

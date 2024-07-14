@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CSMFoundation.Migration.Interfaces;
+namespace CSM_Foundation.Source.Interfaces;
 /// <summary>
 /// TODO
 /// </summary>

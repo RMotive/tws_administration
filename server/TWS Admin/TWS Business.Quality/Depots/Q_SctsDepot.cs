@@ -1,5 +1,6 @@
-﻿using CSMFoundation.Core.Utils;
-using CSMFoundation.Migration.Quality.Bases;
+﻿using CSM_Foundation.Core.Utils;
+using CSM_Foundation.Source.Quality.Bases;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
@@ -15,9 +16,9 @@ public class Q_SctsDepot
 
     protected override Sct MockFactory() {
         return new() {
-           Type = RandomUtils.String(6),
-           Number = RandomUtils.String(25),
-           Configuration = RandomUtils.String(10)
+            Type = RandomUtils.String(6),
+            Number = RandomUtils.String(25),
+            Configuration = RandomUtils.String(10)
         };
     }
 }

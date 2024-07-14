@@ -1,13 +1,14 @@
 ﻿using System.Reflection;
-using CSMFoundation.Core.Bases;
-using CSMFoundation.Migration.Exceptions;
-using CSMFoundation.Migration.Interfaces;
-using CSMFoundation.Migration.Validators;
+
+using CSM_Foundation.Core.Bases;
+using CSM_Foundation.Source.Exceptions;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Validators;
 
 using Microsoft.IdentityModel.Tokens;
 
-namespace CSMFoundation.Migration.Bases;
-public abstract class BMigrationSet
+namespace CSM_Foundation.Source.Bases;
+public abstract class BSourceSet
     : BObject<ISourceSet>, ISourceSet {
     public abstract int Id { get; set; }
     private (string Property, IValidator[] Validators)[]? Validators { get; set; }
@@ -35,11 +36,17 @@ public abstract class BMigrationSet
                 }
             }
 
-            if (faults.Length == 0) continue;
+            if (faults.Length == 0) {
+                continue;
+            }
+
             unvalidations = [.. unvalidations, (property, faults)];
         }
 
-        if (unvalidations.IsNullOrEmpty()) return;
+        if (unvalidations.IsNullOrEmpty()) {
+            return;
+        }
+
         throw new XBMigrationSet_Evaluate(GetType(), unvalidations);
     }
     public void EvaluateRead() {
@@ -52,7 +59,9 @@ public abstract class BMigrationSet
     }
 
     public Exception[] EvaluateDefinition() {
-        if (Defined) return [];
+        if (Defined) {
+            return [];
+        }
 
         Validators ??= Validations([]);
         IEnumerable<string> toEvaluate = Validators
@@ -90,7 +99,9 @@ public abstract class BMigrationSet
 
                 Type propertyType = targetProperty.PropertyType;
                 foreach (IValidator validator in validators) {
-                    if (validator.Satisfy(propertyType)) continue;
+                    if (validator.Satisfy(propertyType)) {
+                        continue;
+                    }
 
                     faults = [.. faults, new XBMigrationSet_EvaluateDefinition([property], XBMigrationSet_EvaluateDefinition.Reasons.Unsatisfies, GetType(), validator)];
                 }
@@ -99,7 +110,9 @@ public abstract class BMigrationSet
             }
         }
 
-        if (faults.Length > 0) return faults;
+        if (faults.Length > 0) {
+            return faults;
+        }
 
         Defined = true;
         return [];

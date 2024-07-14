@@ -1,15 +1,15 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-using CSMFoundation.Migration.Enumerators;
-using CSMFoundation.Migration.Interfaces;
-using CSMFoundation.Migration.Models;
-using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Options;
-using CSMFoundation.Source.Models.Out;
+using CSM_Foundation.Source.Enumerators;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Models;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+
 using Microsoft.EntityFrameworkCore;
 
-namespace CSMFoundation.Migration.Bases;
+namespace CSM_Foundation.Source.Bases;
 /// <summary>
 ///     Defines base behaviors for a <see cref="IMigrationDepot{TMigrationSet}"/>
 ///     implementation describing <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/>
@@ -26,18 +26,18 @@ namespace CSMFoundation.Migration.Bases;
 /// </typeparam>
 public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     : IMigrationDepot<TMigrationSet>
-    where TMigrationSource : BMigrationSource<TMigrationSource>
+    where TMigrationSource : BSource<TMigrationSource>
     where TMigrationSet : class, ISourceSet {
 
-    readonly protected IMigrationDisposer? Disposer;
+    protected readonly IMigrationDisposer? Disposer;
     /// <summary>
     ///     Name to handle direct transactions (not-safe)
     /// </summary>
-    readonly protected TMigrationSource Source;
+    protected readonly TMigrationSource Source;
     /// <summary>
     ///     DBSet handler into <see cref="Source"/> to handle fastlike transactions related to the <see cref="TMigrationSet"/> 
     /// </summary>
-    readonly protected DbSet<TMigrationSet> Set;
+    protected readonly DbSet<TMigrationSet> Set;
     /// <summary>
     ///     Generates a new instance of a <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/> base.
     /// </summary>
@@ -45,7 +45,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     ///     The <typeparamref name="TMigrationSource"/> that stores and handles the transactions for this <see cref="TMigrationSet"/> concept.
     /// </param>
     public BMigrationDepot(TMigrationSource source, IMigrationDisposer? Disposer) {
-        this.Source = source;
+        Source = source;
         this.Disposer = Disposer;
         Set = Source.Set<TMigrationSet>();
     }
@@ -87,16 +87,16 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
                 Expression<Func<TMigrationSet, object>> orderingExpression = Expression.Lambda<Func<TMigrationSet, object>>(translationExpression, parameterExpression);
                 if (i == 0) {
                     orderingQuery = ordering.Behavior switch {
-                        Enumerators.MIgrationViewOrderBehaviors.DownUp => query.OrderBy(orderingExpression),
-                        Enumerators.MIgrationViewOrderBehaviors.UpDown => query.OrderByDescending(orderingExpression),
+                        MIgrationViewOrderBehaviors.DownUp => query.OrderBy(orderingExpression),
+                        MIgrationViewOrderBehaviors.UpDown => query.OrderByDescending(orderingExpression),
                         _ => query.OrderBy(orderingExpression),
                     };
                     continue;
                 }
 
                 orderingQuery = ordering.Behavior switch {
-                    Enumerators.MIgrationViewOrderBehaviors.DownUp => orderingQuery.ThenBy(orderingExpression),
-                    Enumerators.MIgrationViewOrderBehaviors.UpDown => orderingQuery.ThenByDescending(orderingExpression),
+                    MIgrationViewOrderBehaviors.DownUp => orderingQuery.ThenBy(orderingExpression),
+                    MIgrationViewOrderBehaviors.UpDown => orderingQuery.ThenByDescending(orderingExpression),
                     _ => orderingQuery.ThenBy(orderingExpression),
                 };
             }
@@ -129,8 +129,8 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     public async Task<TMigrationSet> Create(TMigrationSet Set) {
         Set.EvaluateWrite();
 
-        await this.Set.AddAsync(Set);
-        await Source.SaveChangesAsync();
+        _ = await this.Set.AddAsync(Set);
+        _ = await Source.SaveChangesAsync();
         Source.ChangeTracker.Clear();
 
         Disposer?.Push(Source, [Set]);
@@ -164,7 +164,10 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
                 set.EvaluateWrite();
                 safe = [.. safe, set];
             } catch (Exception excep) {
-                if (Sync) throw;
+                if (Sync) {
+                    throw;
+                }
+
                 SourceTransactionFailure fail = new(set, excep);
                 fails = [.. fails, fail];
             }
@@ -172,8 +175,8 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
 
         Source.ChangeTracker.Clear();
-        await this.Set.AddRangeAsync(safe);
-        await Source.SaveChangesAsync();
+        await Set.AddRangeAsync(safe);
+        _ = await Source.SaveChangesAsync();
 
         Disposer?.Push(Source, Sets);
         return new(safe, fails);
@@ -185,11 +188,14 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     public async Task<SourceTransactionOut<TMigrationSet>> Read(Expression<Func<TMigrationSet, bool>> Predicate, MigrationReadBehavior Behavior, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? Include = null) {
         IQueryable<TMigrationSet> query = Set.Where(Predicate);
 
-        if (Include != null)
+        if (Include != null) {
             query = Include(query);
+        }
 
-        if (!query.Any())
+        if (!query.Any()) {
             return new SourceTransactionOut<TMigrationSet>([], []);
+        }
+
         TMigrationSet[] items = Behavior switch {
             MigrationReadBehavior.First => [await query.FirstAsync()],
             MigrationReadBehavior.Last => [await query.LastAsync()],
@@ -229,8 +235,8 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             .AsNoTracking()
             .FirstOrDefaultAsync();
 
-        Set.Update(Record);
-        await Source.SaveChangesAsync();
+        _ = Set.Update(Record);
+        _ = await Source.SaveChangesAsync();
 
         Disposer?.Push(Source, Record);
         return new RecordUpdateOut<TMigrationSet> {
@@ -258,14 +264,14 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             }
         }
 
-        this.Set.RemoveRange(safe);
+        Set.RemoveRange(safe);
         return Task.FromResult<SourceTransactionOut<TMigrationSet>>(new(safe, []));
     }
 
     public async Task<TMigrationSet> Delete(TMigrationSet Set) {
         Set.EvaluateWrite();
-        this.Set.Remove(Set);
-        await Source.SaveChangesAsync();
+        _ = this.Set.Remove(Set);
+        _ = await Source.SaveChangesAsync();
         Source.ChangeTracker.Clear();
         return Set;
     }

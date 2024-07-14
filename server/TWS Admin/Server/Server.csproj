@@ -19,7 +19,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Customer\Customer.csproj">
+    <ProjectReference Include="..\Customer\TWS Customer.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\Foundation\CSM Foundation.csproj" />

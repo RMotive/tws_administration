@@ -1,8 +1,9 @@
-﻿using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Out;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+
 using TWS_Security.Sets;
 
-namespace Customer.Services.Interfaces;
+namespace TWS_Customer.Services.Interfaces;
 public interface ISolutionsService {
     Task<SetViewOut<Solution>> View(SetViewOptions Options);
     Task<SourceTransactionOut<Solution>> Create(Solution[] Solutions);

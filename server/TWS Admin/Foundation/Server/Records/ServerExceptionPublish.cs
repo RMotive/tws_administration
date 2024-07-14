@@ -1,8 +1,8 @@
-﻿namespace CSMFoundation.Server.Records;
+﻿namespace CSM_Foundation.Server.Records;
 public record ServerExceptionPublish {
-    required public string Trace { get; init; }
-    required public int Situation { get; init; }
-    required public string Advise { get; init; }
-    required public string System { get; init; }
+    public required string Trace { get; init; }
+    public required int Situation { get; init; }
+    public required string Advise { get; init; }
+    public required string System { get; init; }
     public Dictionary<string, dynamic> Factors { get; init; } = [];
 }

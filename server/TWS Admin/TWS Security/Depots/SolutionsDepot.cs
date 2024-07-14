@@ -1,6 +1,5 @@
-﻿using CSMFoundation.Migration.Interfaces;
-
-using CSMFoundation.Migration.Bases;
+﻿using CSM_Foundation.Source.Bases;
+using CSM_Foundation.Source.Interfaces;
 
 using TWS_Security.Sets;
 
@@ -21,8 +20,8 @@ public class SolutionsDepot
     /// <summary>
     /// 
     /// </summary>
-    public SolutionsDepot() 
-        : base(new(), null){
+    public SolutionsDepot()
+        : base(new(), null) {
 
     }
 }

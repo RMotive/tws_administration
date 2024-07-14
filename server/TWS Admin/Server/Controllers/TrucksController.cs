@@ -1,10 +1,11 @@
-﻿using Customer.Services.Interfaces;
-using Customer.Services.Records;
+﻿using CSM_Foundation.Source.Models.Options;
 
 using Microsoft.AspNetCore.Mvc;
 
 using Server.Controllers.Authentication;
-using CSMFoundation.Source.Models.In;
+
+using TWS_Customer.Services.Interfaces;
+using TWS_Customer.Services.Records;
 
 namespace Server.Controllers;
 /// <summary>
@@ -12,19 +13,18 @@ namespace Server.Controllers;
 /// </summary>
 [ApiController, Route("[Controller]")]
 public class TrucksController : ControllerBase {
-
-    readonly ITrucksService Service;
+    private readonly ITrucksService Service;
     public TrucksController(ITrucksService service) {
         this.Service = service;
     }
 
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
-    public async Task<IActionResult> View(SetViewOptions Options)
-        => Ok(await Service.View(Options));
+    public async Task<IActionResult> View(SetViewOptions Options) {
+        return Ok(await Service.View(Options));
+    }
 
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
-    public async Task<IActionResult> Create(TruckAssembly truck)
-        => Ok(await Service.Create(truck));
-
-
+    public async Task<IActionResult> Create(TruckAssembly truck) {
+        return Ok(await Service.Create(truck));
+    }
 }

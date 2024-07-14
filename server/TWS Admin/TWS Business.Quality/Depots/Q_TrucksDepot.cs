@@ -1,7 +1,8 @@
 ﻿
 
-using CSMFoundation.Core.Utils;
-using CSMFoundation.Migration.Quality.Bases;
+using CSM_Foundation.Core.Utils;
+using CSM_Foundation.Source.Quality.Bases;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
@@ -19,7 +20,7 @@ public class Q_TruckDepot
 
         return new() {
             Vin = RandomUtils.String(17),
-            Motor =RandomUtils.String(16),
+            Motor = RandomUtils.String(16),
             Manufacturer = 1,
 
         };

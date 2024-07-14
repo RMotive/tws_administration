@@ -1,8 +1,6 @@
-﻿using CSMFoundation.Migration.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 
-using Microsoft.EntityFrameworkCore;
-
-namespace CSMFoundation.Migration.Interfaces;
+namespace CSM_Foundation.Source.Interfaces;
 /// <summary>
 /// 
 /// </summary>

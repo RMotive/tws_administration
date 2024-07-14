@@ -1,8 +1,8 @@
-﻿using Customer.Services.Interfaces;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using Server.Controllers.Authentication;
+
+using TWS_Customer.Services.Interfaces;
 
 using TWS_Security.Sets;
 
@@ -12,8 +12,7 @@ namespace Server.Controllers;
 [ApiController, Route("[Controller]")]
 public class ContactsController
     : ControllerBase {
-
-    readonly IContactService Service;
+    private readonly IContactService Service;
 
     public ContactsController(IContactService service) {
         this.Service = service;
@@ -21,6 +20,7 @@ public class ContactsController
 
     [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
 
-    public async Task<IActionResult> Create(Contact[] contacts)
-        => Ok(await Service.Create(contacts));
+    public async Task<IActionResult> Create(Contact[] contacts) {
+        return Ok(await Service.Create(contacts));
+    }
 }

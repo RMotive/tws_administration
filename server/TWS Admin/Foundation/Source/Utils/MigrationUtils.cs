@@ -1,10 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text.Json;
-using CSMFoundation.Server.Enumerators;
-using CSMFoundation.Server.Managers;
-using CSMFoundation.Source.Models.Options;
 
-namespace CSMFoundation.Migration.Utils;
+using CSM_Foundation.Server.Enumerators;
+using CSM_Foundation.Server.Managers;
+using CSM_Foundation.Source.Models.Options;
+
+namespace CSM_Foundation.Source.Utils;
 public class MigrationUtils {
     private const string DirectoryName = "Connection";
     private const string QualityPrefix = "quality_";
@@ -40,29 +41,25 @@ public class MigrationUtils {
         };
         string fn = $"{prefix}connection.json";
 
-        if (cp is null)
+        if (cp is null) {
             throw new ArgumentNullException(cp);
-        DirectoryInfo? parent = Directory.GetParent(cp);
-        if (parent is null)
-            throw new DirectoryNotFoundException();
+        }
+
+        DirectoryInfo? parent = Directory.GetParent(cp)
+            ?? throw new DirectoryNotFoundException();
         IEnumerable<DirectoryInfo> pds = parent.EnumerateDirectories();
         DirectoryInfo? cpd = pds
             .Where(i => i.Name == DirectoryName)
-            .FirstOrDefault();
-        if (cpd is null)
-            throw new DirectoryNotFoundException($"{parent.FullName}\\{DirectoryName} not found in the system");
+            .FirstOrDefault()
+            ?? throw new DirectoryNotFoundException($"{parent.FullName}\\{DirectoryName} not found in the system");
         FileInfo? cpfi = cpd.GetFiles()
             .Where(i => i.Name == fn)
-            .FirstOrDefault();
-        if (cpfi is null)
-            throw new FileNotFoundException();
-
+            .FirstOrDefault()
+            ?? throw new FileNotFoundException();
         using FileStream pfs = new(cpfi.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
         SourceLinkOptions? m = JsonSerializer.Deserialize<SourceLinkOptions>(pfs);
         pfs.Dispose();
 
-        if (m is null)
-            throw new Exception();
-        return m;
+        return m is null ? throw new Exception() : m;
     }
 }

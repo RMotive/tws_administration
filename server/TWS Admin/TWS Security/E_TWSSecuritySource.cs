@@ -1,12 +1,12 @@
-﻿using CSMFoundation.Migration.Bases;
-using CSMFoundation.Migration.Interfaces;
+﻿using CSM_Foundation.Source.Bases;
+using CSM_Foundation.Source.Interfaces;
 
 using TWS_Security.Sets;
 
 namespace TWS_Security;
 
 public partial class TWSSecuritySource
-    : BMigrationSource<TWSSecuritySource> {
+    : BSource<TWSSecuritySource> {
     public TWSSecuritySource()
         : base() {
 

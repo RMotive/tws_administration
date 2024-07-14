@@ -1,8 +1,10 @@
 ﻿using System.Net;
-using CSMFoundation.Core.Utils;
-using CSMFoundation.Server.Records;
-using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Out;
+
+using CSM_Foundation.Core.Utils;
+using CSM_Foundation.Server.Records;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+
 using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Middlewares.Frames;
@@ -12,9 +14,9 @@ using TWS_Security.Sets;
 
 using Xunit;
 
-using View = CSMFoundation.Source.Models.Out.SetViewOut<TWS_Security.Sets.Solution>;
+using View = CSM_Foundation.Source.Models.Out.SetViewOut<TWS_Security.Sets.Solution>;
 
-namespace Server.Quality.Controllers;
+namespace Server.Quality.Suit.Controllers;
 
 
 public class Q_SolutionsController
@@ -26,15 +28,15 @@ public class Q_SolutionsController
 
     [Fact]
     public async Task View() {
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new SetViewOptions {
+        (HttpStatusCode Status, ServerGenericFrame Response) = await Post("View", new SetViewOptions {
             Page = 1,
             Range = 10,
             Retroactive = false,
         }, true);
 
-        Assert.Equal(HttpStatusCode.OK, fact.Status);
+        Assert.Equal(HttpStatusCode.OK, Status);
 
-        View Estela = Framing<SuccessFrame<View>>(fact.Response).Estela;
+        View Estela = Framing<SuccessFrame<View>>(Response).Estela;
         Assert.True(Estela.Sets.Length > 0);
         Assert.Equal(1, Estela.Page);
         Assert.True(Estela.Pages > 0);
@@ -57,9 +59,9 @@ public class Q_SolutionsController
                 ];
             }
 
-            (HttpStatusCode Status, ServerGenericFrame Frame) fact = await Post("Create", mocks, true);
+            (HttpStatusCode Status, _) = await Post("Create", mocks, true);
 
-            Assert.Equal(HttpStatusCode.OK, fact.Status);
+            Assert.Equal(HttpStatusCode.OK, Status);
         }
         #endregion
     }
@@ -68,15 +70,15 @@ public class Q_SolutionsController
     public async Task Update() {
         #region First (Correctly creates when doesn't exist)
         {
-            (HttpStatusCode Status, ServerGenericFrame Respone) creationFact = await Post("Update", new Solution {
+            (HttpStatusCode Status, ServerGenericFrame Respone) = await Post("Update", new Solution {
                 Id = 0,
                 Name = RandomUtils.String(10),
                 Sign = RandomUtils.String(5),
                 Description = RandomUtils.String(10),
             }, true);
 
-            Assert.Equal(HttpStatusCode.OK, creationFact.Status);
-            RecordUpdateOut<Solution> creationResult = Framing<SuccessFrame<RecordUpdateOut<Solution>>>(creationFact.Respone).Estela;
+            Assert.Equal(HttpStatusCode.OK, Status);
+            RecordUpdateOut<Solution> creationResult = Framing<SuccessFrame<RecordUpdateOut<Solution>>>(Respone).Estela;
 
             Assert.Null(creationResult.Previous);
 
@@ -92,11 +94,11 @@ public class Q_SolutionsController
                 Sign = RandomUtils.String(5),
                 Description = RandomUtils.String(10),
             };
-            (HttpStatusCode Status, ServerGenericFrame Response) creationResponse = await Post("Update", mock, true);
+            (HttpStatusCode Status, ServerGenericFrame Response) = await Post("Update", mock, true);
 
-            Assert.Equal(HttpStatusCode.OK, creationResponse.Status);
+            Assert.Equal(HttpStatusCode.OK, Status);
 
-            RecordUpdateOut<Solution> creationResult = Framing<SuccessFrame<RecordUpdateOut<Solution>>>(creationResponse.Response).Estela;
+            RecordUpdateOut<Solution> creationResult = Framing<SuccessFrame<RecordUpdateOut<Solution>>>(Response).Estela;
             Assert.Null(creationResult.Previous);
 
             Solution creationRecord = creationResult.Updated;

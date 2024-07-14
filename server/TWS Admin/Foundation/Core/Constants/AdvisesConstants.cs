@@ -1,5 +1,5 @@
-﻿namespace CSMFoundation.Core.Constants;
+﻿namespace CSM_Foundation.Core.Constants;
 
-static public class AdvisesConstants {
+public static class AdvisesConstants {
     public const string SERVER_CONTACT_ADVISE = "Criical failure contact services manager";
 }

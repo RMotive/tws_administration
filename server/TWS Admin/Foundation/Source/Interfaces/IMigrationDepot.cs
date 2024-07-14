@@ -1,6 +1,6 @@
-﻿using CSMFoundation.Migration.Interfaces.Depot;
+﻿using CSM_Foundation.Source.Interfaces.Depot;
 
-namespace CSMFoundation.Migration.Interfaces;
+namespace CSM_Foundation.Source.Interfaces;
 /// <summary>
 ///     Determines how a complex <see cref="IMigrationDepot{TMigrationSet}"/> 
 ///     implementation should behave.

@@ -1,17 +1,17 @@
-﻿using Customer.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
-using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Out;
 
-namespace Customer.Services;
+using TWS_Customer.Services.Interfaces;
+
+namespace TWS_Customer.Services;
 public class SituationsService : ISituationsService {
-
-    readonly SituationsDepot Situations;
+    private readonly SituationsDepot Situations;
 
     public SituationsService(SituationsDepot situations) {
-        this.Situations = situations;
+        Situations = situations;
     }
 
     public async Task<SetViewOut<Situation>> View(SetViewOptions options) {

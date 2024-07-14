@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 
-using CSMFoundation.Advising.Interfaces;
+using CSM_Foundation.Advisor.Interfaces;
 
 using Detail = System.Collections.Generic.KeyValuePair<string, dynamic>;
 using Details = System.Collections.Generic.Dictionary<string, dynamic>;
 
-namespace CSMFoundation.Advising.Managers;
+namespace CSM_Foundation.Advisor.Managers;
 public class AdvisorManager {
     private static void Restore() {
         Console.ResetColor();
@@ -40,26 +40,39 @@ public class AdvisorManager {
         Restore();
         Console.ForegroundColor = color;
         Console.WriteLine($"{label}{Subject}");
-        if (Details != null)
+        if (Details != null) {
             PrintDetails(0, "\t", color, Details);
+        }
+
         Restore();
     }
 
-    public static void Announce(string Subject, Details? Details = null)
-    => Write("Announce", ConsoleColor.Cyan, Subject, Details);
-    public static void Note(string Subject, Details? Details = null)
-    => Write("Note", ConsoleColor.Blue, Subject, Details);
-    public static void Success(string Subject, Details? Details = null)
-    => Write("Success", ConsoleColor.DarkGreen, Subject, Details);
-    public static void Success(string Subject, IAdvisingObject AdviseObject)
-    => Write("Success", ConsoleColor.DarkGreen, Subject, AdviseObject.Advise());
-    public static void Exception(IAdvisingException Exception)
-    => Write("Exception", ConsoleColor.DarkRed, Exception.Subject, new Details {
+    public static void Announce(string Subject, Details? Details = null) {
+        Write("Announce", ConsoleColor.Cyan, Subject, Details);
+    }
+
+    public static void Note(string Subject, Details? Details = null) {
+        Write("Note", ConsoleColor.Blue, Subject, Details);
+    }
+
+    public static void Success(string Subject, Details? Details = null) {
+        Write("Success", ConsoleColor.DarkGreen, Subject, Details);
+    }
+
+    public static void Success(string Subject, IAdvisingObject AdviseObject) {
+        Write("Success", ConsoleColor.DarkGreen, Subject, AdviseObject.Advise());
+    }
+
+    public static void Exception(IAdvisingException Exception) {
+        Write("Exception", ConsoleColor.DarkRed, Exception.Subject, new Details {
         {"Message", Exception.Message },
         {"Thrower", Exception.GetType() },
         {"Details", Exception.Details },
         {"Trace", Exception.Trace[0..20] },
     });
-    public static void Warning(string Subject, Details? Details = null)
-    => Write("Warning", ConsoleColor.DarkYellow, Subject, Details);
+    }
+
+    public static void Warning(string Subject, Details? Details = null) {
+        Write("Warning", ConsoleColor.DarkYellow, Subject, Details);
+    }
 }

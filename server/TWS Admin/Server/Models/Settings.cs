@@ -1,4 +1,4 @@
-﻿using CSMFoundation.Advising.Interfaces;
+﻿using CSM_Foundation.Advisor.Interfaces;
 
 using TWS_Security.Sets;
 
@@ -6,10 +6,10 @@ namespace Server.Models;
 
 public class Settings
     : IAdvisingObject {
-    required public string Tenant { get; init; }
-    required public Solution Solution { get; init; }
-    required public string Host { get; init; }
-    required public string[] Listeners { get; set; }
+    public required string Tenant { get; init; }
+    public required Solution Solution { get; init; }
+    public required string Host { get; init; }
+    public required string[] Listeners { get; set; }
     public string[] CORS { get; init; } = [];
 
     public Dictionary<string, dynamic> Advise() {

@@ -1,7 +1,8 @@
-﻿using CSMFoundation.Source.Models.Out;
+﻿using CSM_Foundation.Source.Models.Out;
+
 using TWS_Security.Sets;
 
-namespace Customer.Services.Interfaces;
+namespace TWS_Customer.Services.Interfaces;
 public interface IContactService {
     Task<SourceTransactionOut<Contact>> Create(Contact[] contact);
 }

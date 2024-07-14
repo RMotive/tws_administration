@@ -1,6 +1,6 @@
-﻿using CSMFoundation.Migration.Interfaces;
+﻿using CSM_Foundation.Source.Interfaces;
 
-namespace CSMFoundation.Source.Models.Out;
+namespace CSM_Foundation.Source.Models.Out;
 
 /// <summary>
 ///     
@@ -11,7 +11,7 @@ public class RecordUpdateOut<TMigrationSet>
     /// <summary>
     /// 
     /// </summary>
-    required public TMigrationSet Updated { get; set; }
+    public required TMigrationSet Updated { get; set; }
     /// <summary>
     /// 
     /// </summary>

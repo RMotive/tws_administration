@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
-using CSMFoundation.Migration.Exceptions;
-using CSMFoundation.Migration.Interfaces;
+using CSM_Foundation.Source.Exceptions;
+using CSM_Foundation.Source.Interfaces;
 
-namespace CSMFoundation.Migration.Validators;
+namespace CSM_Foundation.Source.Validators;
 /// <summary>
 ///     <list type="number">
 ///         <listheader> <term> Coding: </term> </listheader>
@@ -37,9 +37,7 @@ public class PointerValidator
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     public bool Satisfy(Type Type) {
-        if (Type != typeof(int)) return false;
-
-        return true;
+        return Type == typeof(int);
     }
     /// <summary>
     /// 
@@ -60,7 +58,9 @@ public class PointerValidator
         } else if (value <= 0) {
             message = "Pointer cannot be less or equal zero";
             code = 3;
-        } else return;
+        } else {
+            return;
+        }
 
         throw new XIValidator_Evaluate(this, Property, code, message);
     }

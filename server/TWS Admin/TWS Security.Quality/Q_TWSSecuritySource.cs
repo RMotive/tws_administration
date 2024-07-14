@@ -1,4 +1,4 @@
-﻿using CSMFoundation.Migration.Quality.Bases;
+﻿using CSM_Foundation.Source.Quality.Bases;
 
 namespace TWS_Security.Quality;
 public class Q_TWSSecuritySource

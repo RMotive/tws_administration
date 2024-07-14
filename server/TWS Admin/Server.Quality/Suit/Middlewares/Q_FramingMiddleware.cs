@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 
-using CSMFoundation.Server.Bases;
-using CSMFoundation.Server.Records;
-using CSMFoundation.Servers.Quality.Bases;
+using CSM_Foundation.Server.Bases;
+using CSM_Foundation.Server.Quality.Bases;
+using CSM_Foundation.Server.Records;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,26 +12,28 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Server.Middlewares;
-using Server.Quality.Quality.Middlewares.Resources.Exceptions;
+using Server.Quality.Suit.Middlewares.Resources.Exceptions;
 
 using Xunit;
 
-namespace Server.Quality.Middlewares;
+namespace Server.Quality.Suit.Middlewares;
 /// <summary>
 ///     Test class context.
 ///     This test class tests the quality of the <seealso cref="FramingMiddleware"/> implementation inside the server.
 /// </summary>
 public class Q_FramingMiddleware
     : BQ_ServerMiddleware {
-    const string SYSTEM_PROPERTY_REFERENCE = nameof(BServerTransactionException<Enum>.System);
+    private const string SYSTEM_PROPERTY_REFERENCE = nameof(BServerTransactionException<Enum>.System);
+
     /// <summary>
     ///     Reference for the endpoint configured to test the catching of unspeficied exceptions.
     /// </summary>
-    const string SYSTEM_EXCEPTION_EP = "system";
+    private const string SYSTEM_EXCEPTION_EP = "system";
+
     /// <summary>
     ///     Reference for the endpoint configured to test the catchiing of foundation specified exceptions.
     /// </summary>
-    const string FOUNDATION_EXCEPTION_EP = "foundation";
+    private const string FOUNDATION_EXCEPTION_EP = "foundation";
 
     /// <summary>
     ///     Quality test constructor for this context.
@@ -45,30 +47,30 @@ public class Q_FramingMiddleware
     protected override IHostBuilder Configuration() {
         return new HostBuilder()
             .ConfigureWebHost(webBuilder => {
-                webBuilder.UseTestServer();
-                webBuilder.ConfigureServices(services => {
-                    services.AddControllers()
+                _ = webBuilder.UseTestServer();
+                _ = webBuilder.ConfigureServices(services => {
+                    _ = services.AddControllers()
                     .AddJsonOptions(jOptions => {
                         jOptions.JsonSerializerOptions.WriteIndented = true;
                         jOptions.JsonSerializerOptions.IncludeFields = true;
                         jOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
                     });
-                    services.AddRouting();
-                    services.AddSingleton<AnalyticsMiddleware>();
-                    services.AddSingleton<AdvisorMiddleware>();
-                    services.AddSingleton<FramingMiddleware>();
+                    _ = services.AddRouting();
+                    _ = services.AddSingleton<AnalyticsMiddleware>();
+                    _ = services.AddSingleton<AdvisorMiddleware>();
+                    _ = services.AddSingleton<FramingMiddleware>();
                 });
-                webBuilder.Configure(app => {
-                    app.UseRouting();
-                    app.UseMiddleware<AnalyticsMiddleware>();
-                    app.UseMiddleware<AdvisorMiddleware>();
-                    app.UseMiddleware<FramingMiddleware>();
-                    app.UseEndpoints(endPoints => {
+                _ = webBuilder.Configure(app => {
+                    _ = app.UseRouting();
+                    _ = app.UseMiddleware<AnalyticsMiddleware>();
+                    _ = app.UseMiddleware<AdvisorMiddleware>();
+                    _ = app.UseMiddleware<FramingMiddleware>();
+                    _ = app.UseEndpoints(endPoints => {
 
-                        endPoints.MapGet(SYSTEM_EXCEPTION_EP, () => {
+                        _ = endPoints.MapGet(SYSTEM_EXCEPTION_EP, () => {
                             throw new ArgumentException();
                         });
-                        endPoints.MapGet(FOUNDATION_EXCEPTION_EP, () => {
+                        _ = endPoints.MapGet(FOUNDATION_EXCEPTION_EP, () => {
                             throw new XQ_Exception();
                         });
                     });

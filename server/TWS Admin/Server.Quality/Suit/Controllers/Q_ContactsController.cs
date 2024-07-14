@@ -1,18 +1,21 @@
 ﻿
 
-using CSMFoundation.Server.Records;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Server.Quality.Bases;
 using System.Net;
+
+using Microsoft.AspNetCore.Mvc.Testing;
+
+using Server.Quality.Bases;
+
 using TWS_Security.Sets;
+
 using Xunit;
 
-namespace Server.Quality.Controllers;
+namespace Server.Quality.Suit.Controllers;
 public class Q_ContactsController
     : BQ_CustomServerController {
 
     public Q_ContactsController(WebApplicationFactory<Program> hostFactory)
-        : base("Contacts", hostFactory) { 
+        : base("Contacts", hostFactory) {
 
     }
 
@@ -34,9 +37,9 @@ public class Q_ContactsController
                 ];
             }
 
-            (HttpStatusCode Status, ServerGenericFrame Frame) fact = await Post("Create", mocks, true);
+            (HttpStatusCode Status, _) = await Post("Create", mocks, true);
 
-            Assert.Equal(HttpStatusCode.OK, fact.Status);
+            Assert.Equal(HttpStatusCode.OK, Status);
         }
     }
 }

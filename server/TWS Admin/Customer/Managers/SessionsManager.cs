@@ -1,20 +1,15 @@
-﻿using Customer.Managers.Records;
-using Customer.Services.Records;
+﻿using TWS_Customer.Managers.Records;
+using TWS_Customer.Services.Records;
 
 using TWS_Security.Sets;
 
-namespace Customer.Managers;
+namespace TWS_Customer.Managers;
 public sealed class SessionsManager {
     private static SessionsManager? Instance;
-    static public SessionsManager Manager {
-        get {
-            return Instance ??= new SessionsManager();
-        }
-    }
+    public static SessionsManager Manager => Instance ??= new SessionsManager();
 
-
-    readonly TimeSpan EXPIRATION_RANGE = TimeSpan.FromHours(2);
-    readonly List<Session> Sessions = [];
+    private readonly TimeSpan EXPIRATION_RANGE = TimeSpan.FromHours(2);
+    private readonly List<Session> Sessions = [];
     private SessionsManager() {
 
     }
@@ -27,34 +22,36 @@ public sealed class SessionsManager {
         Session? session = Sessions
             .Where(i => i.Token.ToString() == token.ToString())
             .FirstOrDefault();
-        if (session == null)
-            return token;
-        return Tokenize();
+        return session == null ? token : Tokenize();
     }
     private Session? Clean(string Identity) {
         Session? session = Sessions
             .Where(i => i.Identity == Identity)
             .FirstOrDefault();
-        if (session is null)
+        if (session is null) {
             return null;
+        }
 
-        if (DateTime.Compare(DateTime.UtcNow, session.Expiration) < 0)
+        if (DateTime.Compare(DateTime.UtcNow, session.Expiration) < 0) {
             return session;
+        }
 
-        Sessions.Remove(session);
+        _ = Sessions.Remove(session);
         return null;
     }
     private Session? TClean(string Token) {
         Session? session = Sessions
             .Where(i => i.Token.ToString() == Token)
             .FirstOrDefault();
-        if (session is null)
+        if (session is null) {
             return null;
+        }
 
-        if (DateTime.Compare(DateTime.UtcNow, session.Expiration) < 0)
+        if (DateTime.Compare(DateTime.UtcNow, session.Expiration) < 0) {
             return session;
+        }
 
-        Sessions.Remove(session);
+        _ = Sessions.Remove(session);
         return null;
     }
     private Session Refresh(Session session) {
@@ -74,8 +71,9 @@ public sealed class SessionsManager {
     public Session Subscribe(Credentials Credentials, bool Wildcard, Permit[] Permits, Contact Contact) {
         Session? session = Clean(Credentials.Identity);
 
-        if (session is not null)
+        if (session is not null) {
             return Refresh(session);
+        }
 
         session = new() {
             Expiration = DateTime.Now.Add(EXPIRATION_RANGE),
@@ -90,16 +88,10 @@ public sealed class SessionsManager {
     }
     public bool EvaluateExpiration(string Token) {
         Session? session = TClean(Token);
-        if (session is null)
-            return false;
-
-        return EvaluateAlive(session.Expiration);
+        return session is not null && EvaluateAlive(session.Expiration);
     }
     public bool EvaluateWildcard(string Token) {
         Session? session = TClean(Token);
-        if (session is null)
-            return false;
-
-        return session.Wildcard;
+        return session is not null && session.Wildcard;
     }
 }

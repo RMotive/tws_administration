@@ -1,18 +1,19 @@
 ﻿
 
-using Customer.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
-using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Out;
 
-namespace Customer.Services;
+using TWS_Customer.Services.Interfaces;
+
+namespace TWS_Customer.Services;
 public class ManufacturersService : IManufacturersService {
-    readonly ManufacturersDepot Manufacturers;
+    private readonly ManufacturersDepot Manufacturers;
 
     public ManufacturersService(ManufacturersDepot manufacturers) {
-        this.Manufacturers = manufacturers;
+        Manufacturers = manufacturers;
     }
 
     public async Task<SetViewOut<Manufacturer>> View(SetViewOptions Options) {

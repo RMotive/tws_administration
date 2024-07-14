@@ -1,11 +1,12 @@
-﻿using Customer.Services.Interfaces;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+
+using TWS_Customer.Services.Interfaces;
 
 using TWS_Security.Depots;
 using TWS_Security.Sets;
-using CSMFoundation.Source.Models.Out;
-using CSMFoundation.Source.Models.In;
 
-namespace Customer.Services;
+namespace TWS_Customer.Services;
 /// <summary>
 /// 
 /// </summary>
@@ -14,13 +15,13 @@ public class SolutionsService
     /// <summary>
     /// 
     /// </summary>
-    readonly SolutionsDepot SolutionsDepot;
+    private readonly SolutionsDepot SolutionsDepot;
     /// <summary>
     /// 
     /// </summary>
     /// <param name="Solutions"></param>
     public SolutionsService(SolutionsDepot Solutions) {
-        this.SolutionsDepot = Solutions;
+        SolutionsDepot = Solutions;
     }
     /// <summary>
     /// 
@@ -36,14 +37,14 @@ public class SolutionsService
     /// <param name="Solutions"></param>
     /// <returns></returns>
     public async Task<SourceTransactionOut<Solution>> Create(Solution[] Solutions) {
-        return await this.SolutionsDepot.Create(Solutions);
+        return await SolutionsDepot.Create(Solutions);
     }
     /// <summary>
     /// 
     /// </summary>
     /// <param name="Solution"></param>
     /// <returns></returns>
-    public async Task<RecordUpdateOut<Solution>> Update(Solution Solution) { 
-        return await this.SolutionsDepot.Update(Solution);    
+    public async Task<RecordUpdateOut<Solution>> Update(Solution Solution) {
+        return await SolutionsDepot.Update(Solution);
     }
 }

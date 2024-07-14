@@ -1,9 +1,9 @@
 ﻿using System.Net;
 
-using CSMFoundation.Advising.Interfaces;
-using CSMFoundation.Server.Records;
+using CSM_Foundation.Advisor.Interfaces;
+using CSM_Foundation.Server.Records;
 
-namespace CSMFoundation.Server.Interfaces;
+namespace CSM_Foundation.Server.Interfaces;
 /// <summary>
 ///     Defines the behavior for an exception
 ///     thrown on server transaction time, this means

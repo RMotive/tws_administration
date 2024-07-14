@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-using CSMFoundation.Migration.Interfaces;
+using CSM_Foundation.Source.Interfaces;
 
-namespace CSMFoundation.Migration.Exceptions;
+namespace CSM_Foundation.Source.Exceptions;
 
 /// <summary>
 ///     TODO: 

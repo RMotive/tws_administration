@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
-using CSMFoundation.Migration.Exceptions;
-using CSMFoundation.Migration.Interfaces;
+using CSM_Foundation.Source.Exceptions;
+using CSM_Foundation.Source.Interfaces;
 
-namespace CSMFoundation.Migration.Validators;
+namespace CSM_Foundation.Source.Validators;
 /// <summary>
 ///     <list type="number">
 ///         <listheader> <term> Coding: </term> </listheader>
@@ -26,7 +26,9 @@ public class RequiredValidator
     /// <param name="Value"></param>
     /// <exception cref="XIValidator_Evaluate"></exception>
     public void Evaluate(PropertyInfo Property, object? Value) {
-        if (Value is not null) return;
+        if (Value is not null) {
+            return;
+        }
 
         throw new XIValidator_Evaluate(this, Property, 1, "Value cannot be empty, is required");
     }
@@ -35,5 +37,7 @@ public class RequiredValidator
     /// </summary>
     /// <param name="Type"></param>
     /// <returns></returns>
-    public bool Satisfy(Type Type) => true;
+    public bool Satisfy(Type Type) {
+        return true;
+    }
 }

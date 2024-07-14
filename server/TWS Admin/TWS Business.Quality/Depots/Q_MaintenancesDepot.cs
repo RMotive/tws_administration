@@ -1,4 +1,5 @@
-﻿using CSMFoundation.Migration.Quality.Bases;
+﻿using CSM_Foundation.Source.Quality.Bases;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 

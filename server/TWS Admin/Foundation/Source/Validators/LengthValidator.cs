@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 
-using CSMFoundation.Migration.Exceptions;
-using CSMFoundation.Migration.Interfaces;
+using CSM_Foundation.Source.Exceptions;
+using CSM_Foundation.Source.Interfaces;
 
 using Microsoft.IdentityModel.Tokens;
 
-namespace CSMFoundation.Migration.Validators;
+namespace CSM_Foundation.Source.Validators;
 /// <summary>
 ///     <list type="number">
 ///         <listheader> <term> Coding: </term> </listheader>
@@ -46,13 +46,8 @@ public class LengthValidator
     /// <param name="Type"></param>
     /// <returns></returns>
     public bool Satisfy(Type Type) {
-        if (Type == typeof(string)) return true;
-        if (Type == typeof(IList<>)) return true;
-        if (Type == typeof(IEnumerable<>)) return true;
-        if (Type == typeof(ICollection<>)) return true;
-        if (Type.IsArray) return true;
-
-        return false;
+        return Type == typeof(string)
+|| Type == typeof(IList<>) || Type == typeof(IEnumerable<>) || Type == typeof(ICollection<>) || Type.IsArray;
     }
     /// <summary>
     /// 
@@ -84,7 +79,10 @@ public class LengthValidator
             };
         }
 
-        if (message.IsNullOrEmpty()) return;
+        if (message.IsNullOrEmpty()) {
+            return;
+        }
+
         throw new XIValidator_Evaluate(this, Property, code, message);
     }
 }

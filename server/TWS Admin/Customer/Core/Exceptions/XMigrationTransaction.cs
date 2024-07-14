@@ -1,9 +1,10 @@
 ﻿using System.Net;
-using CSMFoundation.Core.Constants;
-using CSMFoundation.Migration.Models;
-using CSMFoundation.Server.Bases;
 
-namespace Customer.Core.Exceptions;
+using CSM_Foundation.Core.Constants;
+using CSM_Foundation.Server.Bases;
+using CSM_Foundation.Source.Models;
+
+namespace TWS_Customer.Core.Exceptions;
 public class XMigrationTransaction
     : BServerTransactionException<XTransactionSituation> {
     public XMigrationTransaction(SourceTransactionFailure[] Failures)

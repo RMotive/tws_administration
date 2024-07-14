@@ -1,5 +1,5 @@
-﻿using CSMFoundation.Advising.Managers;
-using CSMFoundation.Migration.Interfaces;
+﻿using CSM_Foundation.Advisor.Managers;
+using CSM_Foundation.Source.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,22 +7,25 @@ using Microsoft.IdentityModel.Tokens;
 namespace Server.Managers;
 
 public class DispositionManager : IMigrationDisposer {
-
-    readonly IServiceProvider Servicer;
-    readonly Dictionary<DbContext, List<ISourceSet>> DispositionStack = [];
-    bool Active = false;
+    private readonly IServiceProvider Servicer;
+    private readonly Dictionary<DbContext, List<ISourceSet>> DispositionStack = [];
+    private bool Active = false;
 
     public DispositionManager(IServiceProvider Servicer) {
         this.Servicer = Servicer;
     }
 
     public void Push(DbContext Source, ISourceSet Record) {
-        if (!Active) return;
+        if (!Active) {
+            return;
+        }
+
         Type sourceType = Source.GetType();
 
         foreach (DbContext source in DispositionStack.Keys) {
-            if (source.GetType() != sourceType)
+            if (source.GetType() != sourceType) {
                 continue;
+            }
 
             DispositionStack[source].Add(Record);
             return;
@@ -31,12 +34,16 @@ public class DispositionManager : IMigrationDisposer {
         DispositionStack.Add(Source, recordsListed);
     }
     public void Push(DbContext Source, ISourceSet[] Records) {
-        if (!Active) return;
+        if (!Active) {
+            return;
+        }
+
         Type sourceType = Source.GetType();
 
         foreach (DbContext source in DispositionStack.Keys) {
-            if (source.GetType() != sourceType)
+            if (source.GetType() != sourceType) {
                 continue;
+            }
 
             DispositionStack[source].AddRange(Records);
             return;
@@ -57,7 +64,7 @@ public class DispositionManager : IMigrationDisposer {
             using IServiceScope servicerScope = Servicer.CreateScope();
             DbContext source = disposeLine.Key;
             try {
-                source.Database.CanConnect();
+                _ = source.Database.CanConnect();
             } catch (ObjectDisposedException) {
                 source = (DbContext)servicerScope.ServiceProvider.GetRequiredService(source.GetType());
             }
@@ -71,8 +78,8 @@ public class DispositionManager : IMigrationDisposer {
             int incorrects = 0;
             foreach (ISourceSet record in disposeLine.Value) {
                 try {
-                    source.Remove(record);
-                    source.SaveChanges();
+                    _ = source.Remove(record);
+                    _ = source.SaveChanges();
                     corrects++;
                     AdvisorManager.Success($"Disposed: ({record.GetType()}) | ({record.Id})");
                 } catch (Exception Exep) {

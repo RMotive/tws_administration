@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-using CSMFoundation.Migration.Interfaces;
+using CSM_Foundation.Source.Interfaces;
 
-namespace CSMFoundation.Migration.Validators;
+namespace CSM_Foundation.Source.Validators;
 /// <summary>
 /// 
 /// </summary>
@@ -19,5 +19,7 @@ public class UniqueValidator
     /// </summary>
     /// <param name="Type"></param>
     /// <returns></returns>
-    public bool Satisfy(Type Type) => true;
+    public bool Satisfy(Type Type) {
+        return true;
+    }
 }

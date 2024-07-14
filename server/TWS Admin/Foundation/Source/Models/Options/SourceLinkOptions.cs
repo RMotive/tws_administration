@@ -1,9 +1,9 @@
-﻿namespace CSMFoundation.Source.Models.Options;
+﻿namespace CSM_Foundation.Source.Models.Options;
 public class SourceLinkOptions {
-    required public string Host { get; init; }
-    required public string Name { get; init; }
-    required public string User { get; init; }
-    required public string Password { get; init; }
+    public required string Host { get; init; }
+    public required string Name { get; init; }
+    public required string User { get; init; }
+    public required string Password { get; init; }
     public bool Encrypt { get; init; } = false;
 
     public string GenerateConnectionString() {

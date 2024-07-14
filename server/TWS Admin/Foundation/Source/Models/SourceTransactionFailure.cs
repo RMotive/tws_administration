@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-using CSMFoundation.Migration.Interfaces;
+using CSM_Foundation.Source.Interfaces;
 
-namespace CSMFoundation.Migration.Models;
+namespace CSM_Foundation.Source.Models;
 /// <summary>
 /// 
 /// </summary>
@@ -28,6 +28,6 @@ public record SourceTransactionFailure {
     public SourceTransactionFailure(ISourceSet Set, Exception SystemInternal) {
         this.Set = Set;
         this.SystemInternal = SystemInternal;
-        this.System = SystemInternal.Message;
+        System = SystemInternal.Message;
     }
 }

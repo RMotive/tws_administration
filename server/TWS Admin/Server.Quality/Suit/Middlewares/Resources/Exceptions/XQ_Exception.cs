@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-using CSMFoundation.Server.Bases;
+using CSM_Foundation.Server.Bases;
 
-namespace Server.Quality.Quality.Middlewares.Resources.Exceptions;
+namespace Server.Quality.Suit.Middlewares.Resources.Exceptions;
 public class XQ_Exception
     : BServerTransactionException<XQ_ExceptionSituation> {
     public XQ_Exception()

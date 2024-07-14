@@ -1,13 +1,16 @@
-﻿using Customer.Services.Interfaces;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+
 using Microsoft.EntityFrameworkCore;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
-using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Out;
 
-namespace Customer.Services;
+using TWS_Customer.Services.Interfaces;
+
+namespace TWS_Customer.Services;
 public class MaintenanceService : IMaintenancesService {
-    readonly MaintenacesDepot Maintenances;
+    private readonly MaintenacesDepot Maintenances;
 
     public MaintenanceService(MaintenacesDepot Maintenances) {
         this.Maintenances = Maintenances;

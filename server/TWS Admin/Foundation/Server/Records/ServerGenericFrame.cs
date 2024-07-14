@@ -1,8 +1,8 @@
-﻿using CSMFoundation.Servers.Interfaces;
+﻿using CSM_Foundation.Server.Interfaces;
 
-namespace CSMFoundation.Server.Records;
+namespace CSM_Foundation.Server.Records;
 public record ServerGenericFrame
     : IServerFrame<Dictionary<string, object>> {
-    required public Dictionary<string, object> Estela { get; init; }
-    required public Guid Tracer { get; init; }
+    public required Dictionary<string, object> Estela { get; init; }
+    public required Guid Tracer { get; init; }
 }

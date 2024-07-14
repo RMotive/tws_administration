@@ -1,6 +1,6 @@
-﻿using CSMFoundation.Migration.Interfaces;
+﻿using CSM_Foundation.Source.Interfaces;
 
-namespace CSMFoundation.Source.Models.Out;
+namespace CSM_Foundation.Source.Models.Out;
 
 /// <summary>
 ///     Stores a result <see cref="SetViewOut{TMigrationSet}"/> 
@@ -17,10 +17,10 @@ public class SetViewOut<TMigrationSet>
     ///     The collection of items gathered
     /// </summary>
     public required TMigrationSet[] Sets {
-        get => this._Sets;
+        get => _Sets;
         init {
-            this._Sets = value;
-            this.Records = value.Length;
+            _Sets = value;
+            Records = value.Length;
         }
     }
     /// <summary>

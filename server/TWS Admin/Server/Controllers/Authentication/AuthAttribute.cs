@@ -1,19 +1,18 @@
-﻿using Customer.Managers;
-
-using CSMFoundation.Server.Exceptions;
+﻿using CSM_Foundation.Server.Exceptions;
 
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
+
+using TWS_Customer.Managers;
 
 namespace Server.Controllers.Authentication;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class AuthAttribute
     : Attribute, IAuthorizationFilter {
-    const string AUTH_TOKEN_KEY = "CSMAuth";
-
-    readonly SessionsManager Sessions;
-    readonly string[] Permits;
+    private const string AUTH_TOKEN_KEY = "CSMAuth";
+    private readonly SessionsManager Sessions;
+    private readonly string[] Permits;
 
     public AuthAttribute(string[] Permits) {
         this.Permits = Permits;
@@ -33,14 +32,17 @@ public class AuthAttribute
 
         string token = authHedaer.Split(' ')[1];
         if (Guid.TryParse(token, out Guid tokenGuid)) {
-            if (Sessions.EvaluateWildcard(token))
+            if (Sessions.EvaluateWildcard(token)) {
                 return;
+            }
 
             // TODO: Implement permits search
             foreach (string permit in Permits) {
 
             }
 
-        } else throw new XAuth(XAuthSituation.Format);
+        } else {
+            throw new XAuth(XAuthSituation.Format);
+        }
     }
 }

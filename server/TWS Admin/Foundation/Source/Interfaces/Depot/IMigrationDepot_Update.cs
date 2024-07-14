@@ -1,6 +1,6 @@
-﻿using CSMFoundation.Source.Models.Out;
+﻿using CSM_Foundation.Source.Models.Out;
 
-namespace CSMFoundation.Migration.Interfaces.Depot;
+namespace CSM_Foundation.Source.Interfaces.Depot;
 
 /// <summary>
 /// 

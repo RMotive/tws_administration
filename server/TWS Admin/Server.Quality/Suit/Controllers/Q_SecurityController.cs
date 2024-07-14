@@ -1,20 +1,10 @@
-﻿using System.Net;
-
-using Customer.Managers.Records;
-using Customer.Services.Records;
-
-using CSMFoundation.Server.Records;
-
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 
 using Server.Quality.Bases;
-using Server.Quality.Secrets;
 
 using Xunit;
 
-using PrivilegesFrame = Server.Middlewares.Frames.SuccessFrame<Customer.Managers.Records.Session>;
-
-namespace Server.Quality.Controllers;
+namespace Server.Quality.Suit.Controllers;
 
 public class Q_SecurityController
     : BQ_CustomServerController {
@@ -23,6 +13,6 @@ public class Q_SecurityController
 
     [Fact]
     public async Task Authenticate() {
-        await Authentication();
+        _ = await Authentication();
     }
 }

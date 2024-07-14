@@ -1,12 +1,8 @@
-﻿using CSMFoundation.Migration.Enumerators;
-using CSMFoundation.Migration.Interfaces;
-using CSMFoundation.Migration.Interfaces.Depot;
-using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Out;
-using Customer.Core.Exceptions;
-using Customer.Services.Exceptions;
-using Customer.Services.Interfaces;
-using Customer.Services.Records;
+﻿using CSM_Foundation.Source.Enumerators;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Interfaces.Depot;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -14,23 +10,27 @@ using Microsoft.IdentityModel.Tokens;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
-namespace Customer.Services;
-public class TrucksService : ITrucksService {
+using TWS_Customer.Core.Exceptions;
+using TWS_Customer.Services.Exceptions;
+using TWS_Customer.Services.Interfaces;
+using TWS_Customer.Services.Records;
 
-    readonly TruckDepot Trucks;
-    readonly InsurancesDepot Insurances;
-    readonly MaintenacesDepot Maintenaces;
-    readonly ManufacturersDepot Manufacturers;
-    readonly SctsDepot Sct;
-    readonly SituationsDepot Situations;
-    readonly PlatesDepot Plates;
+namespace TWS_Customer.Services;
+public class TrucksService : ITrucksService {
+    private readonly TruckDepot Trucks;
+    private readonly InsurancesDepot Insurances;
+    private readonly MaintenacesDepot Maintenaces;
+    private readonly ManufacturersDepot Manufacturers;
+    private readonly SctsDepot Sct;
+    private readonly SituationsDepot Situations;
+    private readonly PlatesDepot Plates;
 
     public TrucksService(
         TruckDepot Trucks, InsurancesDepot Insurances, MaintenacesDepot Maintenances,
         ManufacturersDepot Manufacturers, SctsDepot Sct, SituationsDepot Situations, PlatesDepot Plates) {
         this.Trucks = Trucks;
         this.Insurances = Insurances;
-        this.Maintenaces = Maintenances;
+        Maintenaces = Maintenances;
         this.Manufacturers = Manufacturers;
         this.Sct = Sct;
         this.Situations = Situations;
@@ -39,7 +39,8 @@ public class TrucksService : ITrucksService {
 
     public async Task<SetViewOut<Truck>> View(SetViewOptions options) {
 
-        static IQueryable<Truck> include(IQueryable<Truck> query) => query
+        static IQueryable<Truck> include(IQueryable<Truck> query) {
+            return query
             .Include(t => t.InsuranceNavigation)
             .Include(t => t.ManufacturerNavigation)
             .Include(t => t.MaintenanceNavigation)
@@ -92,6 +93,7 @@ public class TrucksService : ITrucksService {
                     Truck = p.Truck
                 })
             });
+        }
 
         return await Trucks.View(options, include);
     }
@@ -139,11 +141,13 @@ public class TrucksService : ITrucksService {
         };
 
         /// Optional / Required validations.
-        if (truck.Manufacturer == null)
+        if (truck.Manufacturer == null) {
             throw new XTruckAssembly(XTruckAssemblySituation.RequiredManufacturer);
+        }
 
-        if (truck.Plates.IsNullOrEmpty())
+        if (truck.Plates.IsNullOrEmpty()) {
             throw new XTruckAssembly(XTruckAssemblySituation.RequiredPlates);
+        }
 
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
@@ -152,11 +156,13 @@ public class TrucksService : ITrucksService {
             } else {
                 /// Pointer Validation
                 SourceTransactionOut<Manufacturer> fetch = await Manufacturers.Read(i => i.Id == truck.Manufacturer.Id, MigrationReadBehavior.First);
-                if (fetch.Failed)
+                if (fetch.Failed) {
                     throw new XMigrationTransaction(fetch.Failures);
+                }
 
-                if (fetch.QTransactions == 0)
+                if (fetch.QTransactions == 0) {
                     throw new XTruckAssembly(XTruckAssemblySituation.ManufacturerNotExist);
+                }
 
                 assembly.Manufacturer = truck.Manufacturer.Id;
                 truck.Manufacturer = fetch.Successes[0];
@@ -169,11 +175,13 @@ public class TrucksService : ITrucksService {
                 } else {
                     /// Pointer Validation
                     SourceTransactionOut<Situation> fetch = await Situations.Read(i => i.Id == truck.Situation.Id, MigrationReadBehavior.First);
-                    if (fetch.Failed)
+                    if (fetch.Failed) {
                         throw new XMigrationTransaction(fetch.Failures);
+                    }
 
-                    if (fetch.QTransactions == 0)
+                    if (fetch.QTransactions == 0) {
                         throw new XTruckAssembly(XTruckAssemblySituation.SitutionNotExist);
+                    }
 
                     assembly.Situation = truck.Situation.Id;
                     truck.Situation = fetch.Successes[0];
@@ -213,11 +221,13 @@ public class TrucksService : ITrucksService {
             // Undo all changes on data source
             /// Remove the last items to avoid key dependencies errors on data source.
             nullify.Reverse();
-            foreach (Plate plate in generatedPlates)
-                await Plates.Delete(plate);
+            foreach (Plate plate in generatedPlates) {
+                _ = await Plates.Delete(plate);
+            }
 
-            foreach (Lazy<Task> disposition in nullify)
+            foreach (Lazy<Task> disposition in nullify) {
                 await disposition.Value;
+            }
 
             throw;
         }

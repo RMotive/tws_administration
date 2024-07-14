@@ -1,10 +1,9 @@
 ﻿using System.Linq.Expressions;
 
-using CSMFoundation.Migration.Enumerators;
-using CSMFoundation.Migration.Interfaces;
-using CSMFoundation.Source.Models.Out;
+using CSM_Foundation.Source.Enumerators;
+using CSM_Foundation.Source.Models.Out;
 
-namespace CSMFoundation.Migration.Interfaces.Depot;
+namespace CSM_Foundation.Source.Interfaces.Depot;
 public interface IMigrationDepot_Read<TMigrationSet>
     where TMigrationSet : ISourceSet {
 

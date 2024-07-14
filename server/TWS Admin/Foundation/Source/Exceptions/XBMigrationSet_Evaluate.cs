@@ -1,4 +1,4 @@
-﻿namespace CSMFoundation.Migration.Exceptions;
+﻿namespace CSM_Foundation.Source.Exceptions;
 public class XBMigrationSet_Evaluate
     : Exception {
 

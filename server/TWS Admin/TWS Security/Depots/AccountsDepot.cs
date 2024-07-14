@@ -1,6 +1,5 @@
-﻿using CSMFoundation.Migration.Interfaces;
-
-using CSMFoundation.Migration.Bases;
+﻿using CSM_Foundation.Source.Bases;
+using CSM_Foundation.Source.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +17,8 @@ public class AccountsDepot
     /// <summary>
     ///     Generates a new depot handler for <see cref="Account"/>.
     /// </summary>
-    public AccountsDepot(TWSSecuritySource Source, IMigrationDisposer? Disposer = null) 
-        : base(Source, Disposer) {     
+    public AccountsDepot(TWSSecuritySource Source, IMigrationDisposer? Disposer = null)
+        : base(Source, Disposer) {
     }
     /// <summary>
     ///     Generates a new depot handler for <see cref="Account"/>.

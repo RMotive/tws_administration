@@ -1,23 +1,35 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 
-namespace CSMFoundation.Core.Bases;
+namespace CSM_Foundation.Core.Bases;
 
 /// <summary>
 ///     Represents an inheritance link between datasource objects
 ///     that need specific equality comparisson between their properties.
 /// </summary>
 public abstract class BObject<TObject> {
-    protected virtual PropertyInfo[] EqualityExceptions()
-    => [];
+    protected virtual PropertyInfo[] EqualityExceptions() {
+        return [];
+    }
 
     public override bool Equals(object? Comparer) {
         PropertyInfo[] exceptions = EqualityExceptions();
 
-        if (this is null && Comparer is null) return true;
-        if (this is not null && Comparer is null) return false;
-        if (this is null && Comparer is not null) return false;
-        if (GetType() != Comparer?.GetType()) return false;
+        if (this is null && Comparer is null) {
+            return true;
+        }
+
+        if (this is not null && Comparer is null) {
+            return false;
+        }
+
+        if (this is null && Comparer is not null) {
+            return false;
+        }
+
+        if (GetType() != Comparer?.GetType()) {
+            return false;
+        }
 
         PropertyInfo[] rProperties = GetType().GetProperties();
         PropertyInfo[] cProperties = Comparer.GetType().GetProperties();
@@ -26,11 +38,18 @@ public abstract class BObject<TObject> {
             PropertyInfo rProperty = rProperties[i];
             PropertyInfo cProperty = cProperties[i];
 
-            if (exceptions.Contains(rProperty) || exceptions.Contains(cProperty))
+            if (exceptions.Contains(rProperty) || exceptions.Contains(cProperty)) {
                 continue;
+            }
 
-            if (rProperty.Name != cProperty.Name) return false;
-            if (rProperty.PropertyType != cProperty.PropertyType) return false;
+            if (rProperty.Name != cProperty.Name) {
+                return false;
+            }
+
+            if (rProperty.PropertyType != cProperty.PropertyType) {
+                return false;
+            }
+
             dynamic? rReferenceValue = rProperty.GetValue(this);
             dynamic? cReferenceValue = cProperty.GetValue(Comparer);
 
@@ -43,7 +62,9 @@ public abstract class BObject<TObject> {
                 byte[] currentReferenceValue = (byte[])rReferenceValue!;
                 byte[] comparerReferenceValue = (byte[])cReferenceValue!;
                 bool comparisson = currentReferenceValue.SequenceEqual(comparerReferenceValue);
-                if (comparisson) continue;
+                if (comparisson) {
+                    continue;
+                }
 
                 return false;
             }
@@ -51,7 +72,9 @@ public abstract class BObject<TObject> {
 
             #endregion
 
-            if (rReferenceValue != cReferenceValue) return false;
+            if (rReferenceValue != cReferenceValue) {
+                return false;
+            }
         }
         return true;
     }
@@ -64,7 +87,10 @@ public abstract class BObject<TObject> {
 
         return JsonSerializer.Serialize(jsonReference);
     }
-    public override int GetHashCode() => base.GetHashCode();
+    public override int GetHashCode() {
+        return base.GetHashCode();
+    }
+
     /// <summary>
     ///     Localizes the current object Property mirror reflected.
     /// </summary>
@@ -88,19 +114,14 @@ public abstract class BObject<TObject> {
     public TObject Clone() {
         Type ObjectType = typeof(TObject);
 
-        TObject? Cloned = (TObject?)Activator.CreateInstance(ObjectType);
-        if (Cloned is null)
-            throw new Exception("PENDING WRONG ACTIVATION");
-
+        TObject? Cloned = (TObject?)Activator.CreateInstance(ObjectType)
+            ?? throw new Exception("PENDING WRONG ACTIVATION");
         PropertyInfo[] ObjectPropertiesInfo = ObjectType.GetProperties();
         foreach (PropertyInfo PropertyInfo in ObjectPropertiesInfo) {
             object? OriginalValue = PropertyInfo.GetValue(this);
             PropertyInfo.SetValue(Cloned, OriginalValue);
         }
 
-        if (Cloned.GetHashCode() == GetHashCode())
-            throw new Exception("PEDNING SAME HASH");
-
-        return Cloned;
+        return Cloned.GetHashCode() == GetHashCode() ? throw new Exception("PEDNING SAME HASH") : Cloned;
     }
 }

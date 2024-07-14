@@ -1,19 +1,22 @@
-﻿using Customer.Services.Interfaces;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
+
 using Microsoft.EntityFrameworkCore;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
-using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Out;
 
-namespace Customer.Services;
+using TWS_Customer.Services.Interfaces;
+
+namespace TWS_Customer.Services;
 public class InsuranceService : IInsurancesService {
-    readonly InsurancesDepot Insurances;
+    private readonly InsurancesDepot Insurances;
 
     public InsuranceService(InsurancesDepot Insurances) {
         this.Insurances = Insurances;
     }
     public async Task<SetViewOut<Insurance>> View(SetViewOptions options) {
-        
+
         return await Insurances.View(options, query => query
             .Include(m => m.Trucks)
             .Select(I => new Insurance() {

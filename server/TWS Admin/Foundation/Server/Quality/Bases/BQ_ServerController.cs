@@ -1,15 +1,14 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-using CSMFoundation.Server.Records;
+using CSM_Foundation.Server.Quality.Managers;
+using CSM_Foundation.Server.Records;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 
-using Server.Quality.Helpers;
-
 using Xunit;
 
-namespace CSMFoundation.Servers.Quality.Bases;
+namespace CSM_Foundation.Server.Quality.Bases;
 /// <summary>
 ///     Defines base behaviors for quality operations to 
 ///     <see cref="BQ_Controller"/> implementations.
@@ -20,17 +19,11 @@ namespace CSMFoundation.Servers.Quality.Bases;
 /// <typeparam name="TEntry">
 ///     Entry class that starts your server project.
 /// </typeparam>
-public abstract class BQ_ServerController<TEntry>
+public abstract class BQ_ServerController<TEntry>(string Service, WebApplicationFactory<TEntry> Factory)
     : IClassFixture<WebApplicationFactory<TEntry>>
     where TEntry : class {
-
-    readonly string Service;
-    readonly QM_ServerHost Host;
-
-    public BQ_ServerController(string Service, WebApplicationFactory<TEntry> Factory) {
-        this.Service = Service;
-        this.Host = new(Factory.CreateClient());
-    }
+    private readonly string Service = Service;
+    private readonly QM_ServerHost Host = new(Factory.CreateClient());
 
     #region Protected Abstract Methods
 
@@ -46,12 +39,17 @@ public abstract class BQ_ServerController<TEntry>
         TFrame frame = JsonSerializer.Deserialize<TFrame>(desContent)!;
         return frame;
     }
-    protected async Task<(HttpStatusCode, ServerGenericFrame)> Post<TRequest>(string Action, TRequest Request, bool Authenticate = false)
-    => await Post<ServerGenericFrame, TRequest>(Action, Request, false, Authenticate);
-    protected async Task<(HttpStatusCode, TResponse)> Post<TResponse, TRequest>(string Action, TRequest Request, bool Authenticate = false)
-    => await Post<TResponse, TRequest>(Action, Request, false, Authenticate);
-    protected async Task<(HttpStatusCode, TResponse)> XPost<TResponse, TRequest>(string Free, TRequest Request, bool Authenticate = false)
-    => await Post<TResponse, TRequest>(Free, Request, true, Authenticate);
+    protected async Task<(HttpStatusCode, ServerGenericFrame)> Post<TRequest>(string Action, TRequest Request, bool Authenticate = false) {
+        return await Post<ServerGenericFrame, TRequest>(Action, Request, false, Authenticate);
+    }
+
+    protected async Task<(HttpStatusCode, TResponse)> Post<TResponse, TRequest>(string Action, TRequest Request, bool Authenticate = false) {
+        return await Post<TResponse, TRequest>(Action, Request, false, Authenticate);
+    }
+
+    protected async Task<(HttpStatusCode, TResponse)> XPost<TResponse, TRequest>(string Free, TRequest Request, bool Authenticate = false) {
+        return await Post<TResponse, TRequest>(Free, Request, true, Authenticate);
+    }
 
     #endregion
 

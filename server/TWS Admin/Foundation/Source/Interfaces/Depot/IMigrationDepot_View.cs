@@ -1,7 +1,7 @@
-﻿using CSMFoundation.Source.Models.In;
-using CSMFoundation.Source.Models.Out;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
-namespace CSMFoundation.Migration.Interfaces.Depot;
+namespace CSM_Foundation.Source.Interfaces.Depot;
 /// <summary>
 ///     Describes how a <see cref="IMigrationDepot_View{TMigrationSet}"/> implementation should
 ///     behave, providing {View} operations, a View operation is the creation of complex 

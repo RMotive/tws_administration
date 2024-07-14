@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace TWS_Security.Sets;
 
-namespace TWS_Security.Sets;
-
-public partial class Permit
-{
+public partial class Permit {
     public override int Id { get; set; }
 
     public string Name { get; set; } = null!;

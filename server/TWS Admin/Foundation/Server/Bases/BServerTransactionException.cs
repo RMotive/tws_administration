@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Net;
 
-using CSMFoundation.Server.Interfaces;
-using CSMFoundation.Server.Records;
+using CSM_Foundation.Server.Interfaces;
+using CSM_Foundation.Server.Records;
 
-namespace CSMFoundation.Server.Bases;
+namespace CSM_Foundation.Server.Bases;
 public class BServerTransactionException<TSituation>
     : Exception, IServerTransactionException<TSituation>
     where TSituation : Enum {
@@ -19,7 +19,7 @@ public class BServerTransactionException<TSituation>
     public BServerTransactionException(string Subject, HttpStatusCode Status, Exception? System = null)
         : base(System?.Message ?? Subject) {
         Trace = System?.StackTrace ?? new StackTrace().ToString();
-        this.Details = Details ?? [];
+        Details ??= [];
         this.System = System;
         this.Subject = Subject;
         this.Status = Status;

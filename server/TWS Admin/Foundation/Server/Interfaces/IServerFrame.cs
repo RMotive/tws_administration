@@ -1,4 +1,4 @@
-﻿namespace CSMFoundation.Servers.Interfaces;
+﻿namespace CSM_Foundation.Server.Interfaces;
 /// <summary>
 ///     Specifies required behavrio implementations to 
 ///     indicate correct functionality for a server data store frame
