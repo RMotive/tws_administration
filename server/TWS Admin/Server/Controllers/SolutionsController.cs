@@ -18,7 +18,7 @@ public class SolutionsController
         this.Service = Service;
     }
 
-    [HttpPost(), Auth(["ABC1", "ABC2"])]
+    [HttpPost(), Auth([])]
     public async Task<IActionResult> View(SetViewOptions Options)
     => Ok(await Service.View(Options));
 
