@@ -1,11 +1,11 @@
 ﻿using TWS_Security.Sets;
 
-namespace Customer.Managers.Records;
+namespace TWS_Customer.Managers.Records;
 public record Session {
-    required public Guid Token { get; init; }
-    required public DateTime Expiration { get; init; }
-    required public string Identity { get; init; }
-    required public bool Wildcard { get; init; }
-    required public Permit[] Permits { get; init; }
-    required public Contact Contact { get; init; }
+    public required Guid Token { get; init; }
+    public required DateTime Expiration { get; init; }
+    public required string Identity { get; init; }
+    public required bool Wildcard { get; init; }
+    public required Permit[] Permits { get; init; }
+    public required Contact Contact { get; init; }
 }

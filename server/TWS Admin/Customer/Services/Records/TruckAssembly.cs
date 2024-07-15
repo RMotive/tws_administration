@@ -1,6 +1,6 @@
 using TWS_Business.Sets;
 
-namespace Customer.Services.Records;
+namespace TWS_Customer.Services.Records;
 /// <summary>
 /// Class that stores all the optional and required values to generate a truck entity.
 /// </summary>

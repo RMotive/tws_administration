@@ -1,11 +1,10 @@
-﻿
-
-using Foundation.Migrations.Records;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
 using TWS_Business.Sets;
 
-namespace Customer.Services.Interfaces;
+namespace TWS_Customer.Services.Interfaces;
 public interface IMaintenancesService {
 
-    Task<MigrationView<Maintenance>> View(MigrationViewOptions Options);
+    Task<SetViewOut<Maintenance>> View(SetViewOptions Options);
 }

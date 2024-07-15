@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace TWS_Security.Sets;
 
-namespace TWS_Security.Sets;
-
-public partial class Solution
-{
+public partial class Solution {
     public override int Id { get; set; }
 
     public string Name { get; set; } = null!;
@@ -13,5 +9,5 @@ public partial class Solution
 
     public string? Description { get; set; }
 
-    public virtual ICollection<Permit> Permits { get; set; } = new List<Permit>();
+    public virtual ICollection<Permit> Permits { get; set; } = [];
 }

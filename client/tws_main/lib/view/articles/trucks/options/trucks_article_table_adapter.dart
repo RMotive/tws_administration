@@ -2,7 +2,7 @@ part of '../trucks_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableDataAdapter<Truck> {
+final class _TableAdapter implements TWSArticleTableAdapter<Truck> {
   const _TableAdapter();
 
   @override
@@ -20,4 +20,20 @@ final class _TableAdapter implements TWSArticleTableDataAdapter<Truck> {
     return view;
   }
   
+  @override
+  TWSArticleTableEditor? composeEditor(Truck set, Function closeReinvoke, BuildContext context) {
+    // TODO: implement composeEditor
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget composeViewer(Truck set, BuildContext context) {
+    // TODO: implement composeViewer
+    throw UnimplementedError();
+  }
+
+  @override
+  void onRemoveRequest(Truck set, BuildContext context) {
+    // TODO: implement onRemoveRequest
+  }
 }

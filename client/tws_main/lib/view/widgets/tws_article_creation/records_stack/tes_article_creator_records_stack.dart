@@ -24,7 +24,7 @@ class _RecordsStack<TModel> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CSMColorThemeOptions dangerTheme = getTheme<TWSAThemeBase>().primaryErrorControlColor;
+    final CSMColorThemeOptions dangerTheme = getTheme<TWSAThemeBase>().primaryCriticalControl;
 
     return CSMSpacingColumn(
       spacing: 12,

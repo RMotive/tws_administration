@@ -1,13 +1,13 @@
 ﻿using System.Text.Json.Serialization;
 
-using Foundation.Migrations.Bases;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Validators;
+using CSM_Foundation.Source.Bases;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Validators;
 
 namespace TWS_Security.Sets;
 
 public partial class Permit
-    : BMigrationSet {
+    : BSourceSet {
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container) {
         Container = [

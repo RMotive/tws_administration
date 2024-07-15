@@ -1,16 +1,18 @@
-﻿using Foundation.Migrations.Bases;
-using Foundation.Migrations.Interfaces;
+﻿using CSM_Foundation.Source.Bases;
+using CSM_Foundation.Source.Interfaces;
 
 using TWS_Security.Sets;
 
 namespace TWS_Security;
 
 public partial class TWSSecuritySource
-    : BMigrationSource<TWSSecuritySource> {
+    : BSource<TWSSecuritySource> {
     public TWSSecuritySource()
-        : base() { }
+        : base() {
 
-    protected override IMigrationSet[] EvaluateFactory() {
+    }
+
+    protected override ISourceSet[] EvaluateFactory() {
         return [
                 new Solution(),
         ];

@@ -1,7 +1,5 @@
-﻿using Foundation.Migrations.Bases;
-using Foundation.Migrations.Interfaces;
-
-using Microsoft.EntityFrameworkCore;
+﻿using CSM_Foundation.Source.Bases;
+using CSM_Foundation.Source.Interfaces;
 
 using TWS_Security.Sets;
 
@@ -16,10 +14,12 @@ public class SolutionsDepot
     /// <summary>
     ///     Generates a new depot handler for <see cref="Solution"/>.
     /// </summary>
-    public SolutionsDepot(Action<DbContext, IMigrationSet[]>? Disposition = null)
-        : base(new(), Disposition) {
+    public SolutionsDepot(TWSSecuritySource Source, IMigrationDisposer? Disposer = null)
+        : base(Source, Disposer) {
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public SolutionsDepot()
         : base(new(), null) {
 

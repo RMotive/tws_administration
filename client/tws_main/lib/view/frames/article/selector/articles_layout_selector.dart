@@ -27,7 +27,7 @@ class _ArticlesSelector extends StatelessWidget {
 
   /// Asserts the disabled control theme color struct to ensure dependencies.
   _CStruct asrDisabledStruct(TWSAThemeBase theme) {
-    _CStruct struct = theme.primaryDisabledControlColor;
+    _CStruct struct = theme.primaryDisabledControl;
 
     assert(struct.foreAlt != null, 'required theme prop');
     return struct;

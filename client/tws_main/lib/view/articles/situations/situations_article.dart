@@ -7,7 +7,7 @@ import 'package:tws_main/data/storages/session_storage.dart';
 
 import 'package:tws_main/view/frames/business/business_frame.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table.dart';
-import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_data_adapter.dart';
+import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_adapter.dart';
 import 'package:tws_main/view/widgets/tws_article_table/tws_article_table_field_options.dart';
 part 'options/situations_article_table_adapter.dart';
 

@@ -1,10 +1,10 @@
-﻿using Foundation.Server.Records;
-using Foundation.Servers.Interfaces;
+﻿using CSM_Foundation.Server.Interfaces;
+using CSM_Foundation.Server.Records;
 
 namespace Server.Middlewares.Frames;
 
 public class FailureFrame
     : IServerFrame<ServerExceptionPublish> {
-    required public Guid Tracer { get; init; }
-    required public ServerExceptionPublish Estela { get; init; }
+    public required Guid Tracer { get; init; }
+    public required ServerExceptionPublish Estela { get; init; }
 }

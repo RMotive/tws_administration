@@ -47,7 +47,7 @@ class _LoginForm extends StatelessWidget {
                 ),
                 TWSButtonFlat(
                   width: state.maxControlsWidth,
-                  showLoading: state.isRequesting,
+                  waiting: state.isRequesting,
                   onTap: state.initSession,
                 ),
               ],

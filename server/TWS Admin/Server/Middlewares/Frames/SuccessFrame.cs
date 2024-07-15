@@ -1,10 +1,10 @@
-﻿using Foundation.Servers.Interfaces;
+﻿using CSM_Foundation.Server.Interfaces;
 
 namespace Server.Middlewares.Frames;
 
 public class SuccessFrame<TSuccess>
     : IServerFrame<TSuccess> {
 
-    required public Guid Tracer { get; init; }
-    required public TSuccess Estela { get; init; }
+    public required Guid Tracer { get; init; }
+    public required TSuccess Estela { get; init; }
 }

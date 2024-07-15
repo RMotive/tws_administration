@@ -1,9 +1,9 @@
-﻿
-using Foundation.Migrations.Records;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
 using TWS_Business.Sets;
 
-namespace Customer.Services.Interfaces;
+namespace TWS_Customer.Services.Interfaces;
 public interface IInsurancesService {
-    Task<MigrationView<Insurance>> View(MigrationViewOptions options);
+    Task<SetViewOut<Insurance>> View(SetViewOptions options);
 }

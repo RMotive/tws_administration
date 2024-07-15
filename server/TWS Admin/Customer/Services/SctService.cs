@@ -1,20 +1,23 @@
 ﻿
-using Customer.Services.Interfaces;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
-using Foundation.Migrations.Records;
 using Microsoft.EntityFrameworkCore;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
-namespace Customer.Services;
+using TWS_Customer.Services.Interfaces;
+
+namespace TWS_Customer.Services;
 public class SctService : ISctService {
-    readonly SctsDepot sctDepot;
+    private readonly SctsDepot sctDepot;
 
     public SctService(SctsDepot Solutions) {
-        this.sctDepot = Solutions;
+        sctDepot = Solutions;
     }
 
-    public async Task<MigrationView<Sct>> View(MigrationViewOptions options) {
+    public async Task<SetViewOut<Sct>> View(SetViewOptions options) {
         return await sctDepot.View(options, query => query
             .Include(m => m.Trucks)
             .Select(S => new Sct() {

@@ -1,12 +1,13 @@
-﻿using Customer.Services.Records;
-
-using Foundation.Migrations.Records;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
 using TWS_Business.Sets;
 
-namespace Customer.Services.Interfaces;
+using TWS_Customer.Services.Records;
+
+namespace TWS_Customer.Services.Interfaces;
 public interface ITrucksService {
-    Task<MigrationView<Truck>> View(MigrationViewOptions options);
+    Task<SetViewOut<Truck>> View(SetViewOptions options);
 
     Task<MigrationTransactionResult<Truck>> Create(Truck[] trucks);
 }

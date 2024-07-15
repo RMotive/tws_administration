@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
 using TWS_Security.Sets;
 
 namespace TWS_Security;
 
-public partial class TWSSecuritySource 
-{
+public partial class TWSSecuritySource {
     public TWSSecuritySource(DbContextOptions<TWSSecuritySource> options)
-        : base(options)
-    {
+        : base(options) {
     }
 
     public virtual DbSet<Account> Accounts { get; set; }
@@ -28,10 +25,8 @@ public partial class TWSSecuritySource
 
     public virtual DbSet<Solution> Solutions { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Account>(entity =>
-        {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<Account>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Accounts__3213E83F847552CE");
 
             entity.HasIndex(e => e.User, "UQ__Accounts__7FC76D7250256234").IsUnique();
@@ -51,8 +46,7 @@ public partial class TWSSecuritySource
                 .HasConstraintName("FK_Accounts_Contact");
         });
 
-        modelBuilder.Entity<AccountsPermit>(entity =>
-        {
+        modelBuilder.Entity<AccountsPermit>(entity => {
             entity
                 .HasNoKey()
                 .ToTable("Accounts_Permits");
@@ -71,8 +65,7 @@ public partial class TWSSecuritySource
                 .HasConstraintName("FK__Accounts___permi__282DF8C2");
         });
 
-        modelBuilder.Entity<Contact>(entity =>
-        {
+        modelBuilder.Entity<Contact>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Contact__3213E83F60CDB24B");
 
             entity.ToTable("Contact");
@@ -96,8 +89,7 @@ public partial class TWSSecuritySource
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Feature>(entity =>
-        {
+        modelBuilder.Entity<Feature>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Features__3213E83F8DC45FE6");
 
             entity.HasIndex(e => e.Name, "UQ__Features__737584F6AD8F8134").IsUnique();
@@ -106,8 +98,7 @@ public partial class TWSSecuritySource
             entity.Property(e => e.Name).HasMaxLength(25);
         });
 
-        modelBuilder.Entity<Permit>(entity =>
-        {
+        modelBuilder.Entity<Permit>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Permits__3213E83FF89315D2");
 
             entity.HasIndex(e => e.Reference, "UQ__Permits__062B9EB85703E315").IsUnique();
@@ -133,8 +124,7 @@ public partial class TWSSecuritySource
                 .HasConstraintName("FK__Permits__solutio__403A8C7D");
         });
 
-        modelBuilder.Entity<Profile>(entity =>
-        {
+        modelBuilder.Entity<Profile>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Profiles__3213E83FF05542F1");
 
             entity.HasIndex(e => e.Name, "UQ__Profiles__72E12F1BE680F44A").IsUnique();
@@ -149,8 +139,7 @@ public partial class TWSSecuritySource
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<ProfilesPermit>(entity =>
-        {
+        modelBuilder.Entity<ProfilesPermit>(entity => {
             entity
                 .HasNoKey()
                 .ToTable("Profiles_Permits");
@@ -169,8 +158,7 @@ public partial class TWSSecuritySource
                 .HasConstraintName("FK__Profiles___profi__4CA06362");
         });
 
-        modelBuilder.Entity<Solution>(entity =>
-        {
+        modelBuilder.Entity<Solution>(entity => {
             entity.HasKey(e => e.Id).HasName("PK__Solution__3213E83F6F9CB0D3");
 
             entity.HasIndex(e => e.Sign, "UQ__Solution__2F82F0C83C859D7E").IsUnique();

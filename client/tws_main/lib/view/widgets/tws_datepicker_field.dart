@@ -83,8 +83,8 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
   }
   void initializeThemes() {
     colorStruct = theme.primaryControlColor;
-    disabledColorStruct = theme.primaryDisabledControlColor;
-    errorColorStruct = theme.primaryErrorControlColor;
+    disabledColorStruct = theme.primaryDisabledControl;
+    errorColorStruct = theme.primaryCriticalControl;
   }
 
   void themeUpdateListener() {

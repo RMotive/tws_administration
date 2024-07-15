@@ -7,11 +7,11 @@ abstract class TWSAThemeBase extends CSMThemeBase {
   final CSMColorThemeOptions page;
   final CSMColorThemeOptions masterLayout;
   final CSMColorThemeOptions primaryControlColor;
-  final CSMColorThemeOptions primaryDisabledControlColor;
-  final CSMColorThemeOptions primaryErrorControlColor;
+  final CSMColorThemeOptions primaryDisabledControl;
+  final CSMColorThemeOptions primaryCriticalControl;
   final CSMStateThemeOptions masterLayoutMenuButtonState;
-  final CSMStateThemeOptions articlesLayoutSelectorButtonState;
   final CSMStateThemeOptions articlesLayoutActionButtonState;
+  final CSMStateThemeOptions articlesLayoutSelectorButtonState;
 
   final CSMStateThemeOptions primaryControlState;
   final CSMStateThemeOptions criticalControlState;
@@ -31,9 +31,9 @@ abstract class TWSAThemeBase extends CSMThemeBase {
     required this.primaryControlColor,
     required this.criticalControlState,
     required this.masterLayoutMenuButtonState,
-    required this.primaryErrorControlColor,
+    required this.primaryCriticalControl,
     required this.articlesLayoutActionButtonState,
-    required this.primaryDisabledControlColor,
+    required this.primaryDisabledControl,
     required this.articlesLayoutSelectorButtonState,
   });
 }

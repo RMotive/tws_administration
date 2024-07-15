@@ -104,7 +104,7 @@ class TWSARouteTree extends CSMRouterTreeBase {
                           pageBuild: (BuildContext ctx, CSMRouterOutput output) => const SolutionsCreateWhisper(),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
 
@@ -144,7 +144,6 @@ class TWSARouteTree extends CSMRouterTreeBase {
                         ),
                       ],
                     ),
-
                     // --> [Situations]
                     CSMRouteNode(
                       Routes.situationsArticle,

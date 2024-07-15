@@ -1,7 +1,7 @@
 ﻿
 using System.Text.Json;
 
-using Foundation.Advising.Managers;
+using CSM_Foundation.Advisor.Managers;
 
 using JObject = System.Collections.Generic.Dictionary<string, dynamic>;
 
@@ -26,15 +26,17 @@ public class AdvisorMiddleware
                 if (responseContent != null && responseContent.TryGetValue("Details", out dynamic? value)) {
                     JsonElement Estela = value;
                     JObject? EstelaObject = Estela.Deserialize<JObject>();
-                    if (EstelaObject != null && EstelaObject.ContainsKey("Failure"))
+                    if (EstelaObject != null && EstelaObject.ContainsKey("Failure")) {
                         AdvisorManager.Warning($"Reques served with failure", responseContent);
-                    else AdvisorManager.Success($"Request served successful", responseContent);
+                    } else {
+                        AdvisorManager.Success($"Request served successful", responseContent);
+                    }
                 } else if (Response.StatusCode != 204) {
                     AdvisorManager.Success($"Request served successful", responseContent);
                 }
 
                 if (Response.StatusCode != 204) {
-                    bufferStream.Seek(0, SeekOrigin.Begin);
+                    _ = bufferStream.Seek(0, SeekOrigin.Begin);
                     await bufferStream.CopyToAsync(OriginalStream);
                     Response.Body = OriginalStream;
                 }

@@ -89,8 +89,8 @@ class _TWSInputTextState extends State<TWSInputText> {
 
   void initializeThemes() {
     colorStruct = theme.primaryControlColor;
-    disabledColorStruct = theme.primaryDisabledControlColor;
-    errorColorStruct = theme.primaryErrorControlColor;
+    disabledColorStruct = theme.primaryDisabledControl;
+    errorColorStruct = theme.primaryCriticalControl;
     pageColorStruct = theme.page;
   }
 

@@ -30,12 +30,12 @@ class TWSAThemeLight extends TWSAThemeBase {
             TWSAColors.oceanBlue,
             foreAlt: TWSAColors.deepPurple,
           ),
-          primaryDisabledControlColor: const CSMColorThemeOptions(
+            primaryDisabledControl: const CSMColorThemeOptions(
             Colors.transparent,
             TWSAColors.darkGrey,
             Colors.red,
           ),
-          primaryErrorControlColor: const CSMColorThemeOptions(
+            primaryCriticalControl: const CSMColorThemeOptions(
             Colors.transparent,
             TWSAColors.darkGrey,
             Colors.red,

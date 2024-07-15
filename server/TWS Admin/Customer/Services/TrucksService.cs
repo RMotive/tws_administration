@@ -1,48 +1,46 @@
-﻿
-using System.Diagnostics;
+﻿using CSM_Foundation.Source.Enumerators;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Interfaces.Depot;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
-using Customer.Services.Exceptions;
-using Customer.Services.Interfaces;
-using Customer.Services.Records;
-using Customer.Shared.Exceptions;
-
-using Foundation.Migration.Enumerators;
-using Foundation.Migration.Interfaces.Depot;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Records;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
-namespace Customer.Services;
-public class TrucksService : ITrucksService {
+using TWS_Customer.Core.Exceptions;
+using TWS_Customer.Services.Exceptions;
+using TWS_Customer.Services.Interfaces;
+using TWS_Customer.Services.Records;
 
-    readonly TruckDepot Trucks;
-    readonly InsurancesDepot Insurances;
-    readonly MaintenacesDepot Maintenaces;
-    readonly ManufacturersDepot Manufacturers;
-    readonly SctsDepot Sct;
-    readonly SituationsDepot Situations;
-    readonly PlatesDepot Plates;
+namespace TWS_Customer.Services;
+public class TrucksService : ITrucksService {
+    private readonly TruckDepot Trucks;
+    private readonly InsurancesDepot Insurances;
+    private readonly MaintenacesDepot Maintenaces;
+    private readonly ManufacturersDepot Manufacturers;
+    private readonly SctsDepot Sct;
+    private readonly SituationsDepot Situations;
+    private readonly PlatesDepot Plates;
 
     public TrucksService(
         TruckDepot Trucks, InsurancesDepot Insurances, MaintenacesDepot Maintenances,
         ManufacturersDepot Manufacturers, SctsDepot Sct, SituationsDepot Situations, PlatesDepot Plates) {
         this.Trucks = Trucks;
         this.Insurances = Insurances;
-        this.Maintenaces = Maintenances;
+        Maintenaces = Maintenances;
         this.Manufacturers = Manufacturers;
         this.Sct = Sct;
         this.Situations = Situations;
         this.Plates = Plates;
     }
 
-    public async Task<MigrationView<Truck>> View(MigrationViewOptions options) {
+    public async Task<SetViewOut<Truck>> View(SetViewOptions options) {
 
-        Func<IQueryable<Truck>, IQueryable<Truck>> include =
-            query => query
+        static IQueryable<Truck> include(IQueryable<Truck> query) {
+            return query
             .Include(t => t.InsuranceNavigation)
             .Include(t => t.ManufacturerNavigation)
             .Include(t => t.MaintenanceNavigation)
@@ -93,8 +91,10 @@ public class TrucksService : ITrucksService {
                     Country = p.Country,
                     Expiration = p.Expiration,
                     Truck = p.Truck
+                    Truck = p.Truck
                 })
             });
+        }
 
         return await Trucks.View(options, include);
     }
@@ -115,7 +115,7 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback, T? navigation) where T : IMigrationSet {
+    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : ISourceSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
