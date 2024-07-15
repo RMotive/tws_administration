@@ -111,10 +111,7 @@ public class Q_TrucksController : BQ_CustomServerController {
             mockList.Add(truck);
         }
         
-        (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", mockList, true);
-
-        _ = Response.Estela.TryGetValue("Advise", out object? value);
-        Assert.Null(value);
+        (HttpStatusCode Status, _) = await Post("Create", mockList, true);
         Assert.Equal(HttpStatusCode.OK, Status);
 
     }

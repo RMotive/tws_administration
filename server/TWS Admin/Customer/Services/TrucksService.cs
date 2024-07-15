@@ -91,7 +91,6 @@ public class TrucksService : ITrucksService {
                     Country = p.Country,
                     Expiration = p.Expiration,
                     Truck = p.Truck
-                    Truck = p.Truck
                 })
             });
         }
@@ -99,34 +98,7 @@ public class TrucksService : ITrucksService {
         return await Trucks.View(options, include);
     }
 
-    /// <summary>
-    /// Method that verify the data input and generate a new set insert based on the parameters.
-    /// </summary>
-    /// <typeparam name="T">
-    /// Set class to generate.
-    /// </typeparam>
-    /// <param name="set">
-    /// Set object.
-    /// </param>
-    /// <param name="depot">
-    /// Depot to insert the given set.
-    /// </param>
-    /// <param name="nullifyList">
-    /// Current acumulator list that stores the already generated sets/inserts.
-    /// </param>
-    /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : ISourceSet {
-        if (set != null) {
-            set.Id = 0;
-            T result = await depot.Create(set);
-            set = result;
-            //navigation = result;
-            nullifyCallback.Add(new(() => depot.Delete(result)));
-            return result.Id;
-        }
-        return null;
-    }
-    public async Task<MigrationTransactionResult<Truck>> Create(Truck[] trucks) {
+    public async Task<SourceTransactionOut<Truck>> Create(Truck[] trucks) {
         return await this.Trucks.Create(trucks);
 
     }
