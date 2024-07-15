@@ -13,16 +13,16 @@
     <None Remove="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Customer\Customer.csproj">
+    <ProjectReference Include="..\Customer\TWS Customer.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\Foundation\Foundation.csproj" />
+    <ProjectReference Include="..\Foundation\CSM Foundation.csproj" />
     <ProjectReference Include="..\TWS Security\TWS Security.csproj" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
-﻿using Customer.Managers.Records;
-using Customer.Services.Records;
+﻿using TWS_Customer.Managers.Records;
+using TWS_Customer.Services.Records;
 
-namespace Customer.Services.Interfaces;
+namespace TWS_Customer.Services.Interfaces;
 
 public interface ISecurityService {
     public Task<Session> Authenticate(Credentials Credentials);

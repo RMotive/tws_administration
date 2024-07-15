@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-using Foundation.Server.Interfaces;
-using Foundation.Server.Records;
-using Foundation.Shared.Exceptions;
+using CSM_Foundation.Core.Exceptions;
+using CSM_Foundation.Server.Interfaces;
+using CSM_Foundation.Server.Records;
 
 using Microsoft.AspNetCore.Http.Extensions;
 
@@ -38,7 +38,7 @@ public class FramingMiddleware
             HttpResponse Response = context.Response;
 
             if (!Response.HasStarted) {
-                bufferingStream.Seek(0, SeekOrigin.Begin);
+                _ = bufferingStream.Seek(0, SeekOrigin.Begin);
                 string encodedContent = "";
                 if (failure is not null) {
                     ServerExceptionPublish exPublish = failure.Publish();
@@ -99,7 +99,7 @@ public class FramingMiddleware
                 StreamWriter writer = new(swapperBuffer);
                 await writer.WriteAsync(encodedContent);
                 await writer.FlushAsync();
-                swapperBuffer.Seek(0, SeekOrigin.Begin);
+                _ = swapperBuffer.Seek(0, SeekOrigin.Begin);
                 Response.Body = swapperBuffer;
             }
         }

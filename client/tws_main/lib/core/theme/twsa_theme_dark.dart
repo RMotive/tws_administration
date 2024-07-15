@@ -30,16 +30,17 @@ final class TWSAThemeDark extends TWSAThemeBase {
             TWSAColors.oceanBlue,
             foreAlt: TWSAColors.warmWhite,
           ),
-          primaryDisabledControlColor: const CSMColorThemeOptions(
+          primaryDisabledControl: const CSMColorThemeOptions(
             TWSAColors.darkGrey,
             TWSAColors.darkGrey,
             TWSAColors.darkGrey,
             foreAlt: TWSAColors.warmWhite,
           ),
-          primaryErrorControlColor: const CSMColorThemeOptions(
+          primaryCriticalControl: const CSMColorThemeOptions(
             Colors.transparent,
             Color.fromARGB(255, 208, 136, 130),
             TWSAColors.smoothWine,
+            foreAlt: Colors.white,
           ),
           articlesLayoutSelectorButtonState: const CSMStateThemeOptions(
             main: CSMGenericThemeOptions(

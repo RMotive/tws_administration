@@ -6,6 +6,7 @@ import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_main/view/frames/article/actions/article_frame_actions_options.dart';
 import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
 import 'package:tws_main/view/frames/article/article_options.dart';
+import 'package:tws_main/view/widgets/tws_frame_decoration.dart';
 
 part 'selector/articles_layout_selector.dart';
 part 'selector/articles_layout_selector_button.dart';

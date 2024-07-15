@@ -1,48 +1,46 @@
-﻿
-using System.Diagnostics;
+﻿using CSM_Foundation.Source.Enumerators;
+using CSM_Foundation.Source.Interfaces;
+using CSM_Foundation.Source.Interfaces.Depot;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
-using Customer.Services.Exceptions;
-using Customer.Services.Interfaces;
-using Customer.Services.Records;
-using Customer.Shared.Exceptions;
-
-using Foundation.Migration.Enumerators;
-using Foundation.Migration.Interfaces.Depot;
-using Foundation.Migrations.Interfaces;
-using Foundation.Migrations.Records;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
-namespace Customer.Services;
-public class TrucksService : ITrucksService {
+using TWS_Customer.Core.Exceptions;
+using TWS_Customer.Services.Exceptions;
+using TWS_Customer.Services.Interfaces;
+using TWS_Customer.Services.Records;
 
-    readonly TruckDepot Trucks;
-    readonly InsurancesDepot Insurances;
-    readonly MaintenacesDepot Maintenaces;
-    readonly ManufacturersDepot Manufacturers;
-    readonly SctsDepot Sct;
-    readonly SituationsDepot Situations;
-    readonly PlatesDepot Plates;
+namespace TWS_Customer.Services;
+public class TrucksService : ITrucksService {
+    private readonly TruckDepot Trucks;
+    private readonly InsurancesDepot Insurances;
+    private readonly MaintenacesDepot Maintenaces;
+    private readonly ManufacturersDepot Manufacturers;
+    private readonly SctsDepot Sct;
+    private readonly SituationsDepot Situations;
+    private readonly PlatesDepot Plates;
 
     public TrucksService(
         TruckDepot Trucks, InsurancesDepot Insurances, MaintenacesDepot Maintenances,
         ManufacturersDepot Manufacturers, SctsDepot Sct, SituationsDepot Situations, PlatesDepot Plates) {
         this.Trucks = Trucks;
         this.Insurances = Insurances;
-        this.Maintenaces = Maintenances;
+        Maintenaces = Maintenances;
         this.Manufacturers = Manufacturers;
         this.Sct = Sct;
         this.Situations = Situations;
         this.Plates = Plates;
     }
 
-    public async Task<MigrationView<Truck>> View(MigrationViewOptions options) {
+    public async Task<SetViewOut<Truck>> View(SetViewOptions options) {
 
-        Func<IQueryable<Truck>, IQueryable<Truck>> include =
-            query => query
+        static IQueryable<Truck> include(IQueryable<Truck> query) {
+            return query
             .Include(t => t.InsuranceNavigation)
             .Include(t => t.ManufacturerNavigation)
             .Include(t => t.MaintenanceNavigation)
@@ -92,9 +90,10 @@ public class TrucksService : ITrucksService {
                     State = p.State,
                     Country = p.Country,
                     Expiration = p.Expiration,
-                    Truck = p.Truck 
+                    Truck = p.Truck
                 })
             });
+        }
 
         return await Trucks.View(options, include);
     }
@@ -115,7 +114,7 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback, T? navigation) where T : IMigrationSet {
+    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : ISourceSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
@@ -142,54 +141,60 @@ public class TrucksService : ITrucksService {
         };
 
         /// Optional / Required validations.
-        if (truck.Manufacturer == null)
+        if (truck.Manufacturer == null) {
             throw new XTruckAssembly(XTruckAssemblySituation.RequiredManufacturer);
+        }
 
-        if (truck.Plates.IsNullOrEmpty())
+        if (truck.Plates.IsNullOrEmpty()) {
             throw new XTruckAssembly(XTruckAssemblySituation.RequiredPlates);
+        }
 
         try {
             /// Validate which Manufacturer value use to assign the manufacturer value to the truck.
             if (truck.Manufacturer.Id == 0) {
-                assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify, assembly.ManufacturerNavigation) ?? 0;
+                assembly.Manufacturer = await CreationHelper(truck.Manufacturer, Manufacturers, nullify) ?? 0;
             } else {
                 /// Pointer Validation
-                MigrationTransactionResult<Manufacturer> fetch = await Manufacturers.Read(i => i.Id == truck.Manufacturer.Id, MigrationReadBehavior.First);
-                if (fetch.Failed)
+                SourceTransactionOut<Manufacturer> fetch = await Manufacturers.Read(i => i.Id == truck.Manufacturer.Id, MigrationReadBehavior.First);
+                if (fetch.Failed) {
                     throw new XMigrationTransaction(fetch.Failures);
+                }
 
-                if (fetch.QTransactions == 0)
+                if (fetch.QTransactions == 0) {
                     throw new XTruckAssembly(XTruckAssemblySituation.ManufacturerNotExist);
+                }
 
                 assembly.Manufacturer = truck.Manufacturer.Id;
                 truck.Manufacturer = fetch.Successes[0];
             }
 
             /// Validate which Situation value use to assign the manufacturer value to the truck.
-            if(truck.Situation != null) {
+            if (truck.Situation != null) {
                 if (truck.Situation.Id == 0) {
-                    assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify, assembly.SituationNavigation) ?? 0;
+                    assembly.Situation = await CreationHelper(truck.Situation, Situations, nullify) ?? 0;
                 } else {
                     /// Pointer Validation
-                    MigrationTransactionResult<Situation> fetch = await Situations.Read(i => i.Id == truck.Situation.Id, MigrationReadBehavior.First);
-                    if (fetch.Failed)
+                    SourceTransactionOut<Situation> fetch = await Situations.Read(i => i.Id == truck.Situation.Id, MigrationReadBehavior.First);
+                    if (fetch.Failed) {
                         throw new XMigrationTransaction(fetch.Failures);
+                    }
 
-                    if (fetch.QTransactions == 0)
+                    if (fetch.QTransactions == 0) {
                         throw new XTruckAssembly(XTruckAssemblySituation.SitutionNotExist);
+                    }
 
                     assembly.Situation = truck.Situation.Id;
                     truck.Situation = fetch.Successes[0];
                 }
             }
-            
+
 
 
 
             /// Create Optional fields bundle.
-            assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify, assembly.InsuranceNavigation);
-            assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify, assembly.MaintenanceNavigation);
-            assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify, assembly.SctNavigation);
+            assembly.Insurance = await CreationHelper(truck.Insurance, Insurances, nullify);
+            assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify);
+            assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify);
 
             IMigrationDepot_Delete<Manufacturer> interfaceSol = Manufacturers;
 
@@ -212,15 +217,17 @@ public class TrucksService : ITrucksService {
                 truck.Plates = generatedPlates;
             }
             return truck;
-        } catch (Exception ex) {
+        } catch (Exception) {
             // Undo all changes on data source
             /// Remove the last items to avoid key dependencies errors on data source.
             nullify.Reverse();
-            foreach (Plate plate in generatedPlates)
-                await Plates.Delete(plate);
+            foreach (Plate plate in generatedPlates) {
+                _ = await Plates.Delete(plate);
+            }
 
-            foreach (Lazy<Task> disposition in nullify)
+            foreach (Lazy<Task> disposition in nullify) {
                 await disposition.Value;
+            }
 
             throw;
         }

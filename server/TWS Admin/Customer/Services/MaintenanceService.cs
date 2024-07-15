@@ -1,19 +1,22 @@
-﻿using Customer.Services.Interfaces;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
-using Foundation.Migrations.Records;
 using Microsoft.EntityFrameworkCore;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
-namespace Customer.Services;
+using TWS_Customer.Services.Interfaces;
+
+namespace TWS_Customer.Services;
 public class MaintenanceService : IMaintenancesService {
-    readonly MaintenacesDepot Maintenances;
+    private readonly MaintenacesDepot Maintenances;
 
     public MaintenanceService(MaintenacesDepot Maintenances) {
         this.Maintenances = Maintenances;
     }
 
-    public async Task<MigrationView<Maintenance>> View(MigrationViewOptions Options) {
+    public async Task<SetViewOut<Maintenance>> View(SetViewOptions Options) {
         return await Maintenances.View(Options, query => query
             .Include(m => m.Trucks)
             .Select(M => new Maintenance() {

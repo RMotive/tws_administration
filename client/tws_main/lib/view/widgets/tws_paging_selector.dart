@@ -56,6 +56,8 @@ class _TWSPagingSelectorState extends State<TWSPagingSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final bool disabled = widget.pages <= 1;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -137,6 +139,7 @@ class _TWSPagingSelectorState extends State<TWSPagingSelector> {
             children: <Widget>[
               // --> Page range selector
               TWSDropup<int>(
+                disabled: disabled,
                 tooltip: 'Page range selection',
                 item: widget.size,
                 items: widget.sizes,
@@ -149,6 +152,7 @@ class _TWSPagingSelectorState extends State<TWSPagingSelector> {
               ),
               // --> Page selector
               TWSDropup<int>(
+                disabled: disabled,
                 tooltip: 'Page selection',
                 item: widget.page,
                 onChange: (int page) {

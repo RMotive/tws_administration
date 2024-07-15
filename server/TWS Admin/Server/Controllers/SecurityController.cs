@@ -1,7 +1,7 @@
-﻿using Customer.Services.Interfaces;
-using Customer.Services.Records;
+﻿using Microsoft.AspNetCore.Mvc;
 
-using Microsoft.AspNetCore.Mvc;
+using TWS_Customer.Services.Interfaces;
+using TWS_Customer.Services.Records;
 
 namespace Server.Controllers;
 
@@ -11,14 +11,13 @@ namespace Server.Controllers;
 [ApiController, Route("[Controller]")]
 public class SecurityController
     : ControllerBase {
-
-
-    readonly ISecurityService Service;
+    private readonly ISecurityService Service;
     public SecurityController(ISecurityService Service) {
         this.Service = Service;
     }
 
     [HttpPost("[Action]")]
-    public async Task<IActionResult> Authenticate([FromBody] Credentials Credentials)
-    => Ok(await Service.Authenticate(Credentials));
+    public async Task<IActionResult> Authenticate([FromBody] Credentials Credentials) {
+        return Ok(await Service.Authenticate(Credentials));
+    }
 }

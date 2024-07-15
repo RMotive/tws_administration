@@ -1,5 +1,6 @@
 ﻿
-using Foundation.Server.Exceptions;
+using CSM_Foundation.Server.Exceptions;
+using CSM_Foundation.Source.Interfaces;
 
 using Microsoft.Extensions.Primitives;
 
@@ -8,14 +9,12 @@ using Server.Managers;
 namespace Server.Middlewares;
 
 public class DispositionMiddleware : IMiddleware {
-    const string DISP_HEAD_KEY = "CSMDisposition";
+    private const string DISP_HEAD_KEY = "CSMDisposition";
+    private const string DISP_HEAD_VALUE = "Quality";
+    private readonly DispositionManager Disposer;
 
-    const string DISP_HEAD_VALUE = "Quality";
-
-    readonly DispositionManager Manager;
-
-    public DispositionMiddleware(DispositionManager Manager) {
-        this.Manager = Manager;
+    public DispositionMiddleware(IMigrationDisposer Disposer) {
+        this.Disposer = (DispositionManager)Disposer;
     }
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next) {
@@ -25,12 +24,14 @@ public class DispositionMiddleware : IMiddleware {
 
         bool Activate = false;
         if (headers.Count > 0) {
-            if (!headers.Contains(DISP_HEAD_VALUE))
+            if (!headers.Contains(DISP_HEAD_VALUE)) {
                 throw new XDisposition(XDispositionSituation.Value);
+            }
 
             Activate = true;
         }
-        Manager.Status(Activate);
+
+        Disposer.Status(Activate);
         await next(context);
     }
 }

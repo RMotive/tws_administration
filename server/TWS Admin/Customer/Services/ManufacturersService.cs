@@ -1,21 +1,22 @@
 ﻿
 
-using Customer.Services.Interfaces;
+using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
-using Foundation.Migrations.Records;
-using Microsoft.EntityFrameworkCore;
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
-namespace Customer.Services;
+using TWS_Customer.Services.Interfaces;
+
+namespace TWS_Customer.Services;
 public class ManufacturersService : IManufacturersService {
-    readonly ManufacturersDepot Manufacturers;
+    private readonly ManufacturersDepot Manufacturers;
 
     public ManufacturersService(ManufacturersDepot manufacturers) {
-        this.Manufacturers = manufacturers;
+        Manufacturers = manufacturers;
     }
 
-    public async Task<MigrationView<Manufacturer>> View(MigrationViewOptions Options) {
+    public async Task<SetViewOut<Manufacturer>> View(SetViewOptions Options) {
         return await Manufacturers.View(Options);
     }
 

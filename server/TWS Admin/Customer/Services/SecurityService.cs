@@ -1,22 +1,23 @@
-﻿using Customer.Managers;
-using Customer.Managers.Records;
-using Customer.Services.Exceptions;
-using Customer.Services.Interfaces;
-using Customer.Services.Records;
-using Customer.Shared.Exceptions;
+﻿using CSM_Foundation.Source.Enumerators;
+using CSM_Foundation.Source.Models.Out;
 
-using Foundation.Migration.Enumerators;
-using Foundation.Migrations.Records;
 using Microsoft.EntityFrameworkCore;
+
+using TWS_Customer.Core.Exceptions;
+using TWS_Customer.Managers;
+using TWS_Customer.Managers.Records;
+using TWS_Customer.Services.Exceptions;
+using TWS_Customer.Services.Interfaces;
+using TWS_Customer.Services.Records;
+
 using TWS_Security.Depots;
 using TWS_Security.Sets;
 
-namespace Customer.Services;
+namespace TWS_Customer.Services;
 public class SecurityService
     : ISecurityService {
-
-    readonly AccountsDepot Accounts;
-    readonly SessionsManager Sessions;
+    private readonly AccountsDepot Accounts;
+    private readonly SessionsManager Sessions;
 
     public SecurityService(AccountsDepot Accounts) {
         this.Accounts = Accounts;
@@ -24,7 +25,8 @@ public class SecurityService
     }
 
     public async Task<Session> Authenticate(Credentials Credentials) {
-        Func<IQueryable<Account>, IQueryable<Account>> include = query => query
+        static IQueryable<Account> include(IQueryable<Account> query) {
+            return query
         .Include(c => c.ContactNavigation)
         .Select(a => new Account() {
             Id = a.Id,
@@ -39,21 +41,22 @@ public class SecurityService
                 Email = a.ContactNavigation.Email,
                 Phone = a.ContactNavigation.Phone
             },
-           
+        });
+        }
 
-        })
-        ;
-
-        MigrationTransactionResult<Account> result = await Accounts.Read(i => i.User == Credentials.Identity, MigrationReadBehavior.First, include);
-        if (result.Failed)
+        SourceTransactionOut<Account> result = await Accounts.Read(i => i.User == Credentials.Identity, MigrationReadBehavior.First, include);
+        if (result.Failed) {
             throw new XMigrationTransaction(result.Failures);
+        }
 
-        if (result.QTransactions == 0)
+        if (result.QTransactions == 0) {
             throw new XAuthenticate(XAuthenticateSituation.Identity);
+        }
 
         Account account = result.Successes[0];
-        if (!account.Password.SequenceEqual(Credentials.Password))
+        if (!account.Password.SequenceEqual(Credentials.Password)) {
             throw new XAuthenticate(XAuthenticateSituation.Password);
+        }
 
         Permit[] permits = await Accounts.GetPermits(account.Id);
         Session session = Sessions.Subscribe(Credentials, account.Wildcard, permits, account.ContactNavigation);

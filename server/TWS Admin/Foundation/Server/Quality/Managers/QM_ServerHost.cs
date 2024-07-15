@@ -4,15 +4,11 @@ using System.Net.Http.Json;
 
 using Microsoft.AspNetCore.Http;
 
-namespace Server.Quality.Helpers;
-public class QM_ServerHost {
-    const string AUTH_TOKEN = "CSMAuth";
-    const string DISPOSITION_TOKEN = "CSMDisposition";
-
-    readonly HttpClient Host;
-    public QM_ServerHost(HttpClient host) {
-        Host = host;
-    }
+namespace CSM_Foundation.Server.Quality.Managers;
+public class QM_ServerHost(HttpClient host) {
+    private const string AUTH_TOKEN = "CSMAuth";
+    private const string DISPOSITION_TOKEN = "CSMDisposition";
+    private readonly HttpClient Host = host;
 
     public async Task<(HttpStatusCode, TResponse)> Post<TResponse, TRequest>(string Location, TRequest Request) {
         HttpResponseMessage Response = await Host.PostAsJsonAsync(Location, Request);
@@ -31,8 +27,9 @@ public class QM_ServerHost {
         Host.DefaultRequestHeaders.Clear();
     }
 
-    public void Authenticate(string Token)
-    => Host.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(AUTH_TOKEN, Token);
+    public void Authenticate(string Token) {
+        Host.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(AUTH_TOKEN, Token);
+    }
 
     public void Disposition(string Disposition) {
         Host.DefaultRequestHeaders.Add(DISPOSITION_TOKEN, Disposition);

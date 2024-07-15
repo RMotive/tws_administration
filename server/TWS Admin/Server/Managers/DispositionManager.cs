@@ -1,43 +1,54 @@
-﻿using Foundation.Advising.Managers;
-using Foundation.Migrations.Interfaces;
+﻿using CSM_Foundation.Advisor.Managers;
+using CSM_Foundation.Source.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Server.Managers;
 
-public sealed partial class DispositionManager {
+public class DispositionManager : IMigrationDisposer {
+    private readonly IServiceProvider Servicer;
+    private readonly Dictionary<DbContext, List<ISourceSet>> DispositionStack = [];
+    private bool Active = false;
 
-    readonly Dictionary<DbContext, List<IMigrationSet>> DispositionStack = [];
-    bool Active = false;
-    public DispositionManager() {
-
+    public DispositionManager(IServiceProvider Servicer) {
+        this.Servicer = Servicer;
     }
 
-    public void Push(DbContext Source, IMigrationSet Record) {
-        if (!Active) return;
+    public void Push(DbContext Source, ISourceSet Record) {
+        if (!Active) {
+            return;
+        }
+
         Type sourceType = Source.GetType();
 
         foreach (DbContext source in DispositionStack.Keys) {
-            if (source.GetType() != sourceType)
+            if (source.GetType() != sourceType) {
                 continue;
+            }
 
             DispositionStack[source].Add(Record);
             return;
         }
+        List<ISourceSet> recordsListed = [Record];
+        DispositionStack.Add(Source, recordsListed);
     }
-    public void Push(DbContext Source, IMigrationSet[] Records) {
-        if (!Active) return;
+    public void Push(DbContext Source, ISourceSet[] Records) {
+        if (!Active) {
+            return;
+        }
+
         Type sourceType = Source.GetType();
 
         foreach (DbContext source in DispositionStack.Keys) {
-            if (source.GetType() != sourceType)
+            if (source.GetType() != sourceType) {
                 continue;
+            }
 
             DispositionStack[source].AddRange(Records);
             return;
         }
-
-        List<IMigrationSet> recordsListed = [.. Records.ToList()];
+        List<ISourceSet> recordsListed = [.. Records.ToList()];
         DispositionStack.Add(Source, recordsListed);
     }
 
@@ -46,16 +57,29 @@ public sealed partial class DispositionManager {
     }
 
     public void Dispose() {
-        foreach (KeyValuePair<DbContext, List<IMigrationSet>> disposeLine in DispositionStack) {
-
+        if (DispositionStack.IsNullOrEmpty()) {
+            AdvisorManager.Announce($"No records to dispose");
+        }
+        foreach (KeyValuePair<DbContext, List<ISourceSet>> disposeLine in DispositionStack) {
+            using IServiceScope servicerScope = Servicer.CreateScope();
             DbContext source = disposeLine.Key;
+            try {
+                _ = source.Database.CanConnect();
+            } catch (ObjectDisposedException) {
+                source = (DbContext)servicerScope.ServiceProvider.GetRequiredService(source.GetType());
+            }
+
             AdvisorManager.Announce($"Disposing source ({source.GetType()})");
+            if (disposeLine.Value.IsNullOrEmpty()) {
+                AdvisorManager.Announce($"No records to dispose");
+                continue;
+            }
             int corrects = 0;
             int incorrects = 0;
-            foreach (IMigrationSet record in disposeLine.Value) {
+            foreach (ISourceSet record in disposeLine.Value) {
                 try {
-                    source.Remove(record);
-                    source.SaveChanges();
+                    _ = source.Remove(record);
+                    _ = source.SaveChanges();
                     corrects++;
                     AdvisorManager.Success($"Disposed: ({record.GetType()}) | ({record.Id})");
                 } catch (Exception Exep) {

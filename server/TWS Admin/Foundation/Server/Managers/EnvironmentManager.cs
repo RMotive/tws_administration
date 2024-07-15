@@ -1,27 +1,36 @@
 ﻿using System.Reflection;
 
-using Foundation.Server.Enumerators;
+using CSM_Foundation.Server.Enumerators;
 
-namespace Foundation.Server.Managers;
+namespace CSM_Foundation.Server.Managers;
 public class EnvironmentManager {
     private static ServerEnvironments? _Mode;
 
     public static ServerEnvironments Mode {
         get {
-            if (_Mode is null) LoadEnvironment();
+            if (_Mode is null) {
+                LoadEnvironment();
+            }
+
             return (ServerEnvironments)_Mode!;
         }
     }
     public static bool IsQuality {
         get {
-            if (_Mode is null) LoadEnvironment();
+            if (_Mode is null) {
+                LoadEnvironment();
+            }
+
             return Mode == ServerEnvironments.quality;
         }
     }
 
     public static bool IsDevelopment {
         get {
-            if (_Mode is null) LoadEnvironment();
+            if (_Mode is null) {
+                LoadEnvironment();
+            }
+
             return Mode == ServerEnvironments.development;
         }
     }

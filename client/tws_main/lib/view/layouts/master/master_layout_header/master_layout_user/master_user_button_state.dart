@@ -1,12 +1,12 @@
 part of '../../master_layout.dart';
 
-/// [_SessionStorge] Instance initialization of storage session. 
+/// [_SessionStorge] Instance initialization of storage session.
 final SessionStorage _sessionStorage = SessionStorage.i;
 
 /// [_contact] Stores the user contact information.
 final Contact _contact = _sessionStorage.session!.contact;
 
-/// [_fullName] Stores the contact name. 
+/// [_fullName] Stores the contact name.
 String get _fullName => "${_contact.name} ${_contact.lastname}";
 
 /// [_IsHovered] Boolean that stores the current state for the main header button.
@@ -46,11 +46,12 @@ String _getInitials() {
   String initials = _contact.name.substring(0, 1);
   List<String> lastname = _contact.lastname.split(" ");
   for (String word in lastname) {
-    initials += word.substring(0, 1);
+    initials += word.substring(0, 0);
   }
   initials.toUpperCase();
   return initials;
 }
+
 /// [_MasterUserButtonState] CSMState Class for a proper state [CSMDynamicWidget] management.
 final class _MasterUserButtonState extends CSMStateBase {
   /// [_overlayController] Overlay menu controller. Set and stores the state for overlay menu.
@@ -63,10 +64,5 @@ final class _Options {
   final IconData icon;
   final CSMRouteOptions route;
   final bool suffix;
-  const _Options({
-    required this.title,
-    required this.icon,
-    required this.route,
-    this.suffix = true
-  });
+  const _Options({required this.title, required this.icon, required this.route, this.suffix = true});
 }

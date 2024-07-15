@@ -1,13 +1,12 @@
-﻿
-
-using Foundation.Migrations.Records;
+﻿using CSM_Foundation.Source.Models.Options;
+using CSM_Foundation.Source.Models.Out;
 
 using TWS_Business.Sets;
 
-namespace Customer.Services.Interfaces;
+namespace TWS_Customer.Services.Interfaces;
 public interface ISituationsService {
 
-    Task<MigrationView<Situation>> View(MigrationViewOptions options);
+    Task<SetViewOut<Situation>> View(SetViewOptions options);
     Task<Situation> Create(Situation situation);
 
 }

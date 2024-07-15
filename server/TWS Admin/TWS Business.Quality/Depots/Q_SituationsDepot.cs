@@ -1,7 +1,8 @@
 ﻿
 
-using Foundation.Migrations.Quality.Bases;
-using Foundation.Utils;
+using CSM_Foundation.Core.Utils;
+using CSM_Foundation.Source.Quality.Bases;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 

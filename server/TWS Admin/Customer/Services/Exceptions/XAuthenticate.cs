@@ -1,15 +1,15 @@
 ﻿using System.Net;
 
-using Foundation.Server.Bases;
+using CSM_Foundation.Server.Bases;
 
-namespace Customer.Services.Exceptions;
+namespace TWS_Customer.Services.Exceptions;
 public class XAuthenticate
     : BServerTransactionException<XAuthenticateSituation> {
     public XAuthenticate(XAuthenticateSituation Situation)
         : base($"Authentication request has failed", HttpStatusCode.BadRequest, null) {
 
         this.Situation = Situation;
-        this.Advise = Situation switch {
+        Advise = Situation switch {
             XAuthenticateSituation.Identity => $"Identity not found",
             XAuthenticateSituation.Password => $"Wrong password",
             _ => throw new NotImplementedException(),
