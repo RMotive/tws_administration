@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/core/constants/twsa_colors.dart';
 import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
@@ -128,8 +125,6 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
       suggestionsList = rawOptionsList;
 
     }
-    print("Seleccion previa : $previousSelection");
-    print("seleccion actual: $selectedOption");
     print(previousSelection != selectedOption);
     if(!firstbuild && !overlayFirstBuild) {
       setState(() {

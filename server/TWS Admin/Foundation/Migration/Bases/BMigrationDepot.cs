@@ -15,7 +15,7 @@ namespace Foundation.Migrations.Bases;
 ///     shared behaviors.
 ///     
 ///     A <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/> provides methods to 
-///     serve datasource safe transactions for <see cref="TMigrationSet"/>.
+///     serve datasource saved transactions for <see cref="TMigrationSet"/>.
 /// </summary>
 /// <typeparam name="TMigrationSource">
 ///     What source implementation belongs this depot.
@@ -30,7 +30,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
     readonly protected Action<DbContext, IMigrationSet[]>? Dispose;
     /// <summary>
-    ///     Source to handle direct transactions (not-safe)
+    ///     Source to handle direct transactions (not-saved)
     /// </summary>
     readonly protected TMigrationSource Source;
     /// <summary>
@@ -155,27 +155,25 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     ///     A <see cref="MigrationTransactionResult{TSet}"/> that stores a collection of failures, and successes caught.
     /// </returns>
     public async Task<MigrationTransactionResult<TMigrationSet>> Create(TMigrationSet[] Sets, bool Sync = false) {
-        TMigrationSet[] safe = [];
+        TMigrationSet[] saved = [];
         MigrationTransactionFailure[] fails = [];
 
-        foreach (TMigrationSet set in Sets) {
+        foreach (TMigrationSet record in Sets) {
             try {
-                set.EvaluateWrite();
-                safe = [.. safe, set];
+                record.EvaluateWrite();
+                Source.ChangeTracker.Clear();
+                this.Set.Attach(record);
+                await Source.SaveChangesAsync();
+                saved = [..saved, record];
             } catch (Exception excep) {
                 if (Sync) throw;
-                MigrationTransactionFailure fail = new(set, excep);
+                MigrationTransactionFailure fail = new(record, excep);
                 fails = [.. fails, fail];
             }
         }
 
-
-        Source.ChangeTracker.Clear();
-        await this.Set.AddRangeAsync(safe);
-        await Source.SaveChangesAsync();
-
-        Dispose?.Invoke(Source, Sets);
-        return new(safe, fails);
+        Dispose?.Invoke(Source, saved);
+        return new(saved, fails);
     }
 
     #endregion
