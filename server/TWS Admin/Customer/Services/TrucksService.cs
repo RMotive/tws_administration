@@ -114,7 +114,7 @@ public class TrucksService : ITrucksService {
     /// Current acumulator list that stores the already generated sets/inserts.
     /// </param>
     /// <returns></returns>
-    private static async Task<int?> CreationHelper<T>(T? set, IMigrationDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : ISourceSet {
+    private static async Task<int?> CreationHelper<T>(T? set, ISourceDepot<T> depot, List<Lazy<Task>> nullifyCallback) where T : ISourceSet {
         if (set != null) {
             set.Id = 0;
             T result = await depot.Create(set);
@@ -196,7 +196,7 @@ public class TrucksService : ITrucksService {
             assembly.Maintenance = await CreationHelper(truck.Maintenance, Maintenaces, nullify);
             assembly.Sct = await CreationHelper(truck.Sct, Sct, nullify);
 
-            IMigrationDepot_Delete<Manufacturer> interfaceSol = Manufacturers;
+            ISourceDepot_Delete<Manufacturer> interfaceSol = Manufacturers;
 
             /// Create the defined truck.
             Truck result = await Trucks.Create(assembly);

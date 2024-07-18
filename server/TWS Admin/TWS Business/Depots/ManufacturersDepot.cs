@@ -8,7 +8,7 @@ namespace TWS_Business.Depots;
 ///     Implements a new depot to handle <see cref="Manufacturer"/> entity
 ///     transactions. 
 /// </summary>
-public class ManufacturersDepot : BMigrationDepot<TWSBusinessSource, Manufacturer> {
+public class ManufacturersDepot : BSourceDepot<TWSBusinessSource, Manufacturer> {
     /// <summary>
     ///     Generates a new depot handler for <see cref="Manufacturer"/>.
     /// </summary>

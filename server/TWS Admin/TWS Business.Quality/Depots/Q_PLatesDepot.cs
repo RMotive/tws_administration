@@ -9,7 +9,7 @@ namespace TWS_Business.Quality.Depots;
 ///     Qualifies the <see cref="PlatesDepot"/>.
 /// </summary>
 public class Q_PlatesDepot
-    : BQ_MigrationDepot<Plate, PlatesDepot, TWSBusinessSource> {
+    : BQ_SourceDepot<Plate, PlatesDepot, TWSBusinessSource> {
     public Q_PlatesDepot()
         : base(nameof(Plate.Truck)) {
     }
