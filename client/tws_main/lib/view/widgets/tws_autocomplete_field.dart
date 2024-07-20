@@ -114,9 +114,7 @@ class _TWSAutoCompleteFieldState<TSet> extends State<TWSAutoCompleteField<TSet>>
   @override
   void didUpdateWidget(covariant TWSAutoCompleteField<TSet> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if(selectedOption != widget.initialValue) {
-      setSelection();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => setSelection());
   }
   /// Method that manage and assign the [initialValue] property.
   void setSelection(){

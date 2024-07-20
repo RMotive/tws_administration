@@ -13,7 +13,6 @@ class _TruckCreatePlateForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int plateIndex = isUSAPlate? 0 : 1;
-    final String defaultState = isUSAPlate? _usaStateOptions[4] : _mxStateOptions[1];
     final List<String> statesRepository = isUSAPlate? _usaStateOptions : _mxStateOptions;
     return TWSSection(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -33,31 +32,17 @@ class _TruckCreatePlateForm extends StatelessWidget {
                   maxLength: 12,
                   controller: TextEditingController(text: itemState?.model.plates[plateIndex].identifier),
                   onChanged: (String text) {
-                    Truck model = itemState!.model;
-                    List<Plate>? plates =  <Plate>[];
-                    final Plate temp = itemState!.model.plates[plateIndex];
-                    Plate generatePlate = Plate(
-                      temp.id, 
-                      text, 
-                      temp.state, 
-                      temp.country, 
-                      temp.expiration, 
-                      0, 
-                      null
-                    );
-                    if(isUSAPlate){
-                      plates.add(generatePlate);
-                      plates.add(itemState!.model.plates[1]);
-                    }else{
-                      plates.add(itemState!.model.plates[0]);
-                      plates.add(generatePlate);
+                    if(itemState != null){
+                      Truck model = itemState!.model;
+                      model.plates[plateIndex] = model.plates[plateIndex].clone(
+                        identifier: text
+                      );
+                      itemState?.updateModelRedrawing(
+                        model.clone(
+                          plates: model.plates,
+                        ),
+                      );
                     }
-                    
-                    itemState?.updateModelRedrawing(
-                      model.clone(
-                        plates: plates,
-                      ),
-                    );
                   },
                   isEnabled: enable,
                 ),
@@ -73,65 +58,39 @@ class _TruckCreatePlateForm extends StatelessWidget {
                   displayValue:(String item) => item,
                   label: 'Country',
                   onChanged: (String? value) {
-                    Truck model = itemState!.model;
-                    List<Plate>? plates =  <Plate>[];
-                    final Plate temp = itemState!.model.plates[plateIndex];
-                    Plate generatePlate = Plate(
-                      temp.id, 
-                      temp.identifier, 
-                      temp.state, 
-                      value ?? "", 
-                      temp.expiration, 
-                      0, 
-                      null
-                    );
-                    if(isUSAPlate){
-                      plates.add(generatePlate);
-                      plates.add(itemState!.model.plates[1]);
-                    }else{
-                      plates.add(itemState!.model.plates[0]);
-                      plates.add(generatePlate);
+                    if(itemState != null){
+                      Truck model = itemState!.model;
+                      model.plates[plateIndex] = model.plates[plateIndex].clone(
+                        country: value ?? ""
+                      );
+                      
+                      itemState?.updateModelRedrawing(
+                        model.clone(
+                          plates: model.plates,
+                        ),
+                      );
                     }
-                    itemState!.updateModelRedrawing(
-                      model.clone(
-                        plates: plates,
-                      ),
-                    );
                   },
                 )
               ),
               Expanded(
                 child: TWSAutoCompleteField<String>(
                   displayValue: (String query) => query,
-                  initialValue: (itemState?.model.plates[plateIndex].state ?? "").isEmpty ? defaultState: itemState!.model.plates[plateIndex].state ,
+                  initialValue: itemState?.model.plates[plateIndex].state == "" ? null : itemState?.model.plates[plateIndex].state,
                   optionsBuilder: (String query) {
                     if(query.isNotEmpty) return statesRepository.where((String country) => country.toLowerCase().contains(query)).toList();
                     return statesRepository;
-                  } ,
+                  },
                   label: 'State',
                   onChanged: (String? text) {
                     Truck model = itemState!.model;
-                    List<Plate>? plates =  <Plate>[];
-                    final Plate temp = itemState!.model.plates[plateIndex];
-                    Plate generatePlate = Plate(
-                      temp.id, 
-                      temp.identifier, 
-                      text ?? "", 
-                      temp.country, 
-                      temp.expiration, 
-                      0, 
-                      null
+                    
+                     model.plates[plateIndex] = model.plates[plateIndex].clone(
+                      state: text ?? ""
                     );
-                    if(isUSAPlate){
-                      plates.add(generatePlate);
-                      plates.add(itemState!.model.plates[1]);
-                    }else{
-                      plates.add(itemState!.model.plates[0]);
-                      plates.add(generatePlate);
-                    }
-                    itemState!.updateModelRedrawing(
+                    itemState?.updateModelRedrawing(
                       model.clone(
-                        plates: plates,
+                        plates: model.plates,
                       ),
                     );
                   },
@@ -150,27 +109,12 @@ class _TruckCreatePlateForm extends StatelessWidget {
                   controller: TextEditingController(text: itemState?.model.plates[plateIndex].expiration.dateOnlyString),
                   onChanged: (String text) {
                     Truck model = itemState!.model;
-                    List<Plate>? plates =  <Plate>[];
-                    final Plate temp = itemState!.model.plates[plateIndex];
-                    Plate generatePlate = Plate(
-                      temp.id, 
-                      temp.identifier, 
-                      temp.state, 
-                      temp.country, 
-                      DateTime.parse(text), 
-                      0, 
-                      null
+                     model.plates[plateIndex] = model.plates[plateIndex].clone(
+                      expiration: DateTime.parse(text)
                     );
-                    if(isUSAPlate){
-                      plates.add(generatePlate);
-                      plates.add(itemState!.model.plates[1]);
-                    }else{
-                      plates.add(itemState!.model.plates[0]);
-                      plates.add(generatePlate);
-                    }
-                    itemState!.updateModelRedrawing(
+                    itemState?.updateModelRedrawing(
                       model.clone(
-                        plates: plates,
+                        plates: model.plates,
                       ),
                     );
                   },

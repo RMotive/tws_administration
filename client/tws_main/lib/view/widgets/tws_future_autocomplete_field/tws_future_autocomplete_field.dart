@@ -125,7 +125,6 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
       suggestionsList = rawOptionsList;
 
     }
-    print(previousSelection != selectedOption);
     if(!firstbuild && !overlayFirstBuild) {
       setState(() {
         if(previousSelection != selectedOption) widget.onChanged(selectedOption);
@@ -154,9 +153,7 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
   void didUpdateWidget(covariant TWSFutureAutoCompleteField<TSet> oldWidget) {
     super.didUpdateWidget(oldWidget);
     overlayFirstBuild = true;
-    if(selectedOption != widget.initialValue) {
-      setSelection();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => setSelection());
   }
   
   @override
@@ -263,7 +260,6 @@ class _TWSAutoCompleteFieldState<TSet extends CSMEncodeInterface> extends State<
                         ),
                         child: CSMConsumer<MigrationView<TSet>>(
                           consume: consume,
-                          delay: const Duration(milliseconds: 1000),
                           emptyCheck: (MigrationView<TSet> data) => data.sets.isEmpty,
                           loadingBuilder: (_) {
                             return Padding(

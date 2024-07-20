@@ -65,25 +65,13 @@ class _TruckCreateMainForm extends StatelessWidget {
                 isEnabled: enable,
                 adapter:  const _ManufacturerViewAdapter(),
                 onChanged: (Manufacturer? selectedItem) {  
-                  print("catch..");
                   Truck model = itemState!.model;
-                  Truck newTruck = Truck(
-                  model.id, 
-                  model.vin, 
-                  selectedItem?.id ?? 0, 
-                  model.motor, 
-                  model.sct, 
-                  model.insurance, 
-                  model.situation, 
-                  model.insurance, 
-                  selectedItem, 
-                  model.sctNavigation, 
-                  model.maintenanceNavigation, 
-                  model.situationNavigation, 
-                  model.insuranceNavigation, 
-                  model.plates
+                  itemState!.updateModelRedrawing(
+                    model.clone(
+                      manufacturer: selectedItem?.id ?? 0,
+                      manufacturerNavigation: selectedItem
+                    )
                   );
-                  itemState!.updateModelRedrawing(newTruck);
                   _maintenanceState();
                 }, 
 
@@ -93,31 +81,20 @@ class _TruckCreateMainForm extends StatelessWidget {
               child: TWSFutureAutoCompleteField<Situation>(
                 label: "Select a Situation",
                 hint: "Assing an existing Situation status",
+                isOptionalLabel: " (Optional)",
                 isOptional: true,
                 initialValue: itemState?.model.situationNavigation,
                 displayValue: (Situation set) => set.name,
                 adapter:  const _SituationsViewAdapter(),
                 isEnabled: enable,
                 onChanged: (Situation? selectedItem) {
-                  print("catch..");
                   Truck model = itemState!.model;
-                  Truck newTruck = Truck(
-                    model.id, 
-                    model.vin, 
-                    model.manufacturer, 
-                    model.motor, 
-                    model.sct, 
-                    model.maintenance, 
-                    selectedItem?.id ?? 0, 
-                    model.insurance, 
-                    model.manufacturerNavigation, 
-                    model.sctNavigation, 
-                    model.maintenanceNavigation, 
-                    selectedItem, 
-                    model.insuranceNavigation, 
-                    model.plates
+                  itemState!.updateModelRedrawing(
+                    model.clone(
+                      situation: selectedItem?.id ?? 0,
+                      situationNavigation: selectedItem
+                    )
                   );
-                  itemState!.updateModelRedrawing(newTruck);
                   _situationState();
                 }, 
               ),
