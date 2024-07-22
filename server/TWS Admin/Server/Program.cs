@@ -14,6 +14,8 @@ using Server.Managers;
 using Server.Middlewares;
 using Server.Models;
 
+using TWS_Business.Depots;
+
 using TWS_Customer.Services;
 using TWS_Customer.Services.Interfaces;
 
@@ -40,20 +42,20 @@ public partial class Program {
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             // Add services and overriding options to the container.
-            _ = builder.Services.AddControllers()
+            builder.Services.AddControllers()
                 .AddJsonOptions(options => {
                     options.JsonSerializerOptions.IncludeFields = true;
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 });
-            _ = builder.Services.Configure<KestrelServerOptions>(options => {
+            builder.Services.Configure<KestrelServerOptions>(options => {
                 options.AllowSynchronousIO = true;
             });
-            _ = builder.Services.AddCors(setup => {
+            builder.Services.AddCors(setup => {
                 setup.AddDefaultPolicy(builder => {
-                    _ = builder.AllowAnyHeader();
-                    _ = builder.AllowAnyMethod();
-                    _ = builder.SetIsOriginAllowed(origin => {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.SetIsOriginAllowed(origin => {
                         string[] CorsPolicies = Settings.CORS;
                         Uri parsedUrl = new(origin);
 
@@ -72,45 +74,52 @@ public partial class Program {
             // --> Adding customer services
             {
                 // --> Application
-                _ = builder.Services.AddSingleton<AnalyticsMiddleware>();
-                _ = builder.Services.AddSingleton<FramingMiddleware>();
-                _ = builder.Services.AddSingleton<AdvisorMiddleware>();
-                _ = builder.Services.AddSingleton<DispositionMiddleware>();
-                _ = builder.Services.AddSingleton<IMigrationDisposer, DispositionManager>();
+                builder.Services.AddSingleton<AnalyticsMiddleware>();
+                builder.Services.AddSingleton<FramingMiddleware>();
+                builder.Services.AddSingleton<AdvisorMiddleware>();
+                builder.Services.AddSingleton<DispositionMiddleware>();
+                builder.Services.AddSingleton<IMigrationDisposer, DispositionManager>();
 
                 // --> Sources contexts
-                _ = builder.Services.AddDbContext<TWSSecuritySource>();
+                builder.Services.AddDbContext<TWSSecuritySource>();
 
                 // --> Depots
-                _ = builder.Services.AddScoped<SolutionsDepot>();
-                _ = builder.Services.AddScoped<AccountsDepot>();
-                _ = builder.Services.AddScoped<ContactsDepot>();
+                builder.Services.AddScoped<SolutionsDepot>();
+                builder.Services.AddScoped<AccountsDepot>();
+                builder.Services.AddScoped<ContactsDepot>();
+                builder.Services.AddScoped<ManufacturersDepot>();
+                builder.Services.AddScoped<SituationsDepot>();
+                builder.Services.AddScoped<PlatesDepot>();
+                builder.Services.AddScoped<ContactsDepot>();
+                builder.Services.AddScoped<TruckDepot>();
+                builder.Services.AddScoped<InsurancesDepot>();
+                builder.Services.AddScoped<SctsDepot>();
+                builder.Services.AddScoped<MaintenacesDepot>();
 
                 // --> Services
-                _ = builder.Services.AddScoped<ISolutionsService, SolutionsService>();
-                _ = builder.Services.AddScoped<ISecurityService, SecurityService>();
-
-                // --> TODO: Follow dependency pattern and modify this ones.
-                _ = builder.Services.AddSingleton<IManufacturersService>(new ManufacturersService(new()));
-                _ = builder.Services.AddSingleton<ISituationsService>(new SituationsService(new()));
-                _ = builder.Services.AddSingleton<IPlatesService>(new PlatesServices(new()));
-                _ = builder.Services.AddSingleton<IContactService>(new ContactService(new()));
-                _ = builder.Services.AddSingleton<ITrucksService>(new TrucksService(new(), new(), new(), new(), new(), new(), new()));
+                builder.Services.AddScoped<ISolutionsService, SolutionsService>();
+                builder.Services.AddScoped<ISecurityService, SecurityService>();
+                builder.Services.AddScoped<ISecurityService, SecurityService>();
+                builder.Services.AddScoped<IManufacturersService, ManufacturersService>();
+                builder.Services.AddScoped<ISituationsService, SituationsService>();
+                builder.Services.AddScoped<IPlatesService, PlatesServices>();
+                builder.Services.AddScoped<ITrucksService, TrucksService>();
+                builder.Services.AddScoped<IContactService, ContactService>();
             }
             WebApplication app = builder.Build();
-            _ = app.MapControllers();
+            app.MapControllers();
             // --> Injecting middlewares to server
             {
-                _ = app.UseMiddleware<AnalyticsMiddleware>();
-                _ = app.UseMiddleware<AdvisorMiddleware>();
-                _ = app.UseMiddleware<FramingMiddleware>();
-                _ = app.UseMiddleware<DispositionMiddleware>();
+                app.UseMiddleware<AnalyticsMiddleware>();
+                app.UseMiddleware<AdvisorMiddleware>();
+                app.UseMiddleware<FramingMiddleware>();
+                app.UseMiddleware<DispositionMiddleware>();
             }
 
             Disposer = app.Services.GetService<IMigrationDisposer>()
                 ?? throw new Exception("Required disposer service");
-            _ = app.Lifetime.ApplicationStopping.Register(OnProcessExit);
-            _ = app.UseCors();
+            app.Lifetime.ApplicationStopping.Register(OnProcessExit);
+            app.UseCors();
 
 
             AdvisorManager.Announce($"Server ready to listen 🚀");
