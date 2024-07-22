@@ -90,14 +90,8 @@ public partial class Program {
                 _ = builder.Services.AddScoped<ISolutionsService, SolutionsService>();
                 _ = builder.Services.AddScoped<ISecurityService, SecurityService>();
 
-
-
-
                 // --> TODO: Follow dependency pattern and modify this ones.
                 _ = builder.Services.AddSingleton<IManufacturersService>(new ManufacturersService(new()));
-                _ = builder.Services.AddSingleton<IInsurancesService>(new InsuranceService(new()));
-                _ = builder.Services.AddSingleton<IMaintenancesService>(new MaintenanceService(new()));
-                _ = builder.Services.AddSingleton<ISctService>(new SctService(new()));
                 _ = builder.Services.AddSingleton<ISituationsService>(new SituationsService(new()));
                 _ = builder.Services.AddSingleton<IPlatesService>(new PlatesServices(new()));
                 _ = builder.Services.AddSingleton<IContactService>(new ContactService(new()));
