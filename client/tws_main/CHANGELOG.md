@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## CURRENT
+
 ## 1.0.0-alpha [09/07/2024]
 
 - Notes:
