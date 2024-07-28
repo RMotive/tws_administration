@@ -1,4 +1,4 @@
-part of '../truck_create_whisper.dart';
+part of '../trucks_create_whisper.dart';
 
 class _TruckCreateMainForm extends StatelessWidget {
  final TWSArticleCreatorItemState<Truck>? itemState;

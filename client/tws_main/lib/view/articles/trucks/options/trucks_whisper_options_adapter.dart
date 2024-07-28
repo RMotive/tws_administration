@@ -1,5 +1,5 @@
 
-part of '../whispers/truck_create_whisper.dart';
+part of '../whispers/trucks_create_whisper.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 final TrucksServiceBase _trucksService = Sources.administration.trucks;

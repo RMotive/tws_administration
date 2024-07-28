@@ -9,7 +9,7 @@ import 'package:tws_main/view/articles/situations/situations_article.dart';
 import 'package:tws_main/view/articles/solutions/solutions_article.dart';
 import 'package:tws_main/view/articles/solutions/whispers/solutions_create_whisper.dart';
 import 'package:tws_main/view/articles/trucks/trucks_article.dart';
-import 'package:tws_main/view/articles/trucks/whispers/truck_create_whisper.dart';
+import 'package:tws_main/view/articles/trucks/whispers/trucks_create_whisper.dart';
 import 'package:tws_main/view/layouts/master/master_layout.dart';
 import 'package:tws_main/view/pages/about/about_page.dart';
 import 'package:tws_main/view/pages/business/business_page.dart';

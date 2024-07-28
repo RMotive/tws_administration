@@ -14,6 +14,7 @@ using Server.Managers;
 using Server.Middlewares;
 using Server.Models;
 
+using TWS_Business;
 using TWS_Business.Depots;
 
 using TWS_Customer.Services;
@@ -48,9 +49,6 @@ public partial class Program {
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 });
-            builder.Services.Configure<KestrelServerOptions>(options => {
-                options.AllowSynchronousIO = true;
-            });
             builder.Services.AddCors(setup => {
                 setup.AddDefaultPolicy(builder => {
                     builder.AllowAnyHeader();
@@ -82,6 +80,7 @@ public partial class Program {
 
                 // --> Sources contexts
                 builder.Services.AddDbContext<TWSSecuritySource>();
+                builder.Services.AddDbContext<TWSBusinessSource>();
 
                 // --> Depots
                 builder.Services.AddScoped<SolutionsDepot>();

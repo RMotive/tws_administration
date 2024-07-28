@@ -1,7 +1,6 @@
 
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_main/core/constants/twsa_common_displays.dart';
 import 'package:tws_main/core/extension/datetime.dart';
@@ -24,13 +23,13 @@ import 'package:tws_main/view/widgets/tws_input_text.dart';
 import 'package:tws_main/view/widgets/tws_section.dart';
 
 part '../options/trucks_whisper_options_adapter.dart';
-part 'forms/truck_create_insurance_form.dart';
-part 'forms/truck_create_main_form.dart';
-part 'forms/truck_create_maintenance_form.dart';
-part 'forms/truck_create_manufacturer_form.dart';
-part 'forms/truck_create_plates_form.dart';
-part 'forms/truck_create_sct_form.dart';
-part 'forms/truck_create_situation_form.dart';
+part 'forms/trucks_create_insurance_form.dart';
+part 'forms/trucks_create_main_form.dart';
+part 'forms/trucks_create_maintenance_form.dart';
+part 'forms/trucks_create_manufacturer_form.dart';
+part 'forms/trucks_create_plates_form.dart';
+part 'forms/trucks_create_sct_form.dart';
+part 'forms/trucks_create_situation_form.dart';
 
 const List<String> _countryOptions = TWSAMessages.kCountryList;
 const List<String> _usaStateOptions = TWSAMessages.kUStateCodes;

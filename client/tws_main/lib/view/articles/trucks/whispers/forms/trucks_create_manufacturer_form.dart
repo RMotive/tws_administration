@@ -1,4 +1,4 @@
-part of '../truck_create_whisper.dart';
+part of '../trucks_create_whisper.dart';
 
 class _TruckCreateMaintenanceState extends CSMStateBase{}
 final _TruckCreateMaintenanceState _maintenanceformState = _TruckCreateMaintenanceState();
