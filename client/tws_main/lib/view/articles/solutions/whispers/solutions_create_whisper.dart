@@ -77,6 +77,7 @@ final class SolutionsCreateWhisper extends CSMPageBase {
                     Expanded(
                       child: TWSInputText(
                         label: 'Sign',
+                        isStrictLength: true,
                         controller: TextEditingController(text: itemState?.model.sign),
                         onChanged: (String text) {
                           Solution model = itemState!.model;

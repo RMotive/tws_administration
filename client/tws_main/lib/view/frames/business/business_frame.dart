@@ -47,46 +47,6 @@ class BusinessFrame extends StatelessWidget {
           color: stateColor,
         );
       },
-      route: TWSARoutes.platesArticle,
-      title: 'Plates',
-    ),
-    ArticleOptions(
-      icon: (Color? stateColor) {
-        return Icon(
-          Icons.business,
-          color: stateColor,
-        );
-      },
-      route: TWSARoutes.insuranceArticle,
-      title: 'Insurances',
-    ),
-    ArticleOptions(
-      icon: (Color? stateColor) {
-        return Icon(
-          Icons.business,
-          color: stateColor,
-        );
-      },
-      route: TWSARoutes.sctsArticle,
-      title: 'SCTs',
-    ),
-    ArticleOptions(
-      icon: (Color? stateColor) {
-        return Icon(
-          Icons.business,
-          color: stateColor,
-        );
-      },
-      route: TWSARoutes.maintencesArticle,
-      title: 'Maintenences',
-    ),
-    ArticleOptions(
-      icon: (Color? stateColor) {
-        return Icon(
-          Icons.business,
-          color: stateColor,
-        );
-      },
       route: TWSARoutes.situationsArticle,
       title: 'Situations',
     ),

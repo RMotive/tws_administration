@@ -55,7 +55,7 @@ public class PointerValidator
         } else if ((value == null && isRequired) || (Value != null && value == null && !isRequired)) {
             message = "Pointer must be integer indexer and not null";
             code = 2;
-        } else if (value <= 0) {
+        } else if (value <= 0 && isRequired) {
             message = "Pointer cannot be less or equal zero";
             code = 3;
         } else {

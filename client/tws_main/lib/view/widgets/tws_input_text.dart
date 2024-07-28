@@ -15,8 +15,13 @@ class TWSInputText extends StatefulWidget {
   final String? errorText;
   final bool isPrivate;
   final bool isEnabled;
+  final bool showErrorColor;
   final int? maxLength;
   final int? maxLines;
+  final bool isOptional;
+  final String? suffixLabel;
+  final bool isStrictLength;
+  final void Function()? onTap;
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final String? Function(String? text)? validator;
@@ -34,6 +39,11 @@ class TWSInputText extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.onChanged,
+    this.suffixLabel,
+    this.isStrictLength = false,
+    this.isOptional = false,
+    this.showErrorColor = false,
+    this.onTap,
     this.onTapOutside,
     this.maxLines = 1,
     this.isEnabled = true,
@@ -52,6 +62,7 @@ class _TWSInputTextState extends State<TWSInputText> {
   late final CSMColorThemeOptions colorStruct;
   late final CSMColorThemeOptions disabledColorStruct;
   late final CSMColorThemeOptions errorColorStruct;
+  late final CSMColorThemeOptions pageColorStruct;
 
   @override
   void initState() {
@@ -62,8 +73,6 @@ class _TWSInputTextState extends State<TWSInputText> {
       updateEfect: themeUpdateListener,
     );
     initializeThemes();
-
-
     ctrl.addListener(() => setState(() {}));
   }
 
@@ -82,6 +91,7 @@ class _TWSInputTextState extends State<TWSInputText> {
     colorStruct = theme.primaryControlColor;
     disabledColorStruct = theme.primaryDisabledControl;
     errorColorStruct = theme.primaryCriticalControl;
+    pageColorStruct = theme.page;
   }
 
   void themeUpdateListener() {
@@ -92,6 +102,9 @@ class _TWSInputTextState extends State<TWSInputText> {
   }
   @override
   Widget build(BuildContext context) {
+    bool limitWarning = widget.maxLength != null && (ctrl.text.length+5 > widget.maxLength!);
+    Color counterColor = (!widget.isStrictLength && limitWarning)? Colors.yellow : (!widget.isStrictLength && !limitWarning)? pageColorStruct.fore.withOpacity(0.80)
+    : (ctrl.text.length < (widget.maxLength ?? 0)) ? errorColorStruct.fore : Colors.green;
     return Material(
       color: Colors.transparent,
       child: SizedBox(
@@ -108,6 +121,7 @@ class _TWSInputTextState extends State<TWSInputText> {
           cursorColor: colorStruct.foreAlt,
           enabled: widget.isEnabled,
           onChanged: widget.onChanged,
+          onTap: widget.onTap,
           onTapOutside: widget.onTapOutside,
           maxLength: widget.maxLength,
           maxLines: widget.maxLines,
@@ -116,11 +130,24 @@ class _TWSInputTextState extends State<TWSInputText> {
           ),
           decoration: InputDecoration(
             hintText: widget.hint,
-            labelText: widget.label,
+            labelText: !widget.isOptional || widget.suffixLabel == null? widget.label : null,
+            label: widget.suffixLabel != null? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(widget.label ?? ""),
+                Text(
+                  widget.suffixLabel!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: colorStruct.foreAlt?.withOpacity(.5)
+                  ),
+                )
+              ],
+            ): null,
             errorText: widget.errorText,
             isDense: true,
             counterStyle: TextStyle(
-              color: (ctrl.text.length < (widget.maxLength ?? 0)) ? errorColorStruct.fore : Colors.green,
+              color: counterColor,
             ),
             labelStyle: TextStyle(
               color: colorStruct.foreAlt,
@@ -133,7 +160,7 @@ class _TWSInputTextState extends State<TWSInputText> {
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: colorStruct.highlight.withOpacity(.6),
+                color: widget.showErrorColor? errorColorStruct.fore :colorStruct.highlight.withOpacity(.6),
                 width: borderWidth,
               ),
             ),
