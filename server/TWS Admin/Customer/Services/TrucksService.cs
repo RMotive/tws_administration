@@ -15,6 +15,11 @@ using TWS_Customer.Services.Exceptions;
 using TWS_Customer.Services.Interfaces;
 using TWS_Customer.Services.Records;
 
+using TWS_Security.Depots;
+using TWS_Security.Sets;
+
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 namespace TWS_Customer.Services;
 public class TrucksService : ITrucksService {
     private readonly TruckDepot Trucks;
@@ -100,9 +105,21 @@ public class TrucksService : ITrucksService {
 
     public async Task<SourceTransactionOut<Truck>> Create(Truck[] trucks) {
         return await this.Trucks.Create(trucks);
-
     }
+    public async Task<RecordUpdateOut<Truck>> Update(Truck Truck) {
 
+        static IQueryable<Truck> include(IQueryable<Truck> query) {
+            return query
+            .Include(t => t.InsuranceNavigation)
+            .Include(t => t.ManufacturerNavigation)
+            .Include(t => t.MaintenanceNavigation)
+            .Include(t => t.SctNavigation)
+            .Include(t => t.SituationNavigation)
+            .Include(t => t.Plates);
+        }
+
+        return await Trucks.Update(Truck, include);
+    }
 
 
 

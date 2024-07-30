@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
+using CSM_Foundation.Core.Utils;
 using CSM_Foundation.Source.Enumerators;
 using CSM_Foundation.Source.Interfaces;
 using CSM_Foundation.Source.Models;
@@ -8,6 +9,7 @@ using CSM_Foundation.Source.Models.Options;
 using CSM_Foundation.Source.Models.Out;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CSM_Foundation.Source.Bases;
 /// <summary>
@@ -149,7 +151,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     /// </param>
     /// <param name="Sync">
     ///     Determines if the transaction should be broke at the first failure catched. This means that
-    ///     the previous successfully stored objects will be kept as stored but the next ones objects desired
+    ///     the current successfully stored objects will be kept as stored but the next ones objects desired
     ///     to be stored won't continue, the operation will throw new exception.
     /// </param>
     /// <returns>
@@ -227,22 +229,66 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     /// <param name="Set"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public async Task<RecordUpdateOut<TMigrationSet>> Update(TMigrationSet Record) {
-        TMigrationSet? previous = await Set
+    public async Task<RecordUpdateOut<TMigrationSet>> Update(TMigrationSet Record, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? Include = null) {
+        IQueryable<TMigrationSet> query = Set;
+        TMigrationSet? old = null;
+        TMigrationSet? current;
+
+        if (Include != null) {
+           query = Include(query);
+        }
+        current = await query
             .Where(i => i.Id == Record.Id)
-            .AsNoTracking()
             .FirstOrDefaultAsync();
 
-        _ = Set.Update(Record);
-        _ = await Source.SaveChangesAsync();
+        if (current != null) {
+            old = current.DeepCopy();
+            EntityEntry previousEntry = Source.Entry(current);
+            // Update the non-navigation properties
+            previousEntry.CurrentValues.SetValues(Record);
+
+            foreach (NavigationEntry navigation in previousEntry.Navigations) {
+                object? newNavigationValue = Source.Entry(Record).Navigation(navigation.Metadata.Name).CurrentValue;
+                // Validate if navigation is a collection
+                if (navigation.CurrentValue is IEnumerable<object> previousCollection && newNavigationValue is IEnumerable<object> newCollection) {
+                    List<object> previousList = previousCollection.ToList();
+                    List<object> newList = newCollection.ToList();
+
+                    // Select the minimun list length 
+                    int count = Math.Min(previousList.Count, newList.Count);
+
+                    for (int i = 0; i < count; i++) {
+                        //Update the current item. The items ID´s must be the same.
+                        Source.Entry(previousList[i]).CurrentValues.SetValues(newList[i]);
+                    }
+                } else {
+                    if (navigation.CurrentValue == null && newNavigationValue != null) {
+                        // Create a new navigation entity
+                        var newNavigationEntry = Source.Entry(newNavigationValue);
+                        newNavigationEntry.State = EntityState.Added;
+                        navigation.CurrentValue = newNavigationValue;
+                    } else if (navigation.CurrentValue != null && newNavigationValue != null) {
+                        // Update the existing navigation entity
+                        Source.Entry(navigation.CurrentValue).CurrentValues.SetValues(newNavigationValue);
+                    } else if (navigation.CurrentValue != null && newNavigationValue == null) {
+                        // Remove the existing navigation entity
+                        //Source.Entry(navigation.CurrentValue).State = EntityState.Deleted;
+                        //navigation.CurrentValue = null;
+                    }
+                }
+            }
+        } else {
+            //Generate a new insert if the given record data not exist.
+            Set.Update(Record);
+        }
+         await Source.SaveChangesAsync();
 
         Disposer?.Push(Source, Record);
         return new RecordUpdateOut<TMigrationSet> {
-            Previous = previous,
-            Updated = Record,
+            Previous = old,
+            Updated = current ?? Record,
         };
     }
-
     #endregion
 
     #region Delete

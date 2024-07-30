@@ -8,23 +8,30 @@ using TWS_Business.Sets;
 using TWS_Customer.Services.Interfaces;
 using TWS_Customer.Services.Records;
 
+using TWS_Security.Sets;
+
 namespace Server.Controllers;
 /// <summary>
 ///     Represents the controller to perform trucks operations.
 /// </summary>
-[ApiController, Route("[Controller]")]
+[ApiController, Route("[Controller]/[Action]")]
 public class TrucksController : ControllerBase {
     private readonly ITrucksService Service;
     public TrucksController(ITrucksService service) {
         this.Service = service;
     }
 
-    [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
+    [HttpPost(), Auth([])]
     public async Task<IActionResult> View(SetViewOptions Options) {
         return Ok(await Service.View(Options));
     }
 
-    [HttpPost("[Action]"), Auth(["ABC1", "ABC2"])]
+    [HttpPost(), Auth([])]
     public async Task<IActionResult> Create(Truck[] trucks)
         => Ok(await Service.Create(trucks));
+
+    [HttpPost(), Auth([])]
+    public async Task<IActionResult> Update(Truck Truck) {
+        return Ok(await Service.Update(Truck));
+    }
 }

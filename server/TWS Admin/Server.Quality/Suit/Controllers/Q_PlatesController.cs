@@ -64,7 +64,7 @@ public class Q_PlatesController : BQ_ServerController<Program> {
             State = "ABC",
             Country = "MXN",
             Expiration = year,
-            Truck = 6833, // <---- Important: Set a valid Truck ID
+            Truck = 1, // <---- Important: Set a valid Truck ID
         }, true);
 
         Response.Estela.TryGetValue("Advise", out object? value);
