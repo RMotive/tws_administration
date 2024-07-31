@@ -26,20 +26,24 @@ public class TrucksService : ITrucksService {
     private readonly InsurancesDepot Insurances;
     private readonly MaintenacesDepot Maintenaces;
     private readonly ManufacturersDepot Manufacturers;
+    private readonly StatusesDepot StatusesDepot;
+    private readonly HP_TruckDepot HP_TruckDepot;
     private readonly SctsDepot Sct;
     private readonly SituationsDepot Situations;
     private readonly PlatesDepot Plates;
 
     public TrucksService(
         TruckDepot Trucks, InsurancesDepot Insurances, MaintenacesDepot Maintenances,
-        ManufacturersDepot Manufacturers, SctsDepot Sct, SituationsDepot Situations, PlatesDepot Plates) {
+        ManufacturersDepot Manufacturers, SctsDepot Scts, SituationsDepot Situations, PlatesDepot Plates, StatusesDepot statusesDepot, HP_TruckDepot HP_TrucksDepot) {
         this.Trucks = Trucks;
         this.Insurances = Insurances;
-        Maintenaces = Maintenances;
+        this.Maintenaces = Maintenances;
         this.Manufacturers = Manufacturers;
-        this.Sct = Sct;
+        this.Sct = Scts;
         this.Situations = Situations;
         this.Plates = Plates;
+        this.StatusesDepot = statusesDepot;
+        this.HP_TruckDepot = HP_TrucksDepot;
     }
 
     public async Task<SetViewOut<Truck>> View(SetViewOptions options) {
@@ -50,6 +54,8 @@ public class TrucksService : ITrucksService {
             .Include(t => t.ManufacturerNavigation)
             .Include(t => t.MaintenanceNavigation)
             .Include(t => t.SctNavigation)
+            .Include(t => t.StatusNavigation)
+            .Include(t => t.HPNavigation)
             .Include(t => t.SituationNavigation)
             .Include(t => t.Plates)
             .Select(t => new Truck() {
@@ -57,10 +63,24 @@ public class TrucksService : ITrucksService {
                 Vin = t.Vin,
                 Manufacturer = t.Manufacturer,
                 Motor = t.Motor,
+                Modified = t.Modified,
                 Sct = t.Sct,
                 Maintenance = t.Maintenance,
                 Situation = t.Situation,
                 Insurance = t.Insurance,
+                Status = t.Status,
+                Hp = t.Hp,
+                StatusNavigation = t.StatusNavigation == null ? null : new Status() {
+                    Id = t.StatusNavigation.Id,
+                    Name = t.StatusNavigation.Name,
+                    Description = t.StatusNavigation.Description,
+                },
+                HPNavigation = t.HPNavigation == null ? null : new HPTruck() {
+                    Id = t.HPNavigation.Id,
+                    Creation = t.HPNavigation.Creation,
+                    Vin = t.HPNavigation.Vin,
+                    Motor = t .HPNavigation.Motor
+                },
                 SctNavigation = t.SctNavigation == null ? null : new Sct() {
                     Id = t.SctNavigation.Id,
                     Type = t.SctNavigation.Type,

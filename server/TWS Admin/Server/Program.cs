@@ -8,8 +8,6 @@ using CSM_Foundation.Core.Utils;
 using CSM_Foundation.Server.Utils;
 using CSM_Foundation.Source.Interfaces;
 
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-
 using Server.Managers;
 using Server.Middlewares;
 using Server.Models;
@@ -94,10 +92,10 @@ public partial class Program {
                 builder.Services.AddScoped<InsurancesDepot>();
                 builder.Services.AddScoped<SctsDepot>();
                 builder.Services.AddScoped<MaintenacesDepot>();
-
+                builder.Services.AddScoped<StatusesDepot>();
+                builder.Services.AddScoped<HP_TruckDepot>();
                 // --> Services
                 builder.Services.AddScoped<ISolutionsService, SolutionsService>();
-                builder.Services.AddScoped<ISecurityService, SecurityService>();
                 builder.Services.AddScoped<ISecurityService, SecurityService>();
                 builder.Services.AddScoped<IManufacturersService, ManufacturersService>();
                 builder.Services.AddScoped<ISituationsService, SituationsService>();

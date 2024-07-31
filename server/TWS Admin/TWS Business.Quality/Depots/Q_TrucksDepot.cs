@@ -1,6 +1,4 @@
-﻿
-
-using CSM_Foundation.Core.Utils;
+﻿using CSM_Foundation.Core.Utils;
 using CSM_Foundation.Source.Quality.Bases;
 
 using TWS_Business.Depots;
@@ -21,8 +19,10 @@ public class Q_TruckDepot
         return new() {
             Vin = RandomUtils.String(17),
             Motor = RandomUtils.String(16),
-            Manufacturer = 1,
-
+            Modified = DateTime.Now,
+            Hp = 1,
+            Status = 1,
+            Manufacturer = 1
         };
     }
 }

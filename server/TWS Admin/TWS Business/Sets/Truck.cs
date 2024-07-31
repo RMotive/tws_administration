@@ -16,6 +16,12 @@ public partial class Truck
 
     public string Motor { get; set; } = null!;
 
+    public int Hp { get; set; }
+
+    public DateTime Modified { get; set; }
+
+    public int Status { get; set; }
+
     public int? Sct { get; set; }
 
     public int? Maintenance { get; set; }
@@ -34,16 +40,15 @@ public partial class Truck
 
     public virtual Situation? SituationNavigation { get; set; }
 
+    public virtual Status? StatusNavigation { get; set; }
+
+    public virtual HPTruck? HPNavigation { get; set; }
+
     public virtual ICollection<Plate> Plates { get; set; } = [];
 
     public static void Set(ModelBuilder builder) {
         _ = builder.Entity<Truck>(entity => {
             _ = entity.HasKey(e => e.Id);
-
-            _ = entity.HasIndex(e => e.Vin)
-                .IsUnique();
-            _ = entity.HasIndex(e => e.Motor)
-                .IsUnique();
 
             _ = entity.Property(e => e.Id)
                 .HasColumnName("id");
@@ -52,19 +57,28 @@ public partial class Truck
                 .IsUnicode(false);
             _ = entity.Property(e => e.Sct)
                 .HasColumnName("SCT");
+            _ = entity.Property(e => e.Hp)
+               .HasColumnName("HP");
             _ = entity.Property(e => e.Vin)
                 .HasMaxLength(17)
                 .IsUnicode(false)
                 .HasColumnName("VIN");
 
+            _ = entity.HasOne(d => d.StatusNavigation)
+                .WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Status);
+            _ = entity.HasOne(d => d.HPNavigation)
+                .WithMany(p => p.Trucks)
+                .HasForeignKey(d => d.Hp)
+                .OnDelete(DeleteBehavior.ClientSetNull);
             _ = entity.HasOne(d => d.InsuranceNavigation)
                 .WithMany(p => p.Trucks)
                 .HasForeignKey(d => d.Insurance);
-
             _ = entity.HasOne(d => d.MaintenanceNavigation)
                 .WithMany(p => p.Trucks)
                 .HasForeignKey(d => d.Maintenance);
-            _ = entity.HasOne(d => d.ManufacturerNavigation).WithMany(p => p.Trucks)
+            _ = entity.HasOne(d => d.ManufacturerNavigation)
+                .WithMany(p => p.Trucks)
                 .HasForeignKey(d => d.Manufacturer)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             _ = entity.HasOne(d => d.SctNavigation)
@@ -72,7 +86,8 @@ public partial class Truck
                 .HasForeignKey(d => d.Sct);
             _ = entity.HasOne(d => d.SituationNavigation)
                 .WithMany(p => p.Trucks)
-                .HasForeignKey(d => d.Situation);
+                .HasForeignKey(d => d.Situation)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
     }
 

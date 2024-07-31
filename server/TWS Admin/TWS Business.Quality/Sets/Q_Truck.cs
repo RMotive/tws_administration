@@ -29,11 +29,14 @@ public class Q_Truck : BQ_MigrationSet<Truck> {
                 Id = -1,
                 Vin = Vin,
                 Manufacturer = 0,
+                Hp = 0,
+                Modified = DateTime.Now,
+                Status = 0,
                 Motor = Motor,
                 Sct = 0,
                 Maintenance = 0,
                 Situation = 0,
-                Insurance = 0,
+                Insurance = 0
             },
             Expectations = [
                 (nameof(Truck.Id), [(new PointerValidator(), 3) ]),
