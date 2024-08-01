@@ -22,13 +22,16 @@ public class Q_HPTruck: BQ_MigrationSet<HPTruck> {
             Mock = new() {
                 Id = -1,
                 Creation = DateTime.Now,
+                Status = -1,
                 Vin = "",
                 Motor = ""
             },
             Expectations = [
-                (nameof(Truck.Id), [(new PointerValidator(), 3) ]),
-                (nameof(Truck.Vin), [(new LengthValidator(),2)]),
-                (nameof(Truck.Motor), [(new LengthValidator(),2)]),
+                (nameof(HPTruck.Id), [(new PointerValidator(), 3) ]),
+                (nameof(HPTruck.Vin), [(new LengthValidator(),2)]),
+                (nameof(HPTruck.Motor), [(new LengthValidator(),2)]),
+                (nameof(HPTruck.Status), [(new PointerValidator(isDependency: true),3)]),
+
             ],
         };
 

@@ -11,7 +11,7 @@ DROP TABLE Insurances;
 DROP TABLE Situations;
 DROP TABLE SCT;
 DROP TABLE HP_Trucks;
-DROP TABLE Status;
+DROP TABLE Statuses;
 
 
 create table Maintenances(
@@ -47,18 +47,25 @@ Number varchar(25) NOT NULL,
 Configuration varchar(10) NOT NULL
 );
 
+create table Statuses(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+Name nvarchar (25) UNIQUE NOT NULL,
+Description nvarchar (150)
+)
+
 create table HP_Trucks(
 id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
 Creation datetime2 NOT NULL,
 VIN varchar(17) UNIQUE NOT NULL,
 Motor varchar(16) UNIQUE NOT NULL,
+Status int NOT NULL,
+
+constraint FK@HP_Trucks_Statuses foreign key(Status) references Statuses(id)
+                                                                                                                                                                                                                                                                                                                                                                                                                  Status int NOT NULL,
+
 );
 
-create table Status(
-id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
-Name nvarchar (25) UNIQUE NOT NULL,
-Description nvarchar (150)
-);
+;
 
 create table Trucks(
  id int IDENTITY(1,1) PRIMARY KEY,
@@ -67,7 +74,6 @@ create table Trucks(
  Motor varchar(16) NOT NULL,
  HP int NOT NULL,
  Modified DateTime2 NOT NULL,
- Status int NOT NULL,
  SCT int,
  Maintenance int,
  Situation int,
@@ -78,8 +84,6 @@ create table Trucks(
  constraint FK@Trucks_Situations foreign key(Situation) references Situations(id),
  constraint FK@Trucks_SCT foreign key(SCT) references SCT(id),
  constraint FK@Trucks_HP foreign key(HP) references HP_Trucks(id),
- constraint FK@Trucks_Status foreign key(Status) references Status(id),
-
 );
 
 create table Plates(
@@ -106,17 +110,18 @@ VALUES('TestingPolicy1-12331','2024-10-10','MEX'),('TestingPolicy2-32331','2024-
 INSERT INTO Situations(Name,Description)
 VALUES('In Maintenance', 'This unit is out of service'), ('In Transit', 'Work in Transit'), ('Out of service', 'Maintenance Required ');
 
-INSERT INTO Status(Name, Description)
+INSERT INTO Statuses(Name, Description)
 VALUES('Enable','Currently Active in this Solution.'), ('Disable', 'A deleted status. Stored for historical propurses. A disable record has limited features and visibility settings.');
 
 INSERT INTO SCT(Type,Number,Configuration)
 VALUES('Type06','SCTtesting1-1232111513111', 'confTest01'),('Type09','SCTtesting2-2232111513111', 'confTest02'),('Type12','SCTtesting3-3232111513111', 'confTest03');
 
-INSERT INTO HP_Trucks(Creation, VIN, Motor)
-VALUES(SYSDATETIME(),'VINtest1-13324231', 'Motortestnumber1'), (SYSDATETIME(),'VINtest2-63324231', 'Motortestnumber2'), (SYSDATETIME(),'VINtest3-93324231', 'Motortestnumber3');
+INSERT INTO HP_Trucks(Creation, VIN, Motor, Status)
+VALUES(SYSDATETIME(),'VINtest1-13324231', 'Motortestnumber1', 1), (SYSDATETIME(),'VINtest2-63324231', 'Motortestnumber2', 1), (SYSDATETIME(),'VINtest3-93324231', 'Motortestnumber3', 1);
 
-INSERT INTO Trucks(VIN, Manufacturer, Motor, SCT, Maintenance, Situation, Insurance, HP, Modified, Status)
-VALUES('VINtest1-13324231',1,'Motortestnumber1',1,1,1,1,1,SYSDATETIME(),1),('VINtest2-63324231',2,'Motortestnumber2',2,2,2,2,2,SYSDATETIME(),1),('VINtest3-93324231',3,'Motortestnumber3',3,3,3,3,3,SYSDATETIME(),1);
+INSERT INTO Trucks(VIN, Manufacturer, Motor, SCT, Maintenance, Situation, Insurance, HP, Modified)
+VALUES('VINtest1-13324231',1,'Motortestnumber1',1,1,1,1,1,SYSDATETIME()),('VINtest2-63324231',2,'Motortestnumber2',2,2,2,2,2,SYSDATETIME()),('VINtest3-93324231',3,'Motortestnumber3',3,3,3,3,3,SYSDATETIME());
+
 
 INSERT INTO Plates(Identifier,State,Country,Expiration, Truck)
 VALUES('SADC2423E132','CA','USA','2024-07-01',1),('TMEX2323EST2','BC','MEX','2024-09-02',2), ('TXH214E3ESC1','TX','USA','2024-11-03',3);

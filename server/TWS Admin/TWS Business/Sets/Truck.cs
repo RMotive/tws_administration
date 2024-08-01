@@ -20,8 +20,6 @@ public partial class Truck
 
     public DateTime Modified { get; set; }
 
-    public int Status { get; set; }
-
     public int? Sct { get; set; }
 
     public int? Maintenance { get; set; }
@@ -40,7 +38,6 @@ public partial class Truck
 
     public virtual Situation? SituationNavigation { get; set; }
 
-    public virtual Status? StatusNavigation { get; set; }
 
     public virtual HPTruck? HPNavigation { get; set; }
 
@@ -64,9 +61,6 @@ public partial class Truck
                 .IsUnicode(false)
                 .HasColumnName("VIN");
 
-            _ = entity.HasOne(d => d.StatusNavigation)
-                .WithMany(p => p.Trucks)
-                .HasForeignKey(d => d.Status);
             _ = entity.HasOne(d => d.HPNavigation)
                 .WithMany(p => p.Trucks)
                 .HasForeignKey(d => d.Hp)

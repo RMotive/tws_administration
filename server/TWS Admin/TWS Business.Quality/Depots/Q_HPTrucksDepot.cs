@@ -19,6 +19,7 @@ public class Q_HPTrucksDepot
         return new() {
             Vin = RandomUtils.String(17),
             Motor = RandomUtils.String(16),
+            Status = 1,
             Creation = DateTime.Now,
         };
     }

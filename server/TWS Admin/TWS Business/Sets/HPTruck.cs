@@ -16,6 +16,10 @@ public partial class HPTruck
 
     public string Motor { get; set; } = null!;
 
+    public int Status { get; set; }
+
+    public virtual Status? StatusNavigation { get; set; }
+
     public virtual ICollection<Truck> Trucks { get; set; } = [];
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container) {
@@ -25,6 +29,9 @@ public partial class HPTruck
                 .. Container,
             (nameof(Vin), [Unique, new LengthValidator(17, 17)]),
             (nameof(Motor), [Unique, new LengthValidator(15, 16)]),
+            (nameof(Status), [new PointerValidator(true)]),
+
+
         ];
 
         return Container;
@@ -37,6 +44,9 @@ public partial class HPTruck
             _ = entity.Property(e => e.Id)
                .HasColumnName("id");
 
+            _ = entity.HasOne(d => d.StatusNavigation)
+                .WithMany(p => p.HPTrucks)
+                .HasForeignKey(d => d.Status);
             _ = entity.HasIndex(e => e.Vin)
                 .IsUnique();
             _ = entity.Property(e => e.Vin)

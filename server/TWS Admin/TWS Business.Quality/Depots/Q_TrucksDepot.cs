@@ -21,7 +21,6 @@ public class Q_TruckDepot
             Motor = RandomUtils.String(16),
             Modified = DateTime.Now,
             Hp = 1,
-            Status = 1,
             Manufacturer = 1
         };
     }

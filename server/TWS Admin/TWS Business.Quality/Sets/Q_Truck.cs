@@ -31,7 +31,6 @@ public class Q_Truck : BQ_MigrationSet<Truck> {
                 Manufacturer = 0,
                 Hp = 0,
                 Modified = DateTime.Now,
-                Status = 0,
                 Motor = Motor,
                 Sct = 0,
                 Maintenance = 0,

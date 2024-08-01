@@ -13,7 +13,7 @@ public partial class Status
 
     public string Description { get; set; } = null!;
 
-    public virtual ICollection<Truck> Trucks { get; set; } = [];
+    public virtual ICollection<HPTruck> HPTrucks { get; set; } = [];
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container) {
         RequiredValidator Required = new();

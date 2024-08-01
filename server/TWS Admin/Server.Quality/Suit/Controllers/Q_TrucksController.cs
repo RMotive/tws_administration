@@ -42,7 +42,7 @@ public class Q_TrucksController : BQ_CustomServerController {
     public async Task View() {
         (HttpStatusCode Status, ServerGenericFrame Response) = await Post("View", new SetViewOptions {
             Page = 1,
-            Range = 2,
+            Range = 10,
             Retroactive = false,
         }, true);
 
@@ -85,7 +85,14 @@ public class Q_TrucksController : BQ_CustomServerController {
                 Number = "NumberSCTTesting value" + iterationTag,
                 Configuration = "Conf" + iterationTag
             };
-           
+            string vin = "VINnumber test" + iterationTag;
+            string motor = "Motor number " + iterationTag;
+            HPTruck hp = new() {
+                Creation = DateTime.Now,
+                Vin = vin,
+                Motor = motor,
+                Status = 1
+            };
             Plate plateMX = new() {
                 Identifier = "mxPlate" + iterationTag,
                 State = "BAC",
@@ -103,9 +110,12 @@ public class Q_TrucksController : BQ_CustomServerController {
 
             List<Plate> plateList = [plateMX, plateUSA];
             Truck truck = new() {
-                Vin = "VINnumber test" + iterationTag,
-                Motor = "Motor number " + iterationTag,
+                Vin = vin,
+                Motor = motor,
                 Maintenance = 0,
+                Hp = 0,
+                Modified = DateTime.Now,
+                HPNavigation = hp,
                 ManufacturerNavigation = manufacturer,
                 InsuranceNavigation = insurance,
                 MaintenanceNavigation = maintenace,
@@ -116,7 +126,7 @@ public class Q_TrucksController : BQ_CustomServerController {
             mockList.Add(truck);
         }
 
-        (HttpStatusCode Status, _) = await Post("Create", mockList, true);
+        (HttpStatusCode Status, ServerGenericFrame response) = await Post("Create", mockList, true);
         Assert.Equal(HttpStatusCode.OK, Status);
 
     }
@@ -131,12 +141,10 @@ public class Q_TrucksController : BQ_CustomServerController {
                 Brand = "SCANIA TEST" + testTag,
                 Year = date
             };
-            Insurance insurance = new() {
-                Policy = "P232Policy" + testTag,
-                Expiration = date,
-                Country = "MEX"
+            Situation situation = new() {
+                Name = "Situational test " + testTag,
+                Description = "Description test " + testTag
             };
-
             Maintenance maintenace = new() {
                 Anual = date,
                 Trimestral = date,
@@ -146,10 +154,7 @@ public class Q_TrucksController : BQ_CustomServerController {
                 Number = "NumberSCTTesting value" + testTag,
                 Configuration = "Conf" + testTag
             };
-            Situation situation = new() {
-                Name = "Situational test " + testTag,
-                Description = "Description test " + testTag
-            };
+
             Plate plateMX = new() {
                 Identifier = "mxPlate" + testTag,
                 State = "BAC",
@@ -166,20 +171,31 @@ public class Q_TrucksController : BQ_CustomServerController {
             };
 
             List<Plate> plateList = [plateMX, plateUSA];
-            Truck truck = new() {
+            string vin = "VINnumber test" + testTag;
+            string motor = "Motor number " + testTag;
+            HPTruck hp = new() {
+                Creation = DateTime.Now,
+                Vin = vin,
+                Motor = motor,
+                Status = 1
+            };
+
+            Truck mock = new() {
                 Id = 0,
-                Vin = "VINnumber test" + testTag,
-                Motor = "Motor number " + testTag,
+                Vin = vin,
+                Motor = motor,
                 Manufacturer = 0,
+                Hp = 0,
+                Modified = DateTime.Now,
+                HPNavigation = hp,
                 ManufacturerNavigation = manufacturer,
-                InsuranceNavigation = insurance,
                 MaintenanceNavigation = maintenace,
                 SctNavigation = sct,
                 SituationNavigation = situation,
                 Plates = plateList,
             };
 
-            (HttpStatusCode Status, ServerGenericFrame Respone) = await Post("Update", truck, true);
+            (HttpStatusCode Status, ServerGenericFrame Respone) = await Post("Update", mock, true);
 
             Assert.Equal(HttpStatusCode.OK, Status);
             RecordUpdateOut<Truck> creationResult = Framing<SuccessFrame<RecordUpdateOut<Truck>>>(Respone).Estela;
@@ -232,11 +248,23 @@ public class Q_TrucksController : BQ_CustomServerController {
             };
 
             List<Plate> plateList = [plateMX, plateUSA];
+            string vin = "VINnumber test" + testTag;
+            string motor = "Motor number " + testTag;
+            HPTruck hp = new() { 
+                Creation = DateTime.Now,
+                Vin = vin,
+                Motor = motor,
+                Status = 1
+            };
+
             Truck mock = new() {
                 Id = 0,
-                Vin = "VINnumber test" + testTag,
-                Motor = "Motor number " + testTag,
+                Vin = vin,
+                Motor = motor,
                 Manufacturer = 0,
+                Hp = 0,
+                Modified = DateTime.Now,
+                HPNavigation = hp, 
                 ManufacturerNavigation = manufacturer,
                 MaintenanceNavigation = maintenace,
                 SctNavigation = sct,
@@ -262,9 +290,14 @@ public class Q_TrucksController : BQ_CustomServerController {
 
             #region update only main properties
             // Validate main properties changes to the previous record.
+            string modifiedVin = testKey + RandomUtils.String(12);
+            string modifiedMotor = testKey + RandomUtils.String(11);
             mock = creationRecord;
-            mock.Vin = testKey + RandomUtils.String(12);
-            mock.Motor = testKey + RandomUtils.String(11);
+            mock.Modified = DateTime.Now;
+            mock.HPNavigation!.Vin = modifiedVin;
+            mock.HPNavigation!.Motor = modifiedMotor;
+            mock.Vin = modifiedVin;
+            mock.Motor = modifiedMotor;
 
             (HttpStatusCode Status, ServerGenericFrame Response) updateResponse = await Post("Update", mock, true);
 
@@ -289,7 +322,7 @@ public class Q_TrucksController : BQ_CustomServerController {
             // Validate nested properties changes to the previous record.
             creationRecord = updateRecord;
             mock = updateRecord;
-            testKey = "Second";
+            mock.Modified = DateTime.Now;
             List<Plate> updatedPlates = [.. mock.Plates];
             updatedPlates[0].Identifier = RandomUtils.String(12);
             updatedPlates[1].Identifier = RandomUtils.String(12);
@@ -325,6 +358,7 @@ public class Q_TrucksController : BQ_CustomServerController {
             #region update both, main properties and navigation properties.
             // Validate nested properties changes to the previous record.
             mock = updateRecord;
+            mock.Modified = DateTime.Now;
             mock.Vin = RandomUtils.String(17);
             mock.Motor = RandomUtils.String(16);
             updatedPlates[0].Identifier = RandomUtils.String(12);
