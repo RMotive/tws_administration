@@ -1,4 +1,5 @@
-﻿using CSM_Foundation.Source.Bases;
+﻿using CSM_Foundation.Core.Bases;
+using CSM_Foundation.Source.Bases;
 using CSM_Foundation.Source.Interfaces;
 using CSM_Foundation.Source.Validators;
 
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace TWS_Business.Sets;
 
 public partial class Truck
-    : BSourceSet {
+    :BSourceSet  {
     public override int Id { get; set; }
 
     public string Vin { get; set; } = null!;

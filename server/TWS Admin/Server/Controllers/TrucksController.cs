@@ -31,7 +31,7 @@ public class TrucksController : ControllerBase {
         => Ok(await Service.Create(trucks));
 
     [HttpPost(), Auth([])]
-    public async Task<IActionResult> Update(Truck Truck) {
-        return Ok(await Service.Update(Truck));
+    public async Task<IActionResult> Update(Truck Truck, bool updatePivot = false) {
+        return Ok(await Service.Update(Truck, updatePivot));
     }
 }

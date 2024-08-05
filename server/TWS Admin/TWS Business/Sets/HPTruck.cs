@@ -15,7 +15,6 @@ public partial class HPTruck
     public string Vin { get; set; } = null!;
 
     public string Motor { get; set; } = null!;
-
     public int Status { get; set; }
 
     public virtual Status? StatusNavigation { get; set; }

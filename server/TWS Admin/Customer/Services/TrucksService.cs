@@ -54,7 +54,6 @@ public class TrucksService : ITrucksService {
             .Include(t => t.ManufacturerNavigation)
             .Include(t => t.MaintenanceNavigation)
             .Include(t => t.SctNavigation)
-            .Include(t => t.StatusNavigation)
             .Include(t => t.HPNavigation)
             .Include(t => t.SituationNavigation)
             .Include(t => t.Plates)
@@ -68,13 +67,7 @@ public class TrucksService : ITrucksService {
                 Maintenance = t.Maintenance,
                 Situation = t.Situation,
                 Insurance = t.Insurance,
-                Status = t.Status,
                 Hp = t.Hp,
-                StatusNavigation = t.StatusNavigation == null ? null : new Status() {
-                    Id = t.StatusNavigation.Id,
-                    Name = t.StatusNavigation.Name,
-                    Description = t.StatusNavigation.Description,
-                },
                 HPNavigation = t.HPNavigation == null ? null : new HPTruck() {
                     Id = t.HPNavigation.Id,
                     Creation = t.HPNavigation.Creation,
@@ -126,8 +119,8 @@ public class TrucksService : ITrucksService {
     public async Task<SourceTransactionOut<Truck>> Create(Truck[] trucks) {
         return await this.Trucks.Create(trucks);
     }
-    public async Task<RecordUpdateOut<Truck>> Update(Truck Truck) {
-
+    public async Task<RecordUpdateOut<Truck>> Update(Truck Truck, bool updatePivot = false) {
+        
         static IQueryable<Truck> include(IQueryable<Truck> query) {
             return query
             .Include(t => t.InsuranceNavigation)
@@ -135,10 +128,13 @@ public class TrucksService : ITrucksService {
             .Include(t => t.MaintenanceNavigation)
             .Include(t => t.SctNavigation)
             .Include(t => t.SituationNavigation)
+            .Include(t => t.HPNavigation)
             .Include(t => t.Plates);
         }
+        
+        return await Trucks.Update(Truck, include) ;
 
-        return await Trucks.Update(Truck, include);
+
     }
 
 

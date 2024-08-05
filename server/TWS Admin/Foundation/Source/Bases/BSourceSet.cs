@@ -5,15 +5,16 @@ using CSM_Foundation.Source.Exceptions;
 using CSM_Foundation.Source.Interfaces;
 using CSM_Foundation.Source.Validators;
 
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CSM_Foundation.Source.Bases;
+
 public abstract class BSourceSet
     : BObject<ISourceSet>, ISourceSet {
     public abstract int Id { get; set; }
     private (string Property, IValidator[] Validators)[]? Validators { get; set; }
     private bool Defined { get; set; } = false;
-
     protected abstract (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container);
     protected void Evaluate((string Propety, IValidator[] Validators)[] Custom) {
         Validators ??= Validations([]);
@@ -49,6 +50,7 @@ public abstract class BSourceSet
 
         throw new XBMigrationSet_Evaluate(GetType(), unvalidations);
     }
+   
     public void EvaluateRead() {
         Evaluate([
             (nameof(Id), [new PointerValidator()])

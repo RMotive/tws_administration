@@ -7,11 +7,18 @@ using CSM_Foundation.Source.Interfaces;
 using CSM_Foundation.Source.Models;
 using CSM_Foundation.Source.Models.Options;
 using CSM_Foundation.Source.Models.Out;
+using CSM_Foundation.Source.Quality.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
+using Xunit;
+
 namespace CSM_Foundation.Source.Bases;
+//public abstract class BHistoryMigrationDepot: BMigrationDepot {
+
+//}
+
 /// <summary>
 ///     Defines base behaviors for a <see cref="IMigrationDepot{TMigrationSet}"/>
 ///     implementation describing <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/>
@@ -223,17 +230,65 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
     #region Update 
 
+
+    /// <summary>
+    /// Perform the navigation changes in a Tmigrationset
+    /// </summary>
+    void UpdateHelper(TMigrationSet current, TMigrationSet Record) {
+        EntityEntry previousEntry = Source.Entry(current);
+        // Update the non-navigation properties.
+        previousEntry.CurrentValues.SetValues(Record);
+        foreach (NavigationEntry navigation in previousEntry.Navigations) {
+            object? newNavigationValue = Source.Entry(Record).Navigation(navigation.Metadata.Name).CurrentValue;
+            // Validate if navigation is a collection.
+            if (navigation.CurrentValue is IEnumerable<object> previousCollection && newNavigationValue is IEnumerable<object> newCollection) {
+                List<object> previousList = previousCollection.ToList();
+                List<object> newList = newCollection.ToList();
+                //  Perform a search for new items to add in the collection.
+                // NOTE: the followings iterations must be performed in diferent code segments to avoid index length conflicts.
+                for(int i = 0; i < newList.Count; i++) {
+                    BSourceSet? newItemSet = newList[i] as BSourceSet;
+                    if (newItemSet!.Id <= 0) {
+                        var newNavigationEntry = Source.Entry(newList[i]);
+                        newNavigationEntry.State = EntityState.Added;
+                    }
+                }
+                for (int i = 0; i < previousList.Count; i++) {
+                    BSourceSet? previousItem = previousList[i] as BSourceSet;
+              
+                    // Find items to modify.
+                    // For each new item stored in record collection, will search for an ID match and update the record.
+                    // This update only take effect on non-nested properties.
+                    foreach (object newitem in newList) {
+                        BSourceSet? newItemSet = newitem as BSourceSet;
+                        if (previousItem!.Id == newItemSet!.Id) Source.Entry(previousList[i]).CurrentValues.SetValues(newitem);
+                    }
+                }
+            } else {
+                if (navigation.CurrentValue == null && newNavigationValue != null) {
+                    // Create a new navigation entity.
+                    // Also update the attached navigators.
+                    var newNavigationEntry = Source.Entry(newNavigationValue);
+                    newNavigationEntry.State = EntityState.Added;
+                    navigation.CurrentValue = newNavigationValue;
+                } else if (navigation.CurrentValue != null && newNavigationValue != null) {
+                    // Update the existing navigation entity
+                    Source.Entry(navigation.CurrentValue).CurrentValues.SetValues(newNavigationValue);
+                }
+            }
+        }
+    }
     /// <summary>
     /// 
     /// </summary>
     /// <param name="Set"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
+    /// 
     public async Task<RecordUpdateOut<TMigrationSet>> Update(TMigrationSet Record, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? Include = null) {
         IQueryable<TMigrationSet> query = Set;
         TMigrationSet? old = null;
         TMigrationSet? current;
-
         if (Include != null) {
            query = Include(query);
         }
@@ -242,41 +297,8 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             .FirstOrDefaultAsync();
 
         if (current != null) {
-            old = current.DeepCopy();
-            EntityEntry previousEntry = Source.Entry(current);
-            // Update the non-navigation properties
-            previousEntry.CurrentValues.SetValues(Record);
-
-            foreach (NavigationEntry navigation in previousEntry.Navigations) {
-                object? newNavigationValue = Source.Entry(Record).Navigation(navigation.Metadata.Name).CurrentValue;
-                // Validate if navigation is a collection
-                if (navigation.CurrentValue is IEnumerable<object> previousCollection && newNavigationValue is IEnumerable<object> newCollection) {
-                    List<object> previousList = previousCollection.ToList();
-                    List<object> newList = newCollection.ToList();
-
-                    // Select the minimun list length 
-                    int count = Math.Min(previousList.Count, newList.Count);
-
-                    for (int i = 0; i < count; i++) {
-                        //Update the current item. The items ID´s must be the same.
-                        Source.Entry(previousList[i]).CurrentValues.SetValues(newList[i]);
-                    }
-                } else {
-                    if (navigation.CurrentValue == null && newNavigationValue != null) {
-                        // Create a new navigation entity
-                        var newNavigationEntry = Source.Entry(newNavigationValue);
-                        newNavigationEntry.State = EntityState.Added;
-                        navigation.CurrentValue = newNavigationValue;
-                    } else if (navigation.CurrentValue != null && newNavigationValue != null) {
-                        // Update the existing navigation entity
-                        Source.Entry(navigation.CurrentValue).CurrentValues.SetValues(newNavigationValue);
-                    } else if (navigation.CurrentValue != null && newNavigationValue == null) {
-                        // Remove the existing navigation entity
-                        //Source.Entry(navigation.CurrentValue).State = EntityState.Deleted;
-                        //navigation.CurrentValue = null;
-                    }
-                }
-            }
+           old = current.DeepCopy();
+           UpdateHelper(current, Record);
         } else {
             //Generate a new insert if the given record data not exist.
             Set.Update(Record);
@@ -319,6 +341,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         Source.ChangeTracker.Clear();
         return Set;
     }
+
 
     #endregion
 }

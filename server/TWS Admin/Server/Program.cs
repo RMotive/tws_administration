@@ -102,6 +102,7 @@ public partial class Program {
                 builder.Services.AddScoped<IPlatesService, PlatesServices>();
                 builder.Services.AddScoped<ITrucksService, TrucksService>();
                 builder.Services.AddScoped<IContactService, ContactService>();
+                builder.Services.AddScoped<IHPTruckService, HPTrucksService>();
             }
             WebApplication app = builder.Build();
             app.MapControllers();

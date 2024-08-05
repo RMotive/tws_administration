@@ -61,11 +61,7 @@ Motor varchar(16) UNIQUE NOT NULL,
 Status int NOT NULL,
 
 constraint FK@HP_Trucks_Statuses foreign key(Status) references Statuses(id)
-                                                                                                                                                                                                                                                                                                                                                                                                                  Status int NOT NULL,
-
 );
-
-;
 
 create table Trucks(
  id int IDENTITY(1,1) PRIMARY KEY,
