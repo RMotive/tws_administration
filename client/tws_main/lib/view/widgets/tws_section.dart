@@ -19,6 +19,7 @@ class TWSSection extends StatelessWidget {
   /// The padding that the border decorator will use
   final EdgeInsets padding;
 
+  final bool isOptional;
   /// Renders a page section.
   ///
   /// Theme Struct:
@@ -26,6 +27,7 @@ class TWSSection extends StatelessWidget {
   ///   - optional[twsSectionStruct]
   const TWSSection({
     super.key,
+    this.isOptional = false,
     this.padding = const EdgeInsets.symmetric(
       horizontal: 15,
       vertical: 20,
@@ -39,14 +41,15 @@ class TWSSection extends StatelessWidget {
     final TWSAThemeBase theme = getTheme();
     final CSMColorThemeOptions pageStruct = theme.page;
     final SectionThemeStruct? sectionStruct = theme.twsSectionStruct;
-
+    final Color borderColor = isOptional?  pageStruct.fore.withOpacity(0.50) : sectionStruct?.borderColor ?? pageStruct.highlight;
     return Padding(
       padding: padding,
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border.fromBorderSide(
             BorderSide(
-              width: 2, color: sectionStruct?.borderColor ?? pageStruct.highlight,
+              width: 2, 
+              color: borderColor,
               strokeAlign: BorderSide.strokeAlignCenter
             ),
           ),
@@ -66,12 +69,12 @@ class TWSSection extends StatelessWidget {
                       child: Text(
                         title,
                         style: sectionStruct?.titleStyle ??
-                            TextStyle(
-                              color: pageStruct.fore,
-                              fontSize: 18,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        TextStyle(
+                          color: pageStruct.fore,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),

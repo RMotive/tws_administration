@@ -31,7 +31,7 @@ public abstract class BSourceDepot<TSource, TSourceSet>
 
     protected readonly IMigrationDisposer? Disposer;
     /// <summary>
-    ///     Name to handle direct transactions (not-safe)
+    ///     Name to handle direct transactions (not-saved)
     /// </summary>
     protected readonly TSource Source;
     /// <summary>
@@ -161,25 +161,23 @@ public abstract class BSourceDepot<TSource, TSourceSet>
 
         foreach (TSourceSet set in Sets) {
             try {
-                set.EvaluateWrite();
-                safe = [.. safe, set];
+                record.EvaluateWrite();
+                Source.ChangeTracker.Clear();
+                this.Set.Attach(record);
+                await Source.SaveChangesAsync();
+                saved = [.. saved, record];
             } catch (Exception excep) {
                 if (Sync) {
                     throw;
                 }
 
-                SourceTransactionFailure fail = new(set, excep);
+                SourceTransactionFailure fail = new(record, excep);
                 fails = [.. fails, fail];
             }
         }
 
-
-        Source.ChangeTracker.Clear();
-        await Set.AddRangeAsync(safe);
-        _ = await Source.SaveChangesAsync();
-
         Disposer?.Push(Source, Sets);
-        return new(safe, fails);
+        return new(saved, fails);
     }
 
     #endregion

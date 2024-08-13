@@ -13,7 +13,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Truck> {
 
     MigrationView<Truck> view = await resolver.act(const MigrationViewDecode<Truck>(TruckDecoder())).catchError(
       (Object x, StackTrace s) {
-        const CSMAdvisor('solution-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
+        const CSMAdvisor('truck-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
         throw x;
       },
     );

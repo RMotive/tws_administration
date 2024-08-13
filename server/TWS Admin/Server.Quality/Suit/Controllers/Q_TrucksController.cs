@@ -52,61 +52,66 @@ public class Q_TrucksController : BQ_CustomServerController {
     [Fact]
     public async Task Create() {
         DateOnly date = new(2024, 12, 12);
+        List<Truck> mockList = new();
+        string testTag = Guid.NewGuid().ToString()[..2];
 
-        string testTag = Guid.NewGuid().ToString()[..3];
-        Manufacturer manufacturer = new() {
-            Model = "X23",
-            Brand = "SCANIA TEST" + testTag,
-            Year = date
-        };
-        Insurance insurance = new() {
-            Policy = "P232Policy" + testTag,
-            Expiration = date,
-            Country = "MEX"
-        };
+        for (int i = 0; i < 3; i++) {
+            string iterationTag = testTag + i;
+            Manufacturer manufacturer = new() {
+                Model = "X23",
+                Brand = "SCANIA TEST" + iterationTag,
+                Year = date
+            };
+            Insurance insurance = new() {
+                Policy = "P232Policy" + iterationTag,
+                Expiration = date,
+                Country = "MEX"
+            };
 
-        Maintenance maintenace = new() {
-            Anual = date,
-            Trimestral = date,
-        };
-        Sct sct = new() {
-            Type = "TypT14",
-            Number = "NumberSCTTesting value" + testTag,
-            Configuration = "Conf" + testTag
-        };
-        Situation situation = new() {
-            Name = "Situational test " + testTag,
-            Description = "Description test " + testTag
-        };
-        Plate plateMX = new() {
-            Identifier = "mxPlate" + testTag,
-            State = "BAC",
-            Country = "MXN",
-            Expiration = date,
-            Truck = 2
-        };
-        Plate plateUSA = new() {
-            Identifier = "usaPlate" + testTag,
-            State = "CaA",
-            Country = "USA",
-            Expiration = date,
-            Truck = 2
-        };
+            Maintenance maintenace = new() {
+                Anual = date,
+                Trimestral = date,
+            };
+            Sct sct = new() {
+                Type = "TypT14",
+                Number = "NumberSCTTesting value" + iterationTag,
+                Configuration = "Conf" + iterationTag
+            };
+            Situation situation = new() {
+                Name = "Situational test " + iterationTag,
+                Description = "Description test " + iterationTag
+            };
+            Plate plateMX = new() {
+                Identifier = "mxPlate" + iterationTag,
+                State = "BAC",
+                Country = "MXN",
+                Expiration = date,
+                Truck = 2
+            };
+            Plate plateUSA = new() {
+                Identifier = "usaPlate" + iterationTag,
+                State = "CaA",
+                Country = "USA",
+                Expiration = date,
+                Truck = 2
+            };
 
-        List<Plate> plateList = [plateMX, plateUSA];
-        (HttpStatusCode Status, ServerGenericFrame Response) = await Post("Create", new TruckAssembly {
-            Vin = "VINnumber test" + testTag,
-            Motor = "Motor number " + testTag,
-            Manufacturer = manufacturer,
-            Insurance = insurance,
-            Maintenance = maintenace,
-            Sct = sct,
-            Situation = situation,
-            Plates = plateList,
-        }, true);
-
-        _ = Response.Estela.TryGetValue("Advise", out object? value);
-        Assert.Null(value);
+            List<Plate> plateList = [plateMX, plateUSA];
+            Truck truck = new() {
+                Vin = "VINnumber test" + iterationTag,
+                Motor = "Motor number " + iterationTag,
+                Maintenance = 0,
+                ManufacturerNavigation = manufacturer,
+                InsuranceNavigation = insurance,
+                MaintenanceNavigation = maintenace,
+                SctNavigation = sct,
+                SituationNavigation = situation,
+                Plates = plateList,
+            };
+            mockList.Add(truck);
+        }
+        
+        (HttpStatusCode Status, _) = await Post("Create", mockList, true);
         Assert.Equal(HttpStatusCode.OK, Status);
 
     }

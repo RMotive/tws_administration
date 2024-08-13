@@ -9,5 +9,5 @@ namespace TWS_Customer.Services.Interfaces;
 public interface ITrucksService {
     Task<SetViewOut<Truck>> View(SetViewOptions options);
 
-    Task<TruckAssembly> Create(TruckAssembly truck);
+    Task<SourceTransactionOut<Truck>> Create(Truck[] trucks);
 }

@@ -1,6 +1,7 @@
 ﻿
 using System.Net;
 
+using CSM_Foundation.Core.Utils;
 using CSM_Foundation.Server.Quality.Bases;
 using CSM_Foundation.Server.Records;
 using CSM_Foundation.Source.Models.Options;
@@ -59,14 +60,14 @@ public class Q_PlatesController : BQ_ServerController<Program> {
         DateOnly year = new(2024, 11, 11);
 
         (HttpStatusCode Status, ServerGenericFrame Response) = await Post("Create", new Plate() {
-            Identifier = "TMEX232TEST5",
+            Identifier = RandomUtils.String(10),
             State = "ABC",
             Country = "MXN",
             Expiration = year,
-            Truck = 1,
+            Truck = 6833, // <---- Important: Set a valid Truck ID
         }, true);
 
-        _ = Response.Estela.TryGetValue("Advise", out object? value);
+        Response.Estela.TryGetValue("Advise", out object? value);
         Assert.Null(value);
         Assert.Equal(HttpStatusCode.OK, Status);
 
