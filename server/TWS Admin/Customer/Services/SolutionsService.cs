@@ -47,4 +47,8 @@ public class SolutionsService
     public async Task<RecordUpdateOut<Solution>> Update(Solution Solution) {
         return await SolutionsDepot.Update(Solution);
     }
+
+    public async Task<Solution> Delete(int Id) {
+        return await SolutionsDepot.Delete(Id);
+    }
 }

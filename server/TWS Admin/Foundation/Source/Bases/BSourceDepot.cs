@@ -11,48 +11,48 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSM_Foundation.Source.Bases;
 /// <summary>
-///     Defines base behaviors for a <see cref="IMigrationDepot{TMigrationSet}"/>
-///     implementation describing <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/>
+///     Defines base behaviors for a <see cref="ISourceDepot{TMigrationSet}"/>
+///     implementation describing <see cref="BSourceDepot{TMigrationSource, TMigrationSet}"/>
 ///     shared behaviors.
 ///     
-///     A <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/> provides methods to 
-///     serve datasource saved transactions for <see cref="TMigrationSet"/>.
+///     A <see cref="BSourceDepot{TMigrationSource, TMigrationSet}"/> provides methods to 
+///     serve datasource safe transactions for <see cref="TSourceSet"/>.
 /// </summary>
-/// <typeparam name="TMigrationSource">
+/// <typeparam name="TSource">
 ///     What source implementation belongs this depot.
 /// </typeparam>
-/// <typeparam name="TMigrationSet">
+/// <typeparam name="TSourceSet">
 ///     Migration mirror concept that this depot handles.
 /// </typeparam>
-public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
-    : IMigrationDepot<TMigrationSet>
-    where TMigrationSource : BSource<TMigrationSource>
-    where TMigrationSet : class, ISourceSet {
+public abstract class BSourceDepot<TSource, TSourceSet>
+    : ISourceDepot<TSourceSet>
+    where TSource : BSource<TSource>
+    where TSourceSet : class, ISourceSet {
 
     protected readonly IMigrationDisposer? Disposer;
     /// <summary>
     ///     Name to handle direct transactions (not-saved)
     /// </summary>
-    protected readonly TMigrationSource Source;
+    protected readonly TSource Source;
     /// <summary>
-    ///     DBSet handler into <see cref="Source"/> to handle fastlike transactions related to the <see cref="TMigrationSet"/> 
+    ///     DBSet handler into <see cref="Source"/> to handle fastlike transactions related to the <see cref="TSourceSet"/> 
     /// </summary>
-    protected readonly DbSet<TMigrationSet> Set;
+    protected readonly DbSet<TSourceSet> Set;
     /// <summary>
-    ///     Generates a new instance of a <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/> base.
+    ///     Generates a new instance of a <see cref="BSourceDepot{TMigrationSource, TMigrationSet}"/> base.
     /// </summary>
     /// <param name="source">
-    ///     The <typeparamref name="TMigrationSource"/> that stores and handles the transactions for this <see cref="TMigrationSet"/> concept.
+    ///     The <typeparamref name="TSource"/> that stores and handles the transactions for this <see cref="TSourceSet"/> concept.
     /// </param>
-    public BMigrationDepot(TMigrationSource source, IMigrationDisposer? Disposer) {
+    public BSourceDepot(TSource source, IMigrationDisposer? Disposer) {
         Source = source;
         this.Disposer = Disposer;
-        Set = Source.Set<TMigrationSet>();
+        Set = Source.Set<TSourceSet>();
     }
 
     #region View 
 
-    public Task<SetViewOut<TMigrationSet>> View(SetViewOptions Options, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? include = null) {
+    public Task<SetViewOut<TSourceSet>> View(SetViewOptions Options, Func<IQueryable<TSourceSet>, IQueryable<TSourceSet>>? include = null) {
         int range = Options.Range;
         int page = Options.Page;
         int amount = Set.Count();
@@ -64,7 +64,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
         int start = (page - 1) * range;
         int records = page == pages ? left : range;
-        IQueryable<TMigrationSet> query = Set
+        IQueryable<TSourceSet> query = Set
             .Skip(start)
             .Take(records);
 
@@ -73,8 +73,8 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         }
         int orderActions = Options.Orderings.Length;
         if (orderActions > 0) {
-            Type setType = typeof(TMigrationSet);
-            IOrderedQueryable<TMigrationSet> orderingQuery = default!;
+            Type setType = typeof(TSourceSet);
+            IOrderedQueryable<TSourceSet> orderingQuery = default!;
 
             for (int i = 0; i < orderActions; i++) {
                 ParameterExpression parameterExpression = Expression.Parameter(setType, $"X{i}");
@@ -84,7 +84,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
                     ?? throw new Exception($"Unexisted property ({ordering.Property}) on ({setType})");
                 MemberExpression memberExpression = Expression.MakeMemberAccess(parameterExpression, property);
                 UnaryExpression translationExpression = Expression.Convert(memberExpression, typeof(object));
-                Expression<Func<TMigrationSet, object>> orderingExpression = Expression.Lambda<Func<TMigrationSet, object>>(translationExpression, parameterExpression);
+                Expression<Func<TSourceSet, object>> orderingExpression = Expression.Lambda<Func<TSourceSet, object>>(translationExpression, parameterExpression);
                 if (i == 0) {
                     orderingQuery = ordering.Behavior switch {
                         MIgrationViewOrderBehaviors.DownUp => query.OrderBy(orderingExpression),
@@ -103,9 +103,9 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             query = orderingQuery;
         }
 
-        TMigrationSet[] sets = [.. query];
+        TSourceSet[] sets = [.. query];
 
-        return Task.FromResult(new SetViewOut<TMigrationSet>() {
+        return Task.FromResult(new SetViewOut<TSourceSet>() {
             Amount = amount,
             Pages = pages,
             Page = page,
@@ -121,12 +121,12 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     ///     Creates a new record into the datasource.
     /// </summary>
     /// <param name="Set">
-    ///     <see cref="TMigrationSet"/> to store.
+    ///     <see cref="TSourceSet"/> to store.
     /// </param>
     /// <returns> 
     ///     The stored object. (Object Id is always auto-generated)
     /// </returns>
-    public async Task<TMigrationSet> Create(TMigrationSet Set) {
+    public async Task<TSourceSet> Create(TSourceSet Set) {
         Set.EvaluateWrite();
 
         _ = await this.Set.AddAsync(Set);
@@ -155,11 +155,11 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     /// <returns>
     ///     A <see cref="SourceTransactionOut{TSet}"/> that stores a collection of failures, and successes caught.
     /// </returns>
-    public async Task<SourceTransactionOut<TMigrationSet>> Create(TMigrationSet[] Sets, bool Sync = false) {
-        TMigrationSet[] saved = [];
+    public async Task<SourceTransactionOut<TSourceSet>> Create(TSourceSet[] Sets, bool Sync = false) {
+        TSourceSet[] safe = [];
         SourceTransactionFailure[] fails = [];
 
-        foreach (TMigrationSet record in Sets) {
+        foreach (TSourceSet set in Sets) {
             try {
                 record.EvaluateWrite();
                 Source.ChangeTracker.Clear();
@@ -183,18 +183,18 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     #endregion
 
     #region Read
-    public async Task<SourceTransactionOut<TMigrationSet>> Read(Expression<Func<TMigrationSet, bool>> Predicate, MigrationReadBehavior Behavior, Func<IQueryable<TMigrationSet>, IQueryable<TMigrationSet>>? Include = null) {
-        IQueryable<TMigrationSet> query = Set.Where(Predicate);
+    public async Task<SourceTransactionOut<TSourceSet>> Read(Expression<Func<TSourceSet, bool>> Predicate, MigrationReadBehavior Behavior, Func<IQueryable<TSourceSet>, IQueryable<TSourceSet>>? Include = null) {
+        IQueryable<TSourceSet> query = Set.Where(Predicate);
 
         if (Include != null) {
             query = Include(query);
         }
 
         if (!query.Any()) {
-            return new SourceTransactionOut<TMigrationSet>([], []);
+            return new SourceTransactionOut<TSourceSet>([], []);
         }
 
-        TMigrationSet[] items = Behavior switch {
+        TSourceSet[] items = Behavior switch {
             MigrationReadBehavior.First => [await query.FirstAsync()],
             MigrationReadBehavior.Last => [await query.LastAsync()],
             MigrationReadBehavior.All => await query.ToArrayAsync(),
@@ -202,9 +202,9 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         };
 
 
-        TMigrationSet[] successes = [];
+        TSourceSet[] successes = [];
         SourceTransactionFailure[] failures = [];
-        foreach (TMigrationSet item in items) {
+        foreach (TSourceSet item in items) {
             try {
                 item.EvaluateRead();
 
@@ -227,8 +227,8 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     /// <param name="Set"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public async Task<RecordUpdateOut<TMigrationSet>> Update(TMigrationSet Record) {
-        TMigrationSet? previous = await Set
+    public async Task<RecordUpdateOut<TSourceSet>> Update(TSourceSet Record) {
+        TSourceSet? previous = await Set
             .Where(i => i.Id == Record.Id)
             .AsNoTracking()
             .FirstOrDefaultAsync();
@@ -237,7 +237,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         _ = await Source.SaveChangesAsync();
 
         Disposer?.Push(Source, Record);
-        return new RecordUpdateOut<TMigrationSet> {
+        return new RecordUpdateOut<TSourceSet> {
             Previous = previous,
             Updated = Record,
         };
@@ -247,12 +247,12 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
     #region Delete
 
-    public Task<SourceTransactionOut<TMigrationSet>> Delete(TMigrationSet[] Sets) {
+    public Task<SourceTransactionOut<TSourceSet>> Delete(TSourceSet[] Sets) {
 
-        TMigrationSet[] safe = [];
+        TSourceSet[] safe = [];
         SourceTransactionFailure[] fails = [];
 
-        foreach (TMigrationSet set in Sets) {
+        foreach (TSourceSet set in Sets) {
             try {
                 set.EvaluateWrite();
                 safe = [.. safe, set];
@@ -263,15 +263,28 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         }
 
         Set.RemoveRange(safe);
-        return Task.FromResult<SourceTransactionOut<TMigrationSet>>(new(safe, []));
+        return Task.FromResult<SourceTransactionOut<TSourceSet>>(new(safe, []));
     }
 
-    public async Task<TMigrationSet> Delete(TMigrationSet Set) {
+    public async Task<TSourceSet> Delete(TSourceSet Set) {
         Set.EvaluateWrite();
         _ = this.Set.Remove(Set);
         _ = await Source.SaveChangesAsync();
         Source.ChangeTracker.Clear();
         return Set;
+    }
+
+    public async Task<TSourceSet> Delete(int Id) {
+        TSourceSet record = await Set
+            .AsNoTracking()
+            .Where(r => r.Id == Id)
+            .FirstOrDefaultAsync()
+            ?? throw new Exception("Trying to remove an unexist record");
+        
+        Set.Remove(record);
+        await Source.SaveChangesAsync();
+
+        return record;
     }
 
     #endregion

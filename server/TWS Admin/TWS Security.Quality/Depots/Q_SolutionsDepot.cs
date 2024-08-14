@@ -10,7 +10,7 @@ namespace TWS_Security.Quality.Depots;
 ///     Qualifies the <see cref="SolutionsDepot"/>.
 /// </summary>
 public class Q_SolutionsDepost
-    : BQ_MigrationDepot<Solution, SolutionsDepot, TWSSecuritySource> {
+    : BQ_SourceDepot<Solution, SolutionsDepot, TWSSecuritySource> {
     public Q_SolutionsDepost()
         : base(nameof(Solution.Name)) {
     }

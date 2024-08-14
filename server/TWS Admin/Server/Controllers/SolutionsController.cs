@@ -32,4 +32,9 @@ public class SolutionsController
     public async Task<IActionResult> Update(Solution Solution) {
         return Ok(await Service.Update(Solution));
     }
+
+    [HttpPost(), Auth([])]
+    public async Task<IActionResult> Delete(int Id) {
+        return Ok(await Service.Delete(Id));
+    }
 }

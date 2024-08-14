@@ -15,31 +15,33 @@ using Xunit;
 
 namespace CSM_Foundation.Source.Quality.Bases;
 
-public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrationSource>
-    : IQ_MigrationDepot
-    where TMigrationSet : class, ISourceSet, new()
-    where TMigrationDepot : IMigrationDepot<TMigrationSet>, new()
-    where TMigrationSource : BSource<TMigrationSource>, new() {
+public abstract class BQ_SourceDepot<TSourceSet, TSourceDepot, TSource>
+    : IQ_SourceDepot
+    where TSourceSet : class, ISourceSet, new()
+    where TSourceDepot : ISourceDepot<TSourceSet>, new()
+    where TSource : BSource<TSource>, new() {
     private readonly string Ordering;
-    private readonly TMigrationDepot Depot;
-    private readonly TMigrationSource Source;
-    private readonly DbSet<TMigrationSet> Set;
+    private readonly TSourceDepot Depot;
+    private readonly TSource Source;
+    private readonly DbSet<TSourceSet> Set;
     /// <summary>
-    ///     Generates a new behavior base for <see cref="BQ_MigrationDepot{TMigrationSet, TMigrationDepot, TMigrationSource}"/>.
+    ///     Generates a new behavior base for <see cref="BQ_SourceDepot{TMigrationSet, TMigrationDepot, TMigrationSource}"/>.
     /// </summary>
     /// <param name="Ordering">
     ///     Property name to perform <see cref="View"/> qualifications with ordering based on a property.
     /// </param>
-    public BQ_MigrationDepot(string Ordering) {
+    public BQ_SourceDepot(string Ordering) {
         this.Ordering = Ordering;
         Depot = new();
         Source = new();
-        Set = Source.Set<TMigrationSet>();
+        Set = Source.Set<TSourceSet>();
     }
 
     protected void Restore(ISourceSet Set) {
-        _ = Source.Remove(Set);
-        _ = Source.SaveChanges();
+       Source.Remove(Set);
+        try {
+            Source.SaveChanges();
+        } catch { }
     }
     protected void Restore(ISourceSet[] Sets) {
         Source.RemoveRange(Sets);
@@ -49,14 +51,14 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
     ///     
     /// </summary>
     /// <returns></returns>
-    protected abstract TMigrationSet MockFactory();
+    protected abstract TSourceSet MockFactory();
 
     #region Q_Base
 
     [Fact]
     public async Task View() {
         #region Preparation (First-Fact) 
-        TMigrationSet[] firstFactMocks = [];
+        TSourceSet[] firstFactMocks = [];
         SetViewOptions firstFactOptions;
         {
             try {
@@ -69,12 +71,12 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
                 if (stored < 21) {
                     int left = 21 - stored;
                     for (int i = 0; i < left; i++) {
-                        TMigrationSet mock = MockFactory();
+                        TSourceSet mock = MockFactory();
                         firstFactMocks = [.. firstFactMocks, mock];
                     }
 
                     await Set.AddRangeAsync(firstFactMocks);
-                    _ = await Source.SaveChangesAsync();
+                    await Source.SaveChangesAsync();
                 }
             } catch { Restore(firstFactMocks); throw; }
         }
@@ -106,9 +108,9 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
         }
         #endregion
 
-        SetViewOut<TMigrationSet> firstFact = await Depot.View(firstFactOptions);
-        SetViewOut<TMigrationSet> secondFact = await Depot.View(secondFactOptions);
-        SetViewOut<TMigrationSet> thirdFact = await Depot.View(thirdFactOptions);
+        SetViewOut<TSourceSet> firstFact = await Depot.View(firstFactOptions);
+        SetViewOut<TSourceSet> secondFact = await Depot.View(secondFactOptions);
+        SetViewOut<TSourceSet> thirdFact = await Depot.View(thirdFactOptions);
 
         try {
             #region First-Fact (View successfully page 1)
@@ -133,26 +135,26 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
             #endregion
             #region Third-Fact (View successfuly orders by Name)
             {
-                TMigrationSet[] factRecords = thirdFact.Sets;
-                TMigrationSet[] sortedRecords = firstFact.Sets;
+                TSourceSet[] factRecords = thirdFact.Sets;
+                TSourceSet[] sortedRecords = firstFact.Sets;
 
                 // --> Sorting unsorted.
                 {
-                    Type setType = typeof(TMigrationSet);
+                    Type setType = typeof(TSourceSet);
                     ParameterExpression parameterExpression = Expression.Parameter(setType, $"X");
                     PropertyInfo property = setType.GetProperty(Ordering)
                         ?? throw new Exception($"Unexisted property ({Ordering}) on ({setType})");
                     MemberExpression memberExpression = Expression.MakeMemberAccess(parameterExpression, property);
                     UnaryExpression translationExpression = Expression.Convert(memberExpression, typeof(object));
-                    Expression<Func<TMigrationSet, object>> orderingExpression = Expression.Lambda<Func<TMigrationSet, object>>(translationExpression, parameterExpression);
-                    IQueryable<TMigrationSet> sorted = sortedRecords.AsQueryable();
+                    Expression<Func<TSourceSet, object>> orderingExpression = Expression.Lambda<Func<TSourceSet, object>>(translationExpression, parameterExpression);
+                    IQueryable<TSourceSet> sorted = sortedRecords.AsQueryable();
                     sorted = sorted.OrderByDescending(orderingExpression);
                     sortedRecords = [.. sorted];
                 }
 
                 for (int i = 0; i < sortedRecords.Length; i++) {
-                    TMigrationSet expected = sortedRecords[i];
-                    TMigrationSet actual = factRecords[i];
+                    TSourceSet expected = sortedRecords[i];
+                    TSourceSet actual = factRecords[i];
 
                     Assert.Equal(expected.Id, actual.Id);
                 }
@@ -167,8 +169,8 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
     public async Task Create() {
         #region First-Fact (Set successfuly saved and generated)
         {
-            TMigrationSet mock = MockFactory();
-            TMigrationSet fact = await Depot.Create(mock);
+            TSourceSet mock = MockFactory();
+            TSourceSet fact = await Depot.Create(mock);
             Assert.Multiple([
                 () => Assert.True(fact.Id > 0),
                 async () => await Assert.ThrowsAnyAsync<Exception>(async () => await Depot.Create(mock)),
@@ -176,17 +178,16 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
                     Restore(mock);
                 }
             ]);
-
         }
         #endregion
 
         #region Second-Fact (Sets successfuly saved and generated)
         {
-            TMigrationSet[] mocks = [];
+            TSourceSet[] mocks = [];
             for (int i = 0; i < 3; i++) {
                 mocks = [.. mocks, MockFactory()];
             }
-            SourceTransactionOut<TMigrationSet> fact = await Depot.Create(mocks);
+            SourceTransactionOut<TSourceSet> fact = await Depot.Create(mocks);
 
             Assert.Multiple([
                 () => Assert.Equal(fact.QTransactions, mocks.Length),
@@ -196,6 +197,32 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
                 }),
                 () => {
                     Restore(fact.Successes);
+                }
+            ]);
+        }
+        #endregion
+    }
+
+
+    [Fact]
+    public async Task Delete() {
+        #region First fact (Set removed correctly by id)
+        {
+            TSourceSet sourceMock = MockFactory();
+            await Set.AddAsync(sourceMock);
+            await Source.SaveChangesAsync();
+
+            TSourceSet factResult = await Depot.Delete(sourceMock.Id);
+
+            Assert.Multiple([
+                () => Assert.True(sourceMock.Id > 0),
+                () => Assert.True(sourceMock.Id == factResult.Id),
+                () => {
+                    TSourceSet? searchResult = Set.Where(i => i.Id == sourceMock.Id).FirstOrDefault();
+                    Assert.Null(searchResult);
+                },
+                () => {
+                    Restore(sourceMock);
                 }
             ]);
         }

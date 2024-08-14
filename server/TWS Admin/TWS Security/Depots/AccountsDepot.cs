@@ -12,7 +12,7 @@ namespace TWS_Security.Depots;
 ///     transactions. 
 /// </summary>
 public class AccountsDepot
-    : BMigrationDepot<TWSSecuritySource, Account>
+    : BSourceDepot<TWSSecuritySource, Account>
     , IAccountsDepot {
     /// <summary>
     ///     Generates a new depot handler for <see cref="Account"/>.
