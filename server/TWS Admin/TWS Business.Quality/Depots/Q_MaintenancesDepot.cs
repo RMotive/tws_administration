@@ -20,6 +20,7 @@ public class Q_MaintenancesDepot
         return new() {
             Trimestral = date,
             Anual = date,
+            Status = 1
         };
     }
 }

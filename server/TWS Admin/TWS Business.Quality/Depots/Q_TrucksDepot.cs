@@ -18,10 +18,10 @@ public class Q_TruckDepot
 
         return new() {
             Vin = RandomUtils.String(17),
-            Motor = RandomUtils.String(16),
-            Modified = DateTime.Now,
-            Hp = 1,
-            Manufacturer = 1
+            Economic = RandomUtils.String(16),
+            Status = 1,
+            Manufacturer = 1,
+            Carrier = 1,
         };
     }
 }

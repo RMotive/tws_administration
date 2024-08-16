@@ -36,9 +36,17 @@ public partial class TWSBusinessSource : BSource<TWSBusinessSource> {
 
     public virtual DbSet<Status> Statuses { get; set; }
 
-    public virtual DbSet<HPTruck> HPTrucks { get; set; }
+    public virtual DbSet<TruckH> HPTrucks { get; set; }
+
     public virtual DbSet<Truck> Trucks { get; set; }
 
+    public virtual DbSet<Carrier> Carriers { get; set; }
+
+    public virtual DbSet<Contact> Contacts { get; set; }
+
+    public virtual DbSet<Usdot> Usdots { get; set; }
+
+    public virtual DbSet<Address> Addresses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder) {
         Sct.Set(builder);
@@ -49,7 +57,15 @@ public partial class TWSBusinessSource : BSource<TWSBusinessSource> {
         Maintenance.Set(builder);
         Manufacturer.Set(builder);
         Status.Set(builder);
-        HPTruck.Set(builder);
+        TruckH.Set(builder);
+        Address.Set(builder);
+        Usdot.Set(builder); 
+        UsdotH.Set(builder);
+        Contact.Set(builder);
+        ContactH.Set(builder);
+        Carrier.Set(builder);
+        CarrierH.Set(builder);
+
         OnModelCreatingPartial(builder);
     }
 
@@ -63,7 +79,13 @@ public partial class TWSBusinessSource : BSource<TWSBusinessSource> {
             new Truck(),
             new Sct(),
             new Status(),
-            new HPTruck()
+            new Carrier(),
+            new Usdot(),
+            new UsdotH(),
+            new Contact(),
+            new ContactH(),
+            new Address(),
+            new TruckH()
         ];
     }
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

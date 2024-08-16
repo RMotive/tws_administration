@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
+using CSM_Foundation.Core.Bases;
 using CSM_Foundation.Core.Utils;
 using CSM_Foundation.Source.Enumerators;
 using CSM_Foundation.Source.Interfaces;
@@ -15,8 +16,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Xunit;
 
 namespace CSM_Foundation.Source.Bases;
-//public abstract class BHistoryMigrationDepot: BMigrationDepot {
-
+//public abstract class BHistoryMigrationDepot<TMigrationSource, TMigrationSet> : BMigrationDepot<TMigrationSource, TMigrationSet> {
+    
 //}
 
 /// <summary>
@@ -80,6 +81,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
         if (include != null) {
             query = include(query);
         }
+
         int orderActions = Options.Orderings.Length;
         if (orderActions > 0) {
             Type setType = typeof(TMigrationSet);
@@ -170,6 +172,7 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
 
         foreach (TMigrationSet record in Sets) {
             try {
+                AttachDate(record);
                 record.EvaluateWrite();
                 Source.ChangeTracker.Clear();
                 this.Set.Attach(record);
@@ -231,52 +234,71 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
     #region Update 
 
 
+    void AttachDate(object entity, bool excluideCreation = false) {
+        IHistorySourceSet? historySourceSet = entity as IHistorySourceSet;
+        IPivotSourceSet? pivotSourceSet = entity as IPivotSourceSet;
+        if (historySourceSet != null) historySourceSet.Timemark = DateTime.Now;
+        if (pivotSourceSet != null && !excluideCreation) pivotSourceSet.Creation = DateTime.Now;
+    }
+
+
     /// <summary>
     /// Perform the navigation changes in a Tmigrationset
     /// </summary>
-    void UpdateHelper(TMigrationSet current, TMigrationSet Record) {
+    //Source.Entry(previousList[i]).CurrentValues.SetValues(newitem);
+
+    void UpdateHelper(ISourceSet current, ISourceSet Record) {
         EntityEntry previousEntry = Source.Entry(current);
-        // Update the non-navigation properties.
-        previousEntry.CurrentValues.SetValues(Record);
-        foreach (NavigationEntry navigation in previousEntry.Navigations) {
-            object? newNavigationValue = Source.Entry(Record).Navigation(navigation.Metadata.Name).CurrentValue;
-            // Validate if navigation is a collection.
-            if (navigation.CurrentValue is IEnumerable<object> previousCollection && newNavigationValue is IEnumerable<object> newCollection) {
-                List<object> previousList = previousCollection.ToList();
-                List<object> newList = newCollection.ToList();
-                //  Perform a search for new items to add in the collection.
-                // NOTE: the followings iterations must be performed in diferent code segments to avoid index length conflicts.
-                for(int i = 0; i < newList.Count; i++) {
-                    BSourceSet? newItemSet = newList[i] as BSourceSet;
-                    if (newItemSet!.Id <= 0) {
-                        var newNavigationEntry = Source.Entry(newList[i]);
-                        newNavigationEntry.State = EntityState.Added;
+        if(previousEntry.State == EntityState.Unchanged) {
+            AttachDate(Record, true);
+            // Update the non-navigation properties.
+            previousEntry.CurrentValues.SetValues(Record);
+            foreach (NavigationEntry navigation in previousEntry.Navigations) {
+                object? newNavigationValue = Source.Entry(Record).Navigation(navigation.Metadata.Name).CurrentValue;
+                // Validate if navigation is a collection.
+                if (navigation.CurrentValue is IEnumerable<object> previousCollection && newNavigationValue is IEnumerable<object> newCollection) {
+                    List<object> previousList = previousCollection.ToList();
+                    List<object> newList = newCollection.ToList();
+                    // Perform a search for new items to add in the collection.
+                    // NOTE: the followings iterations must be performed in diferent code segments to avoid index length conflicts.
+                    for (int i = 0; i < newList.Count; i++) {
+                        ISourceSet? newItemSet = (ISourceSet)newList[i];
+                        if (newItemSet != null && newItemSet.Id <= 0) {
+                            AttachDate(newList[i]);
+                            EntityEntry newNavigationEntry = Source.Entry(newList[i]);
+                            newNavigationEntry.State = EntityState.Added;
+                        }
                     }
-                }
-                for (int i = 0; i < previousList.Count; i++) {
-                    BSourceSet? previousItem = previousList[i] as BSourceSet;
-              
-                    // Find items to modify.
-                    // For each new item stored in record collection, will search for an ID match and update the record.
-                    // This update only take effect on non-nested properties.
-                    foreach (object newitem in newList) {
-                        BSourceSet? newItemSet = newitem as BSourceSet;
-                        if (previousItem!.Id == newItemSet!.Id) Source.Entry(previousList[i]).CurrentValues.SetValues(newitem);
+                    for (int i = 0; i < previousList.Count; i++) {
+                        ISourceSet? previousItem = previousList[i] as ISourceSet;
+
+                        // Find items to modify.
+                        // For each new item stored in record collection, will search for an ID match and update the record.
+                        foreach (object newitem in newList) {
+                            ISourceSet? newItemSet = newitem as ISourceSet;
+                            if (previousItem != null && newItemSet != null && previousItem.Id == newItemSet.Id)
+                                UpdateHelper(previousItem, newItemSet);
+                        }
                     }
-                }
-            } else {
-                if (navigation.CurrentValue == null && newNavigationValue != null) {
+                } else if (navigation.CurrentValue == null && newNavigationValue != null) {
                     // Create a new navigation entity.
                     // Also update the attached navigators.
-                    var newNavigationEntry = Source.Entry(newNavigationValue);
+                    AttachDate(newNavigationValue);
+                    EntityEntry newNavigationEntry = Source.Entry(newNavigationValue);
                     newNavigationEntry.State = EntityState.Added;
                     navigation.CurrentValue = newNavigationValue;
                 } else if (navigation.CurrentValue != null && newNavigationValue != null) {
                     // Update the existing navigation entity
-                    Source.Entry(navigation.CurrentValue).CurrentValues.SetValues(newNavigationValue);
+
+                    ISourceSet? currentItemSet = navigation.CurrentValue as ISourceSet;
+                    ISourceSet? newItemSet = newNavigationValue as ISourceSet;
+
+                    if (currentItemSet != null && newItemSet != null) UpdateHelper(currentItemSet, newItemSet);
                 }
+
             }
         }
+        
     }
     /// <summary>
     /// 
@@ -297,10 +319,12 @@ public abstract class BMigrationDepot<TMigrationSource, TMigrationSet>
             .FirstOrDefaultAsync();
 
         if (current != null) {
-           old = current.DeepCopy();
+            Set.Attach(current);
+            old = current.DeepCopy();
            UpdateHelper(current, Record);
         } else {
             //Generate a new insert if the given record data not exist.
+            AttachDate(Record);
             Set.Update(Record);
         }
          await Source.SaveChangesAsync();

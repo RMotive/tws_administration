@@ -61,6 +61,7 @@ public class Q_PlatesController : BQ_ServerController<Program> {
 
         (HttpStatusCode Status, ServerGenericFrame Response) = await Post("Create", new Plate() {
             Identifier = RandomUtils.String(10),
+            Status = 1,
             State = "ABC",
             Country = "MXN",
             Expiration = year,

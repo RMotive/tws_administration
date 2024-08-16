@@ -23,9 +23,8 @@ public class Q_Status : BQ_MigrationSet<Status> {
                 Description = ""
             },
             Expectations = [
-                (nameof(Situation.Id), [(new PointerValidator(), 3)]),
-                (nameof(Situation.Name), [(new LengthValidator(), 3)]),
-                (nameof(Situation.Description), [(new LengthValidator(), 2)]),
+                (nameof(Status.Id), [(new PointerValidator(), 3)]),
+                (nameof(Status.Name), [(new LengthValidator(), 3)]),
             ],
         };
 

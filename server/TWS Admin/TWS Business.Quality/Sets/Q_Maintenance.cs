@@ -19,10 +19,11 @@ public class Q_Maintenance : BQ_MigrationSet<Maintenance> {
         Q_MigrationSet_EvaluateRecord<Maintenance> failAllCases = new() {
             Mock = new() {
                 Id = 0,
-
+                Status = 0
             },
             Expectations = [
                 (nameof(Maintenance.Id), [(new PointerValidator(), 3)]),
+                (nameof(Maintenance.Status), [(new PointerValidator(true), 3)]),
             ],
         };
 

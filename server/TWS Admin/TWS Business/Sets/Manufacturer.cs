@@ -18,6 +18,8 @@ public partial class Manufacturer
 
     public virtual ICollection<Truck> Trucks { get; set; } = [];
 
+    public virtual ICollection<TruckH> TrucksH { get; set; } = [];
+
     public static void Set(ModelBuilder builder) {
         _ = builder.Entity<Manufacturer>(entity => {
             _ = entity.HasKey(e => e.Id);
@@ -32,6 +34,7 @@ public partial class Manufacturer
             _ = entity.Property(e => e.Model)
                 .HasMaxLength(30)
                 .IsUnicode(false);
+
         });
     }
 

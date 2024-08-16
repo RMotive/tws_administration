@@ -18,7 +18,8 @@ public class Q_SctsDepot
         return new() {
             Type = RandomUtils.String(6),
             Number = RandomUtils.String(25),
-            Configuration = RandomUtils.String(10)
+            Configuration = RandomUtils.String(10),
+            Status = 1
         };
     }
 }

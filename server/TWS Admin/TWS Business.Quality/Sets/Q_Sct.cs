@@ -29,7 +29,7 @@ public class Q_Sct : BQ_MigrationSet<Sct> {
                 (nameof(Sct.Type), [(new LengthValidator(), 2)]),
                 (nameof(Sct.Number), [(new LengthValidator(), 2)]),
                 (nameof(Sct.Configuration), [(new LengthValidator(), 2)]),
-
+                (nameof(Sct.Status), [(new PointerValidator(), 3)]),
             ],
         };
 

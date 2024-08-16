@@ -17,10 +17,11 @@ public class Q_Truck : BQ_MigrationSet<Truck> {
                 Vin = Vin,
                 Manufacturer = 3,
                 Motor = Motor,
-                Sct = 1,
+                Economic = "",
                 Maintenance = 4,
                 Situation = 0,
                 Insurance = 5,
+                Status = 1
             },
             Expectations = [],
         };
@@ -28,19 +29,21 @@ public class Q_Truck : BQ_MigrationSet<Truck> {
             Mock = new() {
                 Id = -1,
                 Vin = Vin,
+                Economic = "",
                 Manufacturer = 0,
-                Hp = 0,
-                Modified = DateTime.Now,
                 Motor = Motor,
-                Sct = 0,
                 Maintenance = 0,
                 Situation = 0,
-                Insurance = 0
+                Insurance = 0,
+                Status = 0
             },
             Expectations = [
                 (nameof(Truck.Id), [(new PointerValidator(), 3) ]),
                 (nameof(Truck.Vin), [(new LengthValidator(),2)]),
-                (nameof(Truck.Motor), [(new LengthValidator(),2)]),
+                (nameof(Truck.Economic), [(new LengthValidator(), 2)]),
+                (nameof(Truck.Status), [(new PointerValidator(), 3) ]),
+                (nameof(Truck.Carrier), [(new PointerValidator(), 3) ])
+
             ],
         };
 

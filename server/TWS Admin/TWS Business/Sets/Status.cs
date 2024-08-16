@@ -11,9 +11,40 @@ public partial class Status
 
     public string Name { get; set; } = null!;
 
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
 
-    public virtual ICollection<HPTruck> HPTrucks { get; set; } = [];
+    public virtual ICollection<TruckH> TrucksH { get; set; } = [];
+    public virtual ICollection<CarrierH> CarriersH { get; set; } = [];
+
+    public virtual ICollection<InsuranceH> InsurancesH { get; set; } = [];
+
+    public virtual ICollection<MaintenanceH> MaintenancesH { get; set; } = [];
+
+    public virtual ICollection<PlateH> PlatesH { get; set; } = [];
+
+    public virtual ICollection<UsdotH> UsdotsH { get; set; } = [];
+
+    public virtual ICollection<ContactH> ContactsH { get; set; } = [];
+
+    public virtual ICollection<SctH> SctsH { get; set; } = [];
+
+    public virtual ICollection<Carrier> Carriers { get; set; } = [];
+
+    public virtual ICollection<Usdot> Usdots { get; set; } = [];
+
+    public virtual ICollection<Contact> Contacts { get; set; } = [];
+
+    public virtual ICollection<Insurance> Insurances { get; set; } = [];
+
+    public virtual ICollection<Maintenance> Maintenances { get; set; } = [];
+
+    public virtual ICollection<Plate> Plates { get; set; } = [];
+
+    public virtual ICollection<Sct> Scts { get; set; } = [];
+
+    public virtual ICollection<Truck> Trucks { get; set; } = [];
+
+
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container) {
         RequiredValidator Required = new();
@@ -21,7 +52,6 @@ public partial class Status
         Container = [
                 .. Container,
             (nameof(Name), [Required, new LengthValidator(1, 25)]),
-            (nameof(Description), [new LengthValidator(1, 150)]),
         ];
 
         return Container;
@@ -29,7 +59,7 @@ public partial class Status
 
     public static void Set(ModelBuilder builder) {
         _ = builder.Entity<Status>(entity => {
-            _ = builder.Entity<Situation>(entity => {
+            _ = builder.Entity<Status>(entity => {
                 _ = entity.HasKey(e => e.Id);
                 _ = entity.Property(e => e.Id)
                     .HasColumnName("id");

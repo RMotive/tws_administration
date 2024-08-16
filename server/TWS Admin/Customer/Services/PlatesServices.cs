@@ -33,7 +33,6 @@ public class PlatesServices
                     Vin = p.TruckNavigation.Vin,
                     Manufacturer = p.TruckNavigation.Manufacturer,
                     Motor = p.TruckNavigation.Motor,
-                    Sct = p.TruckNavigation.Sct,
                     Maintenance = p.TruckNavigation.Maintenance,
                     Situation = p.TruckNavigation.Situation,
                     Insurance = p.TruckNavigation.Insurance,

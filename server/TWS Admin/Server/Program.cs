@@ -83,17 +83,20 @@ public partial class Program {
                 // --> Depots
                 builder.Services.AddScoped<SolutionsDepot>();
                 builder.Services.AddScoped<AccountsDepot>();
+                builder.Services.AddScoped<AddressesDepot>();
+                builder.Services.AddScoped<UsdotsDepot>();
+                builder.Services.AddScoped<CarriersDepot>();
+                builder.Services.AddScoped<ContactsBDepot>();
                 builder.Services.AddScoped<ContactsDepot>();
                 builder.Services.AddScoped<ManufacturersDepot>();
                 builder.Services.AddScoped<SituationsDepot>();
                 builder.Services.AddScoped<PlatesDepot>();
-                builder.Services.AddScoped<ContactsDepot>();
                 builder.Services.AddScoped<TruckDepot>();
                 builder.Services.AddScoped<InsurancesDepot>();
                 builder.Services.AddScoped<SctsDepot>();
                 builder.Services.AddScoped<MaintenacesDepot>();
                 builder.Services.AddScoped<StatusesDepot>();
-                builder.Services.AddScoped<HP_TruckDepot>();
+                builder.Services.AddScoped<TrucksHDepot>();
                 // --> Services
                 builder.Services.AddScoped<ISolutionsService, SolutionsService>();
                 builder.Services.AddScoped<ISecurityService, SecurityService>();
@@ -102,7 +105,6 @@ public partial class Program {
                 builder.Services.AddScoped<IPlatesService, PlatesServices>();
                 builder.Services.AddScoped<ITrucksService, TrucksService>();
                 builder.Services.AddScoped<IContactService, ContactService>();
-                builder.Services.AddScoped<IHPTruckService, HPTrucksService>();
             }
             WebApplication app = builder.Build();
             app.MapControllers();

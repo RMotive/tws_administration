@@ -16,6 +16,8 @@ public partial class Situation
 
     public virtual ICollection<Truck>? Trucks { get; set; } = [];
 
+    public virtual ICollection<TruckH> TrucksH { get; set; } = [];
+
     public static void Set(ModelBuilder builder) {
         _ = builder.Entity<Situation>(entity => {
             _ = entity.HasKey(e => e.Id);
@@ -37,7 +39,6 @@ public partial class Situation
         Container = [
             ..Container,
             (nameof(Name), [Required, new LengthValidator(1, 25)]),
-            (nameof(Description), [new LengthValidator(1, 100)]),
         ];
         return Container;
     }
