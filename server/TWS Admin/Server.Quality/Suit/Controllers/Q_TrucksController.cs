@@ -99,7 +99,7 @@ public class Q_TrucksController : BQ_CustomServerController {
                 Scac = "s" + iterationTag
             };
 
-            Contact contact = new() {
+            Approach contact = new() {
                 Status = 1,
                 Email = "mail@test.com " + iterationTag
             };
@@ -107,9 +107,9 @@ public class Q_TrucksController : BQ_CustomServerController {
             Carrier carrier = new() {
                 Status = 1,
                 Name = "Carrier test " + iterationTag,
-                Contact = 0,
+                Approach = 0,
                 Address = 0,
-                ContactNavigation = contact,
+                ApproachNavigation = contact,
                 AddressNavigation = address,
                 SctNavigation = sct,
                 UsdotNavigation = usdot
@@ -212,7 +212,7 @@ public class Q_TrucksController : BQ_CustomServerController {
                 Scac = "s" + testTag
             };
 
-            Contact contact = new() {
+            Approach contact = new() {
                 Status = 1,
                 Email = "mail@test.com " + testTag
             };
@@ -220,9 +220,9 @@ public class Q_TrucksController : BQ_CustomServerController {
             Carrier carrier = new() {
                 Status = 1,
                 Name = "Carrier test " + testTag,
-                Contact = 0,
+                Approach = 0,
                 Address = 0,
-                ContactNavigation = contact,
+                ApproachNavigation = contact,
                 AddressNavigation = address,
                 SctNavigation = sct,
                 UsdotNavigation = usdot
@@ -308,7 +308,7 @@ public class Q_TrucksController : BQ_CustomServerController {
                 Country = "USA"
             };
 
-            Contact contact = new() {
+            Approach contact = new() {
                 Status = 1,
                 Email = "mail@test.com " + testTag
             };
@@ -316,9 +316,9 @@ public class Q_TrucksController : BQ_CustomServerController {
             Carrier carrier = new() {
                 Status = 1,
                 Name = "Carrier test " + testTag,
-                Contact = 0,
+                Approach = 0,
                 Address = 0,
-                ContactNavigation = contact,
+                ApproachNavigation = contact,
                 AddressNavigation = address,
                 SctNavigation = sct,
             };

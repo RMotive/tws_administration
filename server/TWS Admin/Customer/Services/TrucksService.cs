@@ -77,11 +77,11 @@ public class TrucksService : ITrucksService {
                      Id = t.CarrierNavigation.Id,
                      Status = t.CarrierNavigation.Status,
                      Name = t.CarrierNavigation.Name,
-                     Contact = t.CarrierNavigation.Contact,
+                     Approach = t.CarrierNavigation.Approach,
                      Address = t.CarrierNavigation.Address,
                      Usdot = t.CarrierNavigation.Usdot,
                      Sct = t.CarrierNavigation.Sct,
-                     ContactNavigation = t.CarrierNavigation.ContactNavigation,
+                     ApproachNavigation = t.CarrierNavigation.ApproachNavigation,
                      AddressNavigation = t.CarrierNavigation.AddressNavigation,
                      UsdotNavigation = t.CarrierNavigation.UsdotNavigation,
                      SctNavigation = t.CarrierNavigation.SctNavigation
@@ -138,7 +138,7 @@ public class TrucksService : ITrucksService {
             .Include(t => t.CarrierNavigation)
                 .ThenInclude(c => c!.AddressNavigation)
             .Include(t => t.CarrierNavigation)
-                .ThenInclude(c => c!.ContactNavigation)
+                .ThenInclude(c => c!.ApproachNavigation)
             .Include(t => t.CarrierNavigation)
                 .ThenInclude(c => c!.SctNavigation)
             .Include(t => t.CarrierNavigation)
@@ -164,11 +164,11 @@ public class TrucksService : ITrucksService {
                         Id = t.CarrierNavigation.Id,
                         Status = t.CarrierNavigation.Status,
                         Name = t.CarrierNavigation.Name,
-                        Contact = t.CarrierNavigation.Contact,
+                        Approach = t.CarrierNavigation.Approach,
                         Address = t.CarrierNavigation.Address,
                         Usdot = t.CarrierNavigation.Usdot,
                         Sct = t.CarrierNavigation.Sct,
-                        ContactNavigation = t.CarrierNavigation.ContactNavigation,
+                        ApproachNavigation = t.CarrierNavigation.ApproachNavigation,
                         AddressNavigation = t.CarrierNavigation.AddressNavigation,
                         UsdotNavigation = t.CarrierNavigation.UsdotNavigation,
                         SctNavigation = t.CarrierNavigation.SctNavigation

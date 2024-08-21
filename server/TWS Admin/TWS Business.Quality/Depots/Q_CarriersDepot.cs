@@ -18,7 +18,7 @@ public class Q_CarriersDepot
 
         return new() {
             Name = "Carrier name",
-            Contact = 1,
+            Approach = 1,
             Address = 1,
             Status = 1,
         };

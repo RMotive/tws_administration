@@ -6,15 +6,15 @@ using TWS_Business.Sets;
 
 namespace TWS_Business.Quality.Depots;
 /// <summary>
-///     Qualifies the <see cref="ContactsHBDepot"/>.
+///     Qualifies the <see cref="ApproachesHDepot"/>.
 /// </summary>
-public class Q_ContactsHDepot
-    : BQ_MigrationDepot<ContactH, ContactsHBDepot, TWSBusinessSource> {
-    public Q_ContactsHDepot()
-        : base(nameof(ContactH.Entity)) {
+public class Q_ApproachesHDepot
+    : BQ_MigrationDepot<ApproachesH, ApproachesHDepot, TWSBusinessSource> {
+    public Q_ApproachesHDepot()
+        : base(nameof(ApproachesH.Entity)) {
     }
 
-    protected override ContactH MockFactory() {
+    protected override ApproachesH MockFactory() {
 
         return new() {
             Entity = 1,

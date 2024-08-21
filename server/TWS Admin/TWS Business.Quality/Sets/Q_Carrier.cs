@@ -14,7 +14,7 @@ public class Q_Carrier : BQ_MigrationSet<Carrier> {
                 Id = 1,
                 Name = "",
                 Status = 1,
-                Contact = 1,
+                Approach = 1,
                 Address = 1
                
             },
@@ -25,13 +25,13 @@ public class Q_Carrier : BQ_MigrationSet<Carrier> {
                 Id = -1,
                 Name = "",
                 Status = 0,
-                Contact = 0,
+                Approach = 0,
                 Address = 0
             },
             Expectations = [
                 (nameof(Carrier.Id), [(new PointerValidator(), 3) ]),
                 (nameof(Carrier.Name), [(new LengthValidator(),2)]),
-                (nameof(Carrier.Contact), [(new PointerValidator(true), 3)]),
+                (nameof(Carrier.Approach), [(new PointerValidator(true), 3)]),
                 (nameof(Carrier.Address), [(new PointerValidator(true), 3) ]),
                 (nameof(Carrier.Status), [(new PointerValidator(true), 3) ])
             ],

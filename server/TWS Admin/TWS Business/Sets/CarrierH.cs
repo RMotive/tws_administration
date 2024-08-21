@@ -21,7 +21,7 @@ public partial class CarrierH
 
     public string Name { get; set; } = null!;
 
-    public int? ContactH { get; set; }
+    public int? ApproachH { get; set; }
 
     public int Address { get; set; }
 
@@ -33,7 +33,7 @@ public partial class CarrierH
 
     public virtual Status? StatusNavigation { get; set; }
 
-    public virtual ContactH? ContactHNavigation { get; set; }
+    public virtual ApproachesH? ContactHNavigation { get; set; }
 
     public virtual Address? AddressNavigation { get; set; }
 
@@ -49,7 +49,7 @@ public partial class CarrierH
         Container = [
                 .. Container,
             (nameof(Name), [Required, new LengthValidator(1, 20)]),
-            //(nameof(ContactH), [Required, new PointerValidator(true)]),
+            //(nameof(ApproachesH), [Required, new PointerValidator(true)]),
             (nameof(Address), [Required, new PointerValidator(true)]),
             (nameof(Status), [Required, new PointerValidator(true)]),
             (nameof(Entity), [Required, new PointerValidator(true)]),
@@ -70,12 +70,12 @@ public partial class CarrierH
                 .HasMaxLength(20)
                 .IsUnicode(false);
 
-            _ = entity.Property(e => e.ContactH)
-                .HasColumnName("ContactH");
+            _ = entity.Property(e => e.ApproachH)
+                .HasColumnName("ApproachH");
 
             _ = entity.HasOne(d => d.ContactHNavigation)
               .WithMany(p => p.CarriersH)
-              .HasForeignKey(d => d.ContactH);
+              .HasForeignKey(d => d.ApproachH);
 
             _ = entity.HasOne(d => d.CarrierNavigation)
               .WithMany(p => p.CarriersH)

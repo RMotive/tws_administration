@@ -42,7 +42,7 @@ public partial class TWSBusinessSource : BSource<TWSBusinessSource> {
 
     public virtual DbSet<Carrier> Carriers { get; set; }
 
-    public virtual DbSet<Contact> Contacts { get; set; }
+    public virtual DbSet<Approach> Approaches { get; set; }
 
     public virtual DbSet<Usdot> Usdots { get; set; }
 
@@ -61,8 +61,8 @@ public partial class TWSBusinessSource : BSource<TWSBusinessSource> {
         Address.Set(builder);
         Usdot.Set(builder); 
         UsdotH.Set(builder);
-        Contact.Set(builder);
-        ContactH.Set(builder);
+        Approach.Set(builder);
+        ApproachesH.Set(builder);
         Carrier.Set(builder);
         CarrierH.Set(builder);
 
@@ -82,8 +82,8 @@ public partial class TWSBusinessSource : BSource<TWSBusinessSource> {
             new Carrier(),
             new Usdot(),
             new UsdotH(),
-            new Contact(),
-            new ContactH(),
+            new Approach(),
+            new ApproachesH(),
             new Address(),
             new TruckH()
         ];

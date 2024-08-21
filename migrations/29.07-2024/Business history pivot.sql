@@ -8,14 +8,17 @@ DROP TABLE Plates_H;
 DROP TABLE Trucks_H;
 DROP TABLE Carriers_H;
 DROP TABLE USDOT_H;
-DROP TABLE Contacts_H;
+DROP TABLE Approaches_H;
 DROP TABLE Maintenances_H;
 DROP TABLE Insurances_H;
 DROP TABLE SCT_H;
 DROP TABLE Plates;
+DROP TABLE Trailers;
+DROP TABLE Trailer_Classes;
+DROP TABLE Axis_Classes;
 DROP TABLE Trucks;
 DROP TABLE Carriers;
-DROP TABLE Contacts;
+DROP TABLE Approaches;
 DROP TABLE USDOT;
 DROP TABLE SCT;
 DROP TABLE Addresses;
@@ -78,13 +81,13 @@ constraint FK_SCT_Statuses foreign key([Status]) references Statuses(id)
 
 );
 
-Create table Contacts(
+Create table Approaches(
 id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
 [Status] int not null,
-Enterprise varchar(13),
+Email varchar(30) not null,
+Enterprise varchar(14),
 Personal varchar(13),
 Alternative varchar(30),
-Email varchar(30) not null,
 
 constraint FK_Contacts_Statuses foreign key([Status]) references Statuses(id)
 
@@ -92,11 +95,12 @@ constraint FK_Contacts_Statuses foreign key([Status]) references Statuses(id)
 
 Create table Addresses(
 id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+Country varchar(3) not null,
+[State] varchar(4),
 Street varchar(100),
 AltStreet varchar(100),
 City varchar(30),
 ZIP varchar(5),
-Country varchar(3) not null,
 Colonia varchar(30),
 
 );
@@ -115,16 +119,50 @@ create table Carriers(
 id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
 [Status] int not null,
 [Name] Varchar(20) not null,
-Contact int not null,
+Approach int not null,
 [Address] int not null,
 USDOT int,
 SCT int,
 
 constraint FK_Carriers_Statuses foreign key([Status]) references Statuses(id),
-constraint FK_Carriers_Contacts foreign key(Contact) references Contacts(id),
+constraint FK_Carriers_Contacts foreign key(Approach) references approaches(id),
 constraint FK_Carriers_Addresses foreign key([Address]) references Addresses(id),
 constraint FK_Carriers_USDOT foreign key(USDOT) references USDOT(id),
 constraint FK_Carriers_SCT foreign key(SCT) references SCT(id),
+
+);
+
+create table Axis_Classes(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+[Name] varchar(20) NOT NULL,
+Quantity int NOT NULL,
+[Description] varchar(100)
+)
+
+create table Trailer_Classes(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+[Name] varchar(20) NOT NULL,
+Axis int NOT NULL,
+[Description] varchar(100),
+
+constraint FK_Trailers_AxisClasses foreign key(Axis) references Axis_Classes(id),
+
+);
+
+create table Trailers(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+Class int NOT NULL,
+Manufacturer int NOT NULL,
+Carrier int NOT NULL,
+Situation int NOT NULL,
+Maintenance int,
+
+constraint FK_Trailers_TrailersClass foreign key(Class) references Trailer_Classes(id),
+constraint FK_Trailers_Manufactureres foreign key(Manufacturer) references Manufacturers(id),
+constraint FK_Trailers_Carriers foreign key(Carrier) references Carriers(id),
+constraint FK_Trailers_Situations foreign key(Situation) references Situations(id),
+constraint FK_Trailers_Maintenances foreign key(Maintenance) references Maintenances(id),
+
 
 );
 
@@ -138,7 +176,7 @@ create table Trucks(
  Maintenance int,
  Situation int,
  Insurance int,
- Carrier int
+ Carrier int NOT NULL,
  constraint FK_Trucks_Manufacturers foreign key(Manufacturer) references Manufacturers(id),
  constraint FK_Trucks_Maintenances foreign key(Maintenance) references Maintenances(id),
  constraint FK_Trucks_Insurances foreign key(Insurance) references Insurances(id),
@@ -154,11 +192,15 @@ Identifier varchar(12) NOT NULL,
 [State] varchar(4) NOT NULL,
 Country varchar(3) NOT NULL,
 Expiration date NOT NULL,
-Truck int NOT NULL,
+Truck int,
+Trailer int,
 
- constraint FK@Plates_Trucks foreign key(Truck) references Trucks(id)
-
+ constraint FK@Plates_Trucks foreign key(Truck) references Trucks(id),
+ constraint FK@Plates_Trailers foreign key(Trailer) references Trailers(id)
 );
+
+
+
 
 -- Historical Tables --
  create table Insurances_H(
@@ -240,7 +282,7 @@ Number varchar(25) NOT NULL,
 
  );
 
- Create table Contacts_H(
+ Create table Approaches_H(
   id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
   [Sequence] int not null DEFAULT 1,
  Timemark datetime2 not null,
@@ -252,7 +294,7 @@ Personal varchar(13),
 Alternative varchar(30),
 Email varchar(30) not null,
 
- constraint FK_ContactsH_Contacts foreign key(Entity) references Contacts(id),
+ constraint FK_ContactsH_Contacts foreign key(Entity) references approaches(id),
  constraint FK_ContactsH_Statuses foreign key([Status]) references Statuses(id)
  );
 
@@ -264,13 +306,13 @@ Email varchar(30) not null,
 
  Entity int not null,
  [Name] Varchar(20) not null,
- ContactH int,
+ ApproachH int,
  [Address] int not null,
  USDOTH int,
  SCTH int,
  constraint FK_CarrierH_Carrier foreign key(Entity) references Carriers(id),
  constraint FK_CarrierH_Statuses foreign key([Status]) references Statuses(id),
- constraint FK_CarrierH_ContactsH foreign key(ContactH) references Contacts_H(id),
+ constraint FK_CarrierH_ContactsH foreign key(ApproachH) references Approaches_H(id),
  constraint FK_CarrierH_Address foreign key([Address]) references Addresses(id),
  constraint FK_CarrierH_USDOTH foreign key(USDOTH) references USDOT_H(id),
  constraint FK_CarrierH_SCTH foreign key(SCTH) references SCT_H(id),
@@ -331,17 +373,26 @@ VALUES('Type06','SCTtesting1-1232111513111', 'confTest01', 1),('Type09','SCTtest
 INSERT INTO USDOT(MC, SCAC, [Status])
 VALUES('MCtest1','SCA1', 1),('MCtest1','SCA1', 1),('MCtest1','SCA1', 1);
 
-INSERT INTO Contacts(Enterprise, Personal, Alternative, Email, [Status])
+INSERT INTO approaches(Enterprise, Personal, Alternative, Email, [Status])
 VALUES('526631220311','112345678911', 'Alternative contact 1', 'mail@default1.com', 1),('5266312203422','112345678912', 'Alternative contact 2', 'mail@default3.com', 1),('5266312203433','112345678913', 'Alternative contact 3', 'mail@default3.com', 1);
 
 INSERT INTO Addresses(Street, AltStreet, City, ZIP, Country, Colonia)
 VALUES('First street', 'First alt street', 'Tijuana', 'ZIP11', 'MEX', 'Colonia 1'), ('Second street', 'Second alt street', 'San diego' ,'ZIP22', 'USA', 'Colonia 2'), ('Third street', 'Third alt street', 'Ensenada', 'ZIP33', 'MEX', 'Colonia 3');
 
-INSERT INTO Carriers([Name], Contact, [Address], USDOT, SCT, [Status])
+INSERT INTO Carriers([Name], Approach, [Address], USDOT, SCT, [Status])
 VALUES('TWSA', 1, 1, 1, 1, 1), ('TWS2', 2, 2, 2, 2, 1),('TWS3', 3, 3, 3, 3, 1);
 
+INSERT INTO Axis_Classes([Name], [Description], Quantity)
+VALUES('Single axle', 'Single axle. For small trailers boxes', 1), ('Tandem axle', 'Multiple axle positioned near each other,  ', 2),  ('Triple axle', 'Triple Axle. axis are positiones at equal distances each other through the trailer', 3);
+
+INSERT INTO Trailer_Classes([Name], [Description], Axis)
+VALUES('Dry van', 'Full closed trailer, ideal for dry load.', 1),('Reefer', 'Refrigerated closed trailer', 2),('Flatbed', 'Open flat platform. ideal for big vehicules or materials transport.', 1)
+
+INSERT INTO Trailers(Class, Manufacturer, Maintenance, Situation, Carrier)
+VALUES(1,1,1,1,1),(2,2,2,2,2),(3,3,3,3,3);
+
 INSERT INTO Trucks(VIN, Manufacturer, Motor, Maintenance, Situation, Insurance, [Status], Carrier, Economic)
-VALUES('VINtest1-13324231',1,'Motortestnumber1',1,1,1,1,1, 'Economic 1'),('VINtest2-63324231',2,'Motortestnumber2',2,2,2,1,2, 'Econmic 2'),('VINtest3-93324231',3,'Motortestnumber3',3,3,3,1,3, 'Economic 3');
+VALUES('VINtest1-13324231',1,'Motortestnumber1',1,1,1,1,1, 'Economic 1'),('VINtest2-63324231',2,'Motortestnumber2',2,2,2,1,2, 'Economic 2'),('VINtest3-93324231',3,'Motortestnumber3',3,3,3,1,3, 'Economic 3');
 
 INSERT INTO Plates(Identifier,[State],Country,Expiration, Truck, [Status])
 VALUES('SADC2423E132','CA','USA','2024-07-01',1, 1),('TMEX2323EST2','BC','MEX','2024-09-02',2, 1), ('TXH214E3ESC1','TX','USA','2024-11-03',3, 1),

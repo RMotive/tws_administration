@@ -86,7 +86,7 @@ public partial class Program {
                 builder.Services.AddScoped<AddressesDepot>();
                 builder.Services.AddScoped<UsdotsDepot>();
                 builder.Services.AddScoped<CarriersDepot>();
-                builder.Services.AddScoped<ContactsBDepot>();
+                builder.Services.AddScoped<ApproachesDepot>();
                 builder.Services.AddScoped<ContactsDepot>();
                 builder.Services.AddScoped<ManufacturersDepot>();
                 builder.Services.AddScoped<SituationsDepot>();

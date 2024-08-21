@@ -5,10 +5,10 @@ using CSM_Foundation.Source.Validators;
 using TWS_Business.Sets;
 
 namespace TWS_Business.Quality.Sets;
-public class Q_Contact : BQ_MigrationSet<Contact> {
-    protected override Q_MigrationSet_EvaluateRecord<Contact>[] EvaluateFactory(Q_MigrationSet_EvaluateRecord<Contact>[] Container) {
+public class Q_Contact : BQ_MigrationSet<Approach> {
+    protected override Q_MigrationSet_EvaluateRecord<Approach>[] EvaluateFactory(Q_MigrationSet_EvaluateRecord<Approach>[] Container) {
 
-        Q_MigrationSet_EvaluateRecord<Contact> success = new() {
+        Q_MigrationSet_EvaluateRecord<Approach> success = new() {
             Mock = new() {
                 Id = 1,
                 Email = "",
@@ -17,16 +17,16 @@ public class Q_Contact : BQ_MigrationSet<Contact> {
             },
             Expectations = [],
         };
-        Q_MigrationSet_EvaluateRecord<Contact> failAllCases = new() {
+        Q_MigrationSet_EvaluateRecord<Approach> failAllCases = new() {
             Mock = new() {
                 Id = 0,
                 Email = "",
                 Status = 0
             },
             Expectations = [
-                (nameof(Contact.Id), [(new PointerValidator(), 3)]),
-                (nameof(Contact.Email), [(new LengthValidator(), 2)]),
-                (nameof(Contact.Status), [(new PointerValidator(true), 3)]),
+                (nameof(Approach.Id), [(new PointerValidator(), 3)]),
+                (nameof(Approach.Email), [(new LengthValidator(), 2)]),
+                (nameof(Approach.Status), [(new PointerValidator(true), 3)]),
 
             ],
         };

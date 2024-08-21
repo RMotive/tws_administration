@@ -10,6 +10,8 @@ public partial class Address
     : BSourceSet {
     public override int Id { get; set; }
 
+    public string? State { get; set; }
+
     public string? Street { get; set; }
 
     public string? AltStreet { get; set; }

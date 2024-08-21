@@ -14,7 +14,7 @@ public partial class Carrier
 
     public string Name { get; set; } = null!;
 
-    public int Contact {  get; set; }
+    public int Approach {  get; set; }
 
     public int Address { get; set; }
 
@@ -24,7 +24,7 @@ public partial class Carrier
 
     public virtual Status? StatusNavigation { get; set; }
 
-    public virtual Contact? ContactNavigation { get; set; }
+    public virtual Approach? ApproachNavigation { get; set; }
 
     public virtual Address? AddressNavigation { get; set; }
 
@@ -42,7 +42,7 @@ public partial class Carrier
         Container = [
                 .. Container,
             (nameof(Name), [Required, new LengthValidator(1, 20)]),
-            (nameof(Contact), [Required, new PointerValidator(true)]),
+            (nameof(Approach), [Required, new PointerValidator(true)]),
             (nameof(Address), [Required, new PointerValidator(true)]),
             (nameof(Status), [Required, new PointerValidator(true)]),
         ];
@@ -62,9 +62,9 @@ public partial class Carrier
                 .HasMaxLength(20)
                 .IsUnicode(false);
 
-            _ = entity.HasOne(d => d.ContactNavigation)
+            _ = entity.HasOne(d => d.ApproachNavigation)
               .WithMany(p => p.Carriers)
-              .HasForeignKey(d => d.Contact);
+              .HasForeignKey(d => d.Approach);
 
             _ = entity.HasOne(d => d.AddressNavigation)
                 .WithMany(p => p.Carriers)

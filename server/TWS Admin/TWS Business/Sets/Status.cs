@@ -24,7 +24,7 @@ public partial class Status
 
     public virtual ICollection<UsdotH> UsdotsH { get; set; } = [];
 
-    public virtual ICollection<ContactH> ContactsH { get; set; } = [];
+    public virtual ICollection<ApproachesH> ContactsH { get; set; } = [];
 
     public virtual ICollection<SctH> SctsH { get; set; } = [];
 
@@ -32,7 +32,7 @@ public partial class Status
 
     public virtual ICollection<Usdot> Usdots { get; set; } = [];
 
-    public virtual ICollection<Contact> Contacts { get; set; } = [];
+    public virtual ICollection<Approach> Contacts { get; set; } = [];
 
     public virtual ICollection<Insurance> Insurances { get; set; } = [];
 
