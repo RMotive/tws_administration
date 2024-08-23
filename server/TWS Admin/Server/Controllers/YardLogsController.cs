@@ -30,4 +30,9 @@ public class YardLogsController : ControllerBase {
         return Ok(await Service.Update(yardLogs, updatePivot));
     }
 
+    [HttpPost(), Auth([])]
+    public async Task<IActionResult> Delete(int Id) {
+        return Ok(await Service.Delete(Id));
+    }
+
 }

@@ -531,6 +531,20 @@ Email varchar(30) not null,
   constraint FK_PlatesTrucksH_TrucksH foreign key (Truckhid) references Trucks_H(id)
  );
 
+USE [TWS Business]
+GO
+CREATE TRIGGER tgr_YardLogs_Insert
+ON Yard_Logs
+AFTER INSERT
+AS
+BEGIN
+	UPDATE Yard_Logs
+    SET Timestamp = GETDATE()
+    FROM inserted i
+    WHERE Yard_Logs.Id = i.Id;
+END;
+GO
+
 INSERT INTO Statuses([Name], [Description])
 VALUES('Enable','Currently Active in this Solution.'), ('Disable', 'A deleted status. Stored for historical propurses . A disable record has limited features and visibility settings.');
 
@@ -613,6 +627,6 @@ VALUES('Loaded', 'DESCRIPTION 1'), ('Empty', 'DESCRIPTION 2'), ('Botado', 'DESCR
 INSERT INTO Sections([Name], Capacity, Ocupancy, [Status], Yard)
 VALUES('A', 20, 10, 1, 1), ('B', 10, 2, 1, 2), ('C', 25, 10, 1, 3);
 
-INSERT INTO Yard_Logs([Entry], [Timestamp], Truck, TruckExternal, Trailer, TrailerExternal, LoadType, Guard, Gname, Section, FromTo, Damage, TTPicture, DmgEvidence, Driver, DriverExternal)
-VALUES(1, SYSDATETIME(), 1, null, 1, null, 1, 1,'Guard 1', 1, 'Coca Cola el Florido', 0, 'Truck and trailer picture 1', null, 1, null), (1, SYSDATETIME(), 2, null, 2, null, 2, 2,'Guard 2', 2, 'Coca Cola el Florido 2', 1, 'Truck and trailer picture 1', 'Damage picture 1', 2, null), (1, SYSDATETIME(), 3, null, 3, null, 3, 3,'Guard 3', 3, 'Coca Cola el Florido 3', 0, 'Truck and trailer picture 1', null, 2, null);
+INSERT INTO Yard_Logs([Entry], Truck, TruckExternal, Trailer, TrailerExternal, LoadType, Guard, Gname, Section, FromTo, Damage, TTPicture, DmgEvidence, Driver, DriverExternal)
+VALUES(1, 1, null, 1, null, 1, 1,'Guard 1', 1, 'Coca Cola el Florido', 0, 'Truck and trailer picture 1', null, 1, null), (1, 2, null, 2, null, 2, 2,'Guard 2', 2, 'Coca Cola el Florido 2', 1, 'Truck and trailer picture 1', 'Damage picture 1', 2, null), (1, 3, null, 3, null, 3, 3,'Guard 3', 3, 'Coca Cola el Florido 3', 0, 'Truck and trailer picture 1', null, 2, null);
 

@@ -1,8 +1,11 @@
-﻿using CSM_Foundation.Source.Bases;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+using CSM_Foundation.Source.Bases;
 using CSM_Foundation.Source.Interfaces;
 using CSM_Foundation.Source.Validators;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace TWS_Business.Sets;
 
@@ -76,10 +79,13 @@ public partial class YardLog
     public static void Set(ModelBuilder builder) {
         _ = builder.Entity<YardLog>(entity => {
             _ = entity.HasKey(e => e.Id);
-            _ = entity.ToTable("Yard_Logs");
+            _ = entity.ToTable("Yard_Logs", tb => tb.HasTrigger("tgr_YardLogs_Insert"));
 
             _ = entity.Property(e => e.Id)
                  .HasColumnName("id");
+
+            entity.Property(b => b.Timestamp)
+            .ValueGeneratedOnAddOrUpdate();
 
             _ = entity.Property(e => e.Gname)
                 .HasMaxLength(100)

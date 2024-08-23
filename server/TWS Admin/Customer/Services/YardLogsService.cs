@@ -7,6 +7,9 @@ using TWS_Business.Depots;
 using TWS_Business.Sets;
 using TWS_Customer.Services.Interfaces;
 
+using TWS_Security.Depots;
+using TWS_Security.Sets;
+
 namespace TWS_Customer.Services;
 public class YardLogsService : IYardLogsService {
     private readonly YardLogsDepot YardLogs;
@@ -418,10 +421,9 @@ public class YardLogsService : IYardLogsService {
         }
 
         return await YardLogs.Update(yardLog, include) ;
-
-
     }
 
-
-
+    public async Task<YardLog> Delete(int Id) {
+        return await YardLogs.Delete(Id);
+    }
 }

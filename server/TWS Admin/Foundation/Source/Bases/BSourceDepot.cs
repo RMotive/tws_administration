@@ -16,9 +16,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Xunit;
 
 namespace CSM_Foundation.Source.Bases;
-//public abstract class BHistoryMigrationDepot<TMigrationSource, TMigrationSet> : BMigrationDepot<TMigrationSource, TMigrationSet> {
-    
-//}
 
 /// <summary>
 ///     Defines base behaviors for a <see cref="ISourceDepot{TMigrationSet}"/>

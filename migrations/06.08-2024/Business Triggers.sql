@@ -4,6 +4,8 @@
 USE [TWS Business]
 GO
 
+
+
 CREATE TRIGGER tgr_Trucks_Update
 ON Trucks
 AFTER UPDATE
