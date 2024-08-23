@@ -23,8 +23,8 @@ public class Q_Address : BQ_MigrationSet<Address> {
 
             },
             Expectations = [
-                (nameof(Insurance.Id), [(new PointerValidator(), 3)]),
-                (nameof(Insurance.Country), [(new LengthValidator(), 2)]),
+                (nameof(Address.Id), [(new PointerValidator(), 3)]),
+                (nameof(Address.Country), [(new LengthValidator(), 2)]),
             ],
         };
 

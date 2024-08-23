@@ -13,23 +13,17 @@ public partial class Truck
 
     public int Status { get; set; }
 
-    public string Vin { get; set; } = null!;
+    public int Common { get; set; }
 
-    public string? Motor { get; set; } = null!;
-
-    public string Economic { get; set; } = null!;
+    public string Motor { get; set; } = null!;
 
     public int Manufacturer { get; set; }
 
-    public int Carrier { get; set; }
-
     public int? Maintenance { get; set; }
-
-    public int? Situation { get; set; }
 
     public int? Insurance { get; set; }
 
-    public virtual Carrier? CarrierNavigation { get; set; }
+    public virtual TruckCommon? TruckCommonNavigation { get; set; }
 
     public virtual Insurance? InsuranceNavigation { get; set; }
 
@@ -37,11 +31,9 @@ public partial class Truck
 
     public virtual Manufacturer? ManufacturerNavigation { get; set; }
 
-    public virtual Situation? SituationNavigation { get; set; }
-
     public virtual Status? StatusNavigation { get; set; }
 
-    public virtual ICollection<Plate> Plates { get; set; } = [];
+    public virtual ICollection<YardLog> YardLogs { get; set; } = [];
 
     public virtual ICollection<TruckH> TrucksH { get; set; } = [];
 
@@ -53,42 +45,32 @@ public partial class Truck
 
             _ = entity.Property(e => e.Id)
                 .HasColumnName("id");
+
             _ = entity.Property(e => e.Motor)   
                 .HasMaxLength(16)
                 .IsUnicode(false);
-          
-            _ = entity.Property(e => e.Vin)
-                .HasMaxLength(17)
-                .IsUnicode(false)
-                .HasColumnName("VIN");
-
-            _ = entity.Property(e => e.Economic)
-                .HasMaxLength(16)
-                .IsUnicode(false);
-
-            _ = entity.HasOne(d => d.CarrierNavigation)
-                .WithMany(p => p.Trucks)
-                .HasForeignKey(d => d.Carrier);
 
             _ = entity.HasOne(d => d.StatusNavigation)
                 .WithMany(p => p.Trucks)
                 .HasForeignKey(d => d.Status)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             _ = entity.HasOne(d => d.InsuranceNavigation)
                 .WithMany(p => p.Trucks)
                 .HasForeignKey(d => d.Insurance);
+
             _ = entity.HasOne(d => d.MaintenanceNavigation)
                 .WithMany(p => p.Trucks)
                 .HasForeignKey(d => d.Maintenance);
+
             _ = entity.HasOne(d => d.ManufacturerNavigation)
                 .WithMany(p => p.Trucks)
                 .HasForeignKey(d => d.Manufacturer)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-        
-            _ = entity.HasOne(d => d.SituationNavigation)
+
+            _ = entity.HasOne(d => d.TruckCommonNavigation)
                 .WithMany(p => p.Trucks)
-                .HasForeignKey(d => d.Situation)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .HasForeignKey(d => d.Common);
         });
     }
 
@@ -96,12 +78,10 @@ public partial class Truck
         UniqueValidator Unique = new();
         Container = [
             ..Container,
-            (nameof(Vin), [Unique, new LengthValidator(17, 17)]),
-            (nameof(Economic), [new LengthValidator(1, 16)]),
             (nameof(Status), [new PointerValidator(true)]),
-            (nameof(Carrier), [new PointerValidator(true)])
-
-
+            (nameof(Motor), [new LengthValidator(1, 16)]),
+            (nameof(Common), [new PointerValidator(true)]),
+            (nameof(Manufacturer), [new PointerValidator(true)]),
         ];
         return Container;
     }

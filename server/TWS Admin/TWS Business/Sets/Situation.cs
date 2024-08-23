@@ -14,7 +14,11 @@ public partial class Situation
 
     public string? Description { get; set; }
 
-    public virtual ICollection<Truck>? Trucks { get; set; } = [];
+    public virtual ICollection<DriverCommon>? DriversCommons { get; set; } = [];
+
+    public virtual ICollection<TruckCommon>? TrucksCommons { get; set; } = [];
+
+    public virtual ICollection<TrailerCommon>? TrailersCommons { get; set; } = [];
 
     public virtual ICollection<TruckH> TrucksH { get; set; } = [];
 

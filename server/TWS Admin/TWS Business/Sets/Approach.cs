@@ -20,11 +20,13 @@ public partial class Approach
 
     public string? Email { get; set; }
 
-
     public virtual Status? StatusNavigation { get; set; }
+
     public virtual ICollection<ApproachesH> ContactsH { get; set; } = [];
+
     public virtual ICollection<Carrier> Carriers { get; set; } = [];
 
+    public virtual ICollection<Employee> Employees { get; set; } = [];
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container) {
         RequiredValidator Required = new();

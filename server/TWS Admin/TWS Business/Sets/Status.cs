@@ -13,20 +13,21 @@ public partial class Status
 
     public string? Description { get; set; }
 
-    public virtual ICollection<TruckH> TrucksH { get; set; } = [];
-    public virtual ICollection<CarrierH> CarriersH { get; set; } = [];
+    public virtual ICollection<Section> Sections { get; set; } = [];
 
-    public virtual ICollection<InsuranceH> InsurancesH { get; set; } = [];
+    public virtual ICollection<DriverExternal> DriversExternals { get; set; } = [];
 
-    public virtual ICollection<MaintenanceH> MaintenancesH { get; set; } = [];
+    public virtual ICollection<Driver> Drivers { get; set; } = [];
 
-    public virtual ICollection<PlateH> PlatesH { get; set; } = [];
+    public virtual ICollection<Employee> Employees { get; set; } = [];
 
-    public virtual ICollection<UsdotH> UsdotsH { get; set; } = [];
+    public virtual ICollection<Identification> Identifications { get; set; } = [];
 
-    public virtual ICollection<ApproachesH> ContactsH { get; set; } = [];
+    public virtual ICollection<TrailerExternal> TrailersExternals { get; set; } = [];
 
-    public virtual ICollection<SctH> SctsH { get; set; } = [];
+    public virtual ICollection<TruckExternal> TrucksExternals { get; set; } = [];
+
+    public virtual ICollection<Location> Locations { get; set; } = [];
 
     public virtual ICollection<Carrier> Carriers { get; set; } = [];
 
@@ -42,9 +43,25 @@ public partial class Status
 
     public virtual ICollection<Sct> Scts { get; set; } = [];
 
+    public virtual ICollection<Trailer> Trailers { get; set; } = [];
+
     public virtual ICollection<Truck> Trucks { get; set; } = [];
 
+    public virtual ICollection<TruckH> TrucksH { get; set; } = [];
 
+    public virtual ICollection<CarrierH> CarriersH { get; set; } = [];
+
+    public virtual ICollection<InsuranceH> InsurancesH { get; set; } = [];
+
+    public virtual ICollection<MaintenanceH> MaintenancesH { get; set; } = [];
+
+    public virtual ICollection<PlateH> PlatesH { get; set; } = [];
+
+    public virtual ICollection<UsdotH> UsdotsH { get; set; } = [];
+
+    public virtual ICollection<ApproachesH> ContactsH { get; set; } = [];
+
+    public virtual ICollection<SctH> SctsH { get; set; } = [];
 
     protected override (string Property, IValidator[])[] Validations((string Property, IValidator[])[] Container) {
         RequiredValidator Required = new();

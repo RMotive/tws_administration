@@ -20,9 +20,13 @@ public partial class Plate
 
     public DateOnly Expiration { get; set; }
 
-    public int Truck { get; set; }
+    public int? Truck { get; set; }
 
-    public virtual Truck? TruckNavigation { get; set; }
+    public int? Trailer { get; set; }
+
+    public virtual TruckCommon? TruckCommonNavigation { get; set; }
+
+    public virtual TrailerCommon? TrailerCommonNavigation { get; set; }
 
     public virtual Status? StatusNavigation { get; set; }
 
@@ -44,9 +48,14 @@ public partial class Plate
                 .HasMaxLength(3)
                 .IsUnicode(false);
 
-            _ = entity.HasOne(d => d.TruckNavigation)
+            _ = entity.HasOne(d => d.TruckCommonNavigation)
                 .WithMany(p => p.Plates)
                 .HasForeignKey(d => d.Truck)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            _ = entity.HasOne(d => d.TrailerCommonNavigation)
+                .WithMany(p => p.Plates)
+                .HasForeignKey(d => d.Trailer)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             _ = entity.HasOne(d => d.StatusNavigation)
@@ -64,9 +73,7 @@ public partial class Plate
             (nameof(State), [new LengthValidator(2, 3)]),
             (nameof(Country), [new LengthValidator(2, 3)]),
             (nameof(Expiration), [Required]),
-            (nameof(Truck), [Required,new PointerValidator(true)]),
             (nameof(Status), [Required, new PointerValidator(true)]),
-
         ];
         return Container;
     }

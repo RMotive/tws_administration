@@ -11,17 +11,16 @@ namespace TWS_Business.Quality.Depots;
 public class Q_TruckDepot
     : BQ_MigrationDepot<Truck, TruckDepot, TWSBusinessSource> {
     public Q_TruckDepot()
-        : base(nameof(Truck.Vin)) {
+        : base(nameof(Truck.Id)) {
     }
 
     protected override Truck MockFactory() {
 
         return new() {
-            Vin = RandomUtils.String(17),
-            Economic = RandomUtils.String(16),
             Status = 1,
             Manufacturer = 1,
-            Carrier = 1,
+            Motor = RandomUtils.String(16),
+            Common = 1,
         };
     }
 }

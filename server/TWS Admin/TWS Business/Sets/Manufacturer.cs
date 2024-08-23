@@ -18,6 +18,8 @@ public partial class Manufacturer
 
     public virtual ICollection<Truck> Trucks { get; set; } = [];
 
+    public virtual ICollection<Trailer> Trailers { get; set; } = [];
+
     public virtual ICollection<TruckH> TrucksH { get; set; } = [];
 
     public static void Set(ModelBuilder builder) {

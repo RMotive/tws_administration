@@ -24,6 +24,10 @@ public partial class Address
 
     public string? Colonia { get; set; }
 
+    public virtual ICollection<Employee> Employees { get; set; } = [];
+
+    public virtual ICollection<Location> Locations { get; set; } = [];
+
     public virtual ICollection<Carrier> Carriers { get; set; } = [];
 
     public virtual ICollection<CarrierH> CarriersH { get; set; } = [];

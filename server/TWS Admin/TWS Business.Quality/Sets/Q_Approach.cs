@@ -5,7 +5,7 @@ using CSM_Foundation.Source.Validators;
 using TWS_Business.Sets;
 
 namespace TWS_Business.Quality.Sets;
-public class Q_Contact : BQ_MigrationSet<Approach> {
+public class Q_Approach : BQ_MigrationSet<Approach> {
     protected override Q_MigrationSet_EvaluateRecord<Approach>[] EvaluateFactory(Q_MigrationSet_EvaluateRecord<Approach>[] Container) {
 
         Q_MigrationSet_EvaluateRecord<Approach> success = new() {

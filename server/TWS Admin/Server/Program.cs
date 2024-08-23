@@ -14,6 +14,7 @@ using Server.Models;
 
 using TWS_Business;
 using TWS_Business.Depots;
+using TWS_Business.Sets;
 
 using TWS_Customer.Services;
 using TWS_Customer.Services.Interfaces;
@@ -96,6 +97,28 @@ public partial class Program {
                 builder.Services.AddScoped<SctsDepot>();
                 builder.Services.AddScoped<MaintenacesDepot>();
                 builder.Services.AddScoped<StatusesDepot>();
+                builder.Services.AddScoped<AddressesDepot>();
+                builder.Services.AddScoped<ApproachesDepot>();
+                builder.Services.AddScoped<CarriersDepot>();
+                builder.Services.AddScoped<AxesDepot>();
+                builder.Services.AddScoped<DriversDepot>();
+                builder.Services.AddScoped<DriversCommonsDepot>();
+                builder.Services.AddScoped<DriversExternalsDepot>();
+                builder.Services.AddScoped<EmployeesDepot>();
+                builder.Services.AddScoped<SectionsDepot>();
+                builder.Services.AddScoped<LocationsDepot>();
+                builder.Services.AddScoped<LoadTypesDepot>();
+                builder.Services.AddScoped<LocationsDepot>();
+                builder.Services.AddScoped<TrailerClassesDepot>();
+                builder.Services.AddScoped<TrailersCommonsDepot>();
+                builder.Services.AddScoped<TrailersExternalsDepot>();
+                builder.Services.AddScoped<TrailersDepot>();
+                builder.Services.AddScoped<IdentificationsDepot>();
+                builder.Services.AddScoped<TrucksExternalsDepot>();
+                builder.Services.AddScoped<TrucksCommonsDepot>();
+
+                builder.Services.AddScoped<YardLogsDepot>();
+
                 builder.Services.AddScoped<TrucksHDepot>();
                 // --> Services
                 builder.Services.AddScoped<ISolutionsService, SolutionsService>();
@@ -104,7 +127,17 @@ public partial class Program {
                 builder.Services.AddScoped<ISituationsService, SituationsService>();
                 builder.Services.AddScoped<IPlatesService, PlatesServices>();
                 builder.Services.AddScoped<ITrucksService, TrucksService>();
+                builder.Services.AddScoped<ITrucksExternalsService, TrucksExternalsService>();
                 builder.Services.AddScoped<IContactService, ContactService>();
+                builder.Services.AddScoped<IDriversService, DriversService>();
+                builder.Services.AddScoped<IDriversExternalsService, DriversExternalsService>();
+                builder.Services.AddScoped<ITrucksExternalsService, TrucksExternalsService>();
+                builder.Services.AddScoped<ITrailersService, TrailersService>();
+                builder.Services.AddScoped<ITrailersExternalsService, TrailersExternalsService>();
+                builder.Services.AddScoped<ILoadTypesService, LoadTypesService>();
+                builder.Services.AddScoped<ISectionsService, SectionsService>();
+                builder.Services.AddScoped<IYardLogsService, YardLogsService>();
+
             }
             WebApplication app = builder.Build();
             app.MapControllers();

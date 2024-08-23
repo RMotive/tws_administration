@@ -12,16 +12,29 @@ DROP TABLE Approaches_H;
 DROP TABLE Maintenances_H;
 DROP TABLE Insurances_H;
 DROP TABLE SCT_H;
+DROP TABLE Yard_Logs;
+DROP TABLE Sections;
+DROP TABLE Load_Types;
 DROP TABLE Plates;
 DROP TABLE Trailers;
+DROP TABLE Trailers_Externals;
+DROP TABLE Trailers_Commons;
 DROP TABLE Trailer_Classes;
-DROP TABLE Axis_Classes;
+DROP TABLE Axes;
 DROP TABLE Trucks;
+DROP TABLE Trucks_Externals;
+DROP TABLE Trucks_Commons;
+DROP TABLE Drivers;
+DROP TABLE Drivers_Externals;
+DROP TABLE Drivers_Commons;
+DROP TABLE Employees;
+DROP TABLE Identifications;
 DROP TABLE Carriers;
+DROP TABLE Locations;
+DROP TABLE Addresses;
 DROP TABLE Approaches;
 DROP TABLE USDOT;
 DROP TABLE SCT;
-DROP TABLE Addresses;
 DROP TABLE Maintenances;
 DROP TABLE Manufacturers;
 DROP TABLE Insurances;
@@ -41,8 +54,6 @@ Anual date NOT NULL,
 Trimestral date NOT NULL,
 
 constraint FK_Maintenances_Statuses foreign key([Status]) references Statuses(id)
-
-
 );
 
 create table Manufacturers(
@@ -50,7 +61,6 @@ id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
 Model varchar(30) NOT NULL,
 Brand varchar(15) NOT NULL,
 [Year] date NOT NULL
-
 );
 
 create table Insurances(
@@ -89,7 +99,7 @@ Enterprise varchar(14),
 Personal varchar(13),
 Alternative varchar(30),
 
-constraint FK_Contacts_Statuses foreign key([Status]) references Statuses(id)
+constraint FK_Approaches_Statuses foreign key([Status]) references Statuses(id)
 
 );
 
@@ -125,82 +135,254 @@ USDOT int,
 SCT int,
 
 constraint FK_Carriers_Statuses foreign key([Status]) references Statuses(id),
-constraint FK_Carriers_Contacts foreign key(Approach) references approaches(id),
+constraint FK_Carriers_Approaches foreign key(Approach) references approaches(id),
 constraint FK_Carriers_Addresses foreign key([Address]) references Addresses(id),
 constraint FK_Carriers_USDOT foreign key(USDOT) references USDOT(id),
 constraint FK_Carriers_SCT foreign key(SCT) references SCT(id),
 
 );
 
-create table Axis_Classes(
+create table Locations(
 id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
-[Name] varchar(20) NOT NULL,
+[Status] int NOT NULL,
+[Name] varchar(30) UNIQUE NOT NULL,
+[Address] int NOT NULL,
+
+constraint FK_Locations_Addresses foreign key([Address]) references Addresses(id),
+constraint FK_Locations_Statuses foreign key([Status]) references Statuses(id)
+
+);
+
+create table Axes(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+[Name] varchar(30) NOT NULL,
 Quantity int NOT NULL,
 [Description] varchar(100)
 )
 
 create table Trailer_Classes(
 id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
-[Name] varchar(20) NOT NULL,
+[Name] varchar(30) NOT NULL,
 Axis int NOT NULL,
 [Description] varchar(100),
 
-constraint FK_Trailers_AxisClasses foreign key(Axis) references Axis_Classes(id),
+constraint FK_Trailers_Axes foreign key(Axis) references Axes(id),
+
+);
+Create table  Trailers_Commons(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+Economic Varchar(16) NOT NULL,
+Class int NOT NULL,
+Carrier int NOT NULL,
+Situation int NOT NULL,
+[Location] int,
+
+constraint FK_Trailers_TrailersClass foreign key(Class) references Trailer_Classes(id),
+constraint FK_Trailers_Carriers foreign key(Carrier) references Carriers(id),
+constraint FK_Trailers_Situations foreign key(Situation) references Situations(id),
+constraint FK_Trailers_Locations foreign key([Location]) references Locations(id)
+);
+
+Create table Trailers_Externals(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+[Status] int NOT NULL,
+Common int NOT NULL,
+constraint FK_TrailersExternals_TrailersCommons foreign key(Common) references Trailers_Commons(id),
+constraint FK_TrailersExternals_Statuses foreign key([Status]) references Statuses(id),
 
 );
 
 create table Trailers(
 id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
-Class int NOT NULL,
+[Status] int NOT NULL,
+Common int NOT NULL,
 Manufacturer int NOT NULL,
-Carrier int NOT NULL,
-Situation int NOT NULL,
 Maintenance int,
 
-constraint FK_Trailers_TrailersClass foreign key(Class) references Trailer_Classes(id),
 constraint FK_Trailers_Manufactureres foreign key(Manufacturer) references Manufacturers(id),
-constraint FK_Trailers_Carriers foreign key(Carrier) references Carriers(id),
-constraint FK_Trailers_Situations foreign key(Situation) references Situations(id),
 constraint FK_Trailers_Maintenances foreign key(Maintenance) references Maintenances(id),
+constraint FK_Trailers_TrailersCommons foreign key(Common) references Trailers_Commons(id),
+constraint FK_Trailers_Statuses foreign key([Status]) references Statuses(id),
+
+);
+Create table Identifications(
+id int IDENTITY(1,1) PRIMARY KEY,
+[Status] int NOT NULL,
+[Name] varchar(32) NOT NULL,
+FatherLastname varchar(32) NOT NULL,
+MotherLastName varchar(32) NOT NULL,
+Birthday date,
+
+constraint FK_Identifications_Statuses foreign key([Status]) references Statuses(id),
+
+);
+
+create table Employees(
+id int IDENTITY(1,1) PRIMARY KEY,
+[Status] int NOT NULL,
+Identification int NOT NULL,
+[Address] int NOT NULL,
+Approach int NOT NULL,
+CURP varchar(18) UNIQUE NOT NULL,
+AntecedentesNoPenaleseExp date NOT NULL,
+RFC varchar(12) UNIQUE NOT NULL,
+NSS varchar(11) UNIQUE NOT NULL,
+IMSSRegistrationDate date NOT NULL,
+HiringDate date,
+TerminationDate date,
+
+ constraint FK_Employees_Statuses foreign key([Status]) references Statuses(id),
+ constraint FK_Employees_Identifications foreign key(Identification) references Identifications(id),
+ constraint FK_Employees_Addresses foreign key([Address]) references Addresses(id),
+ constraint FK_Employees_Approaches foreign key(Approach) references Approaches(id),
+);
+
+create table Drivers_Commons(
+id int IDENTITY(1,1) PRIMARY KEY,
+Situation int,
+License varchar(12) UNIQUE NOT NULL,
+
+constraint FK_DriversCommons_Situations foreign key(Situation) references Situations(id),
+);
+
+create table Drivers_Externals(
+id int IDENTITY(1,1) PRIMARY KEY,
+[Status] int NOT NULL,
+Common int NOT NULL,
+Identification int NOT NULL
+
+constraint FK_DriversExternals_Statuses foreign key([Status]) references Statuses(id),
+constraint FK_DriversExternals_DriversCommons foreign key(Common) references Drivers_Commons(id),
+constraint FK_DriversExternal_Identifications foreign key(Identification) references Identifications(id),
+);
+
+create table Drivers(
+id int IDENTITY(1,1) PRIMARY KEY,
+[Status] int NOT NULL,
+Employee int NOT  NULL,
+Common int NOT NULL,
+DriverType varchar(12) NOT NULL,
+LicenseExpiration date NOT NULL,
+DrugalcRegistrationDate date NOT NULL,
+PullnoticeRegistrationDate date NOT NULL,
+TWIC varchar(12),
+TWICExpiration date,
+VISA varchar(12),
+VISAExpiration date,
+[FAST] varchar(14),
+FASTExpiration date,
+ANAM varchar(24),
+ANAMExpiration date,
+
+constraint FK_Drivers_Statuses foreign key([Status]) references Statuses(id),
+constraint FK_Drivers_DriversCommons foreign key(Common) references Drivers_Commons(id),
+constraint FK_Drivers_Employees foreign key(Employee) references Employees(id),
+
+);
+
+create table Trucks_Commons(
+ id int IDENTITY(1,1) PRIMARY KEY,
+ VIN varchar(17) UNIQUE NOT NULL,
+ Economic varchar(16) NOT NULL,
+ Carrier int NOT NULL,
+ Situation int,
+ [Location] int,
+
+ constraint FK_TrucksCommons_Situations foreign key(Situation) references Situations(id),
+ constraint FK_TrucksCommons_Carriers foreign key(Carrier) references Carriers(id),
+ constraint FK_TrucksCommons_Locations foreign key([Location]) references Locations(id)
+);
 
 
+create table Trucks_Externals(
+ id int IDENTITY(1,1) PRIMARY KEY,
+ [Status] int NOT NULL,
+ Common int NOT NULL,
+
+ constraint FK_TrucksExternals_TrucksCommons foreign key(Common) references Trucks_Commons(id),
 );
 
 create table Trucks(
  id int IDENTITY(1,1) PRIMARY KEY,
- [Status] int not null,
- VIN varchar(17) UNIQUE NOT NULL,
+ [Status] int NOT NULL,
+ Common int NOT NULL,
  Manufacturer int NOT NULL,
- Motor varchar(16),
- Economic varchar(16) NOT NULL,
+ Motor varchar(16) UNIQUE NOT NULL,
  Maintenance int,
- Situation int,
  Insurance int,
- Carrier int NOT NULL,
+
+ constraint FK_Trucks_TrucksCommons foreign key(Common) references Trucks_Commons(id),
  constraint FK_Trucks_Manufacturers foreign key(Manufacturer) references Manufacturers(id),
  constraint FK_Trucks_Maintenances foreign key(Maintenance) references Maintenances(id),
  constraint FK_Trucks_Insurances foreign key(Insurance) references Insurances(id),
- constraint FK_Trucks_Situations foreign key(Situation) references Situations(id),
  constraint FK_Trucks_Statuses foreign key([Status]) references Statuses(id),
- constraint FK_Trucks_Carriers foreign key(Carrier) references Carriers(id)
+
 );
 create table Plates(
 id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
-Identifier varchar(12) NOT NULL,
 [Status] int not null,
-
+Identifier varchar(12) NOT NULL,
 [State] varchar(4) NOT NULL,
 Country varchar(3) NOT NULL,
 Expiration date NOT NULL,
 Truck int,
 Trailer int,
 
- constraint FK@Plates_Trucks foreign key(Truck) references Trucks(id),
- constraint FK@Plates_Trailers foreign key(Trailer) references Trailers(id)
+ constraint FK_Plates_TrucksCommons foreign key(Truck) references Trucks_Commons(id),
+ constraint FK_Plates_TrailersCommons foreign key(Trailer) references Trailers_Commons(id),
+ constraint FK_Plates_Statuses foreign key([Status]) references Statuses(id),
+
 );
 
 
+create table Load_Types(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+[Name] varchar(32) UNIQUE NOT NULL,
+[Description] varchar(100)
+);
 
+create table Sections(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+[Status] int not null,
+Yard int NOT NULL,
+[Name] varchar(32) NOT NULL,
+Capacity int NOT NULL,
+Ocupancy int NOT NULL,
+
+constraint FK_Sections_Statuses foreign key([Status]) references Statuses(id),
+constraint FK_Sections_Locations foreign key(Yard) references Locations(id),
+);
+
+create table Yard_Logs(
+id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
+[Entry] bit NOT NULL,
+[Timestamp] datetime2,
+Truck int,
+TruckExternal int,
+Trailer int,
+TrailerExternal int,
+LoadType int NOT NULL,
+Guard int NOT NULL,
+Gname varchar(100) NOT NULL,
+Section int NOT NULL,
+FromTo varchar(100) NOT NULL,
+Damage bit NOT NULL,
+TTPicture varchar(MAX) NOT NULL,
+DmgEvidence varchar(MAX),
+Driver int,
+DriverExternal int,
+
+constraint FK_YardLogs_Drivers foreign key(Driver) references Drivers(id),
+constraint FK_YardLogs_DriversExternals foreign key(DriverExternal) references Drivers_Externals(id),
+constraint FK_YardLogs_Truck foreign key(Truck) references Trucks(id),
+constraint FK_YardLogs_TruckExternals foreign key(TruckExternal) references Trucks_Externals(id),
+
+constraint FK_YardLogs_Trailer foreign key(Trailer) references Trailers(id),
+constraint FK_YardLogs_TrailerExternals foreign key(TrailerExternal) references Trailers_Externals(id),
+constraint FK_YardLogs_LoadType foreign key(LoadType) references Load_Types(id),
+constraint FK_YardLogs_Sections foreign key(Section) references Sections(id),
+
+);
 
 -- Historical Tables --
  create table Insurances_H(
@@ -231,7 +413,6 @@ Trailer int,
  constraint FK_MaintenancesH_Maintenances foreign key(Entity) references Maintenances(id),
  constraint FK_MaintenancesH_Statuses foreign key([Status]) references Statuses(id)
 
-
  );
  create table Plates_H(
  id int IDENTITY (1,1) PRIMARY KEY NOT NULL,
@@ -257,14 +438,12 @@ Truck int NOT NULL,
  [Status] int not null,
 
   Entity int not null,
-[Type] varchar(6) NOT NULL,
-Number varchar(25) NOT NULL,
-[Configuration] varchar(10) NOT NULL
+ [Type] varchar(6) NOT NULL,
+ Number varchar(25) NOT NULL,
+ [Configuration] varchar(10) NOT NULL
 
  constraint FK_SCTH_SCT foreign key(Entity) references SCT(id),
  constraint FK_SCTH_Statuses foreign key([Status]) references Statuses(id)
-
-
  );
 
  create table USDOT_H(
@@ -294,8 +473,8 @@ Personal varchar(13),
 Alternative varchar(30),
 Email varchar(30) not null,
 
- constraint FK_ContactsH_Contacts foreign key(Entity) references approaches(id),
- constraint FK_ContactsH_Statuses foreign key([Status]) references Statuses(id)
+ constraint FK_ApproachesH_Approaches foreign key(Entity) references approaches(id),
+ constraint FK_ApproachesH_Statuses foreign key([Status]) references Statuses(id)
  );
 
  create table Carriers_H(
@@ -312,7 +491,7 @@ Email varchar(30) not null,
  SCTH int,
  constraint FK_CarrierH_Carrier foreign key(Entity) references Carriers(id),
  constraint FK_CarrierH_Statuses foreign key([Status]) references Statuses(id),
- constraint FK_CarrierH_ContactsH foreign key(ApproachH) references Approaches_H(id),
+ constraint FK_CarrierH_ApproachesH foreign key(ApproachH) references Approaches_H(id),
  constraint FK_CarrierH_Address foreign key([Address]) references Addresses(id),
  constraint FK_CarrierH_USDOTH foreign key(USDOTH) references USDOT_H(id),
  constraint FK_CarrierH_SCTH foreign key(SCTH) references SCT_H(id),
@@ -350,7 +529,7 @@ Email varchar(30) not null,
 
   constraint FK_PlatesTrucksH_Plates foreign key(Plateid) references Plates_H(id),
   constraint FK_PlatesTrucksH_TrucksH foreign key (Truckhid) references Trucks_H(id)
- )
+ );
 
 INSERT INTO Statuses([Name], [Description])
 VALUES('Enable','Currently Active in this Solution.'), ('Disable', 'A deleted status. Stored for historical propurses . A disable record has limited features and visibility settings.');
@@ -382,18 +561,58 @@ VALUES('First street', 'First alt street', 'Tijuana', 'ZIP11', 'MEX', 'Colonia 1
 INSERT INTO Carriers([Name], Approach, [Address], USDOT, SCT, [Status])
 VALUES('TWSA', 1, 1, 1, 1, 1), ('TWS2', 2, 2, 2, 2, 1),('TWS3', 3, 3, 3, 3, 1);
 
-INSERT INTO Axis_Classes([Name], [Description], Quantity)
+INSERT INTO Locations([Status], [Name], [Address])
+VALUES(1, 'TWSA HQ', 1),(1, 'LA Yard', 2), (1, 'Tijuana Yard #2', 1);
+
+INSERT INTO Axes([Name], [Description], Quantity)
 VALUES('Single axle', 'Single axle. For small trailers boxes', 1), ('Tandem axle', 'Multiple axle positioned near each other,  ', 2),  ('Triple axle', 'Triple Axle. axis are positiones at equal distances each other through the trailer', 3);
 
 INSERT INTO Trailer_Classes([Name], [Description], Axis)
-VALUES('Dry van', 'Full closed trailer, ideal for dry load.', 1),('Reefer', 'Refrigerated closed trailer', 2),('Flatbed', 'Open flat platform. ideal for big vehicules or materials transport.', 1)
+VALUES('Dry van', 'Full closed trailer, ideal for dry load.', 1),('Reefer', 'Refrigerated closed trailer', 2),('Flatbed', 'Open flat platform. ideal for big vehicules or materials transport.', 1);
 
-INSERT INTO Trailers(Class, Manufacturer, Maintenance, Situation, Carrier)
-VALUES(1,1,1,1,1),(2,2,2,2,2),(3,3,3,3,3);
+INSERT INTO Trailers_Commons(Class, Carrier, Situation, [Location], Economic)
+VALUES (1,1,1,1, 'Economic 1'), (2,2,2,2, 'Economic 2'), (3,3,3,3, 'Economic 3');
+ 
+INSERT INTO Trailers_Externals([Status], Common)
+VALUES (1, 1), (1, 2), (1, 3);
 
-INSERT INTO Trucks(VIN, Manufacturer, Motor, Maintenance, Situation, Insurance, [Status], Carrier, Economic)
-VALUES('VINtest1-13324231',1,'Motortestnumber1',1,1,1,1,1, 'Economic 1'),('VINtest2-63324231',2,'Motortestnumber2',2,2,2,1,2, 'Economic 2'),('VINtest3-93324231',3,'Motortestnumber3',3,3,3,1,3, 'Economic 3');
+INSERT INTO Trailers([Status], Common, Manufacturer, Maintenance)
+VALUES (1,1,1,1), (1,2,2,2), (1,3,3,3);
+
+INSERT INTO Identifications([Status], [Name], FatherLastname, MotherLastName, Birthday)
+VALUES(1, 'ARTURO', 'RAMIREZ', 'MANCILLAS', SYSDATETIME()), (1, 'CARLOS JAVIER', 'SANCHEZ', 'GUZMAN', SYSDATETIME()), (1, 'URIAS', 'ARMENTA', 'CESAR', SYSDATETIME());
+
+INSERT INTO Employees([Status], Identification, CURP, AntecedentesNoPenaleseExp, [Address], Approach, RFC, NSS, IMSSRegistrationDate, HiringDate, TerminationDate)
+VALUES(1, 1, 'RAMA830213HBCMNR03', SYSDATETIME(), 1, 1, 'RFC TEST1111', 'NSS test 11', SYSDATETIME(), SYSDATETIME(), SYSDATETIME()), (1, 2, 'SAGC771004HBCNZR07', SYSDATETIME(), 2, 2, 'RFC TEST2222', 'NSS test 22', SYSDATETIME(), SYSDATETIME(), SYSDATETIME()), (1, 3, 'UIAC770225HSLRRS06', SYSDATETIME(), 3, 3, 'RFC TEST3333', 'NSS test 33', SYSDATETIME(), SYSDATETIME(), SYSDATETIME());
+
+INSERT INTO Drivers_Commons(License, Situation)
+VALUES('BCN0212895', 1), ('BCN207292', 2), ('BCN0215006', 3);
+
+INSERT INTO Drivers_Externals([Status], Common, Identification)
+VALUES(1, 1, 1),(1, 2, 2),(1, 3, 3);
+
+INSERT INTO Drivers([Status], Employee, DriverType, Common, LicenseExpiration, TWIC,TWICExpiration, VISA, VISAExpiration, [FAST], FASTExpiration, ANAM, ANAMExpiration, DrugalcRegistrationDate, PullnoticeRegistrationDate)
+VALUES(1, 1, 'Binational', 1, SYSDATETIME(), '28250230', SYSDATETIME(), 'TJT005336269', SYSDATETIME(), '411000013467', SYSDATETIME(), 'SATGN2017091940000001885', SYSDATETIME(), SYSDATETIME(), SYSDATETIME()), (1, 2, 'Mexican', 2, SYSDATETIME(), '28237819', SYSDATETIME(), 'TJT005044433', SYSDATETIME(), '41100103485400', SYSDATETIME(), 'SATGN2018060440000020884', SYSDATETIME(), SYSDATETIME(), SYSDATETIME()), (1, 3, 'Mexican', 3, SYSDATETIME(), '28247760', SYSDATETIME(), 'MEX041410210', SYSDATETIME(), '41100220935700', SYSDATETIME(), 'SATGN2022032740000116226', SYSDATETIME(), SYSDATETIME(), SYSDATETIME());
+
+INSERT INTO Trucks_Commons(VIN, Economic, Carrier, Situation)
+VALUES ('VINtest1-13324231',  'Economic 1', 1, 1), ('VINtest2-63324231', 'Economic 2', 2, 2), ('VINtest3-93324231', 'Economic 3', 2, 2);
+
+INSERT INTO Trucks_Externals([Status], Common)
+VALUES (1,1),(1,2),(1,3);
+
+INSERT INTO Trucks(Common, Manufacturer, Motor, Maintenance, Insurance, [Status])
+VALUES(1,1,'Motortestnumber1',1,1,1),(2,2,'Motortestnumber2',2,2,1),(3,3,'Motortestnumber3',3,3,1);
 
 INSERT INTO Plates(Identifier,[State],Country,Expiration, Truck, [Status])
 VALUES('SADC2423E132','CA','USA','2024-07-01',1, 1),('TMEX2323EST2','BC','MEX','2024-09-02',2, 1), ('TXH214E3ESC1','TX','USA','2024-11-03',3, 1),
 ('SADC2423E132','CA2','USA','2024-07-01',1, 1),('TMEX2323EST2','BC2','MEX','2024-09-02',2, 1), ('TXH214E3ESC1','TX2','USA','2024-11-03',3, 1);
+
+INSERT INTO Load_Types([Name], [Description])
+VALUES('Loaded', 'DESCRIPTION 1'), ('Empty', 'DESCRIPTION 2'), ('Botado', 'DESCRIPTION 3');
+
+INSERT INTO Sections([Name], Capacity, Ocupancy, [Status], Yard)
+VALUES('A', 20, 10, 1, 1), ('B', 10, 2, 1, 2), ('C', 25, 10, 1, 3);
+
+INSERT INTO Yard_Logs([Entry], [Timestamp], Truck, TruckExternal, Trailer, TrailerExternal, LoadType, Guard, Gname, Section, FromTo, Damage, TTPicture, DmgEvidence, Driver, DriverExternal)
+VALUES(1, SYSDATETIME(), 1, null, 1, null, 1, 1,'Guard 1', 1, 'Coca Cola el Florido', 0, 'Truck and trailer picture 1', null, 1, null), (1, SYSDATETIME(), 2, null, 2, null, 2, 2,'Guard 2', 2, 'Coca Cola el Florido 2', 1, 'Truck and trailer picture 1', 'Damage picture 1', 2, null), (1, SYSDATETIME(), 3, null, 3, null, 3, 3,'Guard 3', 3, 'Coca Cola el Florido 3', 0, 'Truck and trailer picture 1', null, 2, null);
+
