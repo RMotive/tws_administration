@@ -9,7 +9,7 @@ namespace TWS_Business.Quality.Depots;
 ///     Qualifies the <see cref="YardLogsDepot"/>.
 /// </summary>
 public class Q_YardLogsDepot
-    : BQ_MigrationDepot<YardLog, YardLogsDepot, TWSBusinessSource> {
+    : BQ_SourceDepot<YardLog, YardLogsDepot, TWSBusinessSource> {
     public Q_YardLogsDepot()
         : base(nameof(YardLog.Id)) {
     }

@@ -4,10 +4,10 @@ using TWS_Business.Sets;
 
 namespace TWS_Business.Depots;
 /// <summary>
-///     Implements a <see cref="BMigrationDepot{TMigrationSource, TMigrationSet}"/>
+///     Implements a <see cref="BSourceDepot{TMigrationSource, TMigrationSet}"/>
 ///     representing a depot to handle <see cref="ApproachesH"/> datasource entity mirror.
 /// </summary>
-public class ApproachesHDepot : BMigrationDepot<TWSBusinessSource, ApproachesH> {
+public class ApproachesHDepot : BSourceDepot<TWSBusinessSource, ApproachesH> {
     /// <summary>
     ///     Generates a new depot handler for <see cref="ApproachesH"/>.
     /// </summary>

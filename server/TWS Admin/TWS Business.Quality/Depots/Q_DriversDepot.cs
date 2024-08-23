@@ -9,7 +9,7 @@ namespace TWS_Business.Quality.Depots;
 ///     Qualifies the <see cref="DriversDepot"/>.
 /// </summary>
 public class Q_DriversDepot
-    : BQ_MigrationDepot<Driver, DriversDepot, TWSBusinessSource> {
+    : BQ_SourceDepot<Driver, DriversDepot, TWSBusinessSource> {
     public Q_DriversDepot()
         : base(nameof(Driver.Id)) {
     }

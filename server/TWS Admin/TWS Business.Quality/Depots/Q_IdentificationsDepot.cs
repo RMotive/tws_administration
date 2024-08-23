@@ -9,7 +9,7 @@ namespace TWS_Business.Quality.Depots;
 ///     Qualifies the <see cref="IdentificationsDepot"/>.
 /// </summary>
 public class Q_IdentificationsDepot
-    : BQ_MigrationDepot<Identification, IdentificationsDepot, TWSBusinessSource> {
+    : BQ_SourceDepot<Identification, IdentificationsDepot, TWSBusinessSource> {
     public Q_IdentificationsDepot()
         : base(nameof(Identification.Id)) {
     }

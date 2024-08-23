@@ -9,7 +9,7 @@ namespace TWS_Business.Quality.Depots;
 ///     Qualifies the <see cref="ApproachesHDepot"/>.
 /// </summary>
 public class Q_ApproachesHDepot
-    : BQ_MigrationDepot<ApproachesH, ApproachesHDepot, TWSBusinessSource> {
+    : BQ_SourceDepot<ApproachesH, ApproachesHDepot, TWSBusinessSource> {
     public Q_ApproachesHDepot()
         : base(nameof(ApproachesH.Entity)) {
     }

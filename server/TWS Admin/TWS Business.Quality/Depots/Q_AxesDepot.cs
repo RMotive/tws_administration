@@ -9,7 +9,7 @@ namespace TWS_Business.Quality.Depots;
 ///     Qualifies the <see cref="AxesDepot"/>.
 /// </summary>
 public class Q_AxesDepot
-    : BQ_MigrationDepot<Axis, AxesDepot, TWSBusinessSource> {
+    : BQ_SourceDepot<Axis, AxesDepot, TWSBusinessSource> {
     public Q_AxesDepot()
         : base(nameof(Axis.Id)) {
     }

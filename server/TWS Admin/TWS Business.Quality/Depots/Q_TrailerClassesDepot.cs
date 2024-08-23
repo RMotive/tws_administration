@@ -9,7 +9,7 @@ namespace TWS_Business.Quality.Depots;
 ///     Qualifies the <see cref="TrailerClassesDepot"/>.
 /// </summary>
 public class Q_TrailerClassesDepot
-    : BQ_MigrationDepot<TrailerClass, TrailerClassesDepot, TWSBusinessSource> {
+    : BQ_SourceDepot<TrailerClass, TrailerClassesDepot, TWSBusinessSource> {
     public Q_TrailerClassesDepot()
         : base(nameof(TrailerClass.Id)) {
     }

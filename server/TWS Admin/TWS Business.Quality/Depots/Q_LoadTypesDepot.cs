@@ -9,7 +9,7 @@ namespace TWS_Business.Quality.Depots;
 ///     Qualifies the <see cref="LoadTypesDepot"/>.
 /// </summary>
 public class Q_LoadTypesDepot
-    : BQ_MigrationDepot<LoadType, LoadTypesDepot, TWSBusinessSource> {
+    : BQ_SourceDepot<LoadType, LoadTypesDepot, TWSBusinessSource> {
     public Q_LoadTypesDepot()
         : base(nameof(LoadType.Id)) {
     }

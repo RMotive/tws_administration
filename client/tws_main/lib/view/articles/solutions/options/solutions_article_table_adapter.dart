@@ -143,5 +143,28 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
   }
 
   @override
-  void onRemoveRequest(Solution set, BuildContext context) {}
+  void onRemoveRequest(Solution set, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return TWSConfirmationDialog(
+          accept: 'Remove',
+          title: 'Solution remove confirmation',
+          statement: Text.rich(
+            TextSpan(
+              text: 'Are you sure want to remove ',
+              children: <InlineSpan>[
+                TextSpan(
+                  text: set.name,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                const TextSpan(text: '?'),
+              ],
+            ),
+          ),
+          onAccept: () {},
+        );
+      },
+    );
+  }
 }
