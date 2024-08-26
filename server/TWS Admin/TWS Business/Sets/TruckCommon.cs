@@ -10,6 +10,8 @@ public partial class TruckCommon
     : BSourceSet {
     public override int Id { get; set; }
 
+    public int Status { get; set; }
+
     public string Vin { get; set; } = null!;
 
     public string Economic { get; set; } = null!;
@@ -26,6 +28,8 @@ public partial class TruckCommon
 
     public virtual Location? LocationNavigation { get; set; }
 
+    public virtual Status? StatusNavigation { get; set; }
+
     public virtual ICollection<Truck> Trucks { get; set; } = [];
 
     public virtual ICollection<TruckExternal> TrucksExternals { get; set; } = [];
@@ -41,7 +45,8 @@ public partial class TruckCommon
                 .. Container,
             (nameof(Vin), [Unique, new LengthValidator(17, 17)]),
             (nameof(Economic), [Required, new LengthValidator(1, 16)]),
-            (nameof(Carrier), [new PointerValidator(true)])
+            (nameof(Carrier), [new PointerValidator(true)]),
+            (nameof(Status), [new PointerValidator(true)])
         ];
 
         return Container;
@@ -75,6 +80,11 @@ public partial class TruckCommon
             _ = entity.HasOne(d => d.LocationNavigation)
                .WithMany(p => p.TrucksCommons)
                .HasForeignKey(d => d.Location)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+
+            _ = entity.HasOne(d => d.StatusNavigation)
+               .WithMany(p => p.TrucksCommons)
+               .HasForeignKey(d => d.Status)
                .OnDelete(DeleteBehavior.ClientSetNull);
         });
     }

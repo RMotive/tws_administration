@@ -80,7 +80,6 @@ public partial class Truck
             ..Container,
             (nameof(Status), [new PointerValidator(true)]),
             (nameof(Motor), [new LengthValidator(1, 16)]),
-            (nameof(Common), [new PointerValidator(true)]),
             (nameof(Manufacturer), [new PointerValidator(true)]),
         ];
         return Container;

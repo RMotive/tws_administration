@@ -30,7 +30,6 @@ public class Q_Truck : BQ_MigrationSet<Truck> {
             Expectations = [
                 (nameof(Truck.Id), [(new PointerValidator(), 3) ]),
                 (nameof(Truck.Motor), [(new LengthValidator(),2)]),
-                (nameof(Truck.Common), [(new PointerValidator(), 3) ]),
                 (nameof(Truck.Manufacturer), [(new PointerValidator(), 3) ]),
                 (nameof(Truck.Status), [(new PointerValidator(), 3) ]),
 

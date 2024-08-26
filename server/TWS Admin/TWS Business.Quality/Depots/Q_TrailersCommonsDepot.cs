@@ -18,6 +18,7 @@ public class Q_TrailersCommonsDepot
 
         return new() {
             Class = 1,
+            Status = 1,
             Economic = RandomUtils.String(16),
             Carrier = 1,
             Situation = 1,

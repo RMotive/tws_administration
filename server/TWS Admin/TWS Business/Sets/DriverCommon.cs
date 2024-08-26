@@ -10,11 +10,15 @@ public partial class DriverCommon
     : BSourceSet {
     public override int Id { get; set; }
 
+    public int Status { get; set; }
+
     public string License { get; set; } = null!;
 
     public int Situation { get; set; }
 
     public virtual Situation? SituationNavigation { get; set; }
+
+    public virtual Status? StatusNavigation { get; set; }
 
     public virtual ICollection<Driver> Drivers { get; set; } = [];
 
@@ -27,6 +31,7 @@ public partial class DriverCommon
                 .. Container,
             (nameof(License), [Required, new LengthValidator(8,12)]),
             (nameof(Situation), [new PointerValidator(true)]),
+            (nameof(Status), [Required, new PointerValidator(true)]),
         ];
 
         return Container;
@@ -43,6 +48,11 @@ public partial class DriverCommon
             _ = entity.Property(e => e.License)
                 .HasMaxLength(12)
                 .IsUnicode(false);
+
+            _ = entity.HasOne(d => d.StatusNavigation)
+                .WithMany(p => p.DriversCommons)
+                .HasForeignKey(d => d.Status)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             _ = entity.HasOne(d => d.SituationNavigation)
                 .WithMany(p => p.DriversCommons)

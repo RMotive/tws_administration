@@ -56,61 +56,54 @@ public class TrucksService : ITrucksService {
             .Include(t => t.TruckCommonNavigation)
             .Include(t => t.StatusNavigation)
             .Select(t => new Truck() {
-                 Id = t.Id,
-                 Status = t.Status,
-                 Manufacturer = t.Manufacturer,
-                 Motor = t.Motor,
-                 Maintenance = t.Maintenance,
-                 Common = t.Common,
-                 Insurance = t.Insurance,
-                 StatusNavigation = t.StatusNavigation == null? null : new Status() {
-                     Id = t.StatusNavigation.Id,
-                     Name = t.StatusNavigation.Name,
-                     Description = t.StatusNavigation.Description,
-                 },
-                 //CarrierNavigation = t.CarrierNavigation == null? null : new Carrier() {
-                 //    Id = t.CarrierNavigation.Id,
-                 //    Status = t.CarrierNavigation.Status,
-                 //    Name = t.CarrierNavigation.Name,
-                 //    Approach = t.CarrierNavigation.Approach,
-                 //    Address = t.CarrierNavigation.Address,
-                 //    Usdot = t.CarrierNavigation.Usdot,
-                 //    Sct = t.CarrierNavigation.Sct,
-                 //    ApproachNavigation = t.CarrierNavigation.ApproachNavigation,
-                 //    AddressNavigation = t.CarrierNavigation.AddressNavigation,
-                 //    UsdotNavigation = t.CarrierNavigation.UsdotNavigation,
-                 //    SctNavigation = t.CarrierNavigation.SctNavigation
-                 //},
-                 MaintenanceNavigation = t.MaintenanceNavigation == null ? null : new Maintenance() {
-                     Id = t.MaintenanceNavigation.Id,
-                     Anual = t.MaintenanceNavigation.Anual,
-                     Trimestral = t.MaintenanceNavigation.Trimestral
-                 },
-                 ManufacturerNavigation = t.ManufacturerNavigation == null ? null : new Manufacturer() {
-                     Id = t.ManufacturerNavigation.Id,
-                     Model = t.ManufacturerNavigation.Model,
-                     Brand = t.ManufacturerNavigation.Brand,
-                     Year = t.ManufacturerNavigation.Year
-                 },
-                 InsuranceNavigation = t.InsuranceNavigation == null ? null : new Insurance() {
-                     Id = t.InsuranceNavigation.Id,
-                     Policy = t.InsuranceNavigation.Policy,
-                     Expiration = t.InsuranceNavigation.Expiration,
-                     Country = t.InsuranceNavigation.Country
-                 },
-                 //SituationNavigation = t.SituationNavigation == null ? null : new Situation() {
-                 //    Id = t.SituationNavigation.Id,
-                 //    Name = t.SituationNavigation.Name,
-                 //    Description = t.SituationNavigation.Description
-                 //},
-                 //Plates = (ICollection<Plate>)t.Plates.Select(p => new Plate() {
-                 //    Id = p.Id,
-                 //    Identifier = p.Identifier,
-                 //    State = p.State,
-                 //    Country = p.Country,
-                 //    Expiration = p.Expiration,
-                 //    Truck = p.Truck
-                 //})
+                Id = t.Id,
+                Status = t.Status,
+                Common = t.Common,
+                Motor = t.Motor,
+                Manufacturer = t.Manufacturer,
+                Maintenance = t.Maintenance,
+                Insurance = t.Insurance,
+                StatusNavigation = t.StatusNavigation == null? null : new Status() {
+                    Id = t.StatusNavigation.Id,
+                    Name = t.StatusNavigation.Name,
+                    Description = t.StatusNavigation.Description,
+                },
+                TruckCommonNavigation = t.TruckCommonNavigation == null? null : new TruckCommon() {
+                    Id = t.TruckCommonNavigation.Id,
+                    Vin = t.TruckCommonNavigation.Vin,
+                    Economic = t.TruckCommonNavigation.Economic,
+                    Carrier = t.TruckCommonNavigation.Carrier,
+                    Location = t.TruckCommonNavigation.Location,
+                    Situation = t.TruckCommonNavigation.Situation,
+                    Plates = (ICollection<Plate>)t.TruckCommonNavigation.Plates.Select(p => new Plate() {
+                        Id = p.Id,
+                        Status = p.Status,
+                        Identifier = p.Identifier,
+                        State = p.State,
+                        Country = p.Country,
+                        Expiration = p.Expiration,
+                        Truck = p.Truck,
+                        Trailer = p.Trailer
+                    })
+                },
+                MaintenanceNavigation = t.MaintenanceNavigation == null ? null : new Maintenance() {
+                    Id = t.MaintenanceNavigation.Id,
+                    Anual = t.MaintenanceNavigation.Anual,
+                    Trimestral = t.MaintenanceNavigation.Trimestral
+                },
+                ManufacturerNavigation = t.ManufacturerNavigation == null ? null : new Manufacturer() {
+                    Id = t.ManufacturerNavigation.Id,
+                    Model = t.ManufacturerNavigation.Model,
+                    Brand = t.ManufacturerNavigation.Brand,
+                    Year = t.ManufacturerNavigation.Year
+                },
+                InsuranceNavigation = t.InsuranceNavigation == null ? null : new Insurance() {
+                    Id = t.InsuranceNavigation.Id,
+                    Policy = t.InsuranceNavigation.Policy,
+                    Expiration = t.InsuranceNavigation.Expiration,
+                    Country = t.InsuranceNavigation.Country
+                },
+                 
              });
         }
 

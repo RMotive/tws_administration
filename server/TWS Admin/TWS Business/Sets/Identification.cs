@@ -17,9 +17,10 @@ public partial class Identification
     public string FatherLastname { get; set; } = null!;
 
     public string MotherLastName { get; set; } = null!;
-    public virtual Status? StatusNavigation { get; set; }
 
-    public DateOnly Birthday { get; set; }
+    public DateOnly? Birthday { get; set; }
+
+    public virtual Status? StatusNavigation { get; set; }
 
     public virtual ICollection<DriverExternal> DriversExternals { get; set; } = [];
 

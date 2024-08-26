@@ -56,7 +56,7 @@ public partial class Driver
                 .. Container,
             (nameof(Status), [new PointerValidator(true)]),
             (nameof(Employee), [new PointerValidator(true)]),
-            (nameof(DriverType), [Required, new LengthValidator(12)]),
+            (nameof(DriverType), [Required, new LengthValidator(1,12)]),
             (nameof(Common), [new PointerValidator(true)]),
         ];
 

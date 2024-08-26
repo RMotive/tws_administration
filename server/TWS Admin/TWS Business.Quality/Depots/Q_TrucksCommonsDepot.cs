@@ -17,6 +17,7 @@ public class Q_TrucksCommonsDepot
     protected override TruckCommon MockFactory() {
 
         return new() {
+            Status = 1,
             Vin = RandomUtils.String(17),
             Economic = RandomUtils.String(16),
             Carrier = 1

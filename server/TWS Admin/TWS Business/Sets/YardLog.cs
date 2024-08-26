@@ -66,7 +66,7 @@ public partial class YardLog
 
         Container = [
                 .. Container,
-            (nameof(TTPicture), [new LengthValidator(1, 100)]),
+            (nameof(TTPicture), [new LengthValidator(1, 999)]),
             (nameof(Gname), [new LengthValidator(1, 100)]),
             (nameof(FromTo), [new LengthValidator(1, 100)]),
             (nameof(LoadType), [new PointerValidator(true)]),

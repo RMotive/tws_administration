@@ -13,6 +13,12 @@ public partial class Status
 
     public string? Description { get; set; }
 
+    public virtual ICollection<TruckCommon> TrucksCommons { get; set; } = [];
+
+    public virtual ICollection<TrailerCommon> TrailersCommons { get; set; } = [];
+
+    public virtual ICollection<DriverCommon> DriversCommons { get; set; } = [];
+
     public virtual ICollection<Section> Sections { get; set; } = [];
 
     public virtual ICollection<DriverExternal> DriversExternals { get; set; } = [];

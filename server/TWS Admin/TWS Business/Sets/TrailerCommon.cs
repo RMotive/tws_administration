@@ -10,6 +10,8 @@ public partial class TrailerCommon
     : BSourceSet {
     public override int Id { get; set; }
 
+    public int Status { get; set; }
+
     public string Economic { get; set; } = null!;
 
     public int Class { get; set; }
@@ -19,6 +21,8 @@ public partial class TrailerCommon
     public int Situation { get; set; }
 
     public int? Location { get; set; }
+
+    public virtual Status? StatusNavigation { get; set; }
 
     public virtual TrailerClass? TrailerClassNavigation { get; set; }
 
@@ -44,6 +48,7 @@ public partial class TrailerCommon
             (nameof(Economic), [Required, new LengthValidator(1, 16)]),
             (nameof(Carrier), [Required, new PointerValidator(true)]),
             (nameof(Situation), [Required, new PointerValidator(true)]),
+            (nameof(Status), [Required, new PointerValidator(true)]),
         ];
 
         return Container;
@@ -77,6 +82,11 @@ public partial class TrailerCommon
             _ = entity.HasOne(d => d.LocationNavigation)
                .WithMany(p => p.TrailersCommons)
                .HasForeignKey(d => d.Location)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+
+            _ = entity.HasOne(d => d.StatusNavigation)
+               .WithMany(p => p.TrailersCommons)
+               .HasForeignKey(d => d.Status)
                .OnDelete(DeleteBehavior.ClientSetNull);
         });
     }

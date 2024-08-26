@@ -23,6 +23,7 @@ public class Q_TruckCommon : BQ_MigrationSet<TruckCommon> {
             Mock = new() {
                 Id = 0,
                 Carrier = 0,
+                Status = 0,
                 Situation = 0,
                 Vin = "",
                 Economic = ""
@@ -32,6 +33,8 @@ public class Q_TruckCommon : BQ_MigrationSet<TruckCommon> {
                 (nameof(TruckCommon.Vin), [(new LengthValidator(),2)]),
                 (nameof(TruckCommon.Economic), [(new LengthValidator(),2)]),
                 (nameof(TruckCommon.Carrier), [(new PointerValidator(), 3)]),
+                (nameof(TruckCommon.Status), [(new PointerValidator(), 3)]),
+
             ],
         };
 

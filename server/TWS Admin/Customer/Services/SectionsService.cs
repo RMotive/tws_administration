@@ -3,6 +3,8 @@
 using CSM_Foundation.Source.Models.Options;
 using CSM_Foundation.Source.Models.Out;
 
+using Microsoft.EntityFrameworkCore;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
@@ -17,6 +19,10 @@ public class SectionsService : ISectionsService {
     }
 
     public async Task<SetViewOut<Section>> View(SetViewOptions Options) {
-        return await Sections.View(Options);
+        static IQueryable<Section> include(IQueryable<Section> query) {
+            return query
+            .Include(t => t.LocationNavigation);
+        }
+        return await Sections.View(Options, include);
     }
 }

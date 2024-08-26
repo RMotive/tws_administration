@@ -21,12 +21,14 @@ public class Q_DriverCommon : BQ_MigrationSet<DriverCommon> {
             Mock = new() {
                 Id = 0,
                 Situation = 0,
-                License = ""
+                License = "",
+                Status = 0
             },
             Expectations = [
                 (nameof(DriverCommon.Id), [(new PointerValidator(), 3)]),
                 (nameof(DriverCommon.License), [(new LengthValidator(),2)]),
                 (nameof(DriverCommon.Situation), [(new PointerValidator(), 3)]),
+                (nameof(DriverCommon.Status), [(new PointerValidator(true), 3) ])
             ],
         };
 

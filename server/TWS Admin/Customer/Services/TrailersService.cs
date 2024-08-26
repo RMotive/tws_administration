@@ -3,6 +3,8 @@
 using CSM_Foundation.Source.Models.Options;
 using CSM_Foundation.Source.Models.Out;
 
+using Microsoft.EntityFrameworkCore;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
@@ -17,6 +19,10 @@ public class TrailersService : ITrailersService {
     }
 
     public async Task<SetViewOut<Trailer>> View(SetViewOptions Options) {
-        return await Trailers.View(Options);
+        static IQueryable<Trailer> include(IQueryable<Trailer> query) {
+            return query
+            .Include(t => t.TrailerCommonNavigation);
+        }
+        return await Trailers.View(Options, include);
     }
 }

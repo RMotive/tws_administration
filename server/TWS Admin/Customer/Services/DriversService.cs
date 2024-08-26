@@ -3,6 +3,8 @@
 using CSM_Foundation.Source.Models.Options;
 using CSM_Foundation.Source.Models.Out;
 
+using Microsoft.EntityFrameworkCore;
+
 using TWS_Business.Depots;
 using TWS_Business.Sets;
 
@@ -17,6 +19,13 @@ public class DriversService : IDriversService {
     }
 
     public async Task<SetViewOut<Driver>> View(SetViewOptions Options) {
-        return await Drivers.View(Options);
+        static IQueryable<Driver> include(IQueryable<Driver> query) {
+            return query
+            .Include(t => t.DriverCommonNavigation)
+            .Include(t => t.EmployeeNavigation)
+                .ThenInclude(i => i.IdentificationNavigation);
+
+        }
+        return await Drivers.View(Options, include);
     }
 }
