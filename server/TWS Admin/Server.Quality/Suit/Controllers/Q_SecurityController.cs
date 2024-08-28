@@ -22,7 +22,7 @@ public class Q_SecurityController
         : base("Security", hostFactory) { }
 
     [Fact]
-    public async void Authenticate() {
+    public async Task Authenticate() {
         await Authentication();
     }
 }

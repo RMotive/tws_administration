@@ -41,7 +41,7 @@ public class Q_PlatesController : BQ_ServerController<Program> {
     }
 
     [Fact]
-    public async void View() {
+    public async Task View() {
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("View", new MigrationViewOptions {
             Page = 1,
             Range = 10,
@@ -57,7 +57,7 @@ public class Q_PlatesController : BQ_ServerController<Program> {
     }
 
     [Fact]
-    public async void Create() {
+    public async Task Create() {
         DateOnly year = new(2024, 11, 11);
 
         (HttpStatusCode Status, ServerGenericFrame Response) fact = await Post("Create", new Plate() {

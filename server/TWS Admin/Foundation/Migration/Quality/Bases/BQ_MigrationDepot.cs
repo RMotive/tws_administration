@@ -54,7 +54,7 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
     #region Q_Base
 
     [Fact]
-    public async void View() {
+    public async Task View() {
         #region Preparation (First-Fact) 
         TMigrationSet[] firstFactMocks = [];
         MigrationViewOptions firstFactOptions;
@@ -164,7 +164,7 @@ public abstract class BQ_MigrationDepot<TMigrationSet, TMigrationDepot, TMigrati
     }
 
     [Fact]
-    public async void Create() {
+    public async Task Create() {
         #region First-Fact (Set successfuly saved and generated)
         {
             TMigrationSet mock = MockFactory();

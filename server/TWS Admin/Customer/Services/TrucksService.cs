@@ -41,8 +41,7 @@ public class TrucksService : ITrucksService {
 
     public async Task<MigrationView<Truck>> View(MigrationViewOptions options) {
 
-        Func<IQueryable<Truck>, IQueryable<Truck>> include =
-            query => query
+        static IQueryable<Truck> include(IQueryable<Truck> query) => query
             .Include(t => t.InsuranceNavigation)
             .Include(t => t.ManufacturerNavigation)
             .Include(t => t.MaintenanceNavigation)
@@ -92,7 +91,7 @@ public class TrucksService : ITrucksService {
                     State = p.State,
                     Country = p.Country,
                     Expiration = p.Expiration,
-                    Truck = p.Truck 
+                    Truck = p.Truck
                 })
             });
 
@@ -212,7 +211,7 @@ public class TrucksService : ITrucksService {
                 truck.Plates = generatedPlates;
             }
             return truck;
-        } catch (Exception ex) {
+        } catch (Exception) {
             // Undo all changes on data source
             /// Remove the last items to avoid key dependencies errors on data source.
             nullify.Reverse();
