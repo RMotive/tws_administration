@@ -45,7 +45,7 @@ public class TruckAssembly {
     public Insurance? Insurance { get; set; }
 
     /// <summary>
-    /// Optional Sct data for the truck.
+    /// Optional SctH data for the truck.
     /// </summary>
     public Sct? Sct { get; set; }
 

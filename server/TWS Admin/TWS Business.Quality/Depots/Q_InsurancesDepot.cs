@@ -20,6 +20,7 @@ public class Q_InsurancesDepot
         return new() {
             Policy = RandomUtils.String(5),
             Country = RandomUtils.String(3),
+            Status = 1,
             Expiration = date
         };
     }

@@ -10,6 +10,8 @@ public partial class Plate
     : BSourceSet {
     public override int Id { get; set; }
 
+    public int Status { get; set; }
+
     public string Identifier { get; set; } = null!;
 
     public string State { get; set; } = null!;
@@ -18,9 +20,17 @@ public partial class Plate
 
     public DateOnly Expiration { get; set; }
 
-    public int Truck { get; set; }
+    public int? Truck { get; set; }
 
-    public virtual Truck? TruckNavigation { get; set; }
+    public int? Trailer { get; set; }
+
+    public virtual TruckCommon? TruckCommonNavigation { get; set; }
+
+    public virtual TrailerCommon? TrailerCommonNavigation { get; set; }
+
+    public virtual Status? StatusNavigation { get; set; }
+
+    public virtual ICollection<PlateH> PlatesH { get; set; } = [];
 
     public static void Set(ModelBuilder builder) {
         _ = builder.Entity<Plate>(entity => {
@@ -38,9 +48,19 @@ public partial class Plate
                 .HasMaxLength(3)
                 .IsUnicode(false);
 
-            _ = entity.HasOne(d => d.TruckNavigation)
+            _ = entity.HasOne(d => d.TruckCommonNavigation)
                 .WithMany(p => p.Plates)
                 .HasForeignKey(d => d.Truck)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            _ = entity.HasOne(d => d.TrailerCommonNavigation)
+                .WithMany(p => p.Plates)
+                .HasForeignKey(d => d.Trailer)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            _ = entity.HasOne(d => d.StatusNavigation)
+                .WithMany(p => p.Plates)
+                .HasForeignKey(d => d.Status)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
     }
@@ -53,8 +73,7 @@ public partial class Plate
             (nameof(State), [new LengthValidator(2, 3)]),
             (nameof(Country), [new LengthValidator(2, 3)]),
             (nameof(Expiration), [Required]),
-            (nameof(Truck), [Required,new PointerValidator(true)]),
-
+            (nameof(Status), [Required, new PointerValidator(true)]),
         ];
         return Container;
     }

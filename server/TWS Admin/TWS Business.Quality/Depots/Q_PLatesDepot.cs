@@ -11,7 +11,7 @@ namespace TWS_Business.Quality.Depots;
 public class Q_PlatesDepot
     : BQ_SourceDepot<Plate, PlatesDepot, TWSBusinessSource> {
     public Q_PlatesDepot()
-        : base(nameof(Plate.Truck)) {
+        : base(nameof(Plate.Identifier)) {
     }
 
     protected override Plate MockFactory() {
@@ -23,6 +23,7 @@ public class Q_PlatesDepot
             Country = RandomUtils.String(3),
             Expiration = date,
             Truck = 3,
+            Status = 1
         };
     }
 }

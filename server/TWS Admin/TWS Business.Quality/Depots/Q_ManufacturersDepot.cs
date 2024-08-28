@@ -11,7 +11,7 @@ namespace TWS_Business.Quality.Depots;
 public class Q_ManufacturersDepot
     : BQ_SourceDepot<Manufacturer, ManufacturersDepot, TWSBusinessSource> {
     public Q_ManufacturersDepot()
-        : base(nameof(Manufacturer.Brand)) {
+        : base(nameof(Manufacturer.Model)) {
     }
 
     protected override Manufacturer MockFactory() {
@@ -20,7 +20,7 @@ public class Q_ManufacturersDepot
         return new() {
             Model = RandomUtils.String(30),
             Brand = RandomUtils.String(15),
-            Year = date
+            Year = date,
         };
     }
 }

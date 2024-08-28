@@ -14,7 +14,13 @@ public partial class Situation
 
     public string? Description { get; set; }
 
-    public virtual ICollection<Truck>? Trucks { get; set; } = [];
+    public virtual ICollection<DriverCommon>? DriversCommons { get; set; } = [];
+
+    public virtual ICollection<TruckCommon>? TrucksCommons { get; set; } = [];
+
+    public virtual ICollection<TrailerCommon>? TrailersCommons { get; set; } = [];
+
+    public virtual ICollection<TruckH> TrucksH { get; set; } = [];
 
     public static void Set(ModelBuilder builder) {
         _ = builder.Entity<Situation>(entity => {
@@ -37,7 +43,6 @@ public partial class Situation
         Container = [
             ..Container,
             (nameof(Name), [Required, new LengthValidator(1, 25)]),
-            (nameof(Description), [new LengthValidator(1, 100)]),
         ];
         return Container;
     }

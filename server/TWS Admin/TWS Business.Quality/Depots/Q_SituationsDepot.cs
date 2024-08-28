@@ -20,7 +20,6 @@ public class Q_SituationsDepot
 
         return new() {
             Name = RandomUtils.String(25),
-            Description = RandomUtils.String(100),
         };
     }
 }

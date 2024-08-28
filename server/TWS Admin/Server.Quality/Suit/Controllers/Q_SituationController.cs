@@ -40,7 +40,7 @@ public class Q_SituationController : BQ_ServerController<Program> {
     public async Task View() {
         (HttpStatusCode Status, ServerGenericFrame Response) = await Post("View", new SetViewOptions {
             Page = 1,
-            Range = 5,
+            Range = 10,
             Retroactive = false,
         }, true);
 

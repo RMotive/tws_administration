@@ -8,8 +8,6 @@ using CSM_Foundation.Core.Utils;
 using CSM_Foundation.Server.Utils;
 using CSM_Foundation.Source.Interfaces;
 
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-
 using Server.Managers;
 using Server.Middlewares;
 using Server.Models;
@@ -85,25 +83,60 @@ public partial class Program {
                 // --> Depots
                 builder.Services.AddScoped<SolutionsDepot>();
                 builder.Services.AddScoped<AccountsDepot>();
+                builder.Services.AddScoped<AddressesDepot>();
+                builder.Services.AddScoped<UsdotsDepot>();
+                builder.Services.AddScoped<CarriersDepot>();
+                builder.Services.AddScoped<ApproachesDepot>();
                 builder.Services.AddScoped<ContactsDepot>();
                 builder.Services.AddScoped<ManufacturersDepot>();
                 builder.Services.AddScoped<SituationsDepot>();
                 builder.Services.AddScoped<PlatesDepot>();
-                builder.Services.AddScoped<ContactsDepot>();
                 builder.Services.AddScoped<TruckDepot>();
                 builder.Services.AddScoped<InsurancesDepot>();
                 builder.Services.AddScoped<SctsDepot>();
                 builder.Services.AddScoped<MaintenacesDepot>();
+                builder.Services.AddScoped<StatusesDepot>();
+                builder.Services.AddScoped<AddressesDepot>();
+                builder.Services.AddScoped<ApproachesDepot>();
+                builder.Services.AddScoped<CarriersDepot>();
+                builder.Services.AddScoped<AxesDepot>();
+                builder.Services.AddScoped<DriversDepot>();
+                builder.Services.AddScoped<DriversCommonsDepot>();
+                builder.Services.AddScoped<DriversExternalsDepot>();
+                builder.Services.AddScoped<EmployeesDepot>();
+                builder.Services.AddScoped<SectionsDepot>();
+                builder.Services.AddScoped<LocationsDepot>();
+                builder.Services.AddScoped<LoadTypesDepot>();
+                builder.Services.AddScoped<LocationsDepot>();
+                builder.Services.AddScoped<TrailerClassesDepot>();
+                builder.Services.AddScoped<TrailersCommonsDepot>();
+                builder.Services.AddScoped<TrailersExternalsDepot>();
+                builder.Services.AddScoped<TrailersDepot>();
+                builder.Services.AddScoped<IdentificationsDepot>();
+                builder.Services.AddScoped<TrucksExternalsDepot>();
+                builder.Services.AddScoped<TrucksCommonsDepot>();
 
+                builder.Services.AddScoped<YardLogsDepot>();
+
+                builder.Services.AddScoped<TrucksHDepot>();
                 // --> Services
                 builder.Services.AddScoped<ISolutionsService, SolutionsService>();
-                builder.Services.AddScoped<ISecurityService, SecurityService>();
                 builder.Services.AddScoped<ISecurityService, SecurityService>();
                 builder.Services.AddScoped<IManufacturersService, ManufacturersService>();
                 builder.Services.AddScoped<ISituationsService, SituationsService>();
                 builder.Services.AddScoped<IPlatesService, PlatesServices>();
                 builder.Services.AddScoped<ITrucksService, TrucksService>();
+                builder.Services.AddScoped<ITrucksExternalsService, TrucksExternalsService>();
                 builder.Services.AddScoped<IContactService, ContactService>();
+                builder.Services.AddScoped<IDriversService, DriversService>();
+                builder.Services.AddScoped<IDriversExternalsService, DriversExternalsService>();
+                builder.Services.AddScoped<ITrucksExternalsService, TrucksExternalsService>();
+                builder.Services.AddScoped<ITrailersService, TrailersService>();
+                builder.Services.AddScoped<ITrailersExternalsService, TrailersExternalsService>();
+                builder.Services.AddScoped<ILoadTypesService, LoadTypesService>();
+                builder.Services.AddScoped<ISectionsService, SectionsService>();
+                builder.Services.AddScoped<IYardLogsService, YardLogsService>();
+
             }
             WebApplication app = builder.Build();
             app.MapControllers();

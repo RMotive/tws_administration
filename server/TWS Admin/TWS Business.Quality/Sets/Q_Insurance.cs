@@ -22,12 +22,15 @@ public class Q_Insurance : BQ_MigrationSet<Insurance> {
             Mock = new() {
                 Id = 0,
                 Policy = "",
-                Country = ""
+                Country = "",
+                Status = 0
+
             },
             Expectations = [
                 (nameof(Insurance.Id), [(new PointerValidator(), 3)]),
                 (nameof(Insurance.Policy), [(new LengthValidator(), 2)]),
                 (nameof(Insurance.Country), [(new LengthValidator(), 2)]),
+                (nameof(Insurance.Status), [(new PointerValidator(true), 3)]),
             ],
         };
 

@@ -20,12 +20,10 @@ public class Q_Situation : BQ_MigrationSet<Situation> {
             Mock = new() {
                 Id = 0,
                 Name = "Situation validation test, max lengh 25 characters",
-                Description = ""
             },
             Expectations = [
                 (nameof(Situation.Id), [(new PointerValidator(), 3)]),
                 (nameof(Situation.Name), [(new LengthValidator(), 3)]),
-                (nameof(Situation.Description), [(new LengthValidator(), 2)]),
             ],
         };
 

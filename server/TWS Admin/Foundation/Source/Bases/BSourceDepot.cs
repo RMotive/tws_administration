@@ -1,15 +1,22 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
+using CSM_Foundation.Core.Bases;
+using CSM_Foundation.Core.Utils;
 using CSM_Foundation.Source.Enumerators;
 using CSM_Foundation.Source.Interfaces;
 using CSM_Foundation.Source.Models;
 using CSM_Foundation.Source.Models.Options;
 using CSM_Foundation.Source.Models.Out;
+using CSM_Foundation.Source.Quality.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+using Xunit;
 
 namespace CSM_Foundation.Source.Bases;
+
 /// <summary>
 ///     Defines base behaviors for a <see cref="ISourceDepot{TMigrationSet}"/>
 ///     implementation describing <see cref="BSourceDepot{TMigrationSource, TMigrationSet}"/>
@@ -71,6 +78,7 @@ public abstract class BSourceDepot<TSource, TSourceSet>
         if (include != null) {
             query = include(query);
         }
+
         int orderActions = Options.Orderings.Length;
         if (orderActions > 0) {
             Type setType = typeof(TSourceSet);
@@ -149,18 +157,19 @@ public abstract class BSourceDepot<TSource, TSourceSet>
     /// </param>
     /// <param name="Sync">
     ///     Determines if the transaction should be broke at the first failure catched. This means that
-    ///     the previous successfully stored objects will be kept as stored but the next ones objects desired
+    ///     the current successfully stored objects will be kept as stored but the next ones objects desired
     ///     to be stored won't continue, the operation will throw new exception.
     /// </param>
     /// <returns>
     ///     A <see cref="SourceTransactionOut{TSet}"/> that stores a collection of failures, and successes caught.
     /// </returns>
     public async Task<SourceTransactionOut<TSourceSet>> Create(TSourceSet[] Sets, bool Sync = false) {
-        TSourceSet[] safe = [];
+        TSourceSet[] saved = [];
         SourceTransactionFailure[] fails = [];
 
-        foreach (TSourceSet set in Sets) {
+        foreach (TSourceSet record in Sets) {
             try {
+                AttachDate(record);
                 record.EvaluateWrite();
                 Source.ChangeTracker.Clear();
                 this.Set.Attach(record);
@@ -221,28 +230,108 @@ public abstract class BSourceDepot<TSource, TSourceSet>
 
     #region Update 
 
+
+    void AttachDate(object entity, bool excluideCreation = false) {
+        IHistorySourceSet? historySourceSet = entity as IHistorySourceSet;
+        IPivotSourceSet? pivotSourceSet = entity as IPivotSourceSet;
+        if (historySourceSet != null) historySourceSet.Timemark = DateTime.Now;
+        if (pivotSourceSet != null && !excluideCreation) pivotSourceSet.Creation = DateTime.Now;
+    }
+
+
+    /// <summary>
+    /// Perform the navigation changes in a Tmigrationset
+    /// </summary>
+    //Source.Entry(previousList[i]).CurrentValues.SetValues(newitem);
+
+    void UpdateHelper(ISourceSet current, ISourceSet Record) {
+        EntityEntry previousEntry = Source.Entry(current);
+        if(previousEntry.State == EntityState.Unchanged) {
+            AttachDate(Record, true);
+            // Update the non-navigation properties.
+            previousEntry.CurrentValues.SetValues(Record);
+            foreach (NavigationEntry navigation in previousEntry.Navigations) {
+                object? newNavigationValue = Source.Entry(Record).Navigation(navigation.Metadata.Name).CurrentValue;
+                // Validate if navigation is a collection.
+                if (navigation.CurrentValue is IEnumerable<object> previousCollection && newNavigationValue is IEnumerable<object> newCollection) {
+                    List<object> previousList = previousCollection.ToList();
+                    List<object> newList = newCollection.ToList();
+                    // Perform a search for new items to add in the collection.
+                    // NOTE: the followings iterations must be performed in diferent code segments to avoid index length conflicts.
+                    for (int i = 0; i < newList.Count; i++) {
+                        ISourceSet? newItemSet = (ISourceSet)newList[i];
+                        if (newItemSet != null && newItemSet.Id <= 0) {
+                            AttachDate(newList[i]);
+                            EntityEntry newNavigationEntry = Source.Entry(newList[i]);
+                            newNavigationEntry.State = EntityState.Added;
+                        }
+                    }
+                    for (int i = 0; i < previousList.Count; i++) {
+                        ISourceSet? previousItem = previousList[i] as ISourceSet;
+
+                        // Find items to modify.
+                        // For each new item stored in record collection, will search for an ID match and update the record.
+                        foreach (object newitem in newList) {
+                            ISourceSet? newItemSet = newitem as ISourceSet;
+                            if (previousItem != null && newItemSet != null && previousItem.Id == newItemSet.Id)
+                                UpdateHelper(previousItem, newItemSet);
+                        }
+                    }
+                } else if (navigation.CurrentValue == null && newNavigationValue != null) {
+                    // Create a new navigation entity.
+                    // Also update the attached navigators.
+                    AttachDate(newNavigationValue);
+                    EntityEntry newNavigationEntry = Source.Entry(newNavigationValue);
+                    newNavigationEntry.State = EntityState.Added;
+                    navigation.CurrentValue = newNavigationValue;
+                } else if (navigation.CurrentValue != null && newNavigationValue != null) {
+                    // Update the existing navigation entity
+
+                    ISourceSet? currentItemSet = navigation.CurrentValue as ISourceSet;
+                    ISourceSet? newItemSet = newNavigationValue as ISourceSet;
+
+                    if (currentItemSet != null && newItemSet != null) UpdateHelper(currentItemSet, newItemSet);
+                }
+
+            }
+        }
+        
+    }
     /// <summary>
     /// 
     /// </summary>
     /// <param name="Set"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public async Task<RecordUpdateOut<TSourceSet>> Update(TSourceSet Record) {
-        TSourceSet? previous = await Set
+    /// 
+    public async Task<RecordUpdateOut<TSourceSet>> Update(TSourceSet Record, Func<IQueryable<TSourceSet>, IQueryable<TSourceSet>>? Include = null) {
+        IQueryable<TSourceSet> query = Set;
+        TSourceSet? old = null;
+        TSourceSet? current;
+        if (Include != null) {
+           query = Include(query);
+        }
+        current = await query
             .Where(i => i.Id == Record.Id)
-            .AsNoTracking()
             .FirstOrDefaultAsync();
 
-        _ = Set.Update(Record);
-        _ = await Source.SaveChangesAsync();
+        if (current != null) {
+            Set.Attach(current);
+            old = current.DeepCopy();
+           UpdateHelper(current, Record);
+        } else {
+            //Generate a new insert if the given record data not exist.
+            AttachDate(Record);
+            Set.Update(Record);
+        }
+         await Source.SaveChangesAsync();
 
         Disposer?.Push(Source, Record);
         return new RecordUpdateOut<TSourceSet> {
-            Previous = previous,
-            Updated = Record,
+            Previous = old,
+            Updated = current ?? Record,
         };
     }
-
     #endregion
 
     #region Delete
