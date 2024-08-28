@@ -2,8 +2,8 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tws_main/view/widgets/tws_display_flat.dart';
-import 'package:tws_main/view/widgets/tws_section.dart';
+import 'package:tws_administration_view/view/widgets/tws_display_flat.dart';
+import 'package:tws_administration_view/view/widgets/tws_section.dart';
 
 part 'current_trips_section/current_trips_section.dart';
 part 'current_trips_section/current_trips_table.dart';

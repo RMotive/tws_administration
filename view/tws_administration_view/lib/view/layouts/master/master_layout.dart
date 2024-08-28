@@ -3,10 +3,10 @@ import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
-import 'package:tws_main/core/router/twsa_routes.dart';
-import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_main/data/storages/session_storage.dart';
-import 'package:tws_main/view/layouts/master/master_layout_menu/master_layout_menu_state.dart';
+import 'package:tws_administration_view/core/router/twsa_routes.dart';
+import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_administration_view/data/storages/session_storage.dart';
+import 'package:tws_administration_view/view/layouts/master/master_layout_menu/master_layout_menu_state.dart';
 
 part 'master_layout_menu/master_layout_menu.dart';
 part 'master_layout_menu/master_layout_menu_button.dart';

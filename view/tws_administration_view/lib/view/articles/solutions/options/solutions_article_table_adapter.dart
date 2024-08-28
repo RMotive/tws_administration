@@ -97,7 +97,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
                   resolverUpdateOut.act(const MigrationUpdateResultDecoder<Solution>(SolutionDecoder())).then(
                     (MigrationUpdateResult<Solution> updateOut) {
                       const CSMAdvisor('solution-update').success('succesf', info: updateOut.updated.encode());
-                      Navigator.of(context).pop();
+                      CSMRouter.i.pop();
                     },
                   );
                 } catch (x) {

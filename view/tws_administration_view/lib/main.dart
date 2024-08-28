@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:tws_main/core/router/twsa_route_tree.dart';
-import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_main/core/theme/twsa_theme_dark.dart';
-import 'package:tws_main/core/tools/development_configurator.dart';
+import 'package:tws_administration_view/core/router/twsa_route_tree.dart';
+import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_administration_view/core/theme/twsa_theme_dark.dart';
+import 'package:tws_administration_view/core/tools/development_configurator.dart';
 
 /// --> Flutter entry point.
 void main() async {

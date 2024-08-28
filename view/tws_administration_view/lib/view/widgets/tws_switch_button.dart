@@ -1,7 +1,7 @@
 
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
 
 ///[TWSSwitchButton] Custom widget for TWS environment.
 ///This widget returns a boolean, based on the its state.

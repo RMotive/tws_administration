@@ -1,17 +1,17 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
-import 'package:tws_main/data/services/sources.dart';
-import 'package:tws_main/data/storages/session_storage.dart';
-import 'package:tws_main/view/articles/solutions/solutions_article.dart';
-import 'package:tws_main/view/frames/whisper/whisper_frame.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item_property.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/tws_article_agent.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creator.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
-import 'package:tws_main/view/widgets/tws_input_text.dart';
+import 'package:tws_administration_view/data/services/sources.dart';
+import 'package:tws_administration_view/data/storages/session_storage.dart';
+import 'package:tws_administration_view/view/articles/solutions/solutions_article.dart';
+import 'package:tws_administration_view/view/frames/whisper/whisper_frame.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item_property.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_agent.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creator.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
+import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
 
 final SolutionsServiceBase _solutionsService = Sources.administration.solutions;
 final SessionStorage _sessionStorage = SessionStorage.i;

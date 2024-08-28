@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/tws_article_agent.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
-import 'package:tws_main/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
-import 'package:tws_main/view/widgets/tws_section.dart';
+import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_agent.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
+import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
+import 'package:tws_administration_view/view/widgets/tws_section.dart';
 
 part 'tws_article_creator_state.dart';
 

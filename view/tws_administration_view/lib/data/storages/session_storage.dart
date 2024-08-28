@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
-import 'package:tws_main/core/router/twsa_routes.dart';
+import 'package:tws_administration_view/core/router/twsa_routes.dart';
 
 /// Specifies a static service.
 ///

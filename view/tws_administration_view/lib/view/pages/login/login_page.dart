@@ -1,11 +1,11 @@
 
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/constants/twsa_common_displays.dart';
-import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_main/view/widgets/tws_button_flat.dart';
-import 'package:tws_main/view/widgets/tws_display_flat.dart';
-import 'package:tws_main/view/widgets/tws_input_text.dart';
+import 'package:tws_administration_view/core/constants/twsa_common_displays.dart';
+import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_administration_view/view/widgets/tws_button_flat.dart';
+import 'package:tws_administration_view/view/widgets/tws_display_flat.dart';
+import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
 
 part 'business_decorator.dart';
 part 'login_form/login_form.dart';

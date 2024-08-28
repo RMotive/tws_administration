@@ -1,12 +1,12 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/core/constants/twsa_assets.dart';
-import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_main/view/frames/article/action_ribbon_options.dart';
-import 'package:tws_main/view/frames/article/actions/article_frame_actions_options.dart';
-import 'package:tws_main/view/frames/article/actions/maintenance_group_options.dart';
-import 'package:tws_main/view/frames/article/article_options.dart';
-import 'package:tws_main/view/widgets/tws_frame_decoration.dart';
+import 'package:tws_administration_view/core/constants/twsa_assets.dart';
+import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_administration_view/view/frames/article/action_ribbon_options.dart';
+import 'package:tws_administration_view/view/frames/article/actions/article_frame_actions_options.dart';
+import 'package:tws_administration_view/view/frames/article/actions/maintenance_group_options.dart';
+import 'package:tws_administration_view/view/frames/article/article_options.dart';
+import 'package:tws_administration_view/view/widgets/tws_frame_decoration.dart';
 
 part 'selector/articles_layout_selector.dart';
 part 'selector/articles_layout_selector_button.dart';

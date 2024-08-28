@@ -1,6 +1,6 @@
 {
-    "name": "tws_main",
-    "short_name": "tws_main",
+    "name": "tws_administration_view",
+    "short_name": "tws_administration_view",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

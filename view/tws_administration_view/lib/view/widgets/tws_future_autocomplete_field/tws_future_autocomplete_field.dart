@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_service/tws_administration_service.dart';
-import 'package:tws_main/core/constants/twsa_colors.dart';
-import 'package:tws_main/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_main/view/widgets/tws_display_flat.dart';
-import 'package:tws_main/view/widgets/tws_future_autocomplete_field/tws_future_autocomplete_adapter.dart';
-import 'package:tws_main/view/widgets/tws_input_text.dart';
-import 'package:tws_main/view/widgets/tws_list_tile.dart';
+import 'package:tws_administration_view/core/constants/twsa_colors.dart';
+import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
+import 'package:tws_administration_view/view/widgets/tws_display_flat.dart';
+import 'package:tws_administration_view/view/widgets/tws_future_autocomplete_field/tws_future_autocomplete_adapter.dart';
+import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
+import 'package:tws_administration_view/view/widgets/tws_list_tile.dart';
 
 /// [TWSFutureAutoCompleteField] Custom component for TWS enviroment.
 /// This component stores a list of posibles options to select for the user.

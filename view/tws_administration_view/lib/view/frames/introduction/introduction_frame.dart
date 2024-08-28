@@ -1,7 +1,7 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_main/view/frames/article/article_frame.dart';
-import 'package:tws_main/view/frames/article/article_options.dart';
+import 'package:tws_administration_view/view/frames/article/article_frame.dart';
+import 'package:tws_administration_view/view/frames/article/article_options.dart';
 
 class IntroductionFrame extends StatelessWidget {
   final List<ArticleOptions> articles;

@@ -1,5 +1,5 @@
 import 'package:csm_foundation_view/csm_foundation_view.dart';
-import 'package:tws_main/core/theme/structs/section_theme_struct.dart';
+import 'package:tws_administration_view/core/theme/structs/section_theme_struct.dart';
 
 abstract class TWSAThemeBase extends CSMThemeBase {
   final String loginLogo;
