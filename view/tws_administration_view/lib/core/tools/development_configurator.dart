@@ -1,8 +1,8 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
-import 'package:tws_administration_service/tws_administration_service.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:tws_administration_view/core/secrets/development_secrets.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 class DevelopmentConfigurator {
   static Future<void> configure() async {

@@ -1,7 +1,6 @@
 
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_administration_view/core/constants/twsa_common_displays.dart';
 import 'package:tws_administration_view/core/extension/datetime.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
@@ -21,6 +20,7 @@ import 'package:tws_administration_view/view/widgets/tws_future_autocomplete_fie
 import 'package:tws_administration_view/view/widgets/tws_future_autocomplete_field/tws_future_autocomplete_field.dart';
 import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
 import 'package:tws_administration_view/view/widgets/tws_section.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 part '../options/trucks_whisper_options_adapter.dart';
 part 'forms/trucks_create_insurance_form.dart';
@@ -129,10 +129,10 @@ class TrucksCreateWhisper extends CSMPageBase{
                   minWidth: 150,
                   value: displayModel(actualModel.manufacturerNavigation),
                 ),
-                TwsArticleCreationStackItemProperty(
+                const TwsArticleCreationStackItemProperty(
                   label: 'Situation',
                   minWidth: 150,
-                  value: actualModel.situationNavigation?.name,
+                  value: "---",
                 ),
                 TwsArticleCreationStackItemProperty(
                   label: 'USA Plate',
@@ -162,7 +162,7 @@ class TrucksCreateWhisper extends CSMPageBase{
                 TwsArticleCreationStackItemProperty(
                   label: 'SCT Number',
                   minWidth: 150,
-                  value: displaySCT(actualModel.sctNavigation),
+                  value: displaySCT(actualModel.carrierNavigation!.sctNavigation),
                 ),
               ], 
             );

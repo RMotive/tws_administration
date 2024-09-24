@@ -30,13 +30,7 @@ class _TruckCreateInsurance extends StatelessWidget {
                   onChanged: (String text) {
                     Truck model = itemState!.model;
                     Insurance? temp = model.insuranceNavigation;
-                    Insurance? updateInsurance = Insurance(
-                      0,
-                      text,
-                      temp?.expiration ?? _today,  
-                      temp?.country ?? "", 
-                      <Truck>[]
-                    );
+                    Insurance? updateInsurance;
                     itemState!.updateModelRedrawing(
                       model.clone(
                         insuranceNavigation: updateInsurance
@@ -55,13 +49,7 @@ class _TruckCreateInsurance extends StatelessWidget {
                   onChanged: (String text) {
                     Truck model = itemState!.model;
                     Insurance? temp = model.insuranceNavigation;
-                    Insurance? updateInsurance = Insurance(
-                      0,
-                      temp?.policy ?? "",
-                      DateTime.parse(text),  
-                      temp?.country ?? "", 
-                      <Truck>[]
-                    );
+                    Insurance? updateInsurance;
                     itemState!.updateModelRedrawing(
                       model.clone(
                         insuranceNavigation: updateInsurance
@@ -85,13 +73,7 @@ class _TruckCreateInsurance extends StatelessWidget {
                   onChanged: (String? value) {
                     Truck model = itemState!.model;
                     Insurance? temp = model.insuranceNavigation;
-                    Insurance? updateInsurance = Insurance(
-                      0,
-                      temp?.policy ?? "",
-                      temp?.expiration ?? _today,  
-                      value ?? "", 
-                      <Truck>[]
-                    );
+                    Insurance? updateInsurance;
                     itemState!.updateModelRedrawing(
                       model.clone(
                         insuranceNavigation: updateInsurance

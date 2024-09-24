@@ -1,11 +1,8 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_administration_view/view/articles/features/features_article.dart';
 import 'package:tws_administration_view/view/articles/features/whispers/create/features_create_whisper.dart';
-import 'package:tws_administration_view/view/articles/manufacturers/manufacturers_article.dart';
-import 'package:tws_administration_view/view/articles/manufacturers/whispers/manufactueres_create_whisper.dart';
-import 'package:tws_administration_view/view/articles/situations/situations_article.dart';
 import 'package:tws_administration_view/view/articles/solutions/solutions_article.dart';
 import 'package:tws_administration_view/view/articles/solutions/whispers/solutions_create_whisper.dart';
 import 'package:tws_administration_view/view/articles/trucks/trucks_article.dart';
@@ -129,25 +126,6 @@ class TWSARouteTree extends CSMRouterTreeBase {
                           pageBuild: (BuildContext ctx, CSMRouterOutput output) => const TrucksCreateWhisper(),
                         ),
                       ],
-                    ),
-
-                    // --> [manufacturers]
-                    CSMRouteNode(
-                      Routes.manufacturersArticle,
-                      pageBuild: (_, __) => const ManufacturersArticle(),
-                      routes: <CSMRouteBase>[
-                        // -> [Create]
-                        CSMRouteWhisper<Object>(
-                          Routes.manufacturersCreateWhisper,
-                          whisperOptions: const CSMRouteWhisperOptions(),
-                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const ManufacturersCreateWhisper(),
-                        ),
-                      ],
-                    ),
-                    // --> [Situations]
-                    CSMRouteNode(
-                      Routes.situationsArticle,
-                      pageBuild: (_, __) => const SituationsArticle(),
                     ),
                   ],
                 ),

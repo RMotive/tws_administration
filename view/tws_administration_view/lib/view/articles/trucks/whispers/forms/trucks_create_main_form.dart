@@ -77,28 +77,7 @@ class _TruckCreateMainForm extends StatelessWidget {
 
               ),
             ),
-            Expanded(
-              child: TWSFutureAutoCompleteField<Situation>(
-                label: "Select a Situation",
-                hint: "Assing an existing Situation status",
-                isOptionalLabel: " (Optional)",
-                isOptional: true,
-                initialValue: itemState?.model.situationNavigation,
-                displayValue: (Situation set) => set.name,
-                adapter:  const _SituationsViewAdapter(),
-                isEnabled: enable,
-                onChanged: (Situation? selectedItem) {
-                  Truck model = itemState!.model;
-                  itemState!.updateModelRedrawing(
-                    model.clone(
-                      situation: selectedItem?.id ?? 0,
-                      situationNavigation: selectedItem
-                    )
-                  );
-                  _situationState();
-                }, 
-              ),
-            ),
+            
           ],
         ),
       ]);

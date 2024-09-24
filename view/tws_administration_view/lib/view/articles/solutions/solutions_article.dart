@@ -1,6 +1,5 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
@@ -14,6 +13,7 @@ import 'package:tws_administration_view/view/widgets/tws_article_table/tws_artic
 import 'package:tws_administration_view/view/widgets/tws_confirmation_dialog.dart';
 import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
 import 'package:tws_administration_view/view/widgets/tws_property_viewer.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 part 'options/solutions_article_table_adapter.dart';
 

@@ -20,8 +20,7 @@ class _TruckCreateSituation extends StatelessWidget {
       state: _situationformState, 
       designer: (_,_TruckCreateSituationState state){
         _situationState = state.effect;
-
-        final bool isEnable = itemState != null &&  (itemState!.model.situation == 0 || itemState!.model.situation == null);
+        // final bool isEnable = itemState != null &&  (itemState!.model.situation == 0 || itemState!.model.situation == null);
         return TWSSection(
           isOptional: true,
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -35,57 +34,11 @@ class _TruckCreateSituation extends StatelessWidget {
                   style: style,
                 )
               ),
-              CSMSpacingRow(
+              const CSMSpacingRow(
                 spacing: 10,
                 children: <Widget>[
-                  Expanded(
-                    child: TWSInputText(
-                      maxLength: 25,
-                      label: 'Name',
-                      controller: TextEditingController(text: itemState?.model.situationNavigation?.name),
-                      onChanged: (String text) {
-                        Truck model = itemState!.model;
-                        Situation? temp = model.situationNavigation;
-                        Situation? updateSituation = Situation(
-                          0, 
-                          text, 
-                          temp?.description,  
-                          <Truck>[]
-                        );
-                        itemState!.updateModelRedrawing(
-                          model.clone(
-                            situationNavigation: updateSituation
-                          ),
-                        );
-                      },
-                      isEnabled: isEnable,
-                    ),
-                  ),
-                  Expanded(
-                    child: TWSInputText(
-                      label: 'Description',
-                      maxLength: 100,
-                      suffixLabel: " (Optional)",
-                      isOptional: true,
-                      controller: TextEditingController(text: itemState?.model.situationNavigation?.description),
-                      onChanged: (String text) {
-                        Truck model = itemState!.model;
-                        Situation? temp = model.situationNavigation;
-                        Situation? updateSituation = Situation(
-                          0, 
-                          temp?.name ?? "", 
-                          text,  
-                          <Truck>[]
-                        );
-                        itemState!.updateModelRedrawing(
-                          model.clone(
-                            situationNavigation: updateSituation
-                          ),
-                        );
-                      },
-                      isEnabled: isEnable,
-                    ),
-                  )
+                  
+                  
                 ]
               )
             ]

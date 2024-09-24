@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 /// Specifies a static service.
 ///

@@ -1,4 +1,4 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/view/frames/whisper/whisper_frame.dart';
 import 'package:tws_administration_view/view/widgets/tws_input_text.dart';

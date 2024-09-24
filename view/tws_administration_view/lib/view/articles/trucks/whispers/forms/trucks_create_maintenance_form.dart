@@ -10,9 +10,9 @@ class _TruckCreateMaintenance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TWSSection(
+    return const TWSSection(
       isOptional: true,
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 10),
       title: "Maintenance*", 
       content: CSMSpacingColumn(
         spacing: 10,
@@ -20,54 +20,9 @@ class _TruckCreateMaintenance extends StatelessWidget {
           CSMSpacingRow(
             spacing: 10,
             children: <Widget>[
-              Expanded(
-                child: TWSDatepicker(
-                  firstDate: _firstDate,
-                  lastDate: _lastlDate,
-                  label: 'Anual',
-                  controller: TextEditingController(text: itemState?.model.maintenanceNavigation?.anual.dateOnlyString),
-                  onChanged: (String text) {
-                    Truck model = itemState!.model;
-                    Maintenance? temp = model.maintenanceNavigation;
-                    Maintenance? updateMaintenance = Maintenance(
-                      0, 
-                      DateTime.parse(text), 
-                      temp?.trimestral ?? _today,  
-                      <Truck>[]
-                    );
-                    itemState!.updateModelRedrawing(
-                      model.clone(
-                        maintenanceNavigation: updateMaintenance
-                      ),
-                    );
-                  },
-                  isEnabled: enable,
-                ),
-              ),
-              Expanded(
-                child: TWSDatepicker(
-                  firstDate: _firstDate,
-                  lastDate: _lastlDate,
-                  label: 'Trimestral',
-                  controller: TextEditingController(text: itemState?.model.maintenanceNavigation?.trimestral.dateOnlyString),
-                  onChanged: (String text) {
-                    Truck model = itemState!.model;
-                    Maintenance? temp = model.maintenanceNavigation;
-                    Maintenance? updateMaintenance = Maintenance(
-                      0,
-                      temp?.anual ?? _today,
-                      DateTime.parse(text),   
-                      <Truck>[]
-                    );
-                    itemState!.updateModelRedrawing(
-                      model.clone(
-                        maintenanceNavigation: updateMaintenance
-                      ),
-                    );
-                  },
-                  isEnabled: enable,
-                ),
-              )
+             
+              
+              
             ]
           )
         ]

@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_administration_view/view/frames/whisper/options/whisper_frame_action_options.dart';
