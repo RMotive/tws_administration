@@ -14,10 +14,7 @@ import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_ar
 import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creation_item_state.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creator.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
-import 'package:tws_administration_view/view/widgets/tws_autocomplete_field.dart';
 import 'package:tws_administration_view/view/widgets/tws_datepicker_field.dart';
-import 'package:tws_administration_view/view/widgets/tws_future_autocomplete_field/tws_future_autocomplete_adapter.dart';
-import 'package:tws_administration_view/view/widgets/tws_future_autocomplete_field/tws_future_autocomplete_field.dart';
 import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
 import 'package:tws_administration_view/view/widgets/tws_section.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
@@ -45,9 +42,9 @@ class TrucksCreateWhisper extends CSMPageBase{
 
     String displayModel(Manufacturer? manufacturer){
       String data = "---";
-      if(manufacturer != null && (manufacturer.brand.isNotEmpty  && manufacturer.model.isNotEmpty)){
-        data = "${manufacturer.brand} ${manufacturer.model} ${manufacturer.year.year}";
-      }
+      // if(manufacturer != null && (manufacturer.brand.isNotEmpty  && manufacturer.model.isNotEmpty)){
+      //   data = "${manufacturer.brand} ${manufacturer.model} ${manufacturer.year.year}";
+      // }
       return data;
     }
     
@@ -69,9 +66,9 @@ class TrucksCreateWhisper extends CSMPageBase{
 
     String displayPlate(Plate?  plate){
       String data = "---";
-      if(plate != null && (plate.country.isNotEmpty && plate.identifier.isNotEmpty && plate.state.isNotEmpty)){
-        data = plate.identifier;
-      }
+      // if(plate != null && (plate.country.isNotEmpty && plate.identifier.isNotEmpty && plate.state.isNotEmpty)){
+      //   data = plate.identifier;
+      // }
       return data;
     }
   @override 
@@ -89,7 +86,7 @@ class TrucksCreateWhisper extends CSMPageBase{
       trigger: creatorAgent.create,
       child: TWSArticleCreator<Truck>(
           agent: creatorAgent,
-          factory: () => Truck.def(),
+          factory: () => Truck.a(),
           afterClose: () {
             TrucksArticle.tableAgent.refresh();
           }, 
@@ -97,15 +94,15 @@ class TrucksCreateWhisper extends CSMPageBase{
           onCreate: (List<Truck> records) async {
             final String currentToken = _sessionStorage.getTokenStrict();
         
-            MainResolver<MigrationTransactionResult<Truck>> resolver = await _trucksService.create(records, currentToken);
+            MainResolver<SetBatchOut<Truck>> resolver = await _trucksService.create(records, currentToken);
         
             List<TWSArticleCreatorFeedback> feedbacks = <TWSArticleCreatorFeedback>[];
             resolver.resolve(
-              decoder: const MigrationTransactionResultDecoder<Truck>(TruckDecoder()),
+              decoder: (JObject json) => SetBatchOut<Truck>.des(json, Truck.des),
               onConnectionFailure: () {},
               onException: (Object exception, StackTrace trace) {},
               onFailure: (FailureFrame failure, int status) {},
-              onSuccess: (SuccessFrame<MigrationTransactionResult<Truck>> success) {},
+              onSuccess: (SuccessFrame<SetBatchOut<Truck>> success) {},
             );
             return feedbacks;
           },
@@ -124,11 +121,11 @@ class TrucksCreateWhisper extends CSMPageBase{
                   minWidth: 150,
                   value: actualModel.motor
                 ),
-                TwsArticleCreationStackItemProperty(
-                  label: 'Model',
-                  minWidth: 150,
-                  value: displayModel(actualModel.manufacturerNavigation),
-                ),
+                // TwsArticleCreationStackItemProperty(
+                //   label: 'Model',
+                //   minWidth: 150,
+                //   value: displayModel(actualModel.manufacturerNavigation),
+                // ),
                 const TwsArticleCreationStackItemProperty(
                   label: 'Situation',
                   minWidth: 150,
@@ -159,11 +156,11 @@ class TrucksCreateWhisper extends CSMPageBase{
                   minWidth: 150,
                   value: actualModel.maintenanceNavigation?.trimestral.dateOnlyString,
                 ),
-                TwsArticleCreationStackItemProperty(
-                  label: 'SCT Number',
-                  minWidth: 150,
-                  value: displaySCT(actualModel.carrierNavigation!.sctNavigation),
-                ),
+                // TwsArticleCreationStackItemProperty(
+                //   label: 'SCT Number',
+                //   minWidth: 150,
+                //   value: displaySCT(actualModel.carrierNavigation!.sctNavigation),
+                // ),
               ], 
             );
           },

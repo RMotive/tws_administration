@@ -1,18 +1,18 @@
 part of 'tws_article_table.dart';
 
 final class _TWSArticleTableError extends StatelessWidget {
-  const _TWSArticleTableError();
+  final Size viewSize;
+  const _TWSArticleTableError({required this.viewSize});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(
-        top: 50,
-        left: 20,
-        right: 20,
+    const double width = 300;
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: (viewSize.width / 2) - (width / 2),
       ),
-      child: TWSDisplayFlat(
-        width: 300,
+      child: const TWSDisplayFlat(
+        width: width,
         display: 'Critical error reading view',
       ),
     );

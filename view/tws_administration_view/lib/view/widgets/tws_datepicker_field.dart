@@ -1,8 +1,9 @@
 
-import 'package:csm_view/csm_view.dart';
-import 'package:flutter/material.dart';
+import 'package:csm_view/csm_view.dart';import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/extension/datetime.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
+
+
 /// [TWSDatepicker] Custom component for TWS Environment.
 /// This component shows a datepicker dialog to select a date.
 class TWSDatepicker extends StatefulWidget {
@@ -26,6 +27,8 @@ class TWSDatepicker extends StatefulWidget {
   final TextEditingController? controller;
   /// Defines if the user can interact with the widget.
   final bool isEnabled;
+  ///
+  final bool enablePrefix;
   /// Callback that return the selected options in the datepicker dialog.
   final void Function(String text)? onChanged;
   /// Validator for the text input.
@@ -40,6 +43,7 @@ class TWSDatepicker extends StatefulWidget {
     this.label,
     this.hintText,
     this.focusNode,
+      this.enablePrefix = true,
     this.isEnabled = true,
     this.controller,
     this.onChanged,
@@ -51,6 +55,8 @@ class TWSDatepicker extends StatefulWidget {
 }
 
 class _TWSDatepickerState extends State<TWSDatepicker> {
+  String? _error;
+  
   final double borderWidth = 2;
   late TextEditingController ctrl;
   late final FocusNode fNode;
@@ -62,7 +68,10 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
   @override
   void initState() {
     super.initState();
-    ctrl = widget.controller ?? TextEditingController();
+    ctrl = widget.controller ??
+        TextEditingController(
+          text: widget.initialDate?.dateOnlyString,
+        );
     fNode = widget.focusNode ?? FocusNode();
     theme = getTheme(
       updateEfect: themeUpdateListener,
@@ -96,81 +105,88 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.height,
       width: widget.width,
-      child: TextFormField(
-        autofocus: true,
-        readOnly: true,
-        validator: widget.validator,
-        controller: ctrl,
-        focusNode: fNode,
-        enabled: widget.isEnabled,
-        cursorOpacityAnimates: true,
-        cursorWidth: 3,
-        cursorColor: colorStruct.foreAlt,
-        style: TextStyle(
-          color: colorStruct.foreAlt?.withOpacity(.7),
-        ),
-        onTap: () => _showDatePicker(),
-        decoration: InputDecoration(
-          suffixIcon: const Icon(Icons.calendar_month),
-          suffixIconColor: colorStruct.main,
-          prefixIcon: ctrl.text.isNotEmpty? IconButton(
-            tooltip: "Delete selection",
-            icon: Icon(
-              Icons.cancel,
-              color: colorStruct.highlight,
-              size: 20,
-            ), 
-            onPressed: () { 
-              // update the widget state to hide the delete button.
-              setState(() {
-                ctrl.text = "";
-              });
-            },
-          ): null,
-          labelText: widget.label,
-          hintText: widget.hintText,
-          labelStyle: TextStyle(
-            color: colorStruct.foreAlt
-          ),
-          errorStyle: TextStyle(
-            color: errorColorStruct.fore
-          ),
-          hintStyle: TextStyle(
-            color: colorStruct.fore
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: colorStruct.highlight.withOpacity(.6),
-              width: borderWidth
+        child: Material(
+          color: Colors.transparent,
+          child: TextFormField(
+            autofocus: true,
+            readOnly: true,
+            validator: widget.validator,
+            controller: ctrl,
+            focusNode: fNode,
+            enabled: widget.isEnabled,
+            cursorOpacityAnimates: true,
+            cursorWidth: 3,
+            cursorColor: colorStruct.foreAlt,
+            style: TextStyle(
+              color: colorStruct.foreAlt?.withOpacity(.7),
+            ),
+            onTap: () => _showDatePicker(),
+            decoration: InputDecoration(
+              isDense: true,
+              errorText: _error,
+              errorMaxLines: 1,
+              suffixIcon: const Icon(
+                Icons.calendar_month,
+              ),
+              suffixIconColor: colorStruct.main,
+              prefixIcon: (widget.enablePrefix && ctrl.text.isNotEmpty)
+                  ? IconButton(
+                      tooltip: "Delete selection",
+                      icon: Icon(
+                        Icons.cancel,
+                        color: colorStruct.highlight,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        // update the widget state to hide the delete button.
+                        setState(() {
+                          ctrl.text = '';
+                          widget.onChanged?.call('');
+                        });
+                      },
+                    )
+                  : null,
+              labelText: widget.label,
+              hintText: widget.hintText,
+              labelStyle: TextStyle(
+                color: colorStruct.foreAlt,
+              ),
+              errorStyle: TextStyle(
+                color: errorColorStruct.fore,
+              ),
+              hintStyle: TextStyle(
+                color: colorStruct.fore,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: colorStruct.highlight.withOpacity(.6),
+                  width: borderWidth,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: disabledColorStruct.highlight,
+                  width: borderWidth,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: errorColorStruct.highlight.withOpacity(.7),
+                  width: borderWidth,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: errorColorStruct.highlight,
+                  width: borderWidth,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: colorStruct.highlight, width: borderWidth),
+              ),
             ),
           ),
-          disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: disabledColorStruct.highlight,
-              width: borderWidth,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: errorColorStruct.highlight.withOpacity(.7),
-              width: borderWidth
-            ),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: errorColorStruct.highlight,
-              width: borderWidth
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: colorStruct.highlight,
-              width: borderWidth
-            )
-          )
-        )
       )
     );
   }
@@ -202,10 +218,18 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
       }
     );
     if(date != null) {
-      setState(() {
-        ctrl.text = date.dateOnlyString;
-        if(widget.onChanged != null) widget.onChanged!(ctrl.text);
-      });
+      String? errorBuilt = widget.validator?.call(date.dateOnlyString);
+      if (errorBuilt == null) {
+        setState(() {
+          _error = null;
+          ctrl.text = date.dateOnlyString;
+          if (widget.onChanged != null) widget.onChanged!(ctrl.text);
+        });
+      } else {
+        setState(() {
+          _error = errorBuilt;
+        });
+      }
     }
   }
 }

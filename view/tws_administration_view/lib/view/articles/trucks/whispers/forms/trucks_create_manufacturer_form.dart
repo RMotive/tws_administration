@@ -18,7 +18,7 @@ class _TruckCreateManufacturer extends StatelessWidget {
     return CSMDynamicWidget<_TruckCreateMaintenanceState>(
       state: _maintenanceformState,
       designer: (_, _TruckCreateMaintenanceState state){
-        final bool isEnable = itemState != null &&  (itemState!.model.manufacturer == 0 || itemState!.model.manufacturerNavigation == null);
+        // final bool isEnable = itemState != null &&  (itemState!.model.manufacturer == 0 || itemState!.model.manufacturerNavigation == null);
         _maintenanceState = state.effect;
         return TWSSection(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -33,83 +33,83 @@ class _TruckCreateManufacturer extends StatelessWidget {
                   style: style,
                 )
               ),
-              CSMSpacingRow(
+              const CSMSpacingRow(
                 crossAlignment: CrossAxisAlignment.start,
                 spacing: 10,
                 children: <Widget>[
-                  Expanded(
-                    child: TWSInputText(
-                      label: 'Brand',
-                      maxLength: 15,
-                      controller: TextEditingController(text: itemState?.model.manufacturerNavigation?.brand),
-                      onChanged: (String text) {
-                        Truck model = itemState!.model;
-                        Manufacturer? temp = model.manufacturerNavigation;
-                        Manufacturer? updateManufacturer = Manufacturer(
-                          0, 
-                          temp?.model ?? "", 
-                          text, 
-                          temp?.year ?? _today, 
-                          <Truck>[]
-                        );
-                        itemState!.updateModelRedrawing(
-                          model.clone(
-                            manufacturerNavigation: updateManufacturer
-                          ),
-                        );
-                      },
-                      isEnabled: isEnable,
-                    ),
-                  ),
-                  Expanded(
-                    child: TWSInputText(
-                      label: 'Model',
-                      maxLength: 30,
-                      controller: TextEditingController(text: itemState?.model.manufacturerNavigation?.model),
-                      onChanged: (String text) {
-                        Truck model = itemState!.model;
-                        Manufacturer? temp = model.manufacturerNavigation;
-                        Manufacturer? updateManufacturer = Manufacturer(
-                          0, 
-                          text, 
-                          temp?.brand ?? "", 
-                          temp?.year ?? _today, 
-                          <Truck>[]
-                        );
-                        itemState!.updateModelRedrawing(
-                          model.clone(
-                            manufacturerNavigation: updateManufacturer
-                          ),
-                        );
-                      },
-                      isEnabled: isEnable,
-                    ),
-                  ),
-                  Expanded(
-                    child: TWSDatepicker(
-                      firstDate: _firstDate,
-                      lastDate: _lastlDate,
-                      label: 'Year',
-                      controller: TextEditingController(text: itemState?.model.manufacturerNavigation?.year.dateOnlyString ?? _today.dateOnlyString),
-                      onChanged: (String text) {
-                        Truck model = itemState!.model;
-                        Manufacturer? temp = model.manufacturerNavigation;
-                        Manufacturer? updateManufacturer = Manufacturer(
-                          0, 
-                          temp?.model ?? "", 
-                          temp?.model ?? "", 
-                          DateTime.parse(text), 
-                          <Truck>[]
-                        );
-                        itemState!.updateModelRedrawing(
-                          model.clone(
-                            manufacturerNavigation: updateManufacturer
-                          ),
-                        );
-                      },
-                      isEnabled: isEnable,
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: TWSInputText(
+                  //     label: 'Brand',
+                  //     maxLength: 15,
+                  //     controller: TextEditingController(text: itemState?.model.manufacturerNavigation?.brand),
+                  //     onChanged: (String text) {
+                  //       Truck model = itemState!.model;
+                  //       Manufacturer? temp = model.manufacturerNavigation;
+                  //       Manufacturer? updateManufacturer = Manufacturer(
+                  //         0, 
+                  //         temp?.model ?? "", 
+                  //         text, 
+                  //         temp?.year ?? _today, 
+                  //         <Truck>[]
+                  //       );
+                  //       itemState!.updateModelRedrawing(
+                  //         model.clone(
+                  //           manufacturerNavigation: updateManufacturer
+                  //         ),
+                  //       );
+                  //     },
+                  //     isEnabled: isEnable,
+                  //   ),
+                  // ),
+                  // Expanded(
+                  //   child: TWSInputText(
+                  //     label: 'Model',
+                  //     maxLength: 30,
+                  //     controller: TextEditingController(text: itemState?.model.manufacturerNavigation?.model),
+                  //     onChanged: (String text) {
+                  //       Truck model = itemState!.model;
+                  //       Manufacturer? temp = model.manufacturerNavigation;
+                  //       Manufacturer? updateManufacturer = Manufacturer(
+                  //         0, 
+                  //         text, 
+                  //         temp?.brand ?? "", 
+                  //         temp?.year ?? _today, 
+                  //         <Truck>[]
+                  //       );
+                  //       itemState!.updateModelRedrawing(
+                  //         model.clone(
+                  //           manufacturerNavigation: updateManufacturer
+                  //         ),
+                  //       );
+                  //     },
+                  //     isEnabled: isEnable,
+                  //   ),
+                  // ),
+                  // Expanded(
+                  //   child: TWSDatepicker(
+                  //     firstDate: _firstDate,
+                  //     lastDate: _lastlDate,
+                  //     label: 'Year',
+                  //     controller: TextEditingController(text: itemState?.model.manufacturerNavigation?.year.dateOnlyString ?? _today.dateOnlyString),
+                  //     onChanged: (String text) {
+                  //       Truck model = itemState!.model;
+                  //       Manufacturer? temp = model.manufacturerNavigation;
+                  //       Manufacturer? updateManufacturer = Manufacturer(
+                  //         0, 
+                  //         temp?.model ?? "", 
+                  //         temp?.model ?? "", 
+                  //         DateTime.parse(text), 
+                  //         <Truck>[]
+                  //       );
+                  //       itemState!.updateModelRedrawing(
+                  //         model.clone(
+                  //           manufacturerNavigation: updateManufacturer
+                  //         ),
+                  //       );
+                  //     },
+                  //     isEnabled: isEnable,
+                  //   ),
+                  // ),
                 ]
               )
             ]

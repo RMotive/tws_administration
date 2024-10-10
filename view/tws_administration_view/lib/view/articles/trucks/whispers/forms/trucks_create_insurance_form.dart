@@ -59,29 +59,29 @@ class _TruckCreateInsurance extends StatelessWidget {
                   isEnabled: enable,
                 ),
               ),
-              Expanded(
-                child: TWSAutoCompleteField<String>(
-                  initialValue: itemState?.model.insuranceNavigation?.country,
-                  optionsBuilder: (String query) {
-                    if(query.isNotEmpty) return _countryOptions.where((String country) => country.toLowerCase().contains(query)).toList();
-                    return _countryOptions;
-                  } ,
-                  displayValue:(String item) => item,
-                  isOptional: true,
-                  label: 'Country',
-                  isEnabled: enable,
-                  onChanged: (String? value) {
-                    Truck model = itemState!.model;
-                    Insurance? temp = model.insuranceNavigation;
-                    Insurance? updateInsurance;
-                    itemState!.updateModelRedrawing(
-                      model.clone(
-                        insuranceNavigation: updateInsurance
-                      ),
-                    );
-                  },
-                )
-              )
+              // Expanded(
+              //   child: TWSAutoCompleteField<String>(
+              //     initialValue: itemState?.model.insuranceNavigation?.country,
+              //     optionsBuilder: (String query) {
+              //       if(query.isNotEmpty) return _countryOptions.where((String country) => country.toLowerCase().contains(query)).toList();
+              //       return _countryOptions;
+              //     } ,
+              //     displayValue:(String item) => item,
+              //     isOptional: true,
+              //     label: 'Country',
+              //     isEnabled: enable,
+              //     onChanged: (String? value) {
+              //       Truck model = itemState!.model;
+              //       Insurance? temp = model.insuranceNavigation;
+              //       Insurance? updateInsurance;
+              //       itemState!.updateModelRedrawing(
+              //         model.clone(
+              //           insuranceNavigation: updateInsurance
+              //         ),
+              //       );
+              //     },
+              //   )
+              // )
             ]
           )
         ]

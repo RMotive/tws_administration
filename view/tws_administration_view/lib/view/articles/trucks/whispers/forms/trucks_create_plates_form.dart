@@ -47,56 +47,56 @@ class _TruckCreatePlateForm extends StatelessWidget {
                   isEnabled: enable,
                 ),
               ),
-              Expanded(
-                child: TWSAutoCompleteField<String>(
-                  initialValue: _countryOptions[plateIndex],
-                  isEnabled: false,
-                  optionsBuilder: (String query) {
-                    if(query.isNotEmpty) return _countryOptions.where((String country) => country.toLowerCase().contains(query)).toList();
-                    return _countryOptions;
-                  } ,
-                  displayValue:(String item) => item,
-                  label: 'Country',
-                  onChanged: (String? value) {
-                    if(itemState != null){
-                      Truck model = itemState!.model;
-                      model.plates[plateIndex] = model.plates[plateIndex].clone(
-                        country: value ?? ""
-                      );
+              // Expanded(
+              //   child: TWSAutoCompleteField<String>(
+              //     initialValue: _countryOptions[plateIndex],
+              //     isEnabled: false,
+              //     optionsBuilder: (String query) {
+              //       if(query.isNotEmpty) return _countryOptions.where((String country) => country.toLowerCase().contains(query)).toList();
+              //       return _countryOptions;
+              //     } ,
+              //     displayValue:(String item) => item,
+              //     label: 'Country',
+              //     onChanged: (String? value) {
+              //       if(itemState != null){
+              //         Truck model = itemState!.model;
+              //         model.plates[plateIndex] = model.plates[plateIndex].clone(
+              //           country: value ?? ""
+              //         );
                       
-                      itemState?.updateModelRedrawing(
-                        model.clone(
-                          plates: model.plates,
-                        ),
-                      );
-                    }
-                  },
-                )
-              ),
-              Expanded(
-                child: TWSAutoCompleteField<String>(
-                  displayValue: (String query) => query,
-                  initialValue: itemState?.model.plates[plateIndex].state == "" ? null : itemState?.model.plates[plateIndex].state,
-                  optionsBuilder: (String query) {
-                    if(query.isNotEmpty) return statesRepository.where((String country) => country.toLowerCase().contains(query)).toList();
-                    return statesRepository;
-                  },
-                  label: 'State',
-                  onChanged: (String? text) {
-                    Truck model = itemState!.model;
+              //         itemState?.updateModelRedrawing(
+              //           model.clone(
+              //             plates: model.plates,
+              //           ),
+              //         );
+              //       }
+              //     },
+              //   )
+              // ),
+              // Expanded(
+              //   child: TWSAutoCompleteField<String>(
+              //     displayValue: (String query) => query,
+              //     initialValue: itemState?.model.plates[plateIndex].state == "" ? null : itemState?.model.plates[plateIndex].state,
+              //     optionsBuilder: (String query) {
+              //       if(query.isNotEmpty) return statesRepository.where((String country) => country.toLowerCase().contains(query)).toList();
+              //       return statesRepository;
+              //     },
+              //     label: 'State',
+              //     onChanged: (String? text) {
+              //       Truck model = itemState!.model;
                     
-                     model.plates[plateIndex] = model.plates[plateIndex].clone(
-                      state: text ?? ""
-                    );
-                    itemState?.updateModelRedrawing(
-                      model.clone(
-                        plates: model.plates,
-                      ),
-                    );
-                  },
-                  isEnabled: enable
-                ),
-              ),
+              //        model.plates[plateIndex] = model.plates[plateIndex].clone(
+              //         state: text ?? ""
+              //       );
+              //       itemState?.updateModelRedrawing(
+              //         model.clone(
+              //           plates: model.plates,
+              //         ),
+              //       );
+              //     },
+              //     isEnabled: enable
+              //   ),
+              // ),
           ]),
           CSMSpacingRow(
             spacing: 10,
@@ -106,7 +106,7 @@ class _TruckCreatePlateForm extends StatelessWidget {
                   firstDate: _firstDate,
                   lastDate: _lastlDate,
                   label: 'Expiration Date',
-                  controller: TextEditingController(text: itemState?.model.plates[plateIndex].expiration.dateOnlyString),
+                  controller: TextEditingController(text: itemState?.model.plates[plateIndex].expiration?.dateOnlyString),
                   onChanged: (String text) {
                     Truck model = itemState!.model;
                      model.plates[plateIndex] = model.plates[plateIndex].clone(

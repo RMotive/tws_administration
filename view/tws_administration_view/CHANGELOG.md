@@ -4,17 +4,14 @@
 
 - Notes:
 
-    1. Changed the Create method in [BMigrationDepot] to allow the use of set navigation properties.
-    2. Incluided a new [TWSListTile] component. This component is intended for implementations in [ListView] componentents
-    due to it's low performance impact and simplicity.
-    3. [TWSAutoComplete] & [TWSFutureAutoComplete] Incluided some performance improvements, bug fixes and state management changes to
-    work propertly with [TWSArticleCreation] Component.
-    4. [TrucksCreateWhisper] Implementation.
-    5. Removed unnecesary services and articles from Bussines module. The entities data removed are the following:
-        - [Plates] (Removed only in articles section)
-        - [Insurnace]
-        - [SCT]
-        - [Maintenance]
+    1. Refatoring sets and classes implementations from the newest [tws_foundation_client] version.
+    2. Widget newest version migrated from [tws_guard_view] project. The migrated widgets are the following:
+        * [TWSAutocompleteField]
+        * [TWSArticleTable]
+        * [TWSDatepickerField]
+        * [TWSInputText]
+    3. Removed unnecesary whispers views:
+        *
 
 - Dependencies upgrade:
 

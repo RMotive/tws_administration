@@ -33,15 +33,15 @@ class TrucksArticle extends CSMPageBase {
             'VIN',
             (Truck item, int index, BuildContext ctx) => item.vin,
           ),
-          TWSArticleTableFieldOptions<Truck>(
-            'Manufacturer',
-            (Truck item, int index, BuildContext ctx) => item.manufacturerNavigation?.brand ?? '---',
-          ),
-          TWSArticleTableFieldOptions<Truck>(
-            'Motor',
-            (Truck item, int index, BuildContext ctx) => item.motor,
-            true,
-          ),
+          // TWSArticleTableFieldOptions<Truck>(
+          //   'Manufacturer',
+          //   (Truck item, int index, BuildContext ctx) => item.manufacturerNavigation?.brand ?? '---',
+          // ),
+          // TWSArticleTableFieldOptions<Truck>(
+          //   'Motor',
+          //   (Truck item, int index, BuildContext ctx) => item.motor,
+          //   true,
+          // ),
           TWSArticleTableFieldOptions<Truck>(
             'SCT Number',
             (Truck item, int index, BuildContext ctx) =>  '---',

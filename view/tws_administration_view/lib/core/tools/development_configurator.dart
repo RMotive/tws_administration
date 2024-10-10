@@ -14,7 +14,7 @@ class DevelopmentConfigurator {
     if (sessionStorage.isSession) return;
 
     final MainResolver<Privileges> service = await Sources.administration.security.authenticate(DevelopmentSecrets.credentials).timeout(4.seconds);
-    Privileges privileges = await service.act(PrivilegesDecode());
+    Privileges privileges = await service.act(Privileges.des);
     sessionStorage.storeSession(privileges);
   }
 }

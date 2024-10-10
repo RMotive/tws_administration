@@ -4,7 +4,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Feature> {
   const _TableAdapter();
   
   @override
-  Future<MigrationView<Feature>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) {
+  Future<SetViewOut<Feature>> consume(int page, int range, List<SetViewOrderOptions> orderings) {
     throw UnimplementedError();
   }
   

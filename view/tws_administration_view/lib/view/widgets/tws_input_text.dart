@@ -1,5 +1,6 @@
-import 'package:csm_view/csm_view.dart';
-import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:csm_view/csm_view.dart';import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
 
 /// TWS Business dedicated component
@@ -13,6 +14,8 @@ class TWSInputText extends StatefulWidget {
   final double? width;
   final double? height;
   final String? errorText;
+  final bool focusEvents;
+  final bool autofocus;
   final bool isPrivate;
   final bool isEnabled;
   final bool showErrorColor;
@@ -20,6 +23,8 @@ class TWSInputText extends StatefulWidget {
   final int? maxLines;
   final bool isOptional;
   final String? suffixLabel;
+  final Widget? suffixIcon;
+  final Color? backgroundColor;
   final bool isStrictLength;
   final void Function()? onTap;
   final FocusNode? focusNode;
@@ -27,6 +32,7 @@ class TWSInputText extends StatefulWidget {
   final String? Function(String? text)? validator;
   final void Function(String text)? onChanged;
   final Function(PointerDownEvent)? onTapOutside;
+  final Duration? deBounce;
   const TWSInputText({
     super.key,
     this.label,
@@ -40,11 +46,16 @@ class TWSInputText extends StatefulWidget {
     this.focusNode,
     this.onChanged,
     this.suffixLabel,
+    this.suffixIcon,
+    this.backgroundColor,
+    this.focusEvents = false,
+    this.autofocus = true,
     this.isStrictLength = false,
     this.isOptional = false,
     this.showErrorColor = false,
     this.onTap,
     this.onTapOutside,
+    this.deBounce,
     this.maxLines = 1,
     this.isEnabled = true,
     this.isPrivate = false,
@@ -55,6 +66,9 @@ class TWSInputText extends StatefulWidget {
 }
 
 class _TWSInputTextState extends State<TWSInputText> {
+  final GlobalKey _inputFieldKey = GlobalKey();
+  Timer? _deBouncer;
+
   final double borderWidth = 2;
   late TextEditingController ctrl;
   late final FocusNode fNode;
@@ -69,11 +83,11 @@ class _TWSInputTextState extends State<TWSInputText> {
     super.initState();
     ctrl = widget.controller ?? TextEditingController();
     fNode = widget.focusNode ?? FocusNode();
+    if(widget.focusEvents) setFocus();
     theme = getTheme(
       updateEfect: themeUpdateListener,
     );
     initializeThemes();
-    ctrl.addListener(() => setState(() {}));
   }
 
   @override
@@ -83,10 +97,31 @@ class _TWSInputTextState extends State<TWSInputText> {
     if (widget.controller != oldWidget.controller) {
       ctrl = widget.controller ?? TextEditingController();
     }
-
-    ctrl.addListener(() => setState(() {}));
   }
 
+  @override
+  void dispose() {
+    disposeEffect(themeUpdateListener);
+    if(widget.focusEvents) fNode.dispose();
+    _deBouncer?.cancel();
+    super.dispose();
+  }
+  void setFocus(){
+    fNode.addListener(() {
+      if (fNode.hasFocus) {
+        _scrollToField();
+      }
+    });
+  }
+  // Center scroll to control field
+  void _scrollToField() {
+    Scrollable.ensureVisible(
+      _inputFieldKey.currentContext ?? context, 
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      alignment: 0.2, // Aligment ratio
+    );
+  }
   void initializeThemes() {
     colorStruct = theme.primaryControlColor;
     disabledColorStruct = theme.primaryDisabledControl;
@@ -111,7 +146,7 @@ class _TWSInputTextState extends State<TWSInputText> {
         height: widget.height,
         width: widget.width,
         child: TextFormField(
-          autofocus: true,
+          autofocus: widget.autofocus,
           validator: widget.validator,
           obscureText: widget.isPrivate,
           controller: ctrl,
@@ -120,7 +155,23 @@ class _TWSInputTextState extends State<TWSInputText> {
           cursorWidth: 3,
           cursorColor: colorStruct.foreAlt,
           enabled: widget.isEnabled,
-          onChanged: widget.onChanged,
+          onChanged: (String typedText) {
+            if (widget.deBounce == null) {
+              widget.onChanged?.call(typedText);
+              return;
+            }
+
+            if (_deBouncer?.isActive ?? false) {
+              _deBouncer?.cancel();
+            }
+
+            _deBouncer = Timer(
+              widget.deBounce!,
+              () {
+                widget.onChanged?.call(typedText);
+              },
+            );
+          },
           onTap: widget.onTap,
           onTapOutside: widget.onTapOutside,
           maxLength: widget.maxLength,
@@ -146,6 +197,7 @@ class _TWSInputTextState extends State<TWSInputText> {
             ): null,
             errorText: widget.errorText,
             isDense: true,
+            suffixIcon: widget.suffixIcon,
             counterStyle: TextStyle(
               color: counterColor,
             ),

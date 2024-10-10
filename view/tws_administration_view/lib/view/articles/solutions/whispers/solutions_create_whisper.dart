@@ -36,14 +36,14 @@ final class SolutionsCreateWhisper extends CSMPageBase {
         modelValidator: (Solution model) => model.evaluate().isEmpty,
         onCreate: (List<Solution> records) async {
           final String currentToken = _sessionStorage.getTokenStrict();
-          MainResolver<MigrationTransactionResult<Solution>> resolver = await _solutionsService.create(records, currentToken);
+          MainResolver<SetBatchOut<Solution>> resolver = await _solutionsService.create(records, currentToken);
           List<TWSArticleCreatorFeedback> feedbacks = <TWSArticleCreatorFeedback>[];
           resolver.resolve(
-            decoder: const MigrationTransactionResultDecoder<Solution>(SolutionDecoder()),
+            decoder:(JObject json) => SetBatchOut<Solution>.des(json, Solution.des),
             onConnectionFailure: () {},
             onException: (Object exception, StackTrace trace) {},
             onFailure: (FailureFrame failure, int status) {},
-            onSuccess: (SuccessFrame<MigrationTransactionResult<Solution>> success) {},
+            onSuccess: (SuccessFrame<SetBatchOut<Solution>> success) {},
           );
           return feedbacks;
         },

@@ -3,7 +3,7 @@ import 'package:tws_administration_view/view/widgets/tws_article_table/tws_artic
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 abstract interface class TWSArticleTableAdapter<TSet extends CSMEncodeInterface> {
-  Future<MigrationView<TSet>> consume(int page, int range, List<MigrationViewOrderOptions> orderings);
+  Future<SetViewOut<TSet>> consume(int page, int range, List<SetViewOrderOptions> orderings);
 
   TWSArticleTableEditor? composeEditor(TSet set, void Function() closeReinvoke, BuildContext context);
   Widget composeViewer(TSet set, BuildContext context);

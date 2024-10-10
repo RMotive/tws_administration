@@ -52,31 +52,31 @@ class _TruckCreateMainForm extends StatelessWidget {
             ),
           ],
         ),
-        CSMSpacingRow(
+        const CSMSpacingRow(
           spacing: 10,
           children: <Widget>[
-            Expanded(
-              child: TWSFutureAutoCompleteField<Manufacturer>(
-                label: "Select a Manufacturer",
-                hint: "Assing an existing manufacturer",
-                isOptional: true,
-                initialValue: itemState?.model.manufacturerNavigation ,
-                displayValue: (Manufacturer set) => "${set.brand} ${set.model}" ,
-                isEnabled: enable,
-                adapter:  const _ManufacturerViewAdapter(),
-                onChanged: (Manufacturer? selectedItem) {  
-                  Truck model = itemState!.model;
-                  itemState!.updateModelRedrawing(
-                    model.clone(
-                      manufacturer: selectedItem?.id ?? 0,
-                      manufacturerNavigation: selectedItem
-                    )
-                  );
-                  _maintenanceState();
-                }, 
+            // Expanded(
+            //   child: TWSFutureAutoCompleteField<Manufacturer>(
+            //     label: "Select a Manufacturer",
+            //     hint: "Assing an existing manufacturer",
+            //     isOptional: true,
+            //     initialValue: itemState?.model.manufacturerNavigation ,
+            //     displayValue: (Manufacturer set) => "${set.brand} ${set.model}" ,
+            //     isEnabled: enable,
+            //     adapter:  const _ManufacturerViewAdapter(),
+            //     onChanged: (Manufacturer? selectedItem) {  
+            //       Truck model = itemState!.model;
+            //       itemState!.updateModelRedrawing(
+            //         model.clone(
+            //           manufacturer: selectedItem?.id ?? 0,
+            //           manufacturerNavigation: selectedItem
+            //         )
+            //       );
+            //       _maintenanceState();
+            //     }, 
 
-              ),
-            ),
+            //   ),
+            // ),
             
           ],
         ),

@@ -1,17 +1,22 @@
 part of 'tws_article_table.dart';
 
 class _TWSArticleTableLoading extends StatelessWidget {
-  const _TWSArticleTableLoading();
+  final Size viewSize;
+  const _TWSArticleTableLoading({
+      required this.viewSize
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(
-        top: 50,
+    const double size = 50; 
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: (viewSize.width/2) - (size/2),
+        vertical: (viewSize.height/2) - (size*2)
       ),
-      child: SizedBox(
-        width: 50,
-        height: 50,
+      child: const SizedBox(
+        width: size,
+        height: size,
         child: CircularProgressIndicator(
           backgroundColor: TWSAColors.oceanBlueH,
           color: TWSAColors.oceanBlue,
