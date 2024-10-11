@@ -11,7 +11,9 @@
         * [TWSDatepickerField]
         * [TWSInputText]
     3. Removed unnecesary whispers views:
-        *
+        * Manufacturers
+        * Situations
+    4. [Truck] view table and table viewer implementation
 
 - Dependencies upgrade:
 

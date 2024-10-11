@@ -8,7 +8,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
 
   @override
   Future<SetViewOut<Solution>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
-    final SetViewOptions<Solution> options = SetViewOptions<Solution>(false, page, range,null, orderings, <SetViewFilterNodeInterface<Solution>>[]);
+    final SetViewOptions<Solution> options = SetViewOptions<Solution>(false, range, page,null, orderings, <SetViewFilterNodeInterface<Solution>>[]);
     String auth = _sessionStorage.session!.token;
     MainResolver<SetViewOut<Solution>> resolver = await Sources.administration.solutions.view(options, auth);
 

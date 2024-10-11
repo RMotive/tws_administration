@@ -22,7 +22,7 @@ typedef Routes = TWSARoutes;
 class TWSARouteTree extends CSMRouterTreeBase {
   TWSARouteTree()
       : super(
-          devRoute: Routes.solutionsArticle,
+          devRoute: Routes.trucksArticle,
           redirect: (_, __) {
             return null;
           },

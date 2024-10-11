@@ -30,26 +30,6 @@ class BusinessFrame extends StatelessWidget {
       route: TWSARoutes.trucksArticle,
       title: 'Trucks',
     ),
-    ArticleOptions(
-      icon: (Color? stateColor) {
-        return Icon(
-          Icons.business,
-          color: stateColor,
-        );
-      },
-      route: TWSARoutes.manufacturersArticle,
-      title: 'Manufacturers',
-    ),
-    ArticleOptions(
-      icon: (Color? stateColor) {
-        return Icon(
-          Icons.business,
-          color: stateColor,
-        );
-      },
-      route: TWSARoutes.situationsArticle,
-      title: 'Situations',
-    ),
   ];
 
   @override
