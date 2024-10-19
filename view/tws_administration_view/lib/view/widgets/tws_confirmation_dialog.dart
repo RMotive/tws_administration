@@ -1,14 +1,15 @@
 import 'dart:async';
-
 import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_administration_view/view/widgets/tws_button_flat.dart';
 
+
 final class TWSConfirmationDialog extends StatefulWidget {
   final String title;
   final Text? statement;
+  final bool showCancelButton;
   final String accept;
   final VoidCallback? onClose;
   final FutureOr<void> Function()? onAccept;
@@ -18,6 +19,7 @@ final class TWSConfirmationDialog extends StatefulWidget {
     this.onClose,
     this.onAccept,
     this.statement,
+    this.showCancelButton = true,
     this.title = 'Confirmation',
     this.accept = 'Accept',
   });
@@ -69,7 +71,6 @@ class _TWSConfirmationDialogState extends State<TWSConfirmationDialog> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        debugPrint('hitting');
         if (loading) {
           return;
         }
@@ -171,11 +172,14 @@ class _TWSConfirmationDialogState extends State<TWSConfirmationDialog> {
                                 });
                               },
                             ),
-                            TWSButtonFlat(
-                              label: 'Cancel',
-                              disabled: loading,
-                              themeOptions: dangerTheme,
-                              onTap: () => _close(context),
+                            Visibility(
+                              visible: widget.showCancelButton,
+                              child: TWSButtonFlat(
+                                label: 'Cancel',
+                                disabled: loading,
+                                themeOptions: dangerTheme,
+                                onTap: () => _close(context),
+                              ),
                             )
                           ],
                         ),

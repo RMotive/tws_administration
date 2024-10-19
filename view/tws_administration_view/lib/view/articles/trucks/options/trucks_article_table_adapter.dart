@@ -5,6 +5,11 @@ final SessionStorage _sessionStorage = SessionStorage.i;
 final class _TableAdapter implements TWSArticleTableAdapter<Truck> {
   const _TableAdapter();
 
+  Object getFactory(Type set){
+    if(set is Truck) return Truck.a();
+    return TruckExternal.a();
+  } 
+
   String getPlates(Truck item){
     String plates = '---';
     if (item.plates.isNotEmpty) {

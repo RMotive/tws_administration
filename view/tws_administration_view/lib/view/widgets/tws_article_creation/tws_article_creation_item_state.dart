@@ -23,4 +23,9 @@ final class TWSArticleCreatorItemState<TModel> extends CSMStateBase {
     _valid = newInvalid;
     effect();
   }
+
+  void updateFactory(TModel Function() useFactory){
+    _model = useFactory();
+    effect();
+  }
 }

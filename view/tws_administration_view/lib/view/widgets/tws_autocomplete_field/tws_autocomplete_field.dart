@@ -25,7 +25,7 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
   final double width;
 
   /// Field height.
-  final double height;
+  final double? height;
 
   /// Main title for the field.
   final String? label;
@@ -67,10 +67,14 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
   /// Optinal validator method for [TWSInputText] internal component.
   final String? Function(String?)? validator;
 
+  /// enable focus events (Autofocus on tap)
+  final bool  focusEvents;
+
   const TWSAutoCompleteField(
       {super.key,
       required this.onChanged,
       required this.displayValue,
+      this.focusEvents = false,
       this.adapter,
       this.localList,
       this.isOptionalLabel,
@@ -80,7 +84,7 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
       this.label,
       this.hint,
       this.width = 150,
-      this.height = 40,
+      this.height,
       this.menuHeight = 200,
       this.validator,
       this.isEnabled = true})
@@ -92,7 +96,6 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
 }
 
 class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with SingleTickerProviderStateMixin {
-  final GlobalKey _fieldKey = GlobalKey();
   late final TWSAThemeBase theme;
 
   /// Consume method declaration in [adapter] property.
@@ -175,15 +178,6 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
     }
     previousSelection = selectedOption;
   }
-  void _scrollFocus() {
-    // Center scroll to control field.
-    Scrollable.ensureVisible(
-      _fieldKey.currentContext ?? context,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-      alignment: 0.2, // aligment ratio 
-    );
-  }
 
   @override
   void initState() {
@@ -242,7 +236,6 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
   /// Method that manage the focus events to show or hide the overlay
   void focusManager() {
     if (focus.hasPrimaryFocus) {
-      _scrollFocus();
       if (firstbuild) overlayController.show();
       setState(() => show = true);
     } else {
@@ -269,18 +262,23 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
                 link: link,
                 child: TWSInputText(
                   autofocus: false,
-                  suffixIcon: const Icon(
-                    Icons.arrow_drop_down,
-                    size: 24,
-                    color: Colors.white,
-                  ),
+                  focusEvents: widget.focusEvents,
                   controller: ctrl,
                   isOptional: widget.isOptional,
                   width: widget.width,
                   height: widget.height,
                   suffixLabel: widget.isOptionalLabel,
+                  focusNode: focus,
+                  label: widget.label,
+                  hint: widget.hint,
+                  isEnabled: widget.isEnabled,
                   showErrorColor: (selectedOption == null && (!widget.isOptional || ctrl.text.isNotEmpty)) && !firstbuild,
                   onChanged: (String text) => _search(text),
+                  suffixIcon: const Icon(
+                    Icons.arrow_drop_down,
+                    size: 24,
+                    color: Colors.white,
+                  ),
                   onTap: () {
                     if (!show) setState(() => show = true);
                   },
@@ -288,16 +286,12 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
                     if (!isOvelayHovered) setState(() => show = false);
                     if (!show) focus.unfocus();
                   },
-                  focusNode: focus,
-                  label: widget.label,
-                  hint: widget.hint,
-                  isEnabled: widget.isEnabled,
                   validator: (String? text) {
                     if (_verifySelection()) return "Not exist an item with this value.";
                     if (widget.validator != null) return widget.validator!(text);
                     return null;
                   },
-                )),
+                ),),
             overlayChildBuilder: (_) {
               // Getting the visual boundries for this component.
               final RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -324,7 +318,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
                                           border: Border(
                                               right: BorderSide(width: 2, color: TWSAColors.oceanBlue),
                                               left: BorderSide(width: 2, color: TWSAColors.oceanBlue),
-                                              bottom: BorderSide(width: 2, color: TWSAColors.oceanBlue))),
+                                              bottom: BorderSide(width: 2, color: TWSAColors.oceanBlue),),),
                                       child: widget.adapter != null
                                           ? _TWSAutocompleteFuture<T>(
                                               consume: consume!,
@@ -362,9 +356,9 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
                                               },
                                               tileHeigth: tileHeigth,
                                               firstBuild: firstbuild,
-                                              rawData: widget.localList!))))),
+                                              rawData: widget.localList!),),),),),
                     ),
-                  ));
-            }));
+                  ),);
+            },),);
   }
 }

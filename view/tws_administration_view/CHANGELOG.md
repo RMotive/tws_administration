@@ -10,10 +10,18 @@
         * [TWSArticleTable]
         * [TWSDatepickerField]
         * [TWSInputText]
+        * [TWSSectionDivider]
     3. Removed unnecesary whispers views:
         * Manufacturers
         * Situations
-    4. [Truck] view table and table viewer implementation
+    4. [Truck] view table and table viewer implementation.
+    5. Added new [TWSCascadeSection] component.
+    6. Added new [TWSIncrementalList] component
+    7. Added exceptions dialogs for Trucks creation form.
+    8. Now the truck creation form can set and create [TruckExternal] & [Truck] models 
+    in the same operation.
+    9. added a new [updateFactory] method in [TWSArticleCreatorItemState] to allow switch between sets models.
+    10. Trucks creation plates forms now allow creating a truck with a single plate with any country setting.
 
 - Dependencies upgrade:
 
