@@ -12,7 +12,7 @@ class TWSIncrementalList<TModel> extends StatefulWidget {
   final double height;
   /// Build the default data model for each record.
   final TModel Function() modelBuilder;
-  /// Build a new record for the [TModel] list.
+  /// MEthod that returns a widget to build a new record for the [TModel] list.
   final Widget Function(TModel model, int index) recordBuilder;
   /// set record list to display in record listview, must be handled via [onAdd] and [onRemove] methods.
   final List<TModel> recordList;
@@ -22,17 +22,19 @@ class TWSIncrementalList<TModel> extends StatefulWidget {
   final void Function() onRemove;
   /// set records creation limit. default value is 0 = no records limit.
   final int recordLimit;
+  /// set the min records available. When the min value is reached, the delete option will be disable.
+  final int recordMin;
 
   const TWSIncrementalList({
     super.key,
-    required this.modelBuilder,
-    required this.recordBuilder,
-    required this.onRemove,
     required this.recordList,
+    required this.modelBuilder,
+    required this.onRemove,
     required this.onAdd,
+    required this.recordBuilder,
     this.title = "Records",
+    this.recordMin = 0,
     this.recordLimit = 0,
-    
     this.height = 500,
     this.width = double.maxFinite,
   }): assert(recordLimit >= 0, "Limit property must be >= 0");
@@ -112,7 +114,7 @@ class _TWSIncrementalListState<TModel> extends State<TWSIncrementalList<TModel>>
                     CSMPointerHandler(
                       cursor: SystemMouseCursors.click,
                       onClick: (){
-                        if(widget.recordList.isEmpty) return;
+                        if(widget.recordList.isEmpty || widget.recordList.length == widget.recordMin) return;
                         setState(() {
                           widget.onRemove();
                         });   

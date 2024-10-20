@@ -25,6 +25,7 @@ class _TruckCreateSCT extends StatelessWidget {
                 child: TWSInputText(
                   label: 'Type',
                   maxLength: 6,
+                  isStrictLength: true,
                   controller: TextEditingController(text: item.sctNavigation?.type),
                   onChanged: (String text) {
                     Truck model = itemState!.model as Truck;

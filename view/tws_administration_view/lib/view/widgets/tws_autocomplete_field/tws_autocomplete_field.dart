@@ -162,18 +162,19 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
       exactCoincidense = suggestionsList.where((T set){
         return widget.displayValue(set).toLowerCase() == query;
       }).toList();
-
-      if (!firstbuild && suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
+      
+      if(suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
         selectedOption = exactCoincidense.first;
-        ctrl.text = input;
+        if(!firstbuild) ctrl.text = input;
       }
+      
     } else {
       // if the input is empty, then the default suggestions list is the original options list.
       suggestionsList = rawOptionsList;
     }
     if (!firstbuild) {
       setState(() {
-        if (previousSelection != selectedOption) widget.onChanged(selectedOption);
+        if(previousSelection != selectedOption) widget.onChanged(selectedOption);
       });
     }
     previousSelection = selectedOption;
@@ -202,6 +203,12 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
   @override
   void didUpdateWidget(covariant TWSAutoCompleteField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if(widget.localList != null && oldWidget.localList != null){
+      if(widget.localList != oldWidget.localList){
+        rawOptionsList = widget.localList!;
+        ctrl.text = "";
+      }
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) => setSelection());
   }
 

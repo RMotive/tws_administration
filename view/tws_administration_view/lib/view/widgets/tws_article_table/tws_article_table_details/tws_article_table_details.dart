@@ -76,6 +76,7 @@ final class _TWSArticleTableDetails<TArticle extends CSMEncodeInterface> extends
                         fore: tCritical.main.background,
                         action: () => adapter.onRemoveRequest(record, context),
                       ),
+                      
                       if(editable)
                       if(editionForm != null)
                         _TWSArticleTableDetailsAction(
