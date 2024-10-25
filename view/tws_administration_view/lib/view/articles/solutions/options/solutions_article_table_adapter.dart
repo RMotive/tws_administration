@@ -7,12 +7,12 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
   const _TableAdapter();
 
   @override
-  Future<MigrationView<Solution>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) async {
-    final MigrationViewOptions options = MigrationViewOptions(null, orderings, page, range, false);
+  Future<SetViewOut<Solution>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+    final SetViewOptions<Solution> options = SetViewOptions<Solution>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Solution>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<MigrationView<Solution>> resolver = await Sources.administration.solutions.view(options, auth);
+    MainResolver<SetViewOut<Solution>> resolver = await Sources.administration.solutions.view(options, auth);
 
-    MigrationView<Solution> view = await resolver.act(const MigrationViewDecode<Solution>(SolutionDecoder())).catchError(
+    SetViewOut<Solution> view = await resolver.act((JObject json) => SetViewOut<Solution>.des(json, Solution.des)).catchError(
       (Object x, StackTrace s) {
         const CSMAdvisor('solution-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
         throw x;
@@ -92,10 +92,10 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
               ),
               onAccept: () async {
                 final String auth = _sessionStorage.getTokenStrict();
-                MainResolver<MigrationUpdateResult<Solution>> resolverUpdateOut = await _solutionsService.update(set, auth);
+                MainResolver<RecordUpdateOut<Solution>> resolverUpdateOut = await _solutionsService.update(set, auth);
                 try {
-                  resolverUpdateOut.act(const MigrationUpdateResultDecoder<Solution>(SolutionDecoder())).then(
-                    (MigrationUpdateResult<Solution> updateOut) {
+                  resolverUpdateOut.act((JObject json) => RecordUpdateOut<Solution>.des(json, Solution.des)).then(
+                    (RecordUpdateOut<Solution> updateOut) {
                       const CSMAdvisor('solution-update').success('succesf', info: updateOut.updated.encode());
                       CSMRouter.i.pop();
                     },

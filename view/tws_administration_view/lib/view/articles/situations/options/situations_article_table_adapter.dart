@@ -6,12 +6,12 @@ final class _TableAdapter implements TWSArticleTableAdapter<Situation> {
   const _TableAdapter();
 
   @override
-  Future<MigrationView<Situation>> consume(int page, int range, List<MigrationViewOrderOptions> orderings) async {
-    final MigrationViewOptions options = MigrationViewOptions(null, orderings, page, range, false);
+  Future<SetViewOut<Situation>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+    final SetViewOptions<Situation> options = SetViewOptions<Situation>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Situation>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<MigrationView<Situation>> resolver = await Sources.administration.situations.view(options, auth);
+    MainResolver<SetViewOut<Situation>> resolver = await Sources.administration.situations.view(options, auth);
 
-    MigrationView<Situation> view = await resolver.act(const MigrationViewDecode<Situation>(SituationDecoder())).catchError(
+    SetViewOut<Situation> view = await resolver.act((JObject json) => SetViewOut<Situation>.des(json, Situation.des)).catchError(
       (Object x, StackTrace s) {
         const CSMAdvisor('solution-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
         throw x;

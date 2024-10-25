@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_administration_view/core/constants/twsa_colors.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_adapter.dart';
@@ -11,15 +10,14 @@ import 'package:tws_administration_view/view/widgets/tws_article_table/tws_artic
 import 'package:tws_administration_view/view/widgets/tws_display_flat.dart';
 import 'package:tws_administration_view/view/widgets/tws_frame_decoration.dart';
 import 'package:tws_administration_view/view/widgets/tws_paging_selector.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 part 'tws_article_table_details/tws_article_table_details.dart';
 part 'tws_article_table_details/tws_article_table_details_action.dart';
 part 'tws_article_table_details/tws_article_table_details_state.dart';
 part 'tws_article_table_details/tws_article_table_editor.dart';
-
-part 'tws_article_table_header/tws_article_table_header.dart';
-
 part 'tws_article_table_error.dart';
+part 'tws_article_table_header/tws_article_table_header.dart';
 part 'tws_article_table_loading.dart';
 
 class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidget {
@@ -49,7 +47,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
   static const double _kMinFieldWidth = 200;
   static const double _kDetailsWidth = 400;
 
-  late Future<MigrationView<TArticle>> Function() consume;
+  late Future<SetViewOut<TArticle>> Function() consume;
   late AnimationController detailsAnimationController;
 
   final CSMConsumerAgent agent = CSMConsumerAgent();
@@ -69,7 +67,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     setState(() {
       this.page = page;
       this.size = size;
-      this.consume = () => adapter.consume(page, size, <MigrationViewOrderOptions>[]);
+      this.consume = () => adapter.consume(page, size, <SetViewOrderOptions>[]);
     });
     agent.refresh();
   }
@@ -84,7 +82,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     items = 0;
     adapter = widget.adapter;
     records = <TArticle>[];
-    consume = () => adapter.consume(page, size, <MigrationViewOrderOptions>[]);
+    consume = () => adapter.consume(page, size, <SetViewOrderOptions>[]);
     detailsAnimationController = AnimationController(vsync: this, duration: 200.miliseconds);
     widget.agent?.addListener(agent.refresh);
     super.initState();
@@ -97,7 +95,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     super.dispose();
   }
 
-  void _updatePagingChanges(MigrationView<TArticle> data) {
+  void _updatePagingChanges(SetViewOut<TArticle> data) {
     if (items != data.amount || pages != data.pages || records != data.sets) {
       WidgetsBinding.instance.addPostFrameCallback(
         (Duration timeStamp) {
@@ -183,13 +181,13 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                   ),
                                   // --> Table items
                                   Expanded(
-                                    child: CSMConsumer<MigrationView<TArticle>>(
+                                    child: CSMConsumer<SetViewOut<TArticle>>(
                                       consume: consume,
                                       agent: agent,
-                                      emptyCheck: (MigrationView<TArticle> data) => data.sets.isEmpty,
+                                      emptyCheck: (SetViewOut<TArticle> data) => data.sets.isEmpty,
                                       loadingBuilder: (_) => const _TWSArticleTableLoading(),
                                       errorBuilder: (_, __, ___) => const _TWSArticleTableError(),
-                                      successBuilder: (_, MigrationView<TArticle> data) {
+                                      successBuilder: (_, SetViewOut<TArticle> data) {
                                         _updatePagingChanges(data);
 
                                         return SizedBox(

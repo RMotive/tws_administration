@@ -1,6 +1,6 @@
 
 
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 
 final class TWSArticleCreatorItemState<TModel> extends CSMStateBase {
   late TModel _model;

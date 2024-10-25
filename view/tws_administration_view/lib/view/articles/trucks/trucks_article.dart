@@ -1,6 +1,5 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
@@ -11,6 +10,8 @@ import 'package:tws_administration_view/view/widgets/tws_article_table/tws_artic
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_adapter.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_agent.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_field_options.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
+
 part 'options/trucks_article_table_adapter.dart';
 
 class TrucksArticle extends CSMPageBase {
@@ -34,12 +35,8 @@ class TrucksArticle extends CSMPageBase {
             (Truck item, int index, BuildContext ctx) => item.vin,
           ),
           TWSArticleTableFieldOptions<Truck>(
-            'Manufacturer',
-            (Truck item, int index, BuildContext ctx) => item.manufacturerNavigation?.brand ?? '---',
-          ),
-          TWSArticleTableFieldOptions<Truck>(
             'Motor',
-            (Truck item, int index, BuildContext ctx) => item.motor,
+            (Truck item, int index, BuildContext ctx) => item.motor ?? '---',
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(
@@ -58,8 +55,8 @@ class TrucksArticle extends CSMPageBase {
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(
-            'Situation',
-            (Truck item, int index, BuildContext ctx) => item.situationNavigation?.name.toString() ?? '---',
+            'Status',
+            (Truck item, int index, BuildContext ctx) => item.statusNavigation?.name.toString() ?? '---',
             true,
           ),
           TWSArticleTableFieldOptions<Truck>(

@@ -1,4 +1,4 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 
 /// Stores all the route options objects for use the [RouteDriver] and
 /// initialize the route tree of the application.

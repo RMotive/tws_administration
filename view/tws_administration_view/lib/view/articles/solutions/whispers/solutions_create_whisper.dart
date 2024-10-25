@@ -1,6 +1,5 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
-import 'package:tws_administration_service/tws_administration_service.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
 import 'package:tws_administration_view/view/articles/solutions/solutions_article.dart';
@@ -12,6 +11,7 @@ import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_ar
 import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creator.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_article_creator_feedback.dart';
 import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 final SolutionsServiceBase _solutionsService = Sources.administration.solutions;
 final SessionStorage _sessionStorage = SessionStorage.i;
@@ -36,14 +36,14 @@ final class SolutionsCreateWhisper extends CSMPageBase {
         modelValidator: (Solution model) => model.evaluate().isEmpty,
         onCreate: (List<Solution> records) async {
           final String currentToken = _sessionStorage.getTokenStrict();
-          MainResolver<MigrationTransactionResult<Solution>> resolver = await _solutionsService.create(records, currentToken);
+          MainResolver<SetBatchOut<Solution>> resolver = await _solutionsService.create(records, currentToken);
           List<TWSArticleCreatorFeedback> feedbacks = <TWSArticleCreatorFeedback>[];
           resolver.resolve(
-            decoder: const MigrationTransactionResultDecoder<Solution>(SolutionDecoder()),
+            decoder: (JObject json) => SetBatchOut<Solution>.des(json, Solution.des),
             onConnectionFailure: () {},
             onException: (Object exception, StackTrace trace) {},
             onFailure: (FailureFrame failure, int status) {},
-            onSuccess: (SuccessFrame<MigrationTransactionResult<Solution>> success) {},
+            onSuccess: (SuccessFrame<SetBatchOut<Solution>> success) {},
           );
           return feedbacks;
         },

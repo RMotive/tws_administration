@@ -7,7 +7,7 @@ final SessionStorage _sessionStorage = SessionStorage.i;
 final Contact _contact = _sessionStorage.session!.contact;
 
 /// [_fullName] Stores the contact name.
-String get _fullName => "${_contact.name} ${_contact.lastname}";
+String get _fullName => "${_contact.name} ${_contact.lastName}";
 
 /// [_IsHovered] Boolean that stores the current state for the main header button.
 bool _isHovered = false;
@@ -44,7 +44,7 @@ final List<_Options> _options = <_Options>[
 /// To get user initials, this method takes the first letter from [Contact.name] and the first letter for each word in [Contact.lastname].
 String _getInitials() {
   String initials = _contact.name.substring(0, 1);
-  List<String> lastname = _contact.lastname.split(" ");
+  List<String> lastname = _contact.lastName.split(" ");
   for (String word in lastname) {
     initials += word.substring(0, 0);
   }

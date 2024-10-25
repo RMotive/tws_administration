@@ -1,8 +1,8 @@
-import 'package:csm_foundation_view/csm_foundation_view.dart';
-import 'package:tws_administration_service/tws_administration_service.dart';
+import 'package:csm_view/csm_view.dart';
 import 'package:tws_administration_view/core/secrets/development_secrets.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 class DevelopmentConfigurator {
   static Future<void> configure() async {
@@ -14,7 +14,7 @@ class DevelopmentConfigurator {
     if (sessionStorage.isSession) return;
 
     final MainResolver<Privileges> service = await Sources.administration.security.authenticate(DevelopmentSecrets.credentials).timeout(4.seconds);
-    Privileges privileges = await service.act(PrivilegesDecode());
+    Privileges privileges = await service.act(Privileges.des);
     sessionStorage.storeSession(privileges);
   }
 }

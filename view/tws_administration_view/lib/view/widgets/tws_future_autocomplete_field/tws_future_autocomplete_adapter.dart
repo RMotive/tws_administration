@@ -1,5 +1,5 @@
-import 'package:tws_administration_service/tws_administration_service.dart';
+import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 abstract interface class TWSFutureAutocompleteAdapter<TSet extends CSMEncodeInterface>{
-  Future<MigrationView<TSet>> consume(int page, int range, List<MigrationViewOrderOptions> orderings);
+  Future<SetViewOut<TSet>> consume(int page, int range, List<SetViewOrderOptions> orderings);
 }
