@@ -1,6 +1,5 @@
 part of '../trucks_create_whisper.dart';
 
-
 class _TruckForm extends StatelessWidget {
   final TWSArticleCreatorItemState<Object>? itemState;
   final bool formDisabled;
@@ -18,13 +17,37 @@ class _TruckForm extends StatelessWidget {
       spacing: 12,
       crossAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _TruckCreateMainForm(itemState: itemState, enable: formDisabled,),
-        _TruckCreatePlatesSection(style: style, itemState: itemState, enable: formDisabled),
-        _TruckCreateManufacturer(itemState: itemState, enable: formDisabled, style: style),
-        _TruckCreateSituation(itemState: itemState, enable: formDisabled, style: style),
-        _TruckCreateMaintenance(itemState: itemState, enable: formDisabled),
-        _TruckCreateInsurance(itemState: itemState, enable: formDisabled),
-        _TruckCreateSCT(itemState: itemState, enable: formDisabled)
+        _TruckCreateMainForm(
+          itemState: itemState,
+          enable: formDisabled,
+        ),
+        _TruckCreatePlatesSection(
+          style: style,
+          itemState: itemState,
+          enable: formDisabled,
+        ),
+        _TruckCreateManufacturer(
+          itemState: itemState,
+          enable: formDisabled,
+          style: style,
+        ),
+        _TruckCreateSituation(
+          itemState: itemState,
+          enable: formDisabled,
+          style: style,
+        ),
+        _TruckCreateMaintenance(
+          itemState: itemState,
+          enable: formDisabled,
+        ),
+        _TruckCreateInsurance(
+          itemState: itemState,
+          enable: formDisabled,
+        ),
+        _TruckCreateSCT(
+          itemState: itemState,
+          enable: formDisabled,
+        )
       ],
     );
   }

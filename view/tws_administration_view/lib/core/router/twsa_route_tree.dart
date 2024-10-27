@@ -7,6 +7,7 @@ import 'package:tws_administration_view/view/articles/solutions/solutions_articl
 import 'package:tws_administration_view/view/articles/solutions/whispers/solutions_create_whisper.dart';
 import 'package:tws_administration_view/view/articles/trucks/trucks_article.dart';
 import 'package:tws_administration_view/view/articles/trucks/whispers/trucks_create_whisper.dart';
+import 'package:tws_administration_view/view/articles/yardlogs/truck_inventory_article.dart';
 import 'package:tws_administration_view/view/layouts/master/master_layout.dart';
 import 'package:tws_administration_view/view/pages/about/about_page.dart';
 import 'package:tws_administration_view/view/pages/business/business_page.dart';
@@ -15,6 +16,7 @@ import 'package:tws_administration_view/view/pages/overview/overview_page.dart';
 import 'package:tws_administration_view/view/pages/profile/profile_page.dart';
 import 'package:tws_administration_view/view/pages/security/security_page.dart';
 import 'package:tws_administration_view/view/pages/settings/settings_page.dart';
+import 'package:tws_administration_view/view/pages/yardlog/yardlog_page.dart';
 
 typedef Routes = TWSARoutes;
 
@@ -128,6 +130,26 @@ class TWSARouteTree extends CSMRouterTreeBase {
                       ],
                     ),
                   ],
+                ),
+                // --> [Yardlog page]
+                CSMRouteNode(
+                  Routes.yardlogPage,
+                  pageBuild: (_, CSMRouterOutput routerOutput) {
+                    return const YardlogPage(
+                      currentRoute: Routes.yardlogPage,
+                    );
+                  },
+                  routes: <CSMRouteBase>[
+                     // -> [Trucks inventory]
+                    CSMRouteNode(
+                      Routes.yardlogsTruckInventoryArticle,
+                      pageBuild: (_, CSMRouterOutput routerOutput) {
+                        return const TruckInventoryArticle(
+                          currentRoute: Routes.yardlogPage,
+                        );
+                      },
+                    ),
+                  ]
                 ),
               ],
             ),

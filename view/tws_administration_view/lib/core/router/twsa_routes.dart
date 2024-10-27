@@ -12,6 +12,8 @@ class TWSARoutes {
   static const CSMRouteOptions overviewPage = CSMRouteOptions('overview');
   static const CSMRouteOptions securityPage = CSMRouteOptions('security');
   static const CSMRouteOptions businessPage = CSMRouteOptions('business');
+  static const CSMRouteOptions yardlogPage = CSMRouteOptions('yard-logs');
+
 
   static const CSMRouteOptions settings = CSMRouteOptions('settings');
   static const CSMRouteOptions profile = CSMRouteOptions('profile');
@@ -46,4 +48,10 @@ class TWSARoutes {
 
   static const CSMRouteOptions situationsArticle = CSMRouteOptions('situations');
   static const CSMRouteOptions situationsViewWhisper = CSMRouteOptions(name: 'situations-view', 'view');
+
+  static const CSMRouteOptions yardlogsArticle = CSMRouteOptions('yardlogs');
+  static const CSMRouteOptions yardlogsViewWhisper = CSMRouteOptions(name: 'yardlogs-view', 'view');
+
+  static const CSMRouteOptions yardlogsTruckInventoryArticle = CSMRouteOptions('trucks-inventory');
+
 }

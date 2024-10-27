@@ -11,92 +11,90 @@ class _TruckCreateMainForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final Truck item = itemState!.model as Truck;
-    return CSMSpacingColumn(
-      spacing: 10,
-      children: <Widget>[
-        CSMSpacingRow(
-          spacing: 10,
-          children: <Widget>[
-            Expanded(
-              child: TWSInputText(
-                maxLength: 17,
-                isStrictLength: true,
-                label: 'VIN',
-                controller: TextEditingController(text: item.vin),
-                onChanged: (String text) {
-                  Truck model = itemState!.model as Truck;
-                  itemState!.updateModelRedrawing(
-                    model.clone(
-                      vin: text,
-                    ),
-                  );
-                },
-                isEnabled: enable,
-              ),
+    final Truck item = itemState!.model as Truck;
+    return CSMSpacingColumn(spacing: 10, children: <Widget>[
+      CSMSpacingRow(
+        spacing: 10,
+        children: <Widget>[
+          Expanded(
+            child: TWSInputText(
+              maxLength: 17,
+              isStrictLength: true,
+              label: 'VIN',
+              controller: TextEditingController(text: item.vin),
+              onChanged: (String text) {
+                Truck model = itemState!.model as Truck;
+                itemState!.updateModelRedrawing(
+                  model.clone(
+                    vin: text,
+                  ),
+                );
+              },
+              isEnabled: enable,
             ),
-            Expanded(
-              child: TWSInputText(
-                maxLength: 16,
-                label: 'Motor',
-                isStrictLength: true,
-                controller: TextEditingController(text: item.motor),
-                onChanged: (String text) {
-                  Truck model = itemState!.model as Truck;
-                  itemState!.updateModelRedrawing(
-                    model.clone(
-                      motor: text,
-                    ),
-                  );
-                },
-                isEnabled: enable,
-              ),
+          ),
+          Expanded(
+            child: TWSInputText(
+              maxLength: 16,
+              label: 'Motor',
+              isStrictLength: true,
+              controller: TextEditingController(text: item.motor),
+              onChanged: (String text) {
+                Truck model = itemState!.model as Truck;
+                itemState!.updateModelRedrawing(
+                  model.clone(
+                    motor: text,
+                  ),
+                );
+              },
+              isEnabled: enable,
             ),
-          ],
-        ),
-        CSMSpacingRow(
-          spacing: 10,
-          children: <Widget>[
-            Expanded(
-              child: TWSAutoCompleteField<Carrier>(
+          ),
+        ],
+      ),
+      CSMSpacingRow(
+        spacing: 10,
+        children: <Widget>[
+          Expanded(
+            child: TWSAutoCompleteField<Carrier>(
                 label: "Select a Carrier",
                 hint: "Select a carrier",
                 isOptional: true,
                 adapter: const _CarriersViewAdapter(),
                 initialValue: item.carrierNavigation,
-                onChanged: (Carrier? selectedItem){
+                onChanged: (Carrier? selectedItem) {
                   Truck model = itemState!.model as Truck;
-                  itemState!.updateModelRedrawing(
-                    model.clone(
-                      carrier: selectedItem?.id ?? 0,
-                      carrierNavigation: selectedItem,
-                    )
-                  );
-                }, 
-                displayValue: (Carrier? set){
-                  return set?.name ?? 'Not valid'; 
-                }
-              ),
-            ),
-            Expanded(
-              child: TWSInputText(
-                maxLength: 16,
-                label: 'Economic',
-                isStrictLength: false,
-                controller: TextEditingController(text: item.truckCommonNavigation?.economic),
-                onChanged: (String text) {
-                  Truck model = itemState!.model as Truck;
-                  itemState!.updateModelRedrawing(
-                    model.clone(
-                      truckCommonNavigation: model.truckCommonNavigation?.clone(economic:  text) ?? TruckCommon.a().clone(economic: text),
-                    ),
-                  );
+                  itemState!.updateModelRedrawing(model.clone(
+                    carrier: selectedItem?.id ?? 0,
+                    carrierNavigation: selectedItem,
+                  ));
                 },
-                isEnabled: enable,
-              ),
+                displayValue: (Carrier? set) {
+                  return set?.name ?? 'Not valid';
+                }),
+          ),
+          Expanded(
+            child: TWSInputText(
+              maxLength: 16,
+              label: 'Economic',
+              isStrictLength: false,
+              controller: TextEditingController(
+                  text: item.truckCommonNavigation?.economic),
+              onChanged: (String text) {
+                Truck model = itemState!.model as Truck;
+                itemState!.updateModelRedrawing(
+                  model.clone(
+                    truckCommonNavigation:
+                        model.truckCommonNavigation?.clone(economic: text) ??
+                            TruckCommon.a().clone(economic: text),
+                  ),
+                );
+              },
+              isEnabled: enable,
             ),
-          ],),
-       
-      ]);
+          ),
+        ],
+      ),
+    ]);
   }
 }

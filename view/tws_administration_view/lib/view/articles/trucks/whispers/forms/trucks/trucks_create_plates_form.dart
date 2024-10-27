@@ -3,8 +3,6 @@ part of '../../trucks_create_whisper.dart';
 class _TruckCreatePlateForm extends StatelessWidget {
   // Initial plate data.
   final Plate plate;
-  // enable flag.
-  final bool enable;
   // current plate index.
   final int index;
   // Inputs onChange methods.
@@ -20,14 +18,13 @@ class _TruckCreatePlateForm extends StatelessWidget {
     required this.stateOnChange,
     required this.expirationOnChange,
     required this.index,
-    this.enable = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return CSMSpacingColumn(
       mainSize: MainAxisSize.min,
-      spacing: 1,
+      spacing: 10,
       children: <Widget>[
         TWSSectionDivider(color: Colors.white, text: "Plate ${index + 1}"),
         CSMSpacingRow(
@@ -35,23 +32,13 @@ class _TruckCreatePlateForm extends StatelessWidget {
           spacing: 10,
           children: <Widget>[
             Expanded(
-              child: TWSInputText(
-                label: 'Identifier',
-                isStrictLength: false,
-                maxLength: 12,
-                controller: TextEditingController(text: plate.identifier),
-                onChanged: identifierOnChange,
-                isEnabled: enable,
-              ),
-            ),
-            Expanded(
               child: TWSAutoCompleteField<String>(
                 localList: _countryOptions,
-                initialValue: plate.state == "" ? null : plate.state,
+                initialValue: plate.country == "" ? null : plate.country,
                 displayValue:(String? item) => item ?? "Not valid data",
                 label: 'Country',
                 onChanged: countryOnChange
-              )
+              ),
             ),
             Expanded(
               child: TWSAutoCompleteField<String>(
@@ -60,10 +47,17 @@ class _TruckCreatePlateForm extends StatelessWidget {
                 displayValue: (String? query) => query ?? "---" ,
                 initialValue: plate.state == "" ? null : plate.state,
                 onChanged: stateOnChange,
-                isEnabled: enable
               ),
             ),
         ]),
+        TWSInputText(
+          width: double.maxFinite,
+          label: 'Identifier',
+          isStrictLength: false,
+          maxLength: 12,
+          controller: TextEditingController(text: plate.identifier),
+          onChanged: identifierOnChange,
+        ),
         CSMSpacingRow(
           spacing: 10,
           children: <Widget>[
@@ -74,7 +68,6 @@ class _TruckCreatePlateForm extends StatelessWidget {
                 label: 'Expiration Date',
                 controller: TextEditingController(text: plate.expiration?.dateOnlyString),
                 onChanged: expirationOnChange,
-                isEnabled: enable,
               ),
             ),
           ]

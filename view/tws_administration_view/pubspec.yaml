@@ -17,7 +17,13 @@ dependencies:
 
   csm_view:
     git:
-      url: https://github.com/RMotive/csm_foundation_view
+      url: https://github.com/RMotive/csm_view
+      ref: main
+
+  csm_client:
+    git:
+      url: https://github.com/RMotive/csm_client
+      ref: main
 
   tws_foundation_client:
     git:

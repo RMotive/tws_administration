@@ -20,7 +20,6 @@ class _TruckCreateManufacturer extends StatelessWidget {
       designer: (_, _TruckCreateMaintenanceState state){
         final Truck item = itemState!.model as Truck;
         final bool isEnable = itemState != null &&  (item.vehiculeModelNavigation?.id == 0 || item.vehiculeModelNavigation == null);
-        _maintenanceState = state.effect;
         
         return TWSCascadeSection(
           title: "Truck Model", 
@@ -95,7 +94,7 @@ class _TruckCreateManufacturer extends StatelessWidget {
                         itemState!.updateModelRedrawing(
                           model.clone(
                             vehiculeModelNavigation: model.vehiculeModelNavigation?.clone(name: text) ?? VehiculeModel.def().clone(name: text)
-                          )
+                          ),
                         );
                       },
                     ),

@@ -1,6 +1,5 @@
 part of '../trucks_create_whisper.dart';
 
-
 class _TruckExternalForm extends StatelessWidget {
   final TWSArticleCreatorItemState<Object>? itemState;
   final bool formDisabled;
@@ -44,12 +43,15 @@ class _TruckExternalForm extends StatelessWidget {
                 maxLength: 16,
                 label: 'Economic',
                 isStrictLength: false,
-                controller: TextEditingController(text: item.truckCommonNavigation?.economic),
+                controller: TextEditingController(
+                    text: item.truckCommonNavigation?.economic),
                 onChanged: (String text) {
                   TruckExternal model = itemState!.model as TruckExternal;
                   itemState!.updateModelRedrawing(
                     model.clone(
-                      truckCommonNavigation: model.truckCommonNavigation?.clone(economic: text) ?? TruckCommon.a().clone(economic: text),
+                      truckCommonNavigation:
+                          model.truckCommonNavigation?.clone(economic: text) ??
+                              TruckCommon.a().clone(economic: text),
                     ),
                   );
                 },
@@ -97,29 +99,25 @@ class _TruckExternalForm extends StatelessWidget {
             ),
           ],
         ),
-        CSMSpacingRow(
-          spacing: 10,
-          children: <Widget>[
-            Expanded(
-              child: TWSInputText(
-                maxLength: 100,
-                label: 'Carrier',
-                isStrictLength: false,
-                controller: TextEditingController(text: item.carrier),
-                onChanged: (String text) {
-                  TruckExternal model = itemState!.model as TruckExternal;
-                  itemState!.updateModelRedrawing(
-                    model.clone(
-                      carrier: text,
-                    ),
-                  );
-                },
-                isEnabled: formDisabled,
-              ),
+        CSMSpacingRow(spacing: 10, children: <Widget>[
+          Expanded(
+            child: TWSInputText(
+              maxLength: 100,
+              label: 'Carrier',
+              isStrictLength: false,
+              controller: TextEditingController(text: item.carrier),
+              onChanged: (String text) {
+                TruckExternal model = itemState!.model as TruckExternal;
+                itemState!.updateModelRedrawing(
+                  model.clone(
+                    carrier: text,
+                  ),
+                );
+              },
+              isEnabled: formDisabled,
             ),
-
-          ]
-        )
+          ),
+        ]),
       ],
     );
   }

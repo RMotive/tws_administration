@@ -1,7 +1,5 @@
 part of '../trucks_create_whisper.dart';
 
-
-
 class _TruckExternalStackItem extends StatelessWidget {
   final TruckExternal actualModel;
   final bool selected;
@@ -9,12 +7,12 @@ class _TruckExternalStackItem extends StatelessWidget {
   const _TruckExternalStackItem({
     required this.actualModel,
     required this.selected,
-    required this.valid
+    required this.valid,
   });
 
-  String displayInsurance(Insurance?  insurance){
+  String displayInsurance(Insurance? insurance) {
     String data = "---";
-    if(insurance != null && (insurance.country.isNotEmpty && insurance.policy.isNotEmpty)){
+    if (insurance != null && (insurance.country.isNotEmpty && insurance.policy.isNotEmpty)) {
       data = insurance.policy;
     }
     return data;
@@ -29,29 +27,29 @@ class _TruckExternalStackItem extends StatelessWidget {
         TwsArticleCreationStackItemProperty(
           label: 'VIN',
           minWidth: 150,
-          value: actualModel.vin ?? '---'
+          value: actualModel.vin ?? '---',
         ),
         TwsArticleCreationStackItemProperty(
           label: 'Economic',
           minWidth: 150,
-          value: actualModel.truckCommonNavigation?.economic ?? '---'
+          value: actualModel.truckCommonNavigation?.economic ?? '---',
         ),
         TwsArticleCreationStackItemProperty(
           label: 'Carrier',
           minWidth: 150,
-          value: actualModel.carrier
+          value: actualModel.carrier,
         ),
         TwsArticleCreationStackItemProperty(
           label: 'MX Plate',
           minWidth: 150,
-          value: actualModel.mxPlate ?? '---'
+          value: actualModel.mxPlate ?? '---',
         ),
         TwsArticleCreationStackItemProperty(
           label: 'USA Plate',
           minWidth: 150,
-          value: actualModel.usaPlate ?? '---'
-        ),  
-      ], 
+          value: actualModel.usaPlate ?? '---',
+        ),
+      ],
     );
   }
 }

@@ -1,8 +1,7 @@
 
-part of '../whispers/trucks_create_whisper.dart';
+part of '../../whispers/trucks_create_whisper.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
-final TrucksServiceBase _trucksService = Sources.administration.trucks;
 
 final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
   const _VehiculeModelViewAdapter();
@@ -47,7 +46,7 @@ final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
   Future<List<SetViewOut<Carrier>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     String auth = _sessionStorage.session!.token;
     // TODO Evaluate fetch pages method
-    final SetViewOptions<Carrier> options =  SetViewOptions<Carrier>(false, 100, page, null, orderings, <SetViewFilterNodeInterface<Carrier>>[]);
+    final SetViewOptions<Carrier> options =  SetViewOptions<Carrier>(false, 10, page, null, orderings, <SetViewFilterNodeInterface<Carrier>>[]);
     final MainResolver<SetViewOut<Carrier>> resolver = await Sources.administration.carriers.view(options, auth);
     final SetViewOut<Carrier> view = await resolver.act((JObject json) => SetViewOut<Carrier>.des(json, Carrier.des)).catchError(
           (Object x, StackTrace s) {
@@ -66,7 +65,7 @@ final class _ManufacturersViewAdapter implements TWSAutocompleteAdapter {
   Future<List<SetViewOut<Manufacturer>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     String auth = _sessionStorage.session!.token;
     // TODO Evaluate fetch pages method
-    final SetViewOptions<Manufacturer> options =  SetViewOptions<Manufacturer>(false, 100, page, null, orderings, <SetViewFilterNodeInterface<Manufacturer>>[]);
+    final SetViewOptions<Manufacturer> options =  SetViewOptions<Manufacturer>(false, 10, page, null, orderings, <SetViewFilterNodeInterface<Manufacturer>>[]);
     final MainResolver<SetViewOut<Manufacturer>> resolver = await Sources.administration.manufacturers.view(options, auth);
     final SetViewOut<Manufacturer> view = await resolver.act((JObject json) => SetViewOut<Manufacturer>.des(json, Manufacturer.des)).catchError(
           (Object x, StackTrace s) {

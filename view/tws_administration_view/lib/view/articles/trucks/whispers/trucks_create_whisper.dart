@@ -25,7 +25,7 @@ import 'package:tws_administration_view/view/widgets/tws_section.dart';
 import 'package:tws_administration_view/view/widgets/tws_section_divider.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
-part '../options/trucks_whisper_options_adapter.dart';
+part '../options/adapters/trucks_whisper_options_adapter.dart';
 part 'forms/trucks/trucks_create_insurance_form.dart';
 part 'forms/trucks/trucks_create_main_form.dart';
 part 'forms/trucks/trucks_create_maintenance_form.dart';
@@ -49,8 +49,6 @@ const List<String> _mxStateOptions = TWSAMessages.kMXStateCodes;
 final DateTime _firstDate = DateTime(2000);
 final DateTime _lastlDate = DateTime(2040);
 final DateTime _today = DateTime.now();
-late void Function() _maintenanceState;
-late void Function() _situationState;
 late void Function() _formState;
 
 

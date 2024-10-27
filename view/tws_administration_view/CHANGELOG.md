@@ -11,6 +11,7 @@
         * [TWSDatepickerField]
         * [TWSInputText]
         * [TWSSectionDivider]
+        * [TWSImageViewer]
     3. Removed unnecesary whispers views:
         * Manufacturers
         * Situations
@@ -25,6 +26,10 @@
     11. [Truck] update implementation.
     12. Added custom dialogs for [Truck] create and update forms.
     13. [TWSAutocompleteField] Fix: change local lists on rebuild component not update the content.
+    14. Added [TruckExternal] table to Trucks Article. Now you can switch between Truck view table or External view table in the same article.
+    15. Added [Yardlog] option page in main menu.
+    16. Added [Yardlog] view table and trucks inventory whispers.
+    17. Plates creation option changed to a [TWSIncrementalList] control.
 
 - Dependencies upgrade:
 

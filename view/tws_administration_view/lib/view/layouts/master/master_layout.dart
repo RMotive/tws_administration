@@ -53,6 +53,11 @@ class MasterLayout extends CSMLayoutBase {
         label: 'Business',
         icon: Icons.emoji_transportation,
         route: TWSARoutes.businessPage,
+      ),
+      _MasterLayoutMenuButtonOptions(
+        label: 'Yardlogs',
+        icon: Icons.list,
+        route: TWSARoutes.yardlogPage,
       )
     ];
 

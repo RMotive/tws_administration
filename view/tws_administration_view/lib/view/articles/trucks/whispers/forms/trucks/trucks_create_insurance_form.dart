@@ -14,7 +14,7 @@ class _TruckCreateInsurance extends StatelessWidget {
     return TWSSection(
       isOptional: true,
       padding: const EdgeInsets.symmetric(vertical: 10),
-      title: "Insurance*", 
+      title: "Insurance", 
       content: CSMSpacingColumn(
         spacing: 10,
         children: <Widget>[
@@ -42,25 +42,6 @@ class _TruckCreateInsurance extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: TWSDatepicker(
-                  firstDate: _firstDate,
-                  lastDate: _lastlDate,
-                  label: 'Expiration',
-                  controller: TextEditingController(text: item.insuranceNavigation?.expiration.dateOnlyString),
-                  onChanged: (String text) {
-                    Truck model = itemState!.model as Truck;
-                    DateTime date = DateTime.tryParse(text) ?? DateTime(0);
-                    itemState!.updateModelRedrawing(
-                      model.clone(
-                        insuranceNavigation: model.insuranceNavigation?.clone(expiration: date)
-                        ?? Insurance.a().clone(expiration: date)
-                      ),
-                    );
-                  },
-                  isEnabled: enable,
-                ),
-              ),
-              Expanded(
                 child: TWSAutoCompleteField<String>(
                   initialValue: item.insuranceNavigation?.country,
                   isOptional: true,
@@ -80,6 +61,24 @@ class _TruckCreateInsurance extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          TWSDatepicker(
+            width: double.maxFinite,
+            firstDate: _firstDate,
+            lastDate: _lastlDate,
+            label: 'Expiration',
+            controller: TextEditingController(text: item.insuranceNavigation?.expiration.dateOnlyString),
+            onChanged: (String text) {
+              Truck model = itemState!.model as Truck;
+              DateTime date = DateTime.tryParse(text) ?? DateTime(0);
+              itemState!.updateModelRedrawing(
+                model.clone(
+                  insuranceNavigation: model.insuranceNavigation?.clone(expiration: date)
+                  ?? Insurance.a().clone(expiration: date)
+                ),
+              );
+            },
+            isEnabled: enable,
           ),
         ],
       ),

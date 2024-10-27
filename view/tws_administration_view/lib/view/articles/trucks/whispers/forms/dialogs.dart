@@ -1,67 +1,5 @@
 part of '../trucks_create_whisper.dart';
 
-// Future<void> _preEvaluationDialog(BuildContext context, bool entrySelected, bool damagedSelected){
-//   return showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return TWSConfirmationDialog(
-//         showCancelButton: false,
-//         accept: 'Aceptar',
-//         title: 'Selecciones faltantes',
-//         statement: Text.rich(
-//           TextSpan(
-//             text: 'Debe seleccionar alguna opción de los siguientes campos: \n\n',
-//             children: <InlineSpan>[
-
-//              !entrySelected? const TextSpan(
-//                 text: "* Seleccione el tipo de formulario (entrada o salida).\n",
-//                 style: TextStyle(fontWeight: FontWeight.w600),
-//               ) :const TextSpan(text: ''),
-
-//               !damagedSelected? const TextSpan(
-//                 text: "* Seleccione si hubo algun [Tipo de daño].\n",
-//                 style: TextStyle(fontWeight: FontWeight.w600),
-//               ) :const TextSpan(text: ''),
-//             ],
-//           ),
-//         ),
-//         onAccept: () {
-//           Navigator.of(context).pop();
-//         },
-//       );
-//     },
-//   );
-// }
-
-// Future<void> _evaluationDialog(BuildContext context, List<CSMSetValidationResult> errors){
-//   return showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return TWSConfirmationDialog(
-//         showCancelButton: false,
-//         accept: 'Aceptar',
-//         title: 'Errores en el registro',
-//         statement: Text.rich(
-//           TextSpan(
-//             text: 'Verifique los siguientes problemas:\n\n',
-//             children: <InlineSpan>[
-//               for (int i = 1; i < errors.length + 1; i++)
-//                 TextSpan(
-//                   text: "$i - ${errors[i - 1].property}: ${errors[i - 1].reason}\n",
-//                   style: const TextStyle(fontWeight: FontWeight.w600),
-//                 ),
-//               const TextSpan(text: ''),
-//             ],
-//           ),
-//         ),
-//         onAccept: () {
-//           Navigator.of(context).pop();
-//         },
-//       );
-//     },
-//   );
-// }
-
 Future<void> _exceptionDialog(BuildContext ctx, String title){
   return showDialog(
     context: ctx,
@@ -121,7 +59,7 @@ Future<void> _failureDialog(BuildContext ctx, String error, String title, List<O
   );
 }
 
-Future<void> _conectionDialog(BuildContext ctx, String title){
+Future<void> _conectionDialog(BuildContext ctx, String title) {
   return showDialog(
     context: ctx,
     builder: (BuildContext context) {
