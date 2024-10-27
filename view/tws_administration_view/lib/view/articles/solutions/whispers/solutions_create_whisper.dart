@@ -39,7 +39,7 @@ final class SolutionsCreateWhisper extends CSMPageBase {
           MainResolver<SetBatchOut<Solution>> resolver = await _solutionsService.create(records, currentToken);
           List<TWSArticleCreatorFeedback> feedbacks = <TWSArticleCreatorFeedback>[];
           resolver.resolve(
-            decoder:(JObject json) => SetBatchOut<Solution>.des(json, Solution.des),
+            decoder: (JObject json) => SetBatchOut<Solution>.des(json, Solution.des),
             onConnectionFailure: () {},
             onException: (Object exception, StackTrace trace) {},
             onFailure: (FailureFrame failure, int status) {},

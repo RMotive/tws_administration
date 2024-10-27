@@ -1,4 +1,3 @@
-
 import 'package:csm_view/csm_view.dart';
 
 /// Stores all the route options objects for use the [RouteDriver] and
