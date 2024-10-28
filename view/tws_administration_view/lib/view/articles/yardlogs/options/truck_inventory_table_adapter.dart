@@ -1,0 +1,100 @@
+part of '../truck_inventory_article.dart';
+
+final SessionStorage _sessionStorage = SessionStorage.i;
+
+
+final class _TableAdapter implements TWSArticleTableAdapter<TruckInventory> {
+  final _InventoryPageState state;
+
+  const _TableAdapter(this.state);
+
+  String getPlates(TruckInventory item, bool isMXplate){
+    if(isMXplate) return item.truckNavigation?.plates.where((Plate i) => i.country == TWSAMessages.kCountryList[1]).lastOrNull?.identifier ?? item.truckExternalNavigation?.mxPlate ?? '---';
+    return item.truckNavigation?.plates.where((Plate i) => i.country == TWSAMessages.kCountryList[0]).lastOrNull?.identifier ?? item.truckExternalNavigation?.usaPlate ?? '---';
+  }
+
+  @override
+  Future<SetViewOut<TruckInventory>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+    final SetViewOptions<TruckInventory> options = SetViewOptions<TruckInventory>(false, range, page, null, orderings, state.filters);
+    String auth = _sessionStorage.session!.token;
+    MainResolver<SetViewOut<TruckInventory>> resolver = await Sources.administration.trucksInventories.view(options, auth);
+
+    SetViewOut<TruckInventory> view = await resolver.act((Map<String, dynamic> json) => SetViewOut<TruckInventory>.des(json, TruckInventory.des)).catchError(
+      (Object x, StackTrace s) {
+        const CSMAdvisor('yard-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
+        throw x;
+      },
+    );
+    return view;
+  }
+  
+  @override
+  TWSArticleTableEditor? composeEditor(TruckInventory set, Function closeReinvoke, BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget composeViewer(TruckInventory set, BuildContext context) {
+    return SizedBox.expand(
+      child: CSMSpacingColumn(
+        spacing: 12,
+        crossAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TWSPropertyViewer(
+            label: 'Entry',
+            value: set.entryDate.toLocal().toString(),
+          ),
+          TWSPropertyViewer(
+            label: 'Economic',
+            value: set.truckNavigation?.truckCommonNavigation?.economic ?? set.truckExternalNavigation?.truckCommonNavigation?.economic ?? "---",
+          ),
+          TWSPropertyViewer(
+            label: 'MX Plate',
+            value: getPlates(set, true),
+          ),
+          TWSPropertyViewer(
+            label: 'USA PLate',
+            value: getPlates(set, false),
+          ),
+          TWSPropertyViewer(
+            label: 'Carrier',
+            value: '${set.sectionNavigation?.name} - ${set.sectionNavigation?.locationNavigation?.name}',
+          ),
+          TWSPropertyViewer(
+            label: 'Section',
+            value: set.sectionNavigation?.name ?? '---',
+          ),
+          TWSPropertyViewer(
+            label: 'Ownership',
+            value: set.truck != null? "Own" : "External",
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void onRemoveRequest(TruckInventory set, BuildContext context) {}
+}
+
+final class _SectionViewAdapter implements TWSAutocompleteAdapter {
+  const _SectionViewAdapter();
+
+  @override
+  Future<List<SetViewOut<dynamic>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+    List<SetViewOut<dynamic>> rawViews = <SetViewOut<dynamic>>[];
+    String auth = _sessionStorage.session!.token;
+
+    final SetViewOptions<Section> options = SetViewOptions<Section>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Section>>[]);
+    final MainResolver<SetViewOut<Section>> resolver = await Sources.administration.sections.view(options, auth);
+    final SetViewOut<Section> view = await resolver.act((Map<String, dynamic> json) => SetViewOut<Section>.des(json, Section.des)).catchError(
+      (Object x, StackTrace s) {
+        const CSMAdvisor('trailerExternal-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
+        throw x;
+      },
+    );
+    rawViews.add(view);
+    return rawViews;
+  }
+}
+

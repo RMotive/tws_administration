@@ -1,8 +1,11 @@
 part of 'tws_article_creator.dart';
 
 final class _TWSArticleCreationState<TModel> extends CSMStateBase {
+  /// List that stores all sets states added to the form.
   late List<TWSArticleCreatorItemState<TModel>> states;
+  /// Facotory to generate models with defaults properties.
   late TModel Function() modelFactory;
+  /// Currently selected item in form list.
   int current = 0;
 
   _TWSArticleCreationState(this.modelFactory) {
@@ -12,7 +15,7 @@ final class _TWSArticleCreationState<TModel> extends CSMStateBase {
       TWSArticleCreatorItemState<TModel>(model),
     ];
   }
-
+  /// Remove method.
   void removeItem(int index) {
     states.removeAt(index);
 
@@ -32,5 +35,5 @@ final class _TWSArticleCreationState<TModel> extends CSMStateBase {
   void changeSelection(int index) {
     current = index;
     effect();
-  }
+  } 
 }

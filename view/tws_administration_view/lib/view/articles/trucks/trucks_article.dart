@@ -1,5 +1,8 @@
-import 'package:csm_view/csm_view.dart';
+import 'package:csm_client/csm_client.dart';
+import 'package:csm_view/csm_view.dart' hide JObject;
 import 'package:flutter/material.dart';
+import 'package:tws_administration_view/core/constants/twsa_common_displays.dart';
+import 'package:tws_administration_view/core/extension/datetime.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
@@ -10,9 +13,22 @@ import 'package:tws_administration_view/view/widgets/tws_article_table/tws_artic
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_adapter.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_agent.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_field_options.dart';
+import 'package:tws_administration_view/view/widgets/tws_autocomplete_field/tws_autocomplete_adapter.dart';
+import 'package:tws_administration_view/view/widgets/tws_autocomplete_field/tws_autocomplete_field.dart';
+import 'package:tws_administration_view/view/widgets/tws_button_flat.dart';
+import 'package:tws_administration_view/view/widgets/tws_confirmation_dialog.dart';
+import 'package:tws_administration_view/view/widgets/tws_datepicker_field.dart';
+import 'package:tws_administration_view/view/widgets/tws_incremental_list.dart';
+import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
+import 'package:tws_administration_view/view/widgets/tws_property_viewer.dart';
+import 'package:tws_administration_view/view/widgets/tws_section.dart';
+import 'package:tws_administration_view/view/widgets/tws_section_divider.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
-
-part 'options/trucks_article_table_adapter.dart';
+part 'options/adapters/trucks_article_table_adapter.dart';
+part 'options/adapters/truck_external_article_table_adapter.dart';
+part 'options/truck_article_tables_assembly.dart';
+part 'options/truck_external_table.dart';
+part 'options/truck_table.dart';
 
 class TrucksArticle extends CSMPageBase {
   static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
@@ -23,66 +39,13 @@ class TrucksArticle extends CSMPageBase {
     return BusinessFrame(
       currentRoute: TWSARoutes.trucksArticle,
       actionsOptions: ActionRibbonOptions(
+        refresher: tableAgent.refresh,
         maintenanceGroupConfig: MaintenanceGroupOptions(
           onCreate: () => CSMRouter.i.drive(TWSARoutes.trucksCreateWhisper),
         ),
       ),
-      article: TWSArticleTable<Truck>(
-        adapter: const _TableAdapter(),
-        fields: <TWSArticleTableFieldOptions<Truck>>[
-          TWSArticleTableFieldOptions<Truck>(
-            'VIN',
-            (Truck item, int index, BuildContext ctx) => item.vin,
-          ),
-          TWSArticleTableFieldOptions<Truck>(
-            'Motor',
-            (Truck item, int index, BuildContext ctx) => item.motor ?? '---',
-            true,
-          ),
-          TWSArticleTableFieldOptions<Truck>(
-            'SCT Number',
-            (Truck item, int index, BuildContext ctx) => item.sctNavigation?.number ?? '---',
-            true,
-          ),
-          TWSArticleTableFieldOptions<Truck>(
-            'Trimestral Maintenance',
-            (Truck item, int index, BuildContext ctx) => item.maintenanceNavigation?.trimestral.toString() ?? '---',
-            true,
-          ),
-          TWSArticleTableFieldOptions<Truck>(
-            'Anual Maintenance',
-            (Truck item, int index, BuildContext ctx) => item.maintenanceNavigation?.anual.toString() ?? '---',
-            true,
-          ),
-          TWSArticleTableFieldOptions<Truck>(
-            'Status',
-            (Truck item, int index, BuildContext ctx) => item.statusNavigation?.name.toString() ?? '---',
-            true,
-          ),
-          TWSArticleTableFieldOptions<Truck>(
-            'Insurance',
-            (Truck item, int index, BuildContext ctx) => item.insuranceNavigation?.policy ?? '---',
-            true,
-          ),
-          TWSArticleTableFieldOptions<Truck>(
-            'Plates',
-            (Truck item, int index, BuildContext ctx) {
-              String plates = '---';
-              if (item.plates.isNotEmpty) {
-                plates = '';
-                for (int cont = 0; cont < item.plates.length; cont++) {
-                  plates += item.plates[cont].identifier;
-                  if (item.plates.length > cont) plates += '\n';
-                }
-              }
-              return plates;
-            },
-            true,
-          ),
-        ],
-        page: 1,
-        size: 25,
-        sizes: const <int>[25, 50, 75, 100],
+      article: _TruckArticleTablesAssembly(
+        agent: tableAgent,
       ),
     );
   }

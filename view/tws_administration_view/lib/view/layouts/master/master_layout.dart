@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:csm_view/csm_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +50,11 @@ class MasterLayout extends CSMLayoutBase {
         label: 'Business',
         icon: Icons.emoji_transportation,
         route: TWSARoutes.businessPage,
+      ),
+      _MasterLayoutMenuButtonOptions(
+        label: 'Yardlogs',
+        icon: Icons.list,
+        route: TWSARoutes.yardlogPage,
       )
     ];
 

@@ -18,12 +18,19 @@ dependencies:
   csm_view:
     git:
       url: https://github.com/RMotive/csm_view
+      ref: main
+
+  csm_client:
+    git:
+      url: https://github.com/RMotive/csm_client
+      ref: main
 
   tws_foundation_client:
     git:
       url: https://github.com/RMotive/tws_foundation
       path: client/tws_foundation_client
       ref: main
+
 
 dev_dependencies:
   flutter_test:

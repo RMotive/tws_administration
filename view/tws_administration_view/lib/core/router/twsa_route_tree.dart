@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_administration_view/view/articles/features/features_article.dart';
 import 'package:tws_administration_view/view/articles/features/whispers/create/features_create_whisper.dart';
-import 'package:tws_administration_view/view/articles/manufacturers/manufacturers_article.dart';
-import 'package:tws_administration_view/view/articles/manufacturers/whispers/manufactueres_create_whisper.dart';
-import 'package:tws_administration_view/view/articles/situations/situations_article.dart';
 import 'package:tws_administration_view/view/articles/solutions/solutions_article.dart';
 import 'package:tws_administration_view/view/articles/solutions/whispers/solutions_create_whisper.dart';
 import 'package:tws_administration_view/view/articles/trucks/trucks_article.dart';
 import 'package:tws_administration_view/view/articles/trucks/whispers/trucks_create_whisper.dart';
+import 'package:tws_administration_view/view/articles/yardlogs/truck_inventory_article.dart';
 import 'package:tws_administration_view/view/layouts/master/master_layout.dart';
 import 'package:tws_administration_view/view/pages/about/about_page.dart';
 import 'package:tws_administration_view/view/pages/business/business_page.dart';
@@ -18,6 +16,7 @@ import 'package:tws_administration_view/view/pages/overview/overview_page.dart';
 import 'package:tws_administration_view/view/pages/profile/profile_page.dart';
 import 'package:tws_administration_view/view/pages/security/security_page.dart';
 import 'package:tws_administration_view/view/pages/settings/settings_page.dart';
+import 'package:tws_administration_view/view/pages/yardlog/yardlog_page.dart';
 
 typedef Routes = TWSARoutes;
 
@@ -25,7 +24,7 @@ typedef Routes = TWSARoutes;
 class TWSARouteTree extends CSMRouterTreeBase {
   TWSARouteTree()
       : super(
-          devRoute: Routes.solutionsArticle,
+          devRoute: Routes.trucksArticle,
           redirect: (_, __) {
             return null;
           },
@@ -130,26 +129,27 @@ class TWSARouteTree extends CSMRouterTreeBase {
                         ),
                       ],
                     ),
-
-                    // --> [manufacturers]
-                    CSMRouteNode(
-                      Routes.manufacturersArticle,
-                      pageBuild: (_, __) => const ManufacturersArticle(),
-                      routes: <CSMRouteBase>[
-                        // -> [Create]
-                        CSMRouteWhisper<Object>(
-                          Routes.manufacturersCreateWhisper,
-                          whisperOptions: const CSMRouteWhisperOptions(),
-                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const ManufacturersCreateWhisper(),
-                        ),
-                      ],
-                    ),
-                    // --> [Situations]
-                    CSMRouteNode(
-                      Routes.situationsArticle,
-                      pageBuild: (_, __) => const SituationsArticle(),
-                    ),
                   ],
+                ),
+                // --> [Yardlog page]
+                CSMRouteNode(
+                  Routes.yardlogPage,
+                  pageBuild: (_, CSMRouterOutput routerOutput) {
+                    return const YardlogPage(
+                      currentRoute: Routes.yardlogPage,
+                    );
+                  },
+                  routes: <CSMRouteBase>[
+                     // -> [Trucks inventory]
+                    CSMRouteNode(
+                      Routes.yardlogsTruckInventoryArticle,
+                      pageBuild: (_, CSMRouterOutput routerOutput) {
+                        return const TruckInventoryArticle(
+                          currentRoute: Routes.yardlogPage,
+                        );
+                      },
+                    ),
+                  ]
                 ),
               ],
             ),

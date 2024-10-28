@@ -4,11 +4,18 @@ final class _TWSArticleTableDetails<TArticle extends CSMEncodeInterface> extends
   final TWSArticleTableAdapter<TArticle> adapter;
   final VoidCallback closeAction;
   final TArticle record;
+  final String viewerTitle;
+  final bool editable;
+  final bool removable;
+
 
   const _TWSArticleTableDetails({
     required this.closeAction,
     required this.adapter,
     required this.record,
+    required this.editable,
+    required this.removable,
+    required this.viewerTitle
   });
 
   void _closeDetails(_TWSArticleTableDetailsState state) {
@@ -45,6 +52,16 @@ final class _TWSArticleTableDetails<TArticle extends CSMEncodeInterface> extends
                     spacing: 8,
                     mainAlignment: MainAxisAlignment.end,
                     children: <Widget>[
+                      // --> Title
+                      Expanded(
+                        child: Text(
+                          viewerTitle,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontStyle: FontStyle.italic
+                          ),  
+                        )
+                      ),
                       // --> Close details action
                       _TWSArticleTableDetailsAction(
                         hint: 'Close record details',
@@ -52,13 +69,16 @@ final class _TWSArticleTableDetails<TArticle extends CSMEncodeInterface> extends
                         action: closeAction,
                       ),
                       // --> Remove action.
+                      if(removable)
                       _TWSArticleTableDetailsAction(
                         hint: 'Remove record',
                         icon: Icons.remove,
                         fore: tCritical.main.background,
                         action: () => adapter.onRemoveRequest(record, context),
                       ),
-                      if (editionForm != null)
+                      
+                      if(editable)
+                      if(editionForm != null)
                         _TWSArticleTableDetailsAction(
                           hint: 'Edit record',
                           icon: Icons.edit,
