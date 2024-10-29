@@ -5,7 +5,7 @@ import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
 import 'package:tws_administration_view/view/frames/article/action_ribbon_options.dart';
 import 'package:tws_administration_view/view/frames/article/actions/maintenance_group_options.dart';
-import 'package:tws_administration_view/view/frames/security/security_frame.dart';
+import 'package:tws_administration_view/view/pages/security/security_frame.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_adapter.dart';
 import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_agent.dart';

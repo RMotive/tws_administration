@@ -2,14 +2,14 @@ part of '../../trucks_article.dart';
 
 
 /// [_ExternalTableAdapter] class stores consumes the data and all the compose components for the table [TruckExternal] table.
-final class _ExternalTableAdapter implements TWSArticleTableAdapter<TruckExternal> {
+final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> {
   const _ExternalTableAdapter();
 
   @override
   Future<SetViewOut<TruckExternal>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     final SetViewOptions<TruckExternal> options = SetViewOptions<TruckExternal>(false, range, page, null, orderings, <SetViewFilterNodeInterface<TruckExternal>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<SetViewOut<TruckExternal>> resolver = await Sources.administration.trucksExternals.view(options, auth);
+    MainResolver<SetViewOut<TruckExternal>> resolver = await Sources.foundationSource.trucksExternals.view(options, auth);
 
     SetViewOut<TruckExternal> view = await resolver.act((JObject json) => SetViewOut<TruckExternal>.des(json, TruckExternal.des)).catchError(
       (Object x, StackTrace s) {
@@ -51,7 +51,7 @@ final class _ExternalTableAdapter implements TWSArticleTableAdapter<TruckExterna
                 List<CSMSetValidationResult> evaluation = set.evaluate();
                 if(evaluation.isEmpty){
                   final String auth = _sessionStorage.getTokenStrict();
-                  MainResolver<RecordUpdateOut<TruckExternal>> resolverUpdateOut = await Sources.administration.trucksExternals.update(set, auth);
+                  MainResolver<RecordUpdateOut<TruckExternal>> resolverUpdateOut = await Sources.foundationSource.trucksExternals.update(set, auth);
                   try {
                     resolverUpdateOut.act((JObject json) => RecordUpdateOut<TruckExternal>.des(json, TruckExternal.des)).then(
                       (RecordUpdateOut<TruckExternal> updateOut) {
@@ -189,7 +189,4 @@ final class _ExternalTableAdapter implements TWSArticleTableAdapter<TruckExterna
       ),
     );
   }
-
-  @override
-  void onRemoveRequest(TruckExternal set, BuildContext context) { }
 }

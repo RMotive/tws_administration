@@ -2,14 +2,14 @@ part of '../yardlog_page.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _TableAdapter implements TWSArticleTableAdapter<YardLog> {
+final class _TableAdapter extends TWSArticleTableAdapter<YardLog> {
   const _TableAdapter();
 
   @override
   Future<SetViewOut<YardLog>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     final SetViewOptions<YardLog> options = SetViewOptions<YardLog>(false, range, page, null, orderings, <SetViewFilterNodeInterface<YardLog>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<SetViewOut<YardLog>> resolver = await Sources.administration.yardLogs.view(options, auth);
+    MainResolver<SetViewOut<YardLog>> resolver = await Sources.foundationSource.yardLogs.view(options, auth);
 
     SetViewOut<YardLog> view = await resolver.act((Map<String, dynamic> json) => SetViewOut<YardLog>.des(json, YardLog.des)).catchError(
       (Object x, StackTrace s) {
@@ -168,11 +168,6 @@ final class _TableAdapter implements TWSArticleTableAdapter<YardLog> {
         ),
       ),
     );
-  }
-  
-  @override
-  void onRemoveRequest(YardLog set, BuildContext context) {
-
   }
 }
 

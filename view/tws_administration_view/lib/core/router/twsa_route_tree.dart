@@ -11,6 +11,8 @@ import 'package:tws_administration_view/view/articles/yardlogs/truck_inventory_a
 import 'package:tws_administration_view/view/layouts/master/master_layout.dart';
 import 'package:tws_administration_view/view/pages/about/about_page.dart';
 import 'package:tws_administration_view/view/pages/business/business_page.dart';
+import 'package:tws_administration_view/view/pages/human_resources/articles/contacts/contacts_article.dart';
+import 'package:tws_administration_view/view/pages/human_resources/human_resources_page.dart';
 import 'package:tws_administration_view/view/pages/login/login_page.dart';
 import 'package:tws_administration_view/view/pages/overview/overview_page.dart';
 import 'package:tws_administration_view/view/pages/profile/profile_page.dart';
@@ -20,11 +22,10 @@ import 'package:tws_administration_view/view/pages/yardlog/yardlog_page.dart';
 
 typedef Routes = TWSARoutes;
 
-
 class TWSARouteTree extends CSMRouterTreeBase {
   TWSARouteTree()
       : super(
-          devRoute: Routes.trucksArticle,
+          devRoute: Routes.contactsArticle,
           redirect: (_, __) {
             return null;
           },
@@ -52,17 +53,17 @@ class TWSARouteTree extends CSMRouterTreeBase {
                   pageBuild: (_, __) => const OverviewPage(),
                 ),
                 // --> [About page]
-                 CSMRouteNode(
+                CSMRouteNode(
                   Routes.about,
                   pageBuild: (_, __) => const AboutPage(),
                 ),
                 // --> [Profile user page]
-                 CSMRouteNode(
+                CSMRouteNode(
                   Routes.profile,
                   pageBuild: (_, __) => const ProfilePage(),
                 ),
                 // --> [User settings page]
-                 CSMRouteNode(
+                CSMRouteNode(
                   Routes.settings,
                   pageBuild: (_, __) => const SettingsPage(),
                 ),
@@ -106,7 +107,6 @@ class TWSARouteTree extends CSMRouterTreeBase {
                     ),
                   ],
                 ),
-
                 // --> [Business Page]
                 CSMRouteNode(
                   Routes.businessPage,
@@ -131,16 +131,29 @@ class TWSARouteTree extends CSMRouterTreeBase {
                     ),
                   ],
                 ),
+                // --> [Human Resources Page]
+                CSMRouteNode(
+                  Routes.humanResourcesPage,
+                  pageBuild: (_, __) {
+                    return const HumanResourcesPage();
+                  },
+                  routes: <CSMRouteBase>[
+                    CSMRouteNode(
+                      TWSARoutes.contactsArticle,
+                      pageBuild: (BuildContext ctx, CSMRouterOutput output) => const ContactsArticle(),
+                    ),
+                  ],
+                ),
                 // --> [Yardlog page]
                 CSMRouteNode(
-                  Routes.yardlogPage,
+                  Routes.yardlogPage, 
                   pageBuild: (_, CSMRouterOutput routerOutput) {
                     return const YardlogPage(
                       currentRoute: Routes.yardlogPage,
                     );
-                  },
+                  }, 
                   routes: <CSMRouteBase>[
-                     // -> [Trucks inventory]
+                    // -> [Trucks inventory]
                     CSMRouteNode(
                       Routes.yardlogsTruckInventoryArticle,
                       pageBuild: (_, CSMRouterOutput routerOutput) {
@@ -149,7 +162,7 @@ class TWSARouteTree extends CSMRouterTreeBase {
                         );
                       },
                     ),
-                  ]
+                  ],
                 ),
               ],
             ),

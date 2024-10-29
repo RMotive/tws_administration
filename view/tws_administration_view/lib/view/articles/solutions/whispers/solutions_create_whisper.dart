@@ -13,7 +13,7 @@ import 'package:tws_administration_view/view/widgets/tws_article_creation/tws_ar
 import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
-final SolutionsServiceBase _solutionsService = Sources.administration.solutions;
+final SolutionsServiceBase _solutionsService = Sources.foundationSource.solutions;
 final SessionStorage _sessionStorage = SessionStorage.i;
 
 final class SolutionsCreateWhisper extends CSMPageBase {

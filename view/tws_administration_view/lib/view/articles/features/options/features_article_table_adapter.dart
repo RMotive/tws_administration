@@ -1,6 +1,6 @@
 part of '../features_article.dart';
 
-final class _TableAdapter implements TWSArticleTableAdapter<Feature> {
+final class _TableAdapter extends TWSArticleTableAdapter<Feature> {
   const _TableAdapter();
   
   @override
@@ -17,7 +17,4 @@ final class _TableAdapter implements TWSArticleTableAdapter<Feature> {
   Widget composeViewer(Feature set, BuildContext context) {
     throw UnimplementedError();
   }
-
-  @override
-  void onRemoveRequest(Feature set, BuildContext context) {}
 }

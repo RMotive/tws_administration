@@ -3,7 +3,7 @@ part of '../truck_inventory_article.dart';
 final SessionStorage _sessionStorage = SessionStorage.i;
 
 
-final class _TableAdapter implements TWSArticleTableAdapter<TruckInventory> {
+final class _TableAdapter extends TWSArticleTableAdapter<TruckInventory> {
   final _InventoryPageState state;
 
   const _TableAdapter(this.state);
@@ -17,7 +17,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<TruckInventory> {
   Future<SetViewOut<TruckInventory>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     final SetViewOptions<TruckInventory> options = SetViewOptions<TruckInventory>(false, range, page, null, orderings, state.filters);
     String auth = _sessionStorage.session!.token;
-    MainResolver<SetViewOut<TruckInventory>> resolver = await Sources.administration.trucksInventories.view(options, auth);
+    MainResolver<SetViewOut<TruckInventory>> resolver = await Sources.foundationSource.trucksInventories.view(options, auth);
 
     SetViewOut<TruckInventory> view = await resolver.act((Map<String, dynamic> json) => SetViewOut<TruckInventory>.des(json, TruckInventory.des)).catchError(
       (Object x, StackTrace s) {
@@ -72,9 +72,6 @@ final class _TableAdapter implements TWSArticleTableAdapter<TruckInventory> {
       ),
     );
   }
-
-  @override
-  void onRemoveRequest(TruckInventory set, BuildContext context) {}
 }
 
 final class _SectionViewAdapter implements TWSAutocompleteAdapter {
@@ -86,7 +83,7 @@ final class _SectionViewAdapter implements TWSAutocompleteAdapter {
     String auth = _sessionStorage.session!.token;
 
     final SetViewOptions<Section> options = SetViewOptions<Section>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Section>>[]);
-    final MainResolver<SetViewOut<Section>> resolver = await Sources.administration.sections.view(options, auth);
+    final MainResolver<SetViewOut<Section>> resolver = await Sources.foundationSource.sections.view(options, auth);
     final SetViewOut<Section> view = await resolver.act((Map<String, dynamic> json) => SetViewOut<Section>.des(json, Section.des)).catchError(
       (Object x, StackTrace s) {
         const CSMAdvisor('trailerExternal-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);

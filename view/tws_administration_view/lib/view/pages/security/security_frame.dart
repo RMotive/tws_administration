@@ -5,7 +5,7 @@ import 'package:tws_administration_view/view/frames/article/action_ribbon_option
 import 'package:tws_administration_view/view/frames/article/article_frame.dart';
 import 'package:tws_administration_view/view/frames/article/article_options.dart';
 
-class SecurityFrame extends StatelessWidget {
+final class SecurityFrame extends StatelessWidget {
   final Widget? article;
   final CSMRouteOptions currentRoute;
   final ActionRibbonOptions? actionsOptions;

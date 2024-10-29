@@ -1,16 +1,16 @@
 part of '../solutions_article.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
-final SolutionsServiceBase _solutionsService = Sources.administration.solutions;
+final SolutionsServiceBase _solutionsService = Sources.foundationSource.solutions;
 
-final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
+final class _TableAdapter extends TWSArticleTableAdapter<Solution> {
   const _TableAdapter();
 
   @override
   Future<SetViewOut<Solution>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     final SetViewOptions<Solution> options = SetViewOptions<Solution>(false, range, page,null, orderings, <SetViewFilterNodeInterface<Solution>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<SetViewOut<Solution>> resolver = await Sources.administration.solutions.view(options, auth);
+    MainResolver<SetViewOut<Solution>> resolver = await Sources.foundationSource.solutions.view(options, auth);
 
     SetViewOut<Solution> view = await resolver.act((JObject json) => SetViewOut<Solution>.des(json, Solution.des)).catchError(
       (Object x, StackTrace s) {
@@ -141,7 +141,4 @@ final class _TableAdapter implements TWSArticleTableAdapter<Solution> {
       ),
     );
   }
-
-  @override
-  void onRemoveRequest(Solution set, BuildContext context) {}
 }

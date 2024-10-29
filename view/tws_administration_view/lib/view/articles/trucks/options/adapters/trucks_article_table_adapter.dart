@@ -14,7 +14,7 @@ final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
   Future<List<SetViewOut<VehiculeModel>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     String auth = _sessionStorage.session!.token;
     final SetViewOptions<VehiculeModel> options = SetViewOptions<VehiculeModel>(false,10, page, null, orderings, <SetViewFilterNodeInterface<VehiculeModel>>[]);
-    final MainResolver<SetViewOut<VehiculeModel>> resolver = await Sources.administration.vehiculesModels.view(options, auth);
+    final MainResolver<SetViewOut<VehiculeModel>> resolver = await Sources.foundationSource.vehiculesModels.view(options, auth);
     final SetViewOut<VehiculeModel> view = await resolver.act((JObject json) => SetViewOut<VehiculeModel>.des(json, VehiculeModel.des)).catchError(
           (Object x, StackTrace s) {
             const CSMAdvisor('VehiculeModel-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
@@ -32,7 +32,7 @@ final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
   Future<List<SetViewOut<Situation>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     String auth = _sessionStorage.session!.token;
     final SetViewOptions<Situation> options =  SetViewOptions<Situation>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Situation>>[]);
-    final MainResolver<SetViewOut<Situation>> resolver = await Sources.administration.situations.view(options, auth);
+    final MainResolver<SetViewOut<Situation>> resolver = await Sources.foundationSource.situations.view(options, auth);
     final SetViewOut<Situation> view = await resolver.act((JObject json) => SetViewOut<Situation>.des(json, Situation.des)).catchError(
           (Object x, StackTrace s) {
             const CSMAdvisor('situation-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
@@ -50,7 +50,7 @@ final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
   Future<List<SetViewOut<Carrier>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     String auth = _sessionStorage.session!.token;
     final SetViewOptions<Carrier> options =  SetViewOptions<Carrier>(false, 100, page, null, orderings, <SetViewFilterNodeInterface<Carrier>>[]);
-    final MainResolver<SetViewOut<Carrier>> resolver = await Sources.administration.carriers.view(options, auth);
+    final MainResolver<SetViewOut<Carrier>> resolver = await Sources.foundationSource.carriers.view(options, auth);
     final SetViewOut<Carrier> view = await resolver.act((JObject json) => SetViewOut<Carrier>.des(json, Carrier.des)).catchError(
           (Object x, StackTrace s) {
             const CSMAdvisor('Carrier-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
@@ -62,7 +62,7 @@ final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
 }
 
 /// [_TableAdapter] class stores consumes the data and all the compose components for the table [TruckExternal] table.
-final class _TableAdapter implements TWSArticleTableAdapter<Truck> {
+final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
   const _TableAdapter();
 
   String getPlates(Truck item){
@@ -82,7 +82,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Truck> {
   Future<SetViewOut<Truck>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     final SetViewOptions<Truck> options = SetViewOptions<Truck>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Truck>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<SetViewOut<Truck>> resolver = await Sources.administration.trucks.view(options, auth);
+    MainResolver<SetViewOut<Truck>> resolver = await Sources.foundationSource.trucks.view(options, auth);
 
     SetViewOut<Truck> view = await resolver.act((JObject json) => SetViewOut<Truck>.des(json, Truck.des)).catchError(
       (Object x, StackTrace s) {
@@ -126,7 +126,7 @@ final class _TableAdapter implements TWSArticleTableAdapter<Truck> {
                 if (evaluation.isEmpty) {
                   final String auth = _sessionStorage.getTokenStrict();
                   MainResolver<RecordUpdateOut<Truck>> resolverUpdateOut =
-                      await Sources.administration.trucks.update(set, auth);
+                      await Sources.foundationSource.trucks.update(set, auth);
                   try {
                     resolverUpdateOut
                         .act((JObject json) =>
@@ -535,7 +535,4 @@ final class _TableAdapter implements TWSArticleTableAdapter<Truck> {
       ),
     );
   }
-
-  @override
-  void onRemoveRequest(Truck set, BuildContext context) {}
 }

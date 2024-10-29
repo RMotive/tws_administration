@@ -52,6 +52,11 @@ class MasterLayout extends CSMLayoutBase {
         route: TWSARoutes.businessPage,
       ),
       _MasterLayoutMenuButtonOptions(
+        label: 'Human Resources',
+        icon: Icons.people_alt_outlined,
+        route: TWSARoutes.humanResourcesPage,
+      ),
+      _MasterLayoutMenuButtonOptions(
         label: 'Yardlogs',
         icon: Icons.list,
         route: TWSARoutes.yardlogPage,
