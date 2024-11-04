@@ -1,8 +1,3 @@
 **/.DS_Store
 
 **/.vs/
-/server/TWS Admin/Server.Quality/Private/AccountIdentityPrivates.cs
-/server/TWS Admin/Server.Quality/Secrets/Account.cs
-/server/TWS Admin/Server.Quality/Secrets/Constants.cs
-/server/TWS Admin/EnlaceFiscal/Properties/*
-/server/TWS Admin/EnlaceFiscal.Quality/Properties/*

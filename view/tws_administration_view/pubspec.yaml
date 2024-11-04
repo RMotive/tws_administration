@@ -1,0 +1,44 @@
+name: tws_administration_view
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0-alpha
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins: 
+    sdk: flutter
+  go_router: ^14.0.2
+  http: ^1.2.0
+  localstorage: ^5.0.0
+
+  csm_view:
+    git:
+      url: https://github.com/RMotive/csm_view
+      ref: main
+
+  csm_client:
+    git:
+      url: https://github.com/RMotive/csm_client
+      ref: main
+
+  tws_foundation_client:
+    git:
+      url: https://github.com/RMotive/tws_foundation
+      path: client/tws_foundation_client
+      ref: development#human_resources_page_contacts_article
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets: 
+    - assets/
+    - assets/business/
