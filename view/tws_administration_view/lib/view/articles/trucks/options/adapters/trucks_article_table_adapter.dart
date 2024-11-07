@@ -11,9 +11,26 @@ final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
   const _VehiculeModelViewAdapter();
 
   @override
-  Future<List<SetViewOut<VehiculeModel>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+  Future<List<SetViewOut<VehiculeModel>>> consume(int page, int range, List<SetViewOrderOptions> orderings, String input) async {
     String auth = _sessionStorage.session!.token;
-    final SetViewOptions<VehiculeModel> options = SetViewOptions<VehiculeModel>(false,10, page, null, orderings, <SetViewFilterNodeInterface<VehiculeModel>>[]);
+
+    // Search filters;
+    List<SetViewFilterNodeInterface<VehiculeModel>> filters = <SetViewFilterNodeInterface<VehiculeModel>>[];
+
+    // -> Models filter.
+    if (input.trim().isNotEmpty) {
+      // -> filters
+      SetViewPropertyFilter<VehiculeModel> modelNameFilter = SetViewPropertyFilter<VehiculeModel>(0, SetViewFilterEvaluations.contians, 'Name', input);
+      SetViewPropertyFilter<VehiculeModel> manufacturerNameFilter = SetViewPropertyFilter<VehiculeModel>(0, SetViewFilterEvaluations.contians, 'manufacturerNavigation.Name', input);
+      List<SetViewFilterInterface<VehiculeModel>> searchFilterFilters = <SetViewFilterInterface<VehiculeModel>>[
+        modelNameFilter,
+        manufacturerNameFilter,
+      ];
+      // -> adding filters
+      SetViewFilterLinearEvaluation<VehiculeModel> searchFilterOption = SetViewFilterLinearEvaluation<VehiculeModel>(2, SetViewFilterEvaluationOperators.or, searchFilterFilters);
+      filters.add(searchFilterOption);
+    }
+    final SetViewOptions<VehiculeModel> options = SetViewOptions<VehiculeModel>(false, range, page, null, orderings, filters);
     final MainResolver<SetViewOut<VehiculeModel>> resolver = await Sources.foundationSource.vehiculesModels.view(options, auth);
     final SetViewOut<VehiculeModel> view = await resolver.act((JObject json) => SetViewOut<VehiculeModel>.des(json, VehiculeModel.des)).catchError(
           (Object x, StackTrace s) {
@@ -29,7 +46,7 @@ final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
   const _SituationsViewAdapter();
   
   @override
-  Future<List<SetViewOut<Situation>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+  Future<List<SetViewOut<Situation>>> consume(int page, int range, List<SetViewOrderOptions> orderings, String input) async {
     String auth = _sessionStorage.session!.token;
     final SetViewOptions<Situation> options =  SetViewOptions<Situation>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Situation>>[]);
     final MainResolver<SetViewOut<Situation>> resolver = await Sources.foundationSource.situations.view(options, auth);
@@ -47,9 +64,18 @@ final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
   const _CarriersViewAdapter();
   
   @override
-  Future<List<SetViewOut<Carrier>>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+  Future<List<SetViewOut<Carrier>>> consume(int page, int range, List<SetViewOrderOptions> orderings, String input) async {
     String auth = _sessionStorage.session!.token;
-    final SetViewOptions<Carrier> options =  SetViewOptions<Carrier>(false, 100, page, null, orderings, <SetViewFilterNodeInterface<Carrier>>[]);
+    // Search filters;
+    List<SetViewFilterNodeInterface<Carrier>> filters = <SetViewFilterNodeInterface<Carrier>>[];
+    // -> Carriers filter.
+    if (input.trim().isNotEmpty) {
+      // -> filters
+      SetViewPropertyFilter<Carrier> carrierNameFilter = SetViewPropertyFilter<Carrier>(0, SetViewFilterEvaluations.contians, 'Name', input);
+      // -> adding filters
+      filters.add(carrierNameFilter);
+    }
+    final SetViewOptions<Carrier> options =  SetViewOptions<Carrier>(false, range, page, null, orderings, filters);
     final MainResolver<SetViewOut<Carrier>> resolver = await Sources.foundationSource.carriers.view(options, auth);
     final SetViewOut<Carrier> view = await resolver.act((JObject json) => SetViewOut<Carrier>.des(json, Carrier.des)).catchError(
           (Object x, StackTrace s) {

@@ -3,6 +3,11 @@
 ## CURRENT
 
 - Notes:
+    1. Migrated TWS widget changes from [GuardView] environment: 
+        - The [TWSAutocompleteField] future mode, now perform a database search to avoid data overflow.
+        - [TWSArticleTableFieldOptions] Width property added.
+        - Now each [TWSArticleTable] column width can be changed using the [TWSArticleTableFieldOptions] width property.
+        - Added a doble tap summit button preventions on [WisperFrame].
 
     1. Refatoring sets and classes implementations from the newest [tws_foundation_client] version.
     2. Widget newest version migrated from [tws_guard_view] project. The migrated widgets are the following:

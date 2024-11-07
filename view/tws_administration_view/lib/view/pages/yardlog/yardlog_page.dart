@@ -133,7 +133,7 @@ class YardlogPage extends CSMPageBase {
           ),
           TWSArticleTableFieldOptions<YardLog>(
             'Sección',
-            (YardLog item, int index, BuildContext ctx) => "${item.sectionNavigation?.locationNavigation?.name} - ${item.sectionNavigation?.name}",
+            (YardLog item, int index, BuildContext ctx) => item.sectionNavigation != null? "${item.sectionNavigation?.locationNavigation?.name} - ${item.sectionNavigation?.name}" : "---",
           ),
         ],
         page: 1,

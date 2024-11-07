@@ -60,6 +60,10 @@ class _TruckCreateMainForm extends StatelessWidget {
                 label: "Select a Carrier",
                 hint: "Select a carrier",
                 isOptional: true,
+                hasKeyValue: (Carrier? set) {
+                  if(set?.id != null) return true;
+                  return false;
+                },
                 adapter: const _CarriersViewAdapter(),
                 initialValue: item.carrierNavigation,
                 onChanged: (Carrier? selectedItem) {
