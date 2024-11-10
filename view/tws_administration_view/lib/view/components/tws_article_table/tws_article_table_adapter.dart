@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table.dart';
+import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 /// [TWSArticleTable] adapter abstract interface, ensures a contract to determine an specific adapter behavior.

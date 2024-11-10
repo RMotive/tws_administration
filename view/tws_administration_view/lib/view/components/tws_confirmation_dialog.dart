@@ -3,8 +3,7 @@ import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_administration_view/view/widgets/tws_button_flat.dart';
-
+import 'package:tws_administration_view/view/components/tws_button_flat.dart';
 
 final class TWSConfirmationDialog extends StatefulWidget {
   final String title;

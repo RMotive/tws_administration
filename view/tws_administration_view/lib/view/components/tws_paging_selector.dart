@@ -1,7 +1,7 @@
 import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_administration_view/view/widgets/tws_dropup.dart';
+import 'package:tws_administration_view/view/components/tws_dropup.dart';
 
 class TWSPagingSelector extends StatefulWidget {
   final int items;
@@ -51,8 +51,6 @@ class _TWSPagingSelectorState extends State<TWSPagingSelector> {
     themeUpdate(themeBase);
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {

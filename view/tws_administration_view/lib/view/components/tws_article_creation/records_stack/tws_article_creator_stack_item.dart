@@ -1,7 +1,7 @@
 import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_administration_view/view/widgets/tws_article_creation/records_stack/tws_article_creator_stack_item_property.dart';
+import 'package:tws_administration_view/view/components/tws_article_creation/records_stack/tws_article_creator_stack_item_property.dart';
 
 final class TWSArticleCreationStackItem extends StatelessWidget {
   final bool selected;

@@ -4,12 +4,12 @@ import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/constants/twsa_colors.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_adapter.dart';
-import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_agent.dart';
-import 'package:tws_administration_view/view/widgets/tws_article_table/tws_article_table_field_options.dart';
-import 'package:tws_administration_view/view/widgets/tws_display_flat.dart';
-import 'package:tws_administration_view/view/widgets/tws_frame_decoration.dart';
-import 'package:tws_administration_view/view/widgets/tws_paging_selector.dart';
+import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table_adapter.dart';
+import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table_agent.dart';
+import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table_field_options.dart';
+import 'package:tws_administration_view/view/components/tws_display_flat.dart';
+import 'package:tws_administration_view/view/components/tws_frame_decoration.dart';
+import 'package:tws_administration_view/view/components/tws_paging_selector.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 part 'tws_article_table_details/tws_article_table_details.dart';

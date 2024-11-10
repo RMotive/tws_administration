@@ -3,7 +3,7 @@ import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_administration_view/view/frames/whisper/options/whisper_frame_action_options.dart';
-import 'package:tws_administration_view/view/widgets/tws_button_flat.dart';
+import 'package:tws_administration_view/view/components/tws_button_flat.dart';
 
 part 'whisper_header.dart';
 part 'whisper_footer.dart';

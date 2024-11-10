@@ -3,10 +3,10 @@ import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/constants/twsa_colors.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
-import 'package:tws_administration_view/view/widgets/tws_autocomplete_field/tws_autocomplete_adapter.dart';
-import 'package:tws_administration_view/view/widgets/tws_display_flat.dart';
-import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
-import 'package:tws_administration_view/view/widgets/tws_list_tile.dart';
+import 'package:tws_administration_view/view/components/tws_autocomplete_field/tws_autocomplete_adapter.dart';
+import 'package:tws_administration_view/view/components/tws_display_flat.dart';
+import 'package:tws_administration_view/view/components/tws_input_text.dart';
+import 'package:tws_administration_view/view/components/tws_list_tile.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 part 'tws_autocomplete_not_found.dart';
@@ -68,7 +68,7 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
   final String? Function(String?)? validator;
 
   /// enable focus events (Autofocus on tap)
-  final bool  focusEvents;
+  final bool focusEvents;
 
   const TWSAutoCompleteField(
       {super.key,
@@ -159,22 +159,21 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
       }).toList();
 
       //Do a search for exact coincidenses.
-      exactCoincidense = suggestionsList.where((T set){
+      exactCoincidense = suggestionsList.where((T set) {
         return widget.displayValue(set).toLowerCase() == query;
       }).toList();
-      
-      if(suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
+
+      if (suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
         selectedOption = exactCoincidense.first;
-        if(!firstbuild) ctrl.text = input;
+        if (!firstbuild) ctrl.text = input;
       }
-      
     } else {
       // if the input is empty, then the default suggestions list is the original options list.
       suggestionsList = rawOptionsList;
     }
     if (!firstbuild) {
       setState(() {
-        if(previousSelection != selectedOption) widget.onChanged(selectedOption);
+        if (previousSelection != selectedOption) widget.onChanged(selectedOption);
       });
     }
     previousSelection = selectedOption;
@@ -203,8 +202,8 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
   @override
   void didUpdateWidget(covariant TWSAutoCompleteField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if(widget.localList != null && oldWidget.localList != null){
-      if(widget.localList != oldWidget.localList){
+    if (widget.localList != null && oldWidget.localList != null) {
+      if (widget.localList != oldWidget.localList) {
         rawOptionsList = widget.localList!;
         ctrl.text = "";
       }
@@ -262,110 +261,120 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
     final Color highContrastColor = primaryColorTheme.hightlightAlt ?? Colors.white;
     const double tileHeigth = 35;
     return SizedBox(
-        width: widget.width,
-        child: OverlayPortal(
-            controller: overlayController,
-            child: CompositedTransformTarget(
-                link: link,
-                child: TWSInputText(
-                  autofocus: false,
-                  focusEvents: widget.focusEvents,
-                  controller: ctrl,
-                  isOptional: widget.isOptional,
-                  width: widget.width,
-                  height: widget.height,
-                  suffixLabel: widget.isOptionalLabel,
-                  focusNode: focus,
-                  label: widget.label,
-                  hint: widget.hint,
-                  isEnabled: widget.isEnabled,
-                  showErrorColor: (selectedOption == null && (!widget.isOptional || ctrl.text.isNotEmpty)) && !firstbuild,
-                  onChanged: (String text) => _search(text),
-                  suffixIcon: const Icon(
-                    Icons.arrow_drop_down,
-                    size: 24,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    if (!show) setState(() => show = true);
-                  },
-                  onTapOutside: (_) {
-                    if (!isOvelayHovered) setState(() => show = false);
-                    if (!show) focus.unfocus();
-                  },
-                  validator: (String? text) {
-                    if (_verifySelection()) return "Not exist an item with this value.";
-                    if (widget.validator != null) return widget.validator!(text);
-                    return null;
-                  },
-                ),),
-            overlayChildBuilder: (_) {
-              // Getting the visual boundries for this component.
-              final RenderBox renderBox = context.findRenderObject() as RenderBox;
-              final Size renderSize = renderBox.size;
-              return Positioned(
-                  width: renderSize.width,
-                  child: CompositedTransformFollower(
-                    showWhenUnlinked: false,
-                    offset: Offset(0, renderSize.height),
-                    link: link,
-                    // Overlay pointer handler
-                    child: CSMPointerHandler(
-                      onHover: (bool hover) => isOvelayHovered = hover,
-                      child: Visibility(
-                          visible: show,
-                          maintainState: true,
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints(maxHeight: widget.menuHeight),
-                              child: ClipRRect(
-                                  child: DecoratedBox(
-                                      decoration: const BoxDecoration(
-                                          color: TWSAColors.ligthGrey,
-                                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(5)),
-                                          border: Border(
-                                              right: BorderSide(width: 2, color: TWSAColors.oceanBlue),
-                                              left: BorderSide(width: 2, color: TWSAColors.oceanBlue),
-                                              bottom: BorderSide(width: 2, color: TWSAColors.oceanBlue),),),
-                                      child: widget.adapter != null
-                                          ? _TWSAutocompleteFuture<T>(
-                                              consume: consume!,
-                                              controller: scrollController,
-                                              tileHeigth: tileHeigth,
-                                              suggestions: suggestionsList,
-                                              displayLabel: widget.displayValue,
-                                              theme: primaryColorTheme,
-                                              loadingColor: highContrastColor,
-                                              hoverTextColor: pageColorTheme.fore,
-                                              firstBuild: firstbuild,
-                                              onTap: (String label) => onTileTap(label),
-                                              onFirstBuild: (List<SetViewOut<dynamic>> data) {
-                                                //Only do the builder callback once.
-                                                //Stores the properties result to avoid unnecesary callbacks on rebuild.
-                                                for (SetViewOut<dynamic> view in data) {
-                                                  rawOptionsList = <T>[...rawOptionsList, ...view.sets];
-                                                }
-                                                _search(ctrl.text);
-                                                firstbuild = false;
-                                                return suggestionsList;
-                                              })
-                                          : _TWSAutocompleteLocal<T>(
-                                              controller: scrollController,
-                                              suggestions: suggestionsList,
-                                              displayLabel: widget.displayValue,
-                                              theme: primaryColorTheme,
-                                              onTap: (String label) => onTileTap(label),
-                                              loadingColor: highContrastColor,
-                                              hoverTextColor: pageColorTheme.fore,
-                                              onFirstBuild: () {
-                                                _search(ctrl.text);
-                                                firstbuild = false;
-                                                return suggestionsList;
-                                              },
-                                              tileHeigth: tileHeigth,
-                                              firstBuild: firstbuild,
-                                              rawData: widget.localList!),),),),),
+      width: widget.width,
+      child: OverlayPortal(
+        controller: overlayController,
+        child: CompositedTransformTarget(
+          link: link,
+          child: TWSInputText(
+            autofocus: false,
+            focusEvents: widget.focusEvents,
+            controller: ctrl,
+            isOptional: widget.isOptional,
+            width: widget.width,
+            height: widget.height,
+            suffixLabel: widget.isOptionalLabel,
+            focusNode: focus,
+            label: widget.label,
+            hint: widget.hint,
+            isEnabled: widget.isEnabled,
+            showErrorColor: (selectedOption == null && (!widget.isOptional || ctrl.text.isNotEmpty)) && !firstbuild,
+            onChanged: (String text) => _search(text),
+            suffixIcon: const Icon(
+              Icons.arrow_drop_down,
+              size: 24,
+              color: Colors.white,
+            ),
+            onTap: () {
+              if (!show) setState(() => show = true);
+            },
+            onTapOutside: (_) {
+              if (!isOvelayHovered) setState(() => show = false);
+              if (!show) focus.unfocus();
+            },
+            validator: (String? text) {
+              if (_verifySelection()) return "Not exist an item with this value.";
+              if (widget.validator != null) return widget.validator!(text);
+              return null;
+            },
+          ),
+        ),
+        overlayChildBuilder: (_) {
+          // Getting the visual boundries for this component.
+          final RenderBox renderBox = context.findRenderObject() as RenderBox;
+          final Size renderSize = renderBox.size;
+          return Positioned(
+            width: renderSize.width,
+            child: CompositedTransformFollower(
+              showWhenUnlinked: false,
+              offset: Offset(0, renderSize.height),
+              link: link,
+              // Overlay pointer handler
+              child: CSMPointerHandler(
+                onHover: (bool hover) => isOvelayHovered = hover,
+                child: Visibility(
+                  visible: show,
+                  maintainState: true,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: widget.menuHeight),
+                    child: ClipRRect(
+                      child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                          color: TWSAColors.ligthGrey,
+                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(5)),
+                          border: Border(
+                            right: BorderSide(width: 2, color: TWSAColors.oceanBlue),
+                            left: BorderSide(width: 2, color: TWSAColors.oceanBlue),
+                            bottom: BorderSide(width: 2, color: TWSAColors.oceanBlue),
+                          ),
+                        ),
+                        child: widget.adapter != null
+                            ? _TWSAutocompleteFuture<T>(
+                                consume: consume!,
+                                controller: scrollController,
+                                tileHeigth: tileHeigth,
+                                suggestions: suggestionsList,
+                                displayLabel: widget.displayValue,
+                                theme: primaryColorTheme,
+                                loadingColor: highContrastColor,
+                                hoverTextColor: pageColorTheme.fore,
+                                firstBuild: firstbuild,
+                                onTap: (String label) => onTileTap(label),
+                                onFirstBuild: (List<SetViewOut<dynamic>> data) {
+                                  //Only do the builder callback once.
+                                  //Stores the properties result to avoid unnecesary callbacks on rebuild.
+                                  for (SetViewOut<dynamic> view in data) {
+                                    rawOptionsList = <T>[...rawOptionsList, ...view.sets];
+                                  }
+                                  _search(ctrl.text);
+                                  firstbuild = false;
+                                  return suggestionsList;
+                                })
+                            : _TWSAutocompleteLocal<T>(
+                                controller: scrollController,
+                                suggestions: suggestionsList,
+                                displayLabel: widget.displayValue,
+                                theme: primaryColorTheme,
+                                onTap: (String label) => onTileTap(label),
+                                loadingColor: highContrastColor,
+                                hoverTextColor: pageColorTheme.fore,
+                                onFirstBuild: () {
+                                  _search(ctrl.text);
+                                  firstbuild = false;
+                                  return suggestionsList;
+                                },
+                                tileHeigth: tileHeigth,
+                                firstBuild: firstbuild,
+                                rawData: widget.localList!),
+                      ),
                     ),
-                  ),);
-            },),);
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
