@@ -3,11 +3,6 @@
 ## CURRENT
 
 - Notes:
-    1. Migrated TWS widget changes from [GuardView] environment: 
-        - The [TWSAutocompleteField] future mode, now perform a database search to avoid data overflow.
-        - [TWSArticleTableFieldOptions] Width property added.
-        - Now each [TWSArticleTable] column width can be changed using the [TWSArticleTableFieldOptions] width property.
-        - Added a doble tap summit button preventions on [WisperFrame].
 
     1. Refatoring sets and classes implementations from the newest [tws_foundation_client] version.
     2. Widget newest version migrated from [tws_guard_view] project. The migrated widgets are the following:
@@ -39,6 +34,27 @@
     18. Added [Human_Resources] page.
 
         1. Added [Contact] article.
+    
+    19. Migrated TWS widget changes from [GuardView] environment: 
+        - The [TWSAutocompleteField] future mode, now perform a database search to avoid data overflow.
+        - [TWSArticleTableFieldOptions] Width property added.
+        - Now each [TWSArticleTable] column width can be changed using the [TWSArticleTableFieldOptions] width property.
+        - Added a doble tap summit button preventions on [WisperFrame].
+
+    20. Added [Trailer] Article page.
+    21. Added the view table for [Trailer] and [TrailerExternal].
+    22. Added the creation whisper for [Trailers] article.
+    23. Added update feature on table for [Traile] and [TrailerExternal].
+    24. Fixed some state and view bugs for [TWSAutocompleteField] widget.
+    25. Changed [Trucks] article icon.
+    26. Added a [SingleChildScrollView] for content in [TWSConfirmationDialog] widget.
+    27. Added a [suffixLabel] param to [TWSDatepicker] widget to show secundary text.
+    28. Added [TWSCascadeSection] function boolean parameter [onPressed] to return the show button state.
+    29. Changed name properties for [TWSAutocompleteField] to fit property name and functionality:
+        - [isOptionalLabel] -> [suffixLabel].
+        - [suffixLabel] -> [suffixResultLabel].
+
+    
 
 - Dependencies upgrade:
     1. (-) tws_foundation_client: Deprecated now used tws_foundation_client

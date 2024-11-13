@@ -1,16 +1,16 @@
-part of '../../trucks_create_whisper.dart';
+part of '../../trailers_create_whisper.dart';
 
-class _TruckCreateMaintenance extends StatelessWidget {
+class _TrailersCreateMaintenance extends StatelessWidget {
   final TWSArticleCreatorItemState<Object>? itemState;
   final bool enable;
-  const _TruckCreateMaintenance({
+  const _TrailersCreateMaintenance({
     this.itemState,
     this.enable = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Truck item = itemState!.model as Truck;
+    final Trailer item = itemState!.model as Trailer;
     return TWSSection(
       isOptional: true,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -24,7 +24,7 @@ class _TruckCreateMaintenance extends StatelessWidget {
               label: 'Anual',
               controller: TextEditingController(text: item.maintenanceNavigation?.anual.dateOnlyString),
               onChanged: (String text) {
-                Truck model = itemState!.model as Truck;
+                Trailer model = itemState!.model as Trailer;
                 DateTime date = DateTime.tryParse(text) ?? DateTime(0);
                 itemState!.updateModelRedrawing(
                   model.clone(
@@ -32,7 +32,7 @@ class _TruckCreateMaintenance extends StatelessWidget {
                     ?? Maintenance.a().clone(anual: date)
                   ),
                 );
-                model = itemState!.model as Truck;
+                model = itemState!.model as Trailer;
               },
               isEnabled: enable,
             ),
@@ -44,7 +44,7 @@ class _TruckCreateMaintenance extends StatelessWidget {
               label: 'Trimestral',
               controller: TextEditingController(text: item.maintenanceNavigation?.trimestral.dateOnlyString),
               onChanged: (String text) {
-                Truck model = itemState!.model as Truck;
+                Trailer model = itemState!.model as Trailer;
                 DateTime date = DateTime.tryParse(text) ?? DateTime(0);
                 itemState!.updateModelRedrawing(
                   model.clone(
@@ -52,7 +52,8 @@ class _TruckCreateMaintenance extends StatelessWidget {
                     ?? Maintenance.a().clone(trimestral: date),
                   ),
                 );
-                model = itemState!.model as Truck;
+                model = itemState!.model as Trailer;
+                print(model.maintenanceNavigation?.encode());
               },
               isEnabled: enable,
             ),

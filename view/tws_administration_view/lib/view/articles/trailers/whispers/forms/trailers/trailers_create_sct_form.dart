@@ -1,16 +1,16 @@
-part of '../../trucks_create_whisper.dart';
+part of '../../trailers_create_whisper.dart';
 
-class _TruckCreateSCT extends StatelessWidget {
+class _TrailersCreateSCT extends StatelessWidget {
   final TWSArticleCreatorItemState<Object>? itemState;
   final bool enable;
-  const _TruckCreateSCT({
+  const _TrailersCreateSCT({
     this.itemState,
     this.enable = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Truck item = itemState!.model as Truck;
+    final Trailer item = itemState!.model as Trailer;
     return TWSSection(
       isOptional: true,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -24,7 +24,7 @@ class _TruckCreateSCT extends StatelessWidget {
               isStrictLength: true,
               controller: TextEditingController(text: item.sctNavigation?.type),
               onChanged: (String text) {
-                Truck model = itemState!.model as Truck;
+                Trailer model = itemState!.model as Trailer;
                 itemState!.updateModelRedrawing(
                   model.clone(
                     sctNavigation: model.sctNavigation?.clone(type: text) ??
@@ -42,7 +42,7 @@ class _TruckCreateSCT extends StatelessWidget {
               controller: TextEditingController(
                   text: item.sctNavigation?.configuration),
               onChanged: (String text) {
-                Truck model = itemState!.model as Truck;
+                Trailer model = itemState!.model as Trailer;
                 itemState!.updateModelRedrawing(
                   model.clone(
                     sctNavigation: model.sctNavigation?.clone(configuration: text) 
@@ -61,7 +61,7 @@ class _TruckCreateSCT extends StatelessWidget {
           isStrictLength: true,
           controller: TextEditingController(text: item.sctNavigation?.number,),
           onChanged: (String text) {
-            Truck model = itemState!.model as Truck;
+            Trailer model = itemState!.model as Trailer;
             itemState!.updateModelRedrawing(
               model.clone(
                 sctNavigation: model.sctNavigation?.clone(number: text) ??

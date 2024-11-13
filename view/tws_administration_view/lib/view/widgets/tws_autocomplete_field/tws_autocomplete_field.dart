@@ -43,8 +43,8 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
   /// Set has non-required field, changing the border color when input is empty.
   final bool isOptional;
 
-  /// Set the text to show when [IsOptional] is true.
-  final String? isOptionalLabel;
+  /// Set the text to show at the end of [label] text.
+  final String? suffixLabel;
 
   /// Optional Focus node to manage
   final FocusNode? focus;
@@ -59,7 +59,7 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
   final String Function(T?) displayValue;
 
   /// Optional text to show at the end of the [displayValue] result.
-  final String Function(T?)? suffixLabel;
+  final String Function(T?)? suffixResultLabel;
 
   /// Overlay menu height.
   final double menuHeight;
@@ -88,7 +88,7 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
     required this.displayValue,
     this.adapter,
     this.localList,
-    this.isOptionalLabel,
+    this.suffixLabel,
     this.initialValue,
     this.isOptional = false,
     this.focus,
@@ -100,7 +100,7 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
     this.validator,
     this.isEnabled = true,
     this.quantityResults = 10,
-    this.suffixLabel,
+    this.suffixResultLabel,
     this.hasKeyValue,
   })  : assert(localList != null || adapter != null,
             "At least one data type must be assigned"),
@@ -160,11 +160,8 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
   /// Defines if the overlay is showing.
   bool show = false;
 
-  /// empty searches counter, to load the default search once.
-  int emptySearch = 0;
-
   /// Variable that contains the default initialization for [widget.hasKeyValue] property.
-  late bool Function(T?)? hasKeyValue;
+  late bool Function(T?) hasKeyValue;
 
 
   /// Methoth that verify if the [TWSTextField] component has a valid input selection.
@@ -197,9 +194,9 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
           return widget.displayValue(set).toLowerCase() == query;
         }).toList();
 
-        if (!firstbuild && suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
+        if (suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
+          if(!firstbuild) ctrl.text = input;
           selectedOption = exactCoincidense.first;
-          ctrl.text = input;
         }
       } else {
         // if the input is empty, then the default suggestions list is the original options list.
@@ -214,26 +211,26 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
     }else{
       // Search data using the adapter given in parameters.
       // When this method is used, is necesary to tap in any option to set an item selection.
-      if(query.isNotEmpty || emptySearch < 1){
-        if(query.isNotEmpty){
-          //Do a search for exact coincidenses.
-          if(tapSelection == null){
-            exactCoincidense = suggestionsList.where((T set) {
-              return widget.displayValue(set).toLowerCase() == query;
-            }).toList();
-            
-            if (!firstbuild && suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
-              selectedOption = exactCoincidense.first;
-            }
+      if(query.isNotEmpty){
+        //Do a search for exact coincidenses.
+        if(tapSelection == null){
+          exactCoincidense = suggestionsList.where((T set) {
+            return widget.displayValue(set).toLowerCase() == query;
+          }).toList();
+          
+          if (!firstbuild && suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
+            selectedOption = exactCoincidense.first;
           }
-          emptySearch = 0;
-        }else{
-          emptySearch++;
         }
 
         if (!firstbuild){
           if(previousSelection != selectedOption) widget.onChanged(selectedOption);
-          if(tapSelection == null) agent.refresh();
+          //Check if is necesary a list refresh, Else use the default list.
+          if(tapSelection == null && (query.isNotEmpty || suggestionsList.isEmpty)){
+            agent.refresh();
+          } else {
+            suggestionsList = rawOptionsList;
+          }
         } 
       }
       previousSelection = selectedOption;
@@ -252,17 +249,15 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
 
   /// Method that manage and assign the [initialValue] property.
   void setSelection() {
-    bool hasKeyProperty = hasKeyValue != null;
-    if (widget.initialValue != null) {
+    if (widget.initialValue != null && hasKeyValue(widget.initialValue)) {
       String value = widget.displayValue(widget.initialValue);
       search(
         value,
-        tapSelection: hasKeyValue!(widget.initialValue) ? widget.initialValue : null,
+        tapSelection: hasKeyValue(widget.initialValue) ? widget.initialValue : null,
       );
       ctrl.text = widget.displayValue(widget.initialValue);
-      return;
     } else {
-      if (previousSelection != null || (hasKeyProperty)) {
+      if (previousSelection != null) {
         ctrl.text = "";
         search("");
       }
@@ -312,6 +307,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
     ctrl = TextEditingController(text: widget.initialValue != null ? widget.displayValue(widget.initialValue) : null);
     focus = widget.focus ?? FocusNode();
     overlayController = OverlayPortalController();
+    if(widget.initialValue != null) selectedOption = widget.initialValue;
     if (widget.adapter != null) {
       agent = CSMConsumerAgent();
       consume = () => widget.adapter!.consume(1, widget.quantityResults, <SetViewOrderOptions>[], "");
@@ -358,7 +354,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
             isOptional: widget.isOptional,
             width: widget.width,
             height: widget.height,
-            suffixLabel: widget.isOptionalLabel,
+            suffixLabel: widget.suffixLabel,
             showErrorColor: (selectedOption == null && (!widget.isOptional || ctrl.text.isNotEmpty)) && !firstbuild,
             onChanged: (String text) => search(text),
             onTap: () {
@@ -421,7 +417,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
                           ),
                           child: widget.adapter != null
                               ? _TWSAutocompleteFuture<T>(
-                                  consume: () => widget.adapter!.consume(1, widget.quantityResults, <SetViewOrderOptions>[], ctrl.text.trim()),
+                                  consume: () => widget.adapter!.consume(1, widget.quantityResults, <SetViewOrderOptions>[], firstbuild? "" : ctrl.text.trim()),
                                   agent: agent,
                                   controller: scrollController,
                                   tileHeigth: tileHeigth,
@@ -429,16 +425,17 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
                                   theme: primaryColorTheme,
                                   loadingColor: highContrastColor,
                                   hoverTextColor: pageColorTheme.fore,
-                                  suffixLabel: widget.suffixLabel,
+                                  suffixLabel: widget.suffixResultLabel,
                                   onTap: (String label, T? item) => onTileTap(label, item),
                                   onFetch: (List<SetViewOut<dynamic>> data) {
                                     //Stores the properties results
                                     for (SetViewOut<dynamic> view in data) {
                                       suggestionsList = <T>[
-                                        ...rawOptionsList,
                                         ...view.sets
                                       ];
                                     }
+                                    //Stores the default/initial fetched list values.
+                                    if(firstbuild) rawOptionsList = suggestionsList;
                                     // search(ctrl.text);
                                     firstbuild = false;
                                     return suggestionsList;

@@ -1,5 +1,5 @@
 
-part of '../../whispers/trucks_create_whisper.dart';
+part of '../../whispers/trailers_create_whisper.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
@@ -37,6 +37,72 @@ final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
     return <SetViewOut<VehiculeModel>>[view];
   }
 }
+
+final class _TrailerTypeViewAdapter implements TWSAutocompleteAdapter{
+  const _TrailerTypeViewAdapter();
+
+  @override
+  Future<List<SetViewOut<TrailerType>>> consume(int page, int range, List<SetViewOrderOptions> orderings, String input) async {
+    String auth = _sessionStorage.session!.token;
+
+     // Search filters;
+    List<SetViewFilterNodeInterface<TrailerType>> filters = <SetViewFilterNodeInterface<TrailerType>>[];
+
+    // -> Models filter.
+    if (input.trim().isNotEmpty) {
+      // -> filters
+      SetViewPropertyFilter<TrailerType> sizeFilter = SetViewPropertyFilter<TrailerType>(0, SetViewFilterEvaluations.contians, 'Size', input);
+      SetViewPropertyFilter<TrailerType> typeFilter = SetViewPropertyFilter<TrailerType>(0, SetViewFilterEvaluations.contians, 'TrailerClassNavigation.Name', input);
+      List<SetViewFilterInterface<TrailerType>> searchFilterFilters = <SetViewFilterInterface<TrailerType>>[
+        sizeFilter,
+        typeFilter,
+      ];
+      // -> adding filters
+      SetViewFilterLinearEvaluation<TrailerType> searchFilterOption = SetViewFilterLinearEvaluation<TrailerType>(2, SetViewFilterEvaluationOperators.or, searchFilterFilters);
+      filters.add(searchFilterOption);
+    }
+    final SetViewOptions<TrailerType> options = SetViewOptions<TrailerType>(false, range, page, null, orderings, filters);
+    final MainResolver<SetViewOut<TrailerType>> resolver = await Sources.foundationSource.trailersTypes.view(options, auth);
+    final SetViewOut<TrailerType> view = await resolver.act((JObject json) => SetViewOut<TrailerType>.des(json, TrailerType.des)).catchError(
+          (Object x, StackTrace s) {
+            const CSMAdvisor('TrailerType-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
+            throw x;
+          },
+        );
+    return <SetViewOut<TrailerType>>[view];
+  }
+}
+
+final class _TrailerClassViewAdapter implements TWSAutocompleteAdapter{
+  const _TrailerClassViewAdapter();
+
+  @override
+  Future<List<SetViewOut<TrailerClass>>> consume(int page, int range, List<SetViewOrderOptions> orderings, String input) async {
+    String auth = _sessionStorage.session!.token;
+
+     // Search filters;
+    List<SetViewFilterNodeInterface<TrailerClass>> filters = <SetViewFilterNodeInterface<TrailerClass>>[];
+
+    // -> Models filter.
+    if (input.trim().isNotEmpty) {
+      // -> filters
+      SetViewPropertyFilter<TrailerClass> sizeFilter = SetViewPropertyFilter<TrailerClass>(0, SetViewFilterEvaluations.contians, 'Name', input);
+  
+      // -> adding filters
+      filters.add(sizeFilter);
+    }
+    final SetViewOptions<TrailerClass> options = SetViewOptions<TrailerClass>(false, range, page, null, orderings, filters);
+    final MainResolver<SetViewOut<TrailerClass>> resolver = await Sources.foundationSource.trailersClasses.view(options, auth);
+    final SetViewOut<TrailerClass> view = await resolver.act((JObject json) => SetViewOut<TrailerClass>.des(json, TrailerClass.des)).catchError(
+          (Object x, StackTrace s) {
+            const CSMAdvisor('TrailerType-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
+            throw x;
+          },
+        );
+    return <SetViewOut<TrailerClass>>[view];
+  }
+}
+
 
 final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
   const _SituationsViewAdapter();
@@ -110,7 +176,7 @@ final class _ManufacturersViewAdapter implements TWSAutocompleteAdapter {
       // -> adding filters
       filters.add(manufacturerNameFilter);
     }
-    final SetViewOptions<Manufacturer> options =  SetViewOptions<Manufacturer>(false, range, page, null, orderings, filters);
+    final SetViewOptions<Manufacturer> options =  SetViewOptions<Manufacturer>(false, 100, page, null, orderings, filters);
     final MainResolver<SetViewOut<Manufacturer>> resolver = await Sources.foundationSource.manufacturers.view(options, auth);
     final SetViewOut<Manufacturer> view = await resolver.act((JObject json) => SetViewOut<Manufacturer>.des(json, Manufacturer.des)).catchError(
           (Object x, StackTrace s) {

@@ -1,19 +1,19 @@
-part of '../../trucks_article.dart';
+part of '../../trailers_article.dart';
 
 
-/// [_ExternalTableAdapter] class stores consumes the data and all the compose components for the table [TruckExternal] table.
-final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> {
+/// [_ExternalTableAdapter] class stores consumes the data and all the compose components for the table [TrailerExternal] table.
+final class _ExternalTableAdapter extends TWSArticleTableAdapter<TrailerExternal> {
   const _ExternalTableAdapter();
 
   @override
-  Future<SetViewOut<TruckExternal>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
-    final SetViewOptions<TruckExternal> options = SetViewOptions<TruckExternal>(false, range, page, null, orderings, <SetViewFilterNodeInterface<TruckExternal>>[]);
+  Future<SetViewOut<TrailerExternal>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+    final SetViewOptions<TrailerExternal> options = SetViewOptions<TrailerExternal>(false, range, page, null, orderings, <SetViewFilterNodeInterface<TrailerExternal>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<SetViewOut<TruckExternal>> resolver = await Sources.foundationSource.trucksExternals.view(options, auth);
+    MainResolver<SetViewOut<TrailerExternal>> resolver = await Sources.foundationSource.trailersExternals.view(options, auth);
 
-    SetViewOut<TruckExternal> view = await resolver.act((JObject json) => SetViewOut<TruckExternal>.des(json, TruckExternal.des)).catchError(
+    SetViewOut<TrailerExternal> view = await resolver.act((JObject json) => SetViewOut<TrailerExternal>.des(json, TrailerExternal.des)).catchError(
       (Object x, StackTrace s) {
-        const CSMAdvisor('truck-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
+        const CSMAdvisor('trailer-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
         throw x;
       },
     );
@@ -21,7 +21,7 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
   }
   
   @override
-  TWSArticleTableEditor? composeEditor(TruckExternal set, Function closeReinvoke, BuildContext context) {
+  TWSArticleTableEditor? composeEditor(TrailerExternal set, Function closeReinvoke, BuildContext context) {
     return TWSArticleTableEditor(
       onCancel: closeReinvoke,
       onSave: () async {
@@ -32,11 +32,11 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
           builder: (BuildContext context) {
             return TWSConfirmationDialog(
               accept: 'Update',
-              title: 'Truck update confirmation',
+              title: 'Trailer update confirmation',
               statement: Text.rich(
                 textAlign: TextAlign.center,
                 TextSpan(
-                  text: 'Are you sure you want to update an external truck?',
+                  text: 'Are you sure you want to update an external trailer?',
                   children: <InlineSpan>[
                     const TextSpan(
                       text: '\n\u2022 Economic:',
@@ -51,7 +51,7 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                         ),
-                        child: Text('\n${set.truckCommonNavigation?.economic ?? "---"}'),
+                        child: Text('\n${set.trailerCommonNavigation?.economic ?? "---"}'),
                       ),
                     ),
                     const TextSpan(
@@ -68,22 +68,6 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                           horizontal: 20,
                         ),
                         child: Text('\n${set.carrier}'),
-                      ),
-                    ),
-                    const TextSpan(
-                      text: '\n\u2022 VIN:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    WidgetSpan(
-                      baseline: TextBaseline.alphabetic,
-                      alignment: PlaceholderAlignment.bottom,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: Text('\n${set.vin ?? "---"}'),
                       ),
                     ),
                     const TextSpan(
@@ -118,17 +102,33 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                         child: Text('\n${set.usaPlate ?? "---"}'),
                       ),
                     ),
-                  ],
+                    const TextSpan(
+                      text: '\n\u2022 Type:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    WidgetSpan(
+                      baseline: TextBaseline.alphabetic,
+                      alignment: PlaceholderAlignment.bottom,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Text('\n${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name ?? "---"} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size ?? "---"}'),
+                      ),
+                    ),
+                  ]
                 ),
               ),
               onAccept: () async {
                 List<CSMSetValidationResult> evaluation = set.evaluate();
                 if(evaluation.isEmpty){
                   final String auth = _sessionStorage.getTokenStrict();
-                  MainResolver<RecordUpdateOut<TruckExternal>> resolverUpdateOut = await Sources.foundationSource.trucksExternals.update(set, auth);
+                  MainResolver<RecordUpdateOut<TrailerExternal>> resolverUpdateOut = await Sources.foundationSource.trailersExternals.update(set, auth);
                   try {
-                    resolverUpdateOut.act((JObject json) => RecordUpdateOut<TruckExternal>.des(json, TruckExternal.des)).then(
-                      (RecordUpdateOut<TruckExternal> updateOut) {
+                    resolverUpdateOut.act((JObject json) => RecordUpdateOut<TrailerExternal>.des(json, TrailerExternal.des)).then(
+                      (RecordUpdateOut<TrailerExternal> updateOut) {
                         CSMRouter.i.pop();
                       },
                     );
@@ -180,9 +180,9 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                 hint: "enter an economic number",
                 maxLength: 16,
                 isStrictLength: true,
-                controller: TextEditingController(text: set.truckCommonNavigation!.economic),
+                controller: TextEditingController(text: set.trailerCommonNavigation!.economic),
                 onChanged: (String text) {
-                  set.truckCommonNavigation!.economic = text;
+                  set.trailerCommonNavigation!.economic = text;
                 },
               ),
               TWSInputText(
@@ -215,16 +215,24 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                   set.usaPlate = text;
                 },
               ),
-              TWSInputText(
-                label: "VIN",
-                hint: "enter a vin number",
-                maxLength: 17,
+              TWSAutoCompleteField<TrailerType>(
+                width: double.maxFinite,
+                label: "Trailer Type",
+                hint: "Select a trailer type",
                 isOptional: true,
-                suffixLabel: "(optional)",
-                isStrictLength: true,
-                controller: TextEditingController(text: set.vin),
-                onChanged: (String text) {
-                  set.vin = text;
+                adapter: const _TrailerTypeViewAdapter(),
+                initialValue: set.trailerCommonNavigation?.trailerTypeNavigation,
+                onChanged: (TrailerType? selectedItem) {
+                  set.trailerCommonNavigation?.trailerTypeNavigation = null;
+                  set = set.clone(
+                    trailerCommonNavigation: set.trailerCommonNavigation?.clone(
+                      type: set.trailerCommonNavigation?.trailerTypeNavigation?.id ?? 0,
+                      trailerTypeNavigation: selectedItem
+                    ),
+                  );
+                },
+                displayValue: (TrailerType? set) {
+                  return set != null? "${set.trailerClassNavigation?.name} - ${set.size}" : "error";
                 },
               ),
             ]
@@ -235,7 +243,7 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
   }
 
   @override
-  Widget composeViewer(TruckExternal set, BuildContext context) {
+  Widget composeViewer(TrailerExternal set, BuildContext context) {
     return SizedBox.expand(
       child: CSMSpacingColumn(
         spacing: 12,
@@ -243,7 +251,7 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
         children: <Widget>[
           TWSPropertyViewer(
             label: 'Economic',
-            value: set.truckCommonNavigation?.economic ?? '---',
+            value: set.trailerCommonNavigation?.economic ?? '---',
           ),
           TWSPropertyViewer(
             label: 'Carrier',
@@ -251,15 +259,15 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
           ),
           TWSPropertyViewer(
             label: 'MX Plates',
-            value: set.mxPlate 
+            value: set.mxPlate ?? '---'
           ),
           TWSPropertyViewer(
             label: 'USA Plates',
-            value: set.usaPlate 
+            value: set.usaPlate ?? '---'
           ),
           TWSPropertyViewer(
-            label: 'VIN',
-            value: set.vin,
+            label: 'Situation',
+            value: set.trailerCommonNavigation?.situationNavigation?.name ?? '---',
           ),
         ],
       ),

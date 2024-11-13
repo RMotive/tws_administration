@@ -7,7 +7,7 @@ class TWSCascadeSection extends StatefulWidget {
   final String title;
   final Widget mainControl;
   final Widget content;
-  final void Function()? onPressed;
+  final void Function(bool isShowing)? onPressed;
   final String? tooltip;
   final EdgeInsets padding;
   const TWSCascadeSection({
@@ -84,10 +84,10 @@ class _TWSCascadeSectionState extends State<TWSCascadeSection> {
                 color: Colors.white,
                 iconSize: 32,
                 onPressed: () {
-                  widget.onPressed;
                   showCascade();
+                  if(widget.onPressed != null) widget.onPressed!(show);
                 },
-                icon: const Icon(Icons.add,)),
+                icon: const Icon(Icons.add,),),
             ],
           ),
           Visibility(

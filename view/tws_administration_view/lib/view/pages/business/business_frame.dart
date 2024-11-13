@@ -23,12 +23,22 @@ class BusinessFrame extends StatelessWidget {
     ArticleOptions(
       icon: (Color? stateColor) {
         return Icon(
-          Icons.call_to_action_sharp,
+          Icons.local_shipping,
           color: stateColor,
         );
       },
       route: TWSARoutes.trucksArticle,
       title: 'Trucks',
+    ),
+    ArticleOptions(
+      icon: (Color? stateColor) {
+        return Icon(
+          Icons.crop_16_9,
+          color: stateColor,
+        );
+      },
+      route: TWSARoutes.trailersArticle,
+      title: 'Trailers',
     ),
   ];
 

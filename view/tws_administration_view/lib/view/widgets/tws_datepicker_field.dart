@@ -28,12 +28,14 @@ class TWSDatepicker extends StatefulWidget {
   final TextEditingController? controller;
   /// Defines if the user can interact with the widget.
   final bool isEnabled;
-  ///
+  /// show the prefix icon or not.
   final bool enablePrefix;
   /// Callback that return the selected options in the datepicker dialog.
   final void Function(String text)? onChanged;
   /// Validator for the text input.
   final String? Function(String? text)? validator;
+  /// Suffix text at the end of [label] text.
+  final String? suffixLabel;
 
   const TWSDatepicker({super.key,
     required this.firstDate,
@@ -44,11 +46,12 @@ class TWSDatepicker extends StatefulWidget {
     this.label,
     this.hintText,
     this.focusNode,
-      this.enablePrefix = true,
+    this.enablePrefix = true,
     this.isEnabled = true,
     this.controller,
     this.onChanged,
-    this.validator
+    this.validator,
+    this.suffixLabel,
   });
   
   @override
@@ -119,18 +122,32 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
             cursorOpacityAnimates: true,
             cursorWidth: 3,
             cursorColor: colorStruct.foreAlt,
+            onTap: () => _showDatePicker(),
             style: TextStyle(
               color: colorStruct.foreAlt?.withOpacity(.7),
             ),
-            onTap: () => _showDatePicker(),
             decoration: InputDecoration(
               isDense: true,
               errorText: _error,
               errorMaxLines: 1,
-              suffixIcon: const Icon(
-                Icons.calendar_month,
-              ),
               suffixIconColor: colorStruct.main,
+              hintText: widget.hintText,
+              labelText: widget.suffixLabel == null? widget.label : null,
+              label: widget.suffixLabel != null
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(widget.label ?? ""),
+                        Text(
+                          widget.suffixLabel!,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: colorStruct.foreAlt?.withOpacity(.5),
+                          ),
+                        ),
+                      ],
+                    )
+                  : null,
               prefixIcon: (widget.enablePrefix && ctrl.text.isNotEmpty)
                   ? IconButton(
                       tooltip: "Delete selection",
@@ -148,8 +165,9 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
                       },
                     )
                   : null,
-              labelText: widget.label,
-              hintText: widget.hintText,
+              suffixIcon: const Icon(
+                Icons.calendar_month,
+              ),
               labelStyle: TextStyle(
                 color: colorStruct.foreAlt,
               ),
