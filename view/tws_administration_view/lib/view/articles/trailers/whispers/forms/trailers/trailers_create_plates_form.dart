@@ -1,6 +1,6 @@
-part of '../../trucks_create_whisper.dart';
+part of '../../trailers_create_whisper.dart';
 
-class _TruckCreatePlateForm extends StatelessWidget {
+class _TrailerCreatePlateForm extends StatelessWidget {
   // Initial plate data.
   final Plate plate;
   // current plate index.
@@ -11,7 +11,7 @@ class _TruckCreatePlateForm extends StatelessWidget {
   final void Function(String?) stateOnChange;
   final void Function(String) expirationOnChange;
 
-  const _TruckCreatePlateForm({
+  const _TrailerCreatePlateForm({
     required this.plate,
     required this.identifierOnChange,
     required this.countryOnChange,
@@ -67,8 +67,8 @@ class _TruckCreatePlateForm extends StatelessWidget {
               child: TWSDatepicker(
                 firstDate: _firstDate,
                 lastDate: _lastlDate,
-                suffixLabel: " opt.",
                 label: 'Expiration Date',
+                suffixLabel: " opt.",
                 controller: TextEditingController(text: plate.expiration?.dateOnlyString),
                 onChanged: expirationOnChange,
               ),

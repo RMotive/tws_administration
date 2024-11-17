@@ -1,11 +1,45 @@
-part of '../../trucks_article.dart';
+part of '../../trailers_article.dart';
 
-// This document stores all consume classes for Truck table and update options.
-
+// This document stores all consume classes for Trailer table and update options.
 final SessionStorage _sessionStorage = SessionStorage.i;
 class _PlatesState extends CSMStateBase{}
 final _PlatesState _platesState = _PlatesState();
 void Function() _platesFormsState = (){};
+
+final class _TrailerTypeViewAdapter implements TWSAutocompleteAdapter{
+  const _TrailerTypeViewAdapter();
+
+  @override
+  Future<List<SetViewOut<TrailerType>>> consume(int page, int range, List<SetViewOrderOptions> orderings, String input) async {
+    String auth = _sessionStorage.session!.token;
+
+     // Search filters;
+    List<SetViewFilterNodeInterface<TrailerType>> filters = <SetViewFilterNodeInterface<TrailerType>>[];
+
+    // -> Models filter.
+    if (input.trim().isNotEmpty) {
+      // -> filters
+      SetViewPropertyFilter<TrailerType> sizeFilter = SetViewPropertyFilter<TrailerType>(0, SetViewFilterEvaluations.contians, 'Size', input);
+      SetViewPropertyFilter<TrailerType> typeFilter = SetViewPropertyFilter<TrailerType>(0, SetViewFilterEvaluations.contians, 'TrailerClassNavigation.Name', input);
+      List<SetViewFilterInterface<TrailerType>> searchFilterFilters = <SetViewFilterInterface<TrailerType>>[
+        sizeFilter,
+        typeFilter,
+      ];
+      // -> adding filters
+      SetViewFilterLinearEvaluation<TrailerType> searchFilterOption = SetViewFilterLinearEvaluation<TrailerType>(2, SetViewFilterEvaluationOperators.or, searchFilterFilters);
+      filters.add(searchFilterOption);
+    }
+    final SetViewOptions<TrailerType> options = SetViewOptions<TrailerType>(false, range, page, null, orderings, filters);
+    final MainResolver<SetViewOut<TrailerType>> resolver = await Sources.foundationSource.trailersTypes.view(options, auth);
+    final SetViewOut<TrailerType> view = await resolver.act((JObject json) => SetViewOut<TrailerType>.des(json, TrailerType.des)).catchError(
+          (Object x, StackTrace s) {
+            const CSMAdvisor('TrailerType-future-autocomplete-field-adapter').exception('Exception catched at Future Autocomplete field consume', Exception(x), s);
+            throw x;
+          },
+        );
+    return <SetViewOut<TrailerType>>[view];
+  }
+}
 
 final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
   const _VehiculeModelViewAdapter();
@@ -87,11 +121,11 @@ final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
   }
 }
 
-/// [_TableAdapter] class stores consumes the data and all the compose components for the table [TruckExternal] table.
-final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
+/// [_TableAdapter] class stores consumes the data and all the compose components for the table [TrailerExternal] table.
+final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
   const _TableAdapter();
 
-  String getPlates(Truck item){
+  String getPlates(Trailer item){
     String plates = '---';
     if (item.plates.isNotEmpty) {
       plates = '';
@@ -105,14 +139,14 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
 
   
   @override
-  Future<SetViewOut<Truck>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
-    final SetViewOptions<Truck> options = SetViewOptions<Truck>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Truck>>[]);
+  Future<SetViewOut<Trailer>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+    final SetViewOptions<Trailer> options = SetViewOptions<Trailer>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Trailer>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<SetViewOut<Truck>> resolver = await Sources.foundationSource.trucks.view(options, auth);
+    MainResolver<SetViewOut<Trailer>> resolver = await Sources.foundationSource.trailers.view(options, auth);
 
-    SetViewOut<Truck> view = await resolver.act((JObject json) => SetViewOut<Truck>.des(json, Truck.des)).catchError(
+    SetViewOut<Trailer> view = await resolver.act((JObject json) => SetViewOut<Trailer>.des(json, Trailer.des)).catchError(
       (Object x, StackTrace s) {
-        const CSMAdvisor('truck-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
+        const CSMAdvisor('Trailer-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
         throw x;
       },
     );
@@ -121,7 +155,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
   
   @override
   TWSArticleTableEditor? composeEditor(
-      Truck set, Function closeReinvoke, BuildContext context) {
+      Trailer set, Function closeReinvoke, BuildContext context) {
     return TWSArticleTableEditor(
       onCancel: closeReinvoke,
       onSave: () async {
@@ -132,12 +166,15 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
           builder: (BuildContext context) {
             return TWSConfirmationDialog(
               accept: 'Update',
-              title: 'Truck update confirmation',
+              title: 'Trailer update confirmation',
               statement: Text.rich(
                 textAlign: TextAlign.center,
                 TextSpan(
-                  text: 'Are you sure you want to update a truck?',
+                    text: 'Are you sure you want to update a trailer?',
                   children: <InlineSpan>[
+                    const TextSpan(
+                      text: '\n',
+                    ),
                     const TextSpan(
                       text: '\n\u2022 Economic:',
                       style: TextStyle(
@@ -151,7 +188,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                         ),
-                        child: Text('\n${set.truckCommonNavigation?.economic ?? "---"}'),
+                        child: Text('\n${set.trailerCommonNavigation?.economic ?? "---"}'),
                       ),
                     ),
                     const TextSpan(
@@ -171,7 +208,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                       ),
                     ),
                     const TextSpan(
-                      text: '\n\u2022 Manufacturer:',
+                      text: '\n\u2022 Type:',
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                       ),
@@ -183,7 +220,73 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                         ),
-                        child: Text('\n${set.vehiculeModelNavigation?.manufacturerNavigation?.name ?? "---"}'),
+                        child: Text( set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name != null? 
+                          '\n${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size}': "---",
+                        ),
+                      ),
+                    ),
+                    const TextSpan(
+                      text: '\n\u2022 Model:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    WidgetSpan(
+                      baseline: TextBaseline.alphabetic,
+                      alignment: PlaceholderAlignment.bottom,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Text('\n${set.vehiculeModelNavigation?.name ?? "---"}'),
+                      ),
+                    ),
+                    const TextSpan(
+                      text: '\n\u2022 Situation:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    WidgetSpan(
+                      baseline: TextBaseline.alphabetic,
+                      alignment: PlaceholderAlignment.bottom,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Text('\n${set.trailerCommonNavigation?.situationNavigation?.name ?? "---"}'),
+                      ),
+                    ),
+                    const TextSpan(
+                      text: '\n\u2022 Trim. maintenance:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    WidgetSpan(
+                      baseline: TextBaseline.alphabetic,
+                      alignment: PlaceholderAlignment.bottom,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Text('\n${set.maintenanceNavigation?.trimestral.dateOnlyString ?? "---"}'),
+                      ),
+                    ),
+                    const TextSpan(
+                      text: '\n\u2022 Anual. maintenance:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    WidgetSpan(
+                      baseline: TextBaseline.alphabetic,
+                      alignment: PlaceholderAlignment.bottom,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Text('\n${set.maintenanceNavigation?.anual.dateOnlyString ?? "---"}'),
                       ),
                     ),
                     const TextSpan(
@@ -203,70 +306,6 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                       ),
                     ),
                     const TextSpan(
-                      text: '\n\u2022 USDOT:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    WidgetSpan(
-                      baseline: TextBaseline.alphabetic,
-                      alignment: PlaceholderAlignment.bottom,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: Text('\n scac - ${set.carrierNavigation?.usdotNavigation?.scac ?? "---"}'),
-                      ),
-                    ),
-                    const TextSpan(
-                      text: '\n\u2022 Trim. maintenance:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    WidgetSpan(
-                      baseline: TextBaseline.alphabetic,
-                      alignment: PlaceholderAlignment.bottom,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: Text('\n ${set.maintenanceNavigation?.trimestral.dateOnlyString ?? "---"}'),
-                      ),
-                    ),
-                    const TextSpan(
-                      text: '\n\u2022 Anual. maintenance:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    WidgetSpan(
-                      baseline: TextBaseline.alphabetic,
-                      alignment: PlaceholderAlignment.bottom,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: Text('\n ${set.maintenanceNavigation?.anual.dateOnlyString ?? "---"}'),
-                      ),
-                    ),
-                    const TextSpan(
-                      text: '\n\u2022 Situation',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    WidgetSpan(
-                      baseline: TextBaseline.alphabetic,
-                      alignment: PlaceholderAlignment.bottom,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
-                        child: Text('\n ${set.truckCommonNavigation?.situationNavigation?.name ?? "---"}'),
-                      ),
-                    ),
-                    const TextSpan(
                       text: '\n\n\u2022 Plates \n',
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
@@ -283,14 +322,14 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                 List<CSMSetValidationResult> evaluation = set.evaluate();
                 if (evaluation.isEmpty) {
                   final String auth = _sessionStorage.getTokenStrict();
-                  MainResolver<RecordUpdateOut<Truck>> resolverUpdateOut =
-                      await Sources.foundationSource.trucks.update(set, auth);
+                  MainResolver<RecordUpdateOut<Trailer>> resolverUpdateOut =
+                      await Sources.foundationSource.trailers.update(set, auth);
                   try {
                     resolverUpdateOut
                         .act((JObject json) =>
-                            RecordUpdateOut<Truck>.des(json, Truck.des))
+                            RecordUpdateOut<Trailer>.des(json, Trailer.des))
                         .then(
-                      (RecordUpdateOut<Truck> updateOut) {
+                      (RecordUpdateOut<Trailer> updateOut) {
                         CSMRouter.i.pop();
                       },
                     );
@@ -336,95 +375,102 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
       form: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: CSMSpacingColumn(spacing: 10, children: <Widget>[
-            TWSInputText(
-              label: "VIN",
-              hint: "enter a vin number",
-              maxLength: 17,
-              isStrictLength: true,
-              controller: TextEditingController(text: set.vin),
-              onChanged: (String text) {
-                set = set.clone(vin: text);
-              },
-            ),
-            TWSInputText(
-              label: "Motor",
-              hint: "enter a motor number",
-              maxLength: 16,
-              isStrictLength: true,
-              controller: TextEditingController(text: set.motor),
-              onChanged: (String text) {
-                set = set.clone(motor: text);
-              },
-            ),
+          child: CSMSpacingColumn(spacing: 20, children: <Widget>[
             TWSInputText(
               label: "Economic",
               hint: "enter a economic number",
               maxLength: 16,
               isStrictLength: true,
               controller: TextEditingController(
-                  text: set.truckCommonNavigation!.economic),
+                  text: set.trailerCommonNavigation!.economic),
               onChanged: (String text) {
                 set = set.clone(
-                    truckCommonNavigation:
-                        set.truckCommonNavigation!.clone(economic: text));
+                  trailerCommonNavigation:
+                      set.trailerCommonNavigation!.clone(economic: text),
+                );
               },
             ),
             TWSAutoCompleteField<Carrier>(
-                width: double.maxFinite,
-                label: "Carrier",
-                hint: "Select a carrier",
-                isOptional: true,
-                adapter: const _CarriersViewAdapter(),
-                initialValue: set.carrierNavigation,
-                onChanged: (Carrier? selectedItem) {
-                  set.carrierNavigation = null;
-                  set = set.clone(
-                    carrier: selectedItem?.id ?? 0,
-                    carrierNavigation: selectedItem,
-                  );
-                },
-                displayValue: (Carrier? set) {
-                  return set?.name ?? 'error';
-                }),
+              width: double.maxFinite,
+              label: "Carrier",
+              hint: "Select a carrier",
+              isOptional: true,
+              adapter: const _CarriersViewAdapter(),
+              initialValue: set.carrierNavigation,
+              onChanged: (Carrier? selectedItem) {
+                set.carrierNavigation = null;
+                set = set.clone(
+                  carrier: selectedItem?.id ?? 0,
+                  carrierNavigation: selectedItem,
+                );
+              },
+              displayValue: (Carrier? set) {
+                return set?.name ?? 'error';
+              },
+            ),
             TWSAutoCompleteField<VehiculeModel>(
-                width: double.maxFinite,
-                label: "Model",
-                hint: "Select a model",
-                isOptional: true,
-                adapter: const _VehiculeModelViewAdapter(),
-                initialValue: set.vehiculeModelNavigation,
-                onChanged: (VehiculeModel? selectedItem) {
-                  set.vehiculeModelNavigation = null;
-                  set = set.clone(
-                    model: selectedItem?.id ?? 0,
-                    vehiculeModelNavigation: selectedItem,
-                  );
-                },
-                displayValue: (VehiculeModel? set) {
-                  return set?.name ?? 'error';
-                }),
+              width: double.maxFinite,
+              label: "Model",
+              hint: "Select a model",
+              isOptional: true,
+              adapter: const _VehiculeModelViewAdapter(),
+              initialValue: set.vehiculeModelNavigation,
+              onChanged: (VehiculeModel? selectedItem) {
+                set.vehiculeModelNavigation = null;
+                set = set.clone(
+                  model: selectedItem?.id ?? 0,
+                  vehiculeModelNavigation: selectedItem,
+                );
+              },
+              displayValue: (VehiculeModel? set) {
+                return set?.name ?? 'error';
+              },
+            ),
+            TWSAutoCompleteField<TrailerType>(
+              width: double.maxFinite,
+              label: "Trailer Type",
+              hint: "Select a trailer type",
+              isOptional: true,
+              adapter: const _TrailerTypeViewAdapter(),
+              initialValue: set.trailerCommonNavigation?.trailerTypeNavigation,
+              onChanged: (TrailerType? selectedItem) {
+                set.trailerCommonNavigation?.trailerTypeNavigation = null;
+                set = set.clone(
+                  trailerCommonNavigation: set.trailerCommonNavigation?.clone(
+                    trailerTypeNavigation: selectedItem,
+                    type: selectedItem?.id ?? 0,
+                  ),
+                );
+              },
+              displayValue: (TrailerType? set) {
+                return set != null
+                    ? "${set.trailerClassNavigation?.name} - ${set.size}"
+                    : "error";
+              },
+            ),
             TWSAutoCompleteField<Situation>(
-                width: double.maxFinite,
-                label: "Situation",
-                hint: "Select a situation",
-                isOptional: true,
-                adapter: const _SituationsViewAdapter(),
-                initialValue: set.truckCommonNavigation?.situationNavigation,
-                onChanged: (Situation? selectedItem) {
-                  set.truckCommonNavigation!.situationNavigation = null;
-                  set = set.clone(
-                    truckCommonNavigation: set.truckCommonNavigation?.clone(
-                      situation: selectedItem?.id ?? 0,
-                      situationNavigation: selectedItem,
-                    ),
-                  );
-                },
-                displayValue: (Situation? set) {
-                  return set?.name ?? 'error';
-                }),
+              width: double.maxFinite,
+              label: "Situation",
+              hint: "Select a situation",
+              isOptional: true,
+              adapter: const _SituationsViewAdapter(),
+              initialValue: set.trailerCommonNavigation?.situationNavigation,
+              onChanged: (Situation? selectedItem) {
+                set.trailerCommonNavigation!.situationNavigation = null;
+                set = set.clone(
+                  trailerCommonNavigation: set.trailerCommonNavigation?.clone(
+                    situationNavigation: selectedItem,
+                    situation: selectedItem?.id ?? 0,
+                  ),
+                );
+              },
+              displayValue: (Situation? set) {
+                return set?.name ?? 'error';
+              },
+            ),
             TWSSection(
               title: "Plates",
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               content: TWSIncrementalList<Plate>(
                 recordMin: 1,
                 recordLimit: 2,
@@ -447,7 +493,8 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                       maxLength: 12,
                       isStrictLength: false,
                       controller: TextEditingController(
-                          text: set.plates[index].identifier),
+                        text: set.plates[index].identifier,
+                      ),
                       onChanged: (String text) {
                         set.plates[index] =
                             set.plates[index].clone(identifier: text);
@@ -457,12 +504,14 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                       label: "Country",
                       width: double.maxFinite,
                       localList: TWSAMessages.kCountryList,
-                      isOptional: true,
                       initialValue: set.plates[index].country,
                       displayValue: (String? value) => value ?? "error",
                       onChanged: (String? selection) {
                         set.plates[index] = set.plates[index].clone(
-                            country: selection ?? "", state: "", truck: set.id);
+                          country: selection ?? "",
+                          state: "",
+                          trailer: set.id,
+                        );
                         _platesFormsState();
                       },
                     ),
@@ -476,7 +525,6 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                             : set.plates[index].country == mx
                                 ? mx
                                 : "";
-
                         _platesFormsState = state.effect;
                         return TWSAutoCompleteField<String>(
                           label: "$country State",
@@ -513,6 +561,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
             ),
             TWSSection(
               title: "SCT",
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               content: CSMSpacingColumn(spacing: 10, children: <Widget>[
                 TWSInputText(
                   label: "Type",
@@ -532,8 +581,9 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                   hint: "enter the SCT number",
                   maxLength: 25,
                   isStrictLength: true,
-                  controller:
-                      TextEditingController(text: set.sctNavigation?.number),
+                  controller: TextEditingController(
+                    text: set.sctNavigation?.number,
+                  ),
                   onChanged: (String text) {
                     set = set.clone(
                         sctNavigation: set.sctNavigation?.clone(number: text) ??
@@ -546,18 +596,21 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                   maxLength: 10,
                   isStrictLength: false,
                   controller: TextEditingController(
-                      text: set.sctNavigation?.configuration),
+                    text: set.sctNavigation?.configuration,
+                  ),
                   onChanged: (String text) {
                     set = set.clone(
-                        sctNavigation:
-                            set.sctNavigation?.clone(configuration: text) ??
-                                SCT.a().clone(configuration: text));
+                      sctNavigation:
+                          set.sctNavigation?.clone(configuration: text) ??
+                              SCT.a().clone(configuration: text),
+                    );
                   },
                 ),
               ]),
             ),
             TWSSection(
               title: "Maintenance",
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               content: CSMSpacingColumn(
                 spacing: 20,
                 children: <Widget>[
@@ -566,11 +619,17 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                     firstDate: DateTime(1999),
                     lastDate: DateTime(2040),
                     label: "Trimestral",
-                    controller: TextEditingController(text: set.maintenanceNavigation?.trimestral.dateOnlyString),
+                    controller: TextEditingController(
+                      text:set.maintenanceNavigation?.trimestral.dateOnlyString,
+                    ),
                     onChanged: (String text) {
                       set = set.clone(
-                        maintenanceNavigation: set.maintenanceNavigation?.clone(trimestral: DateTime.tryParse(text) ?? DateTime(0)) 
-                        ?? Maintenance.a().clone(trimestral:DateTime.tryParse(text) ?? DateTime(0))
+                        maintenanceNavigation: set.maintenanceNavigation?.clone(
+                          trimestral: DateTime.tryParse(text) ?? DateTime(0),
+                        ) ??
+                        Maintenance.a().clone(
+                          trimestral: DateTime.tryParse(text) ?? DateTime(0),
+                        ),
                       );
                     },
                   ),
@@ -579,60 +638,21 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                     firstDate: DateTime(1999),
                     lastDate: DateTime(2040),
                     label: "Anual",
-                    controller: TextEditingController(text: set.maintenanceNavigation?.anual.dateOnlyString),
+                    controller: TextEditingController(
+                        text: set.maintenanceNavigation?.anual.dateOnlyString),
                     onChanged: (String text) {
                       set = set.clone(
-                          maintenanceNavigation: set.maintenanceNavigation?.clone(anual: DateTime.tryParse(text) ??DateTime(0)) 
-                          ?? Maintenance.a().clone( anual: DateTime.tryParse(text) ?? DateTime(0))
+                        maintenanceNavigation: set.maintenanceNavigation?.clone(
+                          anual: DateTime.tryParse(text) ?? DateTime(0),
+                        ) ??
+                        Maintenance.a().clone(
+                          anual: DateTime.tryParse(text) ?? DateTime(0),
+                        ),
                       );
                     },
                   ),
                 ],
               ),
-            ),
-            TWSSection(
-              title: "Insurance",
-              content: CSMSpacingColumn(spacing: 10, children: <Widget>[
-                TWSInputText(
-                  label: "Policy",
-                  hint: "enter the Insurance policy",
-                  maxLength: 20,
-                  isStrictLength: true,
-                  controller: TextEditingController(
-                      text: set.insuranceNavigation?.policy),
-                  onChanged: (String text) {
-                    set = set.clone(
-                      insuranceNavigation: set.insuranceNavigation?.clone(policy: text) 
-                      ?? Insurance.a().clone(policy: text)
-                    );
-                  },
-                ),
-                TWSDatepicker(
-                  width: double.maxFinite,
-                  firstDate: DateTime(1999),
-                  lastDate: DateTime(2040),
-                  label: "Expiration",
-                  controller: TextEditingController(
-                      text: set.insuranceNavigation?.expiration.dateOnlyString),
-                  onChanged: (String text) {
-                    set = set.clone(
-                      insuranceNavigation: set.insuranceNavigation?.clone(expiration: DateTime.tryParse(text)) 
-                      ?? Insurance.a().clone(expiration: DateTime.tryParse(text))
-                    );
-                  },
-                ),
-                TWSAutoCompleteField<String>(
-                  label: "Country",
-                  width: double.maxFinite,
-                  localList: TWSAMessages.kCountryList,
-                  initialValue: set.insuranceNavigation?.country,
-                  displayValue: (String? value) => value ?? "error",
-                  onChanged: (String? selection) {
-                    set = set.clone(insuranceNavigation: set.insuranceNavigation?.clone(country: selection ?? "") 
-                    ?? Insurance.a().clone(country: selection ?? ""));
-                  },
-                )
-              ]),
             ),
           ]),
         ),
@@ -641,7 +661,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
   }
 
   @override
-  Widget composeViewer(Truck set, BuildContext context) {
+  Widget composeViewer(Trailer set, BuildContext context) {
     return SizedBox.expand(
       child: CSMSpacingColumn(
         spacing: 12,
@@ -649,23 +669,20 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
         children: <Widget>[
           TWSPropertyViewer(
             label: 'Economic',
-            value: set.truckCommonNavigation?.economic ?? '---',
-          ),
-          TWSPropertyViewer(
-            label: 'VIN',
-            value: set.vin,
+            value: set.trailerCommonNavigation?.economic ?? '---',
           ),
           TWSPropertyViewer(
             label: 'Carrier',
             value: set.carrierNavigation?.name ?? '---',
           ),
           TWSPropertyViewer(
-            label: 'Manufacturer',
-            value: set.vehiculeModelNavigation?.manufacturerNavigation?.name ?? '---',
+            label: 'Type',
+            value: set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name != null? 
+              '${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size}': "---",
           ),
           TWSPropertyViewer(
-            label: 'Motor',
-            value: set.motor ?? '---',
+            label: 'Manufacturer',
+            value: set.vehiculeModelNavigation?.manufacturerNavigation?.name ?? '---',
           ),
           TWSPropertyViewer(
             label: 'SCT number',
@@ -687,16 +704,11 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
           TWSPropertyViewer(
             label: 'Situation',
             value:
-                set.truckCommonNavigation?.situationNavigation?.name ?? '---',
-          ),
-          TWSPropertyViewer(
-            label: 'Insurance',
-            value:
-                set.insuranceNavigation?.policy ?? '---',
+                set.trailerCommonNavigation?.situationNavigation?.name ?? '---',
           ),
           TWSPropertyViewer(
             label: 'Location',
-            value: set.truckCommonNavigation?.locationNavigation?.name ?? '---',
+            value: set.trailerCommonNavigation?.locationNavigation?.name ?? '---',
           ),
           TWSPropertyViewer(
             label: 'Plates',

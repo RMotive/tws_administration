@@ -1,10 +1,10 @@
-part of '../trucks_create_whisper.dart';
+part of '../trailers_create_whisper.dart';
 
-class _TruckStackItem extends StatelessWidget {
-  final Truck actualModel;
+class _TrailerStackItem extends StatelessWidget {
+  final Trailer actualModel;
   final bool selected;
   final bool valid;
-  const _TruckStackItem({
+  const _TrailerStackItem({
     required this.actualModel,
     required this.selected,
     required this.valid,
@@ -43,13 +43,18 @@ class _TruckStackItem extends StatelessWidget {
       valid: valid,
       properties: <TwsArticleCreationStackItemProperty>[
         TwsArticleCreationStackItemProperty(
-            label: 'Economic',
-            minWidth: 150,
-            value: actualModel.truckCommonNavigation?.economic),
+          label: 'Economic',
+          minWidth: 150,
+          value: actualModel.trailerCommonNavigation?.economic,
+        ),
         TwsArticleCreationStackItemProperty(
-            label: 'VIN', minWidth: 150, value: actualModel.vin),
-        TwsArticleCreationStackItemProperty(
-            label: 'Motor', minWidth: 150, value: actualModel.motor ?? "---"),
+          label: 'Type',
+          minWidth: 150,
+          value: actualModel.trailerCommonNavigation?.trailerTypeNavigation !=
+                  null
+              ? "${actualModel.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${actualModel.trailerCommonNavigation?.trailerTypeNavigation?.size}"
+              : "---",
+        ),
         TwsArticleCreationStackItemProperty(
           label: 'Model',
           minWidth: 150,
@@ -63,7 +68,7 @@ class _TruckStackItem extends StatelessWidget {
         TwsArticleCreationStackItemProperty(
           label: 'Situation',
           minWidth: 150,
-          value: actualModel.truckCommonNavigation?.situationNavigation?.name ??
+          value: actualModel.trailerCommonNavigation?.situationNavigation?.name ??
               "---",
         ),
         for (int i = 0; i < actualModel.plates.length; i++)
@@ -72,11 +77,6 @@ class _TruckStackItem extends StatelessWidget {
             minWidth: 150,
             value: displayPlate(actualModel.plates[i]),
           ),
-        TwsArticleCreationStackItemProperty(
-          label: 'Insurance Policy',
-          minWidth: 150,
-          value: displayInsurance(actualModel.insuranceNavigation),
-        ),
         TwsArticleCreationStackItemProperty(
           label: 'Anual Maint.',
           minWidth: 150,

@@ -5,6 +5,8 @@ import 'package:tws_administration_view/view/articles/features/features_article.
 import 'package:tws_administration_view/view/articles/features/whispers/create/features_create_whisper.dart';
 import 'package:tws_administration_view/view/articles/solutions/solutions_article.dart';
 import 'package:tws_administration_view/view/articles/solutions/whispers/solutions_create_whisper.dart';
+import 'package:tws_administration_view/view/articles/trailers/trailers_article.dart';
+import 'package:tws_administration_view/view/articles/trailers/whispers/trailers_create_whisper.dart';
 import 'package:tws_administration_view/view/articles/trucks/trucks_article.dart';
 import 'package:tws_administration_view/view/articles/trucks/whispers/trucks_create_whisper.dart';
 import 'package:tws_administration_view/view/articles/yardlogs/truck_inventory_article.dart';
@@ -25,7 +27,7 @@ typedef Routes = TWSARoutes;
 class TWSARouteTree extends CSMRouterTreeBase {
   TWSARouteTree()
       : super(
-          devRoute: Routes.contactsArticle,
+          devRoute: Routes.trailersArticle,
           redirect: (_, __) {
             return null;
           },
@@ -126,6 +128,19 @@ class TWSARouteTree extends CSMRouterTreeBase {
                           Routes.trucksCreateWhisper,
                           whisperOptions: const CSMRouteWhisperOptions(),
                           pageBuild: (BuildContext ctx, CSMRouterOutput output) => const TrucksCreateWhisper(),
+                        ),
+                      ],
+                    ),
+                    // --> [Trailers]
+                    CSMRouteNode(
+                      Routes.trailersArticle,
+                      pageBuild: (_, __) => const TrailersArticle(),
+                      routes: <CSMRouteBase>[
+                        // -> [Create]
+                        CSMRouteWhisper<Object>(
+                          Routes.trailersCreateWhisper,
+                          whisperOptions: const CSMRouteWhisperOptions(),
+                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const TrailersCreateWhisper(),
                         ),
                       ],
                     ),

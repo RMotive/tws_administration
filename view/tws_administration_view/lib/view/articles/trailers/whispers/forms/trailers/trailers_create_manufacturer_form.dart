@@ -1,13 +1,13 @@
-part of '../../trucks_create_whisper.dart';
+part of '../../trailers_create_whisper.dart';
 
-class _TruckCreateMaintenanceState extends CSMStateBase{}
-final _TruckCreateMaintenanceState _maintenanceformState = _TruckCreateMaintenanceState();
+class _TrailersCreateMaintenanceState extends CSMStateBase{}
+final _TrailersCreateMaintenanceState _maintenanceformState = _TrailersCreateMaintenanceState();
 
-class _TruckCreateManufacturer extends StatelessWidget {
+class _TrailersCreateManufacturer extends StatelessWidget {
   final TWSArticleCreatorItemState<Object>? itemState;
   final bool enable;
   final TextStyle style;
-  const _TruckCreateManufacturer({
+  const _TrailersCreateManufacturer({
     required this.style,
     this.itemState,
     this.enable = true,
@@ -15,14 +15,25 @@ class _TruckCreateManufacturer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CSMDynamicWidget<_TruckCreateMaintenanceState>(
+    return CSMDynamicWidget<_TrailersCreateMaintenanceState>(
       state: _maintenanceformState,
-      designer: (_, _TruckCreateMaintenanceState state){
-        final Truck item = itemState!.model as Truck;
+      designer: (_, _TrailersCreateMaintenanceState state){
+        final Trailer item = itemState!.model as Trailer;
         final bool isEnable = itemState != null &&  (item.vehiculeModelNavigation?.id == 0 || item.vehiculeModelNavigation == null);
         
         return TWSCascadeSection(
-          title: "Truck Model", 
+          title: "Trailer Model", 
+          onPressed: (bool isShowing) {
+            if(isShowing) {
+              Trailer model = itemState!.model as Trailer;
+              itemState!.updateModelRedrawing(
+                model.clone(
+                  model: 0
+                )
+              );
+              state.effect();
+            }
+          },
           mainControl: Expanded(
             child: TWSAutoCompleteField<VehiculeModel>(
               label: "Select a Model",
@@ -35,7 +46,7 @@ class _TruckCreateManufacturer extends StatelessWidget {
                 return false;
               },
               onChanged: (VehiculeModel? selectedItem){
-                Truck model = itemState!.model as Truck;
+                Trailer model = itemState!.model as Trailer;
                 itemState!.updateModelRedrawing(
                   model.clone(
                     vehiculeModelNavigation: selectedItem,
@@ -69,7 +80,7 @@ class _TruckCreateManufacturer extends StatelessWidget {
                       isEnabled: isEnable,
                       initialValue: item.vehiculeModelNavigation?.manufacturerNavigation,
                       onChanged:(Manufacturer? selection) {
-                        Truck model = itemState!.model as Truck;
+                        Trailer model = itemState!.model as Trailer;
                         itemState!.updateModelRedrawing(
                           model.clone(
                             vehiculeModelNavigation: model.vehiculeModelNavigation?.clone(
@@ -90,11 +101,11 @@ class _TruckCreateManufacturer extends StatelessWidget {
                   Expanded(
                     child: TWSInputText(
                       label: 'Model',
-                      maxLength: 32,
+                      maxLength: 30,
                       isEnabled: isEnable,
                       controller: TextEditingController(text: item.vehiculeModelNavigation?.name),
                       onChanged: (String text) {
-                        Truck model = itemState!.model as Truck;
+                        Trailer model = itemState!.model as Trailer;
                         itemState!.updateModelRedrawing(
                           model.clone(
                             vehiculeModelNavigation: model.vehiculeModelNavigation?.clone(name: text) ?? VehiculeModel.def().clone(name: text)
@@ -114,10 +125,9 @@ class _TruckCreateManufacturer extends StatelessWidget {
                       lastDate: _lastlDate,
                       label: 'Year',
                       isEnabled: isEnable,
-                      controller: TextEditingController(text: item.vehiculeModelNavigation?.year.toIso8601String() ?? _today.dateOnlyString),
+                      controller: TextEditingController(text: item.vehiculeModelNavigation?.year.dateOnlyString ?? _today.dateOnlyString),
                       onChanged: (String text) {
-                        Truck model = itemState!.model as Truck;
-                        
+                        Trailer model = itemState!.model as Trailer;
                         itemState!.updateModelRedrawing(
                           model.clone(
                             vehiculeModelNavigation: model.vehiculeModelNavigation?.clone(

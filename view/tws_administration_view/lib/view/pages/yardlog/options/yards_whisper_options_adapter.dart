@@ -122,7 +122,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<YardLog> {
             ),
             TWSPropertyViewer(
               label: 'Section',
-              value: "${set.sectionNavigation?.locationNavigation?.name} - ${set.sectionNavigation?.name}",
+              value: set.sectionNavigation != null? "${set.sectionNavigation?.locationNavigation?.name} - ${set.sectionNavigation?.name}" : null,
             ),
         
             //Images sections

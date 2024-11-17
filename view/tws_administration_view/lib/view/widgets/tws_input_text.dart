@@ -182,7 +182,7 @@ class _TWSInputTextState extends State<TWSInputText> {
           ),
           decoration: InputDecoration(
             hintText: widget.hint,
-            labelText: !widget.isOptional || widget.suffixLabel == null? widget.label : null,
+            labelText: widget.suffixLabel == null? widget.label : null,
             label: widget.suffixLabel != null? Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
