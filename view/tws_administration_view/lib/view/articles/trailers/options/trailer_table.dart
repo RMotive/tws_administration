@@ -30,7 +30,9 @@ class _TrailerTable extends StatelessWidget {
         TWSArticleTableFieldOptions<Trailer>(
           'Type',
           (Trailer item, int index, BuildContext ctx) =>
-              "${item.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${item.trailerCommonNavigation?.trailerTypeNavigation?.size}",
+              item.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name != null? 
+                '${item.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${item.trailerCommonNavigation?.trailerTypeNavigation?.size}': "---",
+            
         ),
         TWSArticleTableFieldOptions<Trailer>(
           'Manufacturer',

@@ -53,7 +53,8 @@
     29. Changed name properties for [TWSAutocompleteField] to fit property name and functionality:
         - [isOptionalLabel] -> [suffixLabel].
         - [suffixLabel] -> [suffixResultLabel].
-
+    30. Added missing information in [Trucks] & [Trailers] view tables.
+    31. Now the [TWSAutocompleteField] updates the [localList] data when the parameter changes on rebuild.
     
 
 - Dependencies upgrade:

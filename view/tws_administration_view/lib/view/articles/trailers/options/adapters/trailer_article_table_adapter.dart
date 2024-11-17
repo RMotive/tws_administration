@@ -220,7 +220,9 @@ final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                         ),
-                        child: Text('\n${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name ?? "---"} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size ?? "---"}'),
+                        child: Text( set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name != null? 
+                          '\n${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size}': "---",
+                        ),
                       ),
                     ),
                     const TextSpan(
@@ -435,7 +437,8 @@ final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
                 set.trailerCommonNavigation?.trailerTypeNavigation = null;
                 set = set.clone(
                   trailerCommonNavigation: set.trailerCommonNavigation?.clone(
-                    type: set.trailerCommonNavigation?.trailerTypeNavigation ?.id ?? 0,
+                    trailerTypeNavigation: selectedItem,
+                    type: selectedItem?.id ?? 0,
                   ),
                 );
               },
@@ -671,6 +674,11 @@ final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
           TWSPropertyViewer(
             label: 'Carrier',
             value: set.carrierNavigation?.name ?? '---',
+          ),
+          TWSPropertyViewer(
+            label: 'Type',
+            value: set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name != null? 
+              '${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size}': "---",
           ),
           TWSPropertyViewer(
             label: 'Manufacturer',

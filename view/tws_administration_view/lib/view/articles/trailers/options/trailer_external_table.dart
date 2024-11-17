@@ -26,7 +26,7 @@ class _TrailerExternalTable extends StatelessWidget {
         TWSArticleTableFieldOptions<TrailerExternal>(
           'Type',
           (TrailerExternal item, int index, BuildContext ctx) =>
-              "${item.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${item.trailerCommonNavigation?.trailerTypeNavigation?.size}",
+              item.trailerCommonNavigation?.trailerTypeNavigation != null? '${item.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name ?? "---"} - ${item.trailerCommonNavigation?.trailerTypeNavigation?.size ?? "---"}' : "---",
         ),
         TWSArticleTableFieldOptions<TrailerExternal>(
           'USA Plate',

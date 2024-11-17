@@ -297,7 +297,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
 
   @override
   void initState() {
-    theme = getTheme(
+    theme = getTheme( 
       updateEfect: themeUpdateListener,
     );
     hasKeyValue = widget.hasKeyValue ?? (T? set) => true;
@@ -321,6 +321,10 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
   @override
   void didUpdateWidget(covariant TWSAutoCompleteField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    //Set a new local list if changes.
+    if(widget.localList != null && (widget.localList != oldWidget.localList)){
+      rawOptionsList = widget.localList!;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) => setSelection());
   }
 

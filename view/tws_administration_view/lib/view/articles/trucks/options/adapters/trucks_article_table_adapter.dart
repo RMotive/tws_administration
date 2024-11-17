@@ -690,6 +690,11 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                 set.truckCommonNavigation?.situationNavigation?.name ?? '---',
           ),
           TWSPropertyViewer(
+            label: 'Insurance',
+            value:
+                set.insuranceNavigation?.policy ?? '---',
+          ),
+          TWSPropertyViewer(
             label: 'Location',
             value: set.truckCommonNavigation?.locationNavigation?.name ?? '---',
           ),

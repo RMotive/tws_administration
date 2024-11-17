@@ -182,17 +182,23 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                 isStrictLength: true,
                 controller: TextEditingController(text: set.truckCommonNavigation!.economic),
                 onChanged: (String text) {
-                  set.truckCommonNavigation!.economic = text;
+                  set = set.clone(
+                    truckCommonNavigation: set.truckCommonNavigation?.clone(
+                      economic: text,
+                    ),
+                  );
                 },
               ),
               TWSInputText(
                 label: "Carrier",
-                hint: "enter a motor number",
+                hint: "enter a carrier number",
                 maxLength: 100,
                 isStrictLength: true,
                 controller: TextEditingController(text: set.carrier),
                 onChanged: (String text) {
-                  set.carrier = text;
+                  set = set.clone(
+                    carrier: text,
+                  );
                 },
               ),
               TWSInputText(
@@ -202,7 +208,9 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                 isStrictLength: true,
                 controller: TextEditingController(text: set.mxPlate),
                 onChanged: (String text) {
-                  set.mxPlate = text;
+                  set = set.clone(
+                    mxPlate: text,
+                  );
                 },
               ),
               TWSInputText(
@@ -212,7 +220,9 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                 isStrictLength: true,
                 controller: TextEditingController(text: set.usaPlate),
                 onChanged: (String text) {
-                  set.usaPlate = text;
+                  set = set.clone(
+                    usaPlate: text,
+                  );
                 },
               ),
               TWSInputText(
@@ -220,11 +230,13 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> 
                 hint: "enter a vin number",
                 maxLength: 17,
                 isOptional: true,
-                suffixLabel: "(optional)",
+                suffixLabel: " (optional)",
                 isStrictLength: true,
                 controller: TextEditingController(text: set.vin),
                 onChanged: (String text) {
-                  set.vin = text;
+                  set = set.clone(
+                    vin: text,
+                  );
                 },
               ),
             ]

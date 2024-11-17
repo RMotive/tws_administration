@@ -115,7 +115,7 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TrailerExternal
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                         ),
-                        child: Text('\n${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name ?? "---"} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size ?? "---"}'),
+                        child: Text( set.trailerCommonNavigation?.trailerTypeNavigation != null? '${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name ?? "---"} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size ?? "---"}' : "---"),
                       ),
                     ),
                   ]
@@ -182,7 +182,11 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TrailerExternal
                 isStrictLength: true,
                 controller: TextEditingController(text: set.trailerCommonNavigation!.economic),
                 onChanged: (String text) {
-                  set.trailerCommonNavigation!.economic = text;
+                  set = set.clone(
+                    trailerCommonNavigation: set.trailerCommonNavigation?.clone(
+                      economic: text,
+                    ),
+                  );
                 },
               ),
               TWSInputText(
@@ -192,7 +196,9 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TrailerExternal
                 isStrictLength: true,
                 controller: TextEditingController(text: set.carrier),
                 onChanged: (String text) {
-                  set.carrier = text;
+                  set = set.clone(
+                    carrier: text,
+                  );
                 },
               ),
               TWSInputText(
@@ -202,7 +208,9 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TrailerExternal
                 isStrictLength: true,
                 controller: TextEditingController(text: set.mxPlate),
                 onChanged: (String text) {
-                  set.mxPlate = text;
+                  set = set.clone(
+                    mxPlate: text,
+                  );
                 },
               ),
               TWSInputText(
@@ -212,7 +220,9 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TrailerExternal
                 isStrictLength: true,
                 controller: TextEditingController(text: set.usaPlate),
                 onChanged: (String text) {
-                  set.usaPlate = text;
+                  set = set.clone(
+                    usaPlate: text,
+                  );
                 },
               ),
               TWSAutoCompleteField<TrailerType>(
@@ -226,7 +236,7 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TrailerExternal
                   set.trailerCommonNavigation?.trailerTypeNavigation = null;
                   set = set.clone(
                     trailerCommonNavigation: set.trailerCommonNavigation?.clone(
-                      type: set.trailerCommonNavigation?.trailerTypeNavigation?.id ?? 0,
+                      type: selectedItem?.id ?? 0,
                       trailerTypeNavigation: selectedItem
                     ),
                   );
@@ -256,6 +266,10 @@ final class _ExternalTableAdapter extends TWSArticleTableAdapter<TrailerExternal
           TWSPropertyViewer(
             label: 'Carrier',
             value: set.carrier,
+          ),
+          TWSPropertyViewer(
+            label: 'Type',
+            value: set.trailerCommonNavigation?.trailerTypeNavigation != null? '${set.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name ?? "---"} - ${set.trailerCommonNavigation?.trailerTypeNavigation?.size ?? "---"}' : "---"
           ),
           TWSPropertyViewer(
             label: 'MX Plates',
