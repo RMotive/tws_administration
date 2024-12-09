@@ -1,14 +1,16 @@
 import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
+import 'package:tws_administration_view/core/extension/datetime.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
-import 'package:tws_administration_view/view/frames/article/action_ribbon_options.dart';
-import 'package:tws_administration_view/view/pages/human_resources/human_resources_frame.dart';
 import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table.dart';
 import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table_adapter.dart';
 import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table_agent.dart';
 import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table_field_options.dart';
+import 'package:tws_administration_view/view/components/tws_property_viewer.dart';
+import 'package:tws_administration_view/view/frames/article/action_ribbon_options.dart';
+import 'package:tws_administration_view/view/pages/human_resources/human_resources_frame.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 // --> Services
@@ -58,8 +60,43 @@ final class ContactsTableAdapter extends TWSArticleTableAdapter<Contact> {
   TWSArticleTableEditor? composeEditor(CSMEncodeInterface set, void Function() closeReinvoke, BuildContext context) => null;
 
   @override
-  Widget composeViewer(CSMEncodeInterface set, BuildContext context) {
-    return const SizedBox();
+  Widget composeViewer(Contact set, BuildContext context) {
+    return CSMSpacingColumn(
+      crossAlignment: CrossAxisAlignment.start,
+      includeStart: true,
+      spacing: 12,
+      children: <Widget>[
+        /// --> Name property viewer
+        TWSPropertyViewer(
+          label: 'Name',
+          value: set.name,
+        ),
+
+        /// --> Lastname property viewer
+        TWSPropertyViewer(
+          label: 'Lastname',
+          value: set.lastName,
+        ),
+
+        /// --> Email property viewer
+        TWSPropertyViewer(
+          label: 'Email',
+          value: set.email,
+        ),
+
+        /// --> Phone property viewer
+        TWSPropertyViewer(
+          label: 'Phone',
+          value: set.phone,
+        ),
+
+        /// --> Lastname property viewer
+        TWSPropertyViewer(
+          label: 'Timestamp',
+          value: set.timestamp.display,
+        ),
+      ],
+    );
   }
 
   @override

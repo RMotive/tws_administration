@@ -35,7 +35,7 @@ class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidge
     super.key,
     this.editable = true,
     this.removable = true,
-    this.viewerTitle = "Record",
+    this.viewerTitle = "Details",
     this.page = 1,
     this.agent,
     required this.size,

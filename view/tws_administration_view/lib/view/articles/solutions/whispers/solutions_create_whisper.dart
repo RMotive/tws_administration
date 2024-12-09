@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
 import 'package:tws_administration_view/view/articles/solutions/solutions_article.dart';
-import 'package:tws_administration_view/view/frames/whisper/whisper_frame.dart';
 import 'package:tws_administration_view/view/components/tws_article_creation/records_stack/tws_article_creator_stack_item.dart';
 import 'package:tws_administration_view/view/components/tws_article_creation/records_stack/tws_article_creator_stack_item_property.dart';
 import 'package:tws_administration_view/view/components/tws_article_creation/tws_article_agent.dart';
@@ -11,6 +10,7 @@ import 'package:tws_administration_view/view/components/tws_article_creation/tws
 import 'package:tws_administration_view/view/components/tws_article_creation/tws_article_creator.dart';
 import 'package:tws_administration_view/view/components/tws_article_creation/tws_article_creator_feedback.dart';
 import 'package:tws_administration_view/view/components/tws_input_text.dart';
+import 'package:tws_administration_view/view/frames/whisper/whisper_frame.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 final SolutionsServiceBase _solutionsService = Sources.foundationSource.solutions;

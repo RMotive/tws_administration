@@ -46,6 +46,7 @@ final class _TWSArticleTableDetails<TArticle extends CSMEncodeInterface> extends
               }
 
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // --> Details section actions
                   CSMSpacingRow(
@@ -57,10 +58,11 @@ final class _TWSArticleTableDetails<TArticle extends CSMEncodeInterface> extends
                         child: Text(
                           viewerTitle,
                           style: const TextStyle(
-                            fontWeight: FontWeight.w100,
-                            fontStyle: FontStyle.italic
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
                           ),  
-                        )
+                        ),
                       ),
                       // --> Close details action
                       _TWSArticleTableDetailsAction(

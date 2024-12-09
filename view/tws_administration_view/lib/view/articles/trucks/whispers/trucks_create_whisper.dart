@@ -6,7 +6,6 @@ import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
 import 'package:tws_administration_view/view/articles/trucks/trucks_article.dart';
-import 'package:tws_administration_view/view/frames/whisper/whisper_frame.dart';
 import 'package:tws_administration_view/view/components/tws_article_creation/records_stack/tws_article_creator_stack_item.dart';
 import 'package:tws_administration_view/view/components/tws_article_creation/records_stack/tws_article_creator_stack_item_property.dart';
 import 'package:tws_administration_view/view/components/tws_article_creation/tws_article_agent.dart';
@@ -23,22 +22,23 @@ import 'package:tws_administration_view/view/components/tws_incremental_list.dar
 import 'package:tws_administration_view/view/components/tws_input_text.dart';
 import 'package:tws_administration_view/view/components/tws_section.dart';
 import 'package:tws_administration_view/view/components/tws_section_divider.dart';
+import 'package:tws_administration_view/view/frames/whisper/whisper_frame.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 part '../options/adapters/trucks_whisper_options_adapter.dart';
+part 'forms/dialogs.dart';
+part 'forms/truck_external_form.dart';
+part 'forms/truck_external_stack_item.dart';
+part 'forms/truck_form.dart';
+part 'forms/truck_stack_item.dart';
 part 'forms/trucks/trucks_create_insurance_form.dart';
 part 'forms/trucks/trucks_create_main_form.dart';
 part 'forms/trucks/trucks_create_maintenance_form.dart';
 part 'forms/trucks/trucks_create_manufacturer_form.dart';
 part 'forms/trucks/trucks_create_plates_form.dart';
+part 'forms/trucks/trucks_create_plates_section.dart';
 part 'forms/trucks/trucks_create_sct_form.dart';
 part 'forms/trucks/trucks_create_situation_form.dart';
-part 'forms/truck_form.dart';
-part 'forms/truck_external_form.dart';
-part 'forms/truck_stack_item.dart';
-part 'forms/truck_external_stack_item.dart';
-part 'forms/trucks/trucks_create_plates_section.dart';
-part 'forms/dialogs.dart';
 
 class _MainFormState extends CSMStateBase {}
 final _MainFormState _mainFormState = _MainFormState();

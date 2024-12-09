@@ -5,8 +5,6 @@ import 'package:tws_administration_view/core/extension/datetime.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
-import 'package:tws_administration_view/view/frames/article/action_ribbon_options.dart';
-import 'package:tws_administration_view/view/pages/yardlog/yardlog_frame.dart';
 import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table.dart';
 import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table_adapter.dart';
 import 'package:tws_administration_view/view/components/tws_article_table/tws_article_table_agent.dart';
@@ -16,10 +14,12 @@ import 'package:tws_administration_view/view/components/tws_autocomplete_field/t
 import 'package:tws_administration_view/view/components/tws_datepicker_field.dart';
 import 'package:tws_administration_view/view/components/tws_input_text.dart';
 import 'package:tws_administration_view/view/components/tws_property_viewer.dart';
+import 'package:tws_administration_view/view/frames/article/action_ribbon_options.dart';
+import 'package:tws_administration_view/view/pages/yardlog/yardlog_frame.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
 
-part 'options/truck_inventory_table_adapter.dart';
 part 'options/inventory_page_state.dart';
+part 'options/truck_inventory_table_adapter.dart';
 
 final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
 final _InventoryPageState _pageState = _InventoryPageState(tableAgent);
