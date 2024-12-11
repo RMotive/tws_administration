@@ -40,6 +40,16 @@ class BusinessFrame extends StatelessWidget {
       route: TWSARoutes.trailersArticle,
       title: 'Trailers',
     ),
+    ArticleOptions(
+      icon: (Color? stateColor) {
+        return Icon(
+          Icons.contact_emergency_rounded,
+          color: stateColor,
+        );
+      },
+      route: TWSARoutes.driversArticle,
+      title: 'Drivers',
+    ),
   ];
 
   @override

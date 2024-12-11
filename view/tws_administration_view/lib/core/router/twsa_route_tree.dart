@@ -1,6 +1,8 @@
 import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
+import 'package:tws_administration_view/view/articles/drivers/drivers_article.dart';
+import 'package:tws_administration_view/view/articles/drivers/whispers/drivers_create_whisper.dart';
 import 'package:tws_administration_view/view/articles/features/features_article.dart';
 import 'package:tws_administration_view/view/articles/features/whispers/create/features_create_whisper.dart';
 import 'package:tws_administration_view/view/articles/solutions/solutions_article.dart';
@@ -27,7 +29,7 @@ typedef Routes = TWSARoutes;
 class TWSARouteTree extends CSMRouterTreeBase {
   TWSARouteTree()
       : super(
-          devRoute: Routes.trailersArticle,
+          devRoute: Routes.driversCreateWhisper,
           redirect: (_, __) {
             return null;
           },
@@ -141,6 +143,20 @@ class TWSARouteTree extends CSMRouterTreeBase {
                           Routes.trailersCreateWhisper,
                           whisperOptions: const CSMRouteWhisperOptions(),
                           pageBuild: (BuildContext ctx, CSMRouterOutput output) => const TrailersCreateWhisper(),
+                        ),
+                      ],
+                    ),
+
+                    // --> [Drivers]
+                    CSMRouteNode(
+                      Routes.driversArticle,
+                      pageBuild: (_, __) => const DriversArticle(),
+                      routes: <CSMRouteBase>[
+                        // -> [Create]
+                        CSMRouteWhisper<Object>(
+                          Routes.driversCreateWhisper,
+                          whisperOptions: const CSMRouteWhisperOptions(),
+                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const DriversCreateWhisper(),
                         ),
                       ],
                     ),

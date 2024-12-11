@@ -23,54 +23,8 @@ class _TrailerTable extends StatelessWidget {
               item.trailerCommonNavigation?.economic ?? '---',
         ),
         TWSArticleTableFieldOptions<Trailer>(
-          'Carrier',
-          (Trailer item, int index, BuildContext ctx) =>
-              item.carrierNavigation?.name ?? '---',
-        ),
-        TWSArticleTableFieldOptions<Trailer>(
-          'Type',
-          (Trailer item, int index, BuildContext ctx) =>
-              item.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name != null? 
-                '${item.trailerCommonNavigation?.trailerTypeNavigation?.trailerClassNavigation?.name} - ${item.trailerCommonNavigation?.trailerTypeNavigation?.size}': "---",
-            
-        ),
-        TWSArticleTableFieldOptions<Trailer>(
-          'Manufacturer',
-          (Trailer item, int index, BuildContext ctx) =>
-              item.vehiculeModelNavigation?.manufacturerNavigation?.name ?? '---',
-        ),
-        TWSArticleTableFieldOptions<Trailer>(
-          'SCT Number',
-          (Trailer item, int index, BuildContext ctx) =>
-              item.sctNavigation?.number ?? '---',
-          true,
-        ),
-        TWSArticleTableFieldOptions<Trailer>(
-          'USDOT number',
-          (Trailer item, int index, BuildContext ctx) =>
-              item.carrierNavigation?.usdotNavigation?.scac ?? '---',
-        ),
-        TWSArticleTableFieldOptions<Trailer>(
-          'Trimestral Maintenance',
-          (Trailer item, int index, BuildContext ctx) =>
-              item.maintenanceNavigation?.trimestral.dateOnlyString ?? '---',
-          true,
-        ),
-        TWSArticleTableFieldOptions<Trailer>(
-          'Anual Maintenance',
-          (Trailer item, int index, BuildContext ctx) =>
-              item.maintenanceNavigation?.anual.dateOnlyString ?? '---',
-          true,
-        ),
-        TWSArticleTableFieldOptions<Trailer>(
           'Plates',
           (Trailer item, int index, BuildContext ctx) => adapter.getPlates(item),
-          true,
-        ),
-        TWSArticleTableFieldOptions<Trailer>(
-          'Situation',
-          (Trailer item, int index, BuildContext ctx) =>
-              item.trailerCommonNavigation?.situationNavigation?.name ?? '---',
           true,
         ),
       ],

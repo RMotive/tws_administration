@@ -1,5 +1,5 @@
 import 'package:csm_client/csm_client.dart';
-import 'package:csm_view/csm_view.dart' hide JObject;
+import 'package:csm_view/csm_view.dart' hide JObject; 
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/constants/twsa_colors.dart';
 import 'package:tws_administration_view/core/constants/twsa_common_displays.dart';
@@ -21,33 +21,31 @@ import 'package:tws_administration_view/view/widgets/tws_cascade_section.dart';
 import 'package:tws_administration_view/view/widgets/tws_confirmation_dialog.dart';
 import 'package:tws_administration_view/view/widgets/tws_datepicker_field.dart';
 import 'package:tws_administration_view/view/widgets/tws_display_flat.dart';
-import 'package:tws_administration_view/view/widgets/tws_incremental_list.dart';
 import 'package:tws_administration_view/view/widgets/tws_input_text.dart';
 import 'package:tws_administration_view/view/widgets/tws_property_viewer.dart';
 import 'package:tws_administration_view/view/widgets/tws_section.dart';
-import 'package:tws_administration_view/view/widgets/tws_section_divider.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
-part 'options/adapters/trucks_article_table_adapter.dart';
-part 'options/adapters/truck_external_article_table_adapter.dart';
-part 'options/truck_article_tables_assembly.dart';
-part 'options/truck_external_table.dart';
-part 'options/truck_table.dart';
+part 'options/driver_article_tables_assembly.dart';
+part 'options/adapters/drivers_table_adapter.dart';
+part 'options/adapters/drivers_externals_table_adapter.dart';
+part 'options/drivers_table.dart';
+part 'options/drivers_externals_table.dart';
 
-class TrucksArticle extends CSMPageBase {
+class DriversArticle extends CSMPageBase {
   static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
-  const TrucksArticle({super.key});
+  const DriversArticle({super.key});
 
   @override
   Widget compose(BuildContext ctx, Size window) {
     return BusinessFrame(
-      currentRoute: TWSARoutes.trucksArticle,
+      currentRoute: TWSARoutes.driversArticle,
       actionsOptions: ActionRibbonOptions(
         refresher: tableAgent.refresh,
         maintenanceGroupConfig: MaintenanceGroupOptions(
-          onCreate: () => CSMRouter.i.drive(TWSARoutes.trucksCreateWhisper),
+          onCreate: () => CSMRouter.i.drive(TWSARoutes.driversCreateWhisper),
         ),
       ),
-      article: _TruckArticleTablesAssembly(
+      article: _DriverArticleTablesAssembly(
         agent: tableAgent,
       ),
     );

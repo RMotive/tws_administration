@@ -163,6 +163,9 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
   /// Variable that contains the default initialization for [widget.hasKeyValue] property.
   late bool Function(T?) hasKeyValue;
 
+  /// Stores the previous query value.
+  String previousQuery = "";
+
 
   /// Methoth that verify if the [TWSTextField] component has a valid input selection.
   bool verifySelection() {
@@ -222,18 +225,16 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
             selectedOption = exactCoincidense.first;
           }
         }
+      }  
 
-        if (!firstbuild){
-          if(previousSelection != selectedOption) widget.onChanged(selectedOption);
-          //Check if is necesary a list refresh, Else use the default list.
-          if(tapSelection == null && (query.isNotEmpty || suggestionsList.isEmpty)){
-            agent.refresh();
-          } else {
-            suggestionsList = rawOptionsList;
-          }
-        } 
-      }
+      // Trigger the Onchange callback when a search is triggered.
+      if(!firstbuild){
+        //Check if is necesary a list refresh.
+        if(tapSelection == null && (previousQuery.isNotEmpty || query.isNotEmpty)) agent.refresh();
+        if(previousSelection != selectedOption) widget.onChanged(selectedOption);
+      } 
       previousSelection = selectedOption;
+      previousQuery = query;
     }
   }
 
@@ -324,6 +325,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
     //Set a new local list if changes.
     if(widget.localList != null && (widget.localList != oldWidget.localList)){
       rawOptionsList = widget.localList!;
+      suggestionsList = rawOptionsList;
     }
     WidgetsBinding.instance.addPostFrameCallback((_) => setSelection());
   }
@@ -421,7 +423,12 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
                           ),
                           child: widget.adapter != null
                               ? _TWSAutocompleteFuture<T>(
-                                  consume: () => widget.adapter!.consume(1, widget.quantityResults, <SetViewOrderOptions>[], firstbuild? "" : ctrl.text.trim()),
+                                  consume: () => widget.adapter!.consume(
+                                    1,
+                                    widget.quantityResults,
+                                    <SetViewOrderOptions>[],
+                                    firstbuild ? "" : ctrl.text.trim(),
+                                  ),
                                   agent: agent,
                                   controller: scrollController,
                                   tileHeigth: tileHeigth,
@@ -434,16 +441,13 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
                                   onFetch: (List<SetViewOut<dynamic>> data) {
                                     //Stores the properties results
                                     for (SetViewOut<dynamic> view in data) {
-                                      suggestionsList = <T>[
-                                        ...view.sets
-                                      ];
+                                      suggestionsList = <T>[...view.sets];
                                     }
-                                    //Stores the default/initial fetched list values.
-                                    if(firstbuild) rawOptionsList = suggestionsList;
-                                    // search(ctrl.text);
+                                    
                                     firstbuild = false;
                                     return suggestionsList;
-                                  })
+                                  },
+                                )
                               : _TWSAutocompleteLocal<T>(
                                   controller: scrollController,
                                   suggestions: suggestionsList,

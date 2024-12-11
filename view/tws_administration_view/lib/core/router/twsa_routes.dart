@@ -33,6 +33,10 @@ class TWSARoutes {
   static const CSMRouteOptions trailersCreateWhisper = CSMRouteOptions('add-trailer');
   static const CSMRouteOptions trailersViewWhisper = CSMRouteOptions(name: 'trailers-view', 'view');
 
+  static const CSMRouteOptions driversArticle = CSMRouteOptions('drivers');
+  static const CSMRouteOptions driversCreateWhisper = CSMRouteOptions('add-driver');
+  static const CSMRouteOptions driversViewWhisper = CSMRouteOptions(name: 'driver-view', 'view');
+
   static const CSMRouteOptions manufacturersArticle = CSMRouteOptions('manufacturers');
   static const CSMRouteOptions manufacturersViewWhisper = CSMRouteOptions(name: 'manufacturers-view', 'view');
   static const CSMRouteOptions manufacturersCreateWhisper = CSMRouteOptions(name: 'manufacturers-create', 'create');
@@ -46,9 +50,6 @@ class TWSARoutes {
 
   static const CSMRouteOptions maintencesArticle = CSMRouteOptions('mainteneces');
   static const CSMRouteOptions maintenecesViewWhisper = CSMRouteOptions(name: 'maintenences-view', 'view');
-
-  static const CSMRouteOptions sctsArticle = CSMRouteOptions('scts');
-  static const CSMRouteOptions sctsViewWhisper = CSMRouteOptions(name: 'scts-view', 'view');
 
   static const CSMRouteOptions situationsArticle = CSMRouteOptions('situations');
   static const CSMRouteOptions situationsViewWhisper = CSMRouteOptions(name: 'situations-view', 'view');

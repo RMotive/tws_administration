@@ -55,7 +55,8 @@
         - [suffixLabel] -> [suffixResultLabel].
     30. Added missing information in [Trucks] & [Trailers] view tables.
     31. Now the [TWSAutocompleteField] updates the [localList] data when the parameter changes on rebuild.
-    
+    32. Added [color] & [foreColor] parameter in [TWSDisplayFlat].
+    33. Added [TWSCascadeSection] in optionals sets objects in update view to all articles in [Business] page.
 
 - Dependencies upgrade:
     1. (-) tws_foundation_client: Deprecated now used tws_foundation_client

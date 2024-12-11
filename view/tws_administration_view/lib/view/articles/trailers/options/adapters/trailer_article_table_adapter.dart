@@ -559,6 +559,8 @@ final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
                 },
               ),
             ),
+
+            if(set.sctNavigation != null)
             TWSSection(
               title: "SCT",
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -608,6 +610,87 @@ final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
                 ),
               ]),
             ),
+
+            if(set.sctNavigation == null) 
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TWSCascadeSection(
+                title: "SCT", 
+                padding: EdgeInsets.zero,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                onPressed: (bool isShowing) {
+                  //Creates a new SCT object.
+                  if(isShowing){
+                    set = set.clone(
+                      sctNavigation: SCT.a(),
+                    );
+                    return;
+                  }
+              
+                  //Removing the SCT object.
+                  set = set.clone(
+                    sct: 0,
+                  );
+                },
+                mainControl: const Expanded(
+                  child: TWSDisplayFlat(
+                    display: "Add an SCT",
+                    color: TWSAColors.oceanBlue,
+                    foreColor: TWSAColors.warmWhite,
+                  ),
+                ),
+                content: CSMSpacingColumn(
+                  spacing: 10,
+                  children: <Widget>[
+                    TWSInputText(
+                      label: "Type",
+                      hint: "enter the SCT type",
+                      maxLength: 6,
+                      isStrictLength: true,
+                      controller:
+                          TextEditingController(text: set.sctNavigation?.type),
+                      onChanged: (String text) {
+                        set = set.clone(
+                            sctNavigation: set.sctNavigation?.clone(type: text) ??
+                                SCT.a().clone(type: text));
+                      },
+                    ),
+                    TWSInputText(
+                      label: "Number",
+                      hint: "enter the SCT number",
+                      maxLength: 25,
+                      isStrictLength: true,
+                      controller: TextEditingController(
+                        text: set.sctNavigation?.number,
+                      ),
+                      onChanged: (String text) {
+                        set = set.clone(
+                            sctNavigation: set.sctNavigation?.clone(number: text) ??
+                                SCT.a().clone(number: text));
+                      },
+                    ),
+                    TWSInputText(
+                      label: "Configuration",
+                      hint: "enter the SCT configuration",
+                      maxLength: 10,
+                      isStrictLength: false,
+                      controller: TextEditingController(
+                        text: set.sctNavigation?.configuration,
+                      ),
+                      onChanged: (String text) {
+                        set = set.clone(
+                          sctNavigation:
+                              set.sctNavigation?.clone(configuration: text) ??
+                                  SCT.a().clone(configuration: text),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            if(set.maintenanceNavigation != null)
             TWSSection(
               title: "Maintenance",
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -654,6 +737,79 @@ final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
                 ],
               ),
             ),
+
+            if(set.maintenanceNavigation == null) 
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TWSCascadeSection(
+                title: "Maintenance", 
+                padding: EdgeInsets.zero,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                onPressed: (bool isShowing) {
+                  //Creates a new Maintenance object.
+                  if(isShowing){
+                    set = set.clone(
+                      maintenanceNavigation: Maintenance.a(),
+                    );
+                    return;
+                  }
+              
+                  //Removing the Maintenance object.
+                  set = set.clone(
+                    maintenance: 0,
+                  );
+                },
+                mainControl: const Expanded(
+                  child: TWSDisplayFlat(
+                    display: "Add a Maintenance data",
+                    color: TWSAColors.oceanBlue,
+                    foreColor: TWSAColors.warmWhite,
+                  ),
+                ),
+                content: CSMSpacingColumn(
+                  spacing: 10,
+                  children: <Widget>[
+                    TWSDatepicker(
+                    width: double.maxFinite,
+                    firstDate: DateTime(1999),
+                    lastDate: DateTime(2040),
+                    label: "Trimestral",
+                    controller: TextEditingController(
+                      text:set.maintenanceNavigation?.trimestral.dateOnlyString,
+                    ),
+                    onChanged: (String text) {
+                      set = set.clone(
+                        maintenanceNavigation: set.maintenanceNavigation?.clone(
+                          trimestral: DateTime.tryParse(text) ?? DateTime(0),
+                        ) ??
+                        Maintenance.a().clone(
+                          trimestral: DateTime.tryParse(text) ?? DateTime(0),
+                        ),
+                      );
+                    },
+                  ),
+                  TWSDatepicker(
+                    width: double.maxFinite,
+                    firstDate: DateTime(1999),
+                    lastDate: DateTime(2040),
+                    label: "Anual",
+                    controller: TextEditingController(
+                        text: set.maintenanceNavigation?.anual.dateOnlyString),
+                    onChanged: (String text) {
+                      set = set.clone(
+                        maintenanceNavigation: set.maintenanceNavigation?.clone(
+                          anual: DateTime.tryParse(text) ?? DateTime(0),
+                        ) ??
+                        Maintenance.a().clone(
+                          anual: DateTime.tryParse(text) ?? DateTime(0),
+                        ),
+                      );
+                    },
+                  ),
+                  ],
+                ),
+              ),
+            ),
           ]),
         ),
       ),
@@ -670,10 +826,6 @@ final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
           TWSPropertyViewer(
             label: 'Economic',
             value: set.trailerCommonNavigation?.economic ?? '---',
-          ),
-          TWSPropertyViewer(
-            label: 'Carrier',
-            value: set.carrierNavigation?.name ?? '---',
           ),
           TWSPropertyViewer(
             label: 'Type',

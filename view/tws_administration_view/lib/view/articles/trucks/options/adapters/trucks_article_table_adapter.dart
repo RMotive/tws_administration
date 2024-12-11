@@ -511,6 +511,8 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                 },
               ),
             ),
+
+            if(set.sctNavigation != null)
             TWSSection(
               title: "SCT",
               content: CSMSpacingColumn(spacing: 10, children: <Widget>[
@@ -551,11 +553,93 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                     set = set.clone(
                         sctNavigation:
                             set.sctNavigation?.clone(configuration: text) ??
-                                SCT.a().clone(configuration: text));
-                  },
+                                SCT.a().clone(configuration: text),
+                      );
+                    },
                 ),
               ]),
             ),
+
+            if(set.sctNavigation == null) 
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TWSCascadeSection(
+                title: "SCT", 
+                padding: EdgeInsets.zero,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                onPressed: (bool isShowing) {
+                  //Creates a new Maintenance object.
+                  if(isShowing){
+                    set = set.clone(
+                      maintenanceNavigation: Maintenance.a(),
+                    );
+                    return;
+                  }
+              
+                  //Removing the Maintenance object.
+                  set = set.clone(
+                    maintenance: 0,
+                  );
+                },
+                mainControl: const Expanded(
+                  child: TWSDisplayFlat(
+                    display: "Add an SCT",
+                    color: TWSAColors.oceanBlue,
+                    foreColor: TWSAColors.warmWhite,
+                  ),
+                ),
+                content: CSMSpacingColumn(
+                  spacing: 10,
+                  children: <Widget>[
+                    TWSInputText(
+                      label: "Type",
+                      hint: "enter the SCT type",
+                      maxLength: 6,
+                      isStrictLength: true,
+                      controller:
+                          TextEditingController(text: set.sctNavigation?.type),
+                      onChanged: (String text) {
+                        set = set.clone(
+                            sctNavigation: set.sctNavigation?.clone(type: text) ??
+                                SCT.a().clone(type: text));
+                      },
+                    ),
+                    TWSInputText(
+                      label: "Number",
+                      hint: "enter the SCT number",
+                      maxLength: 25,
+                      isStrictLength: true,
+                      controller:
+                          TextEditingController(text: set.sctNavigation?.number),
+                      onChanged: (String text) {
+                        set = set.clone(
+                            sctNavigation: set.sctNavigation?.clone(number: text) ??
+                                SCT.a().clone(number: text),
+                        );
+                      },
+                    ),
+                    TWSInputText(
+                      label: "Configuration",
+                      hint: "enter the SCT configuration",
+                      maxLength: 10,
+                      isStrictLength: false,
+                      controller: TextEditingController(
+                        text: set.sctNavigation?.configuration,
+                      ),
+                      onChanged: (String text) {
+                        set = set.clone(
+                          sctNavigation:
+                              set.sctNavigation?.clone(configuration: text) ??
+                                  SCT.a().clone(configuration: text),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            if(set.maintenanceNavigation != null)
             TWSSection(
               title: "Maintenance",
               content: CSMSpacingColumn(
@@ -590,6 +674,70 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                 ],
               ),
             ),
+
+            if(set.maintenanceNavigation == null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TWSCascadeSection(
+                title: "Maintenance", 
+                padding: EdgeInsets.zero,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                onPressed: (bool isShowing) {
+                  //Creates a new Maintenance object.
+                  if(isShowing){
+                    set = set.clone(
+                      maintenanceNavigation: Maintenance.a(),
+                    );
+                    return;
+                  }
+              
+                  //Removing the Maintenance object.
+                  set = set.clone(
+                    maintenance: 0,
+                  );
+                },
+                mainControl: const Expanded(
+                  child: TWSDisplayFlat(
+                    display: "Add Maintenance",
+                    color: TWSAColors.oceanBlue,
+                    foreColor: TWSAColors.warmWhite,
+                  ),
+                ),
+                content: CSMSpacingColumn(
+                  spacing: 10,
+                  children: <Widget>[
+                    TWSDatepicker(
+                      width: double.maxFinite,
+                      firstDate: DateTime(1999),
+                      lastDate: DateTime(2040),
+                      label: "Trimestral",
+                      controller: TextEditingController(text: set.maintenanceNavigation?.trimestral.dateOnlyString),
+                      onChanged: (String text) {
+                        set = set.clone(
+                          maintenanceNavigation: set.maintenanceNavigation?.clone(trimestral: DateTime.tryParse(text) ?? DateTime(0)) 
+                          ?? Maintenance.a().clone(trimestral:DateTime.tryParse(text) ?? DateTime(0))
+                        );
+                      },
+                    ),
+                    TWSDatepicker(
+                      width: double.maxFinite,
+                      firstDate: DateTime(1999),
+                      lastDate: DateTime(2040),
+                      label: "Anual",
+                      controller: TextEditingController(text: set.maintenanceNavigation?.anual.dateOnlyString),
+                      onChanged: (String text) {
+                        set = set.clone(
+                            maintenanceNavigation: set.maintenanceNavigation?.clone(anual: DateTime.tryParse(text) ??DateTime(0)) 
+                            ?? Maintenance.a().clone( anual: DateTime.tryParse(text) ?? DateTime(0))
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            if(set.insuranceNavigation != null)
             TWSSection(
               title: "Insurance",
               content: CSMSpacingColumn(spacing: 10, children: <Widget>[
@@ -631,9 +779,86 @@ final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
                     set = set.clone(insuranceNavigation: set.insuranceNavigation?.clone(country: selection ?? "") 
                     ?? Insurance.a().clone(country: selection ?? ""));
                   },
-                )
+                ),
               ]),
             ),
+            
+            if(set.insuranceNavigation == null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TWSCascadeSection(
+                title: "Insurance", 
+                padding: EdgeInsets.zero,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                onPressed: (bool isShowing) {
+                  //Creates a new Insurance object.
+                  if(isShowing){
+                    set = set.clone(
+                      insuranceNavigation: Insurance.a(),
+                    );
+                    return;
+                  }
+              
+                  //Removing the Insurance object.
+                  set = set.clone(
+                    insurance: 0,
+                  );
+                },
+                mainControl: const Expanded(
+                  child: TWSDisplayFlat(
+                    display: "Add Insurance",
+                    color: TWSAColors.oceanBlue,
+                    foreColor: TWSAColors.warmWhite,
+                  ),
+                ),
+                content: CSMSpacingColumn(
+                  spacing: 10,
+                  children: <Widget>[
+                    TWSInputText(
+                      label: "Policy",
+                      hint: "enter the Insurance policy",
+                      maxLength: 20,
+                      isStrictLength: true,
+                      controller: TextEditingController(
+                        text: set.insuranceNavigation?.policy,
+                      ),
+                      onChanged: (String text) {
+                        set = set.clone(
+                          insuranceNavigation: set.insuranceNavigation?.clone(policy: text) 
+                          ?? Insurance.a().clone(policy: text)
+                        );
+                      },
+                    ),
+                    TWSDatepicker(
+                      width: double.maxFinite,
+                      firstDate: DateTime(1999),
+                      lastDate: DateTime(2040),
+                      label: "Expiration",
+                      controller: TextEditingController(
+                          text: set.insuranceNavigation?.expiration.dateOnlyString),
+                      onChanged: (String text) {
+                        set = set.clone(
+                          insuranceNavigation: set.insuranceNavigation?.clone(expiration: DateTime.tryParse(text)) 
+                          ?? Insurance.a().clone(expiration: DateTime.tryParse(text))
+                        );
+                      },
+                    ),
+                    TWSAutoCompleteField<String>(
+                      label: "Country",
+                      width: double.maxFinite,
+                      localList: TWSAMessages.kCountryList,
+                      initialValue: set.insuranceNavigation?.country,
+                      displayValue: (String? value) => value ?? "error",
+                      onChanged: (String? selection) {
+                        set = set.clone(insuranceNavigation: set.insuranceNavigation?.clone(country: selection ?? "") 
+                        ?? Insurance.a().clone(country: selection ?? ""));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
           ]),
         ),
       ),
