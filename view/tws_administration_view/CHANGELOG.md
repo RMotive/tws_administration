@@ -57,7 +57,11 @@
     31. Now the [TWSAutocompleteField] updates the [localList] data when the parameter changes on rebuild.
     32. Added [color] & [foreColor] parameter in [TWSDisplayFlat].
     33. Added [TWSCascadeSection] in optionals sets objects in update view to all articles in [Business] page.
-
+    34. Added [DateTime] extension [fullDateString] to convert a datetime property in a string that contains date and hour.
+    35. Added an optional [TimePicker] dialog in [TWSDatetimePicker] to add the time to the date.
+    36. Added update feature to [Yardlog] view table.
+    37. Removing text gap in [TWSImageViewer] when is not necesary.
+    
 - Dependencies upgrade:
     1. (-) tws_foundation_client: Deprecated now used tws_foundation_client
     2. (-) csm_view: Deprecated now used csm_view

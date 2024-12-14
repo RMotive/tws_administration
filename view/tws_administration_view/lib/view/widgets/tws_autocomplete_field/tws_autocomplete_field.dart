@@ -258,7 +258,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
       );
       ctrl.text = widget.displayValue(widget.initialValue);
     } else {
-      if (previousSelection != null) {
+      if (previousSelection != null || ctrl.text != "") {
         ctrl.text = "";
         search("");
       }

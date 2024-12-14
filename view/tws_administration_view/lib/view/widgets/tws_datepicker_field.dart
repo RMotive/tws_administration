@@ -36,6 +36,9 @@ class TWSDatepicker extends StatefulWidget {
   final String? Function(String? text)? validator;
   /// Suffix text at the end of [label] text.
   final String? suffixLabel;
+  /// Add an aditional dialog to set the time in the date picked.
+  final bool addTimePicker;
+  
 
   const TWSDatepicker({super.key,
     required this.firstDate,
@@ -52,6 +55,7 @@ class TWSDatepicker extends StatefulWidget {
     this.onChanged,
     this.validator,
     this.suffixLabel,
+    this.addTimePicker = false,
   });
   
   @override
@@ -209,39 +213,62 @@ class _TWSDatepickerState extends State<TWSDatepicker> {
       )
     );
   }
+  Theme _themeDesigner(BuildContext context, Widget? child){
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: ColorScheme.dark(
+          surface: colorStruct.main, //Background color
+          primary: colorStruct.fore, // header background color
+          onPrimary: colorStruct.foreAlt ?? Colors.white, // header text color
+          onSurface: colorStruct.foreAlt ?? Colors.white // body text color
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: colorStruct.foreAlt ?? Colors.white // button text color
+          )
+        )
+      ),
+      child: child!
+    );
+  }
+
   /// [_showDatePicker] Method that build the showpicker dialog.
   Future<void> _showDatePicker() async {
+    /// stores the time selected when [addTimepicker] property is true.
+    TimeOfDay? time;
+
     DateTime? date = await showDatePicker(
       context: context,
       initialDatePickerMode: DatePickerMode.year,
       initialDate: widget.initialDate,
       firstDate: widget.firstDate, 
       lastDate: widget.lastDate,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.dark(
-              surface: colorStruct.main, //Background color
-              primary: colorStruct.fore, // header background color
-              onPrimary: colorStruct.foreAlt ?? Colors.white, // header text color
-              onSurface: colorStruct.foreAlt ?? Colors.white // body text color
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: colorStruct.foreAlt ?? Colors.white // button text color
-              )
-            )
-          ),
-          child: child!
-        );
-      }
+      builder: (BuildContext context, Widget? child) => _themeDesigner(context, child),
     );
+
+    if(widget.addTimePicker && mounted){
+      time = await showTimePicker(
+        context: context, 
+        initialEntryMode: TimePickerEntryMode.inputOnly,
+        initialTime: TimeOfDay.fromDateTime(widget.initialDate ?? DateTime.now()),
+        builder: (BuildContext context, Widget? child) => _themeDesigner(context, child),
+      );
+    }
     if(date != null) {
+      date = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time?.hour ?? date.hour,
+        time?.minute ?? date.minute,
+        date.second,
+      );
+
       String? errorBuilt = widget.validator?.call(date.dateOnlyString);
       if (errorBuilt == null) {
         setState(() {
           _error = null;
-          ctrl.text = date.dateOnlyString;
+          ctrl.text = time != null? date!.fullDateString : date!.dateOnlyString;
           if (widget.onChanged != null) widget.onChanged!(ctrl.text);
         });
       } else {

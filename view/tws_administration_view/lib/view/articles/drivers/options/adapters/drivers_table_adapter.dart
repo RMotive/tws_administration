@@ -639,7 +639,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<Driver> {
                 adapter: const _SituationsViewAdapter(),
                 initialValue: set.driverCommonNavigation?.situationNavigation,
                 displayValue: (Situation? set) {
-                  return set?.name ?? 'Unnexpected value';
+                  return set?.name ?? 'Unexpected value';
                 },
                 onChanged: (Situation? selectedItem) {
                   set.statusNavigation = null;

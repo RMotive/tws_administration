@@ -33,7 +33,7 @@ class _DriversCreateEmployeeForm extends StatelessWidget {
                 },
                 displayValue: (Employee? item) {
                   Identification? identification = item?.identificationNavigation;
-                  return identification != null? "${identification.name} ${identification.fatherlastname} ${identification.motherlastname}" : "Unnexpected value";
+                  return identification != null? "${identification.name} ${identification.fatherlastname} ${identification.motherlastname}" : "Unexpected value";
                 },
                 onChanged: (Employee? value) {
                   Driver model = itemState!.model as Driver;

@@ -29,7 +29,7 @@ typedef Routes = TWSARoutes;
 class TWSARouteTree extends CSMRouterTreeBase {
   TWSARouteTree()
       : super(
-          devRoute: Routes.driversCreateWhisper,
+          devRoute: Routes.yardlogPage,
           redirect: (_, __) {
             return null;
           },
