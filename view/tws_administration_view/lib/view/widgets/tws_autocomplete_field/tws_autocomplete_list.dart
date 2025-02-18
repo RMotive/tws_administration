@@ -30,12 +30,12 @@ class _TWSAutocompleteList<T> extends StatelessWidget {
         final T? currentItem = list[index];
         final String label = displayLabel(currentItem);
         // Build the individual option component.
-        return TWSListTile(
+        return TwsListTile(
           label:'$label ${suffixLabel != null? suffixLabel!(currentItem) : ""}',
           onHoverColor: theme.main,
           onHoverTextColor: theme.foreAlt!,
           textColor: theme.foreAlt!,
-          onTap: () => onTap(label, currentItem)
+          onTap: (_) => onTap(label, currentItem)
         ); 
       }
     );

@@ -19,17 +19,31 @@ part 'tws_article_table_details/tws_article_table_editor.dart';
 part 'tws_article_table_error.dart';
 part 'tws_article_table_header/tws_article_table_header.dart';
 part 'tws_article_table_loading.dart';
-
+/// Generate a [TArticle] table, with custom [TWSArticleTableFieldOptions] columns.
+/// The data to populate this table is fetch from [TWSArticleTableAgent] property.
+/// Each record row is selectable and display to the user the record details and update the data.
+/// The records can be splitted by pages. This record pages has an selectable record quantity to show.  
 class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidget {
+  /// List of columns and the displayed data.
   final List<TWSArticleTableFieldOptions<TArticle>> fields;
+  /// Consume adaptaer. In this class can set the details view and record update feature.
   final TWSArticleTableAdapter<TArticle> adapter;
+  /// Table agent to manage the table states.
   final TWSArticleTableAgent? agent;
+  /// Text to show in record details section.
   final String viewerTitle;
+  /// Flag to set visibily for record update section.
   final bool editable;
+  /// Flag to set visibility for record remove option.
   final bool removable;
+  /// Current page selected.
   final int page;
+  /// Records displayed quantity.
   final int size;
+  /// Selectable sizes options.
   final List<int> sizes;
+  /// Records selection trigger.
+  final Function(bool isShowingDetails)? onSelect;
 
   const TWSArticleTable({
     super.key,
@@ -38,6 +52,7 @@ class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidge
     this.viewerTitle = "Record",
     this.page = 1,
     this.agent,
+    this.onSelect,
     required this.size,
     required this.sizes,
     required this.fields,
@@ -118,15 +133,19 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
   }
 
   void _selectRecord(int index, TArticle set) {
-    setState(() {
-      if (selected?.$1 == index) {
-        selected = null;
-        detailsAnimationController.reverse();
-      } else {
-        selected = (index, set);
-        detailsAnimationController.forward();
-      }
-    });
+    if(mounted){
+      setState(() {
+        if (selected?.$1 == index) {
+          selected = null;
+          detailsAnimationController.reverse();
+        } else {
+          selected = (index, set);
+          detailsAnimationController.forward();
+        }
+        if(widget.onSelect != null) widget.onSelect!(true);
+
+      });
+    } 
   }
 
   @override

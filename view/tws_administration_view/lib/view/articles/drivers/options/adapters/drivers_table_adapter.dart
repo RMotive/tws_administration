@@ -5,15 +5,17 @@ const List<String> _countryOptions = TWSAMessages.kCountryList;
 const List<String> _usaStateOptions = TWSAMessages.kUStateCodes;
 const List<String> _mxStateOptions = TWSAMessages.kMXStateCodes;
 
+/// Address state class.
 class _AddresState extends CSMStateBase {}
 _AddresState _addresState = _AddresState();
 void Function() _addressEffect = () {};
 
+/// Dialogs state class for change content on exceptions or validations issues.
 final class _DialogState extends CSMStateBase {}
 final _DialogState _dialogState = _DialogState();
 void Function() _dialogEffect = (){};
 
-final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
+final class _SituationsViewAdapter implements TWSViewConsumeAdapter{
   const _SituationsViewAdapter();
   
   @override
@@ -76,10 +78,10 @@ final class _TableAdapter extends TWSArticleTableAdapter<Driver> {
           useRootNavigator: true,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            _dialogEffect = state.effect;
             return CSMDynamicWidget<_DialogState>(
               state: _dialogState, 
               designer:(BuildContext ctx, _DialogState state) {
+                _dialogEffect = state.effect;
                 return exceptionFlag? TWSConfirmationDialog(
                   showCancelButton: false,
                   accept: 'OK',

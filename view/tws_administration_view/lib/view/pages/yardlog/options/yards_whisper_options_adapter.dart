@@ -847,7 +847,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<YardLog> {
   }
 }
 
-final class _DriverViewAdapter implements TWSAutocompleteAdapter {
+final class _DriverViewAdapter implements TWSViewConsumeAdapter {
   const _DriverViewAdapter();
   @override
   Future<List<SetViewOut<dynamic>>> consume(int page, int range, List<SetViewOrderOptions> orderings, String input) async {
@@ -918,7 +918,7 @@ final class _DriverViewAdapter implements TWSAutocompleteAdapter {
   }
 }
 
-final class _TrailerViewAdapter implements TWSAutocompleteAdapter{
+final class _TrailerViewAdapter implements TWSViewConsumeAdapter{
   const _TrailerViewAdapter();
 
   @override
@@ -962,7 +962,7 @@ final class _TrailerViewAdapter implements TWSAutocompleteAdapter{
     return rawViews;
   }
 }
-final class _TruckViewAdapter implements TWSAutocompleteAdapter{
+final class _TruckViewAdapter implements TWSViewConsumeAdapter{
   const _TruckViewAdapter();
 
   @override
@@ -1007,7 +1007,7 @@ final class _TruckViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _SectionViewAdapter implements TWSAutocompleteAdapter{
+final class _SectionViewAdapter implements TWSViewConsumeAdapter{
   const _SectionViewAdapter();
   
 

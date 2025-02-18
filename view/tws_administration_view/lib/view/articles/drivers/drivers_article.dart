@@ -31,12 +31,13 @@ part 'options/drivers_table.dart';
 part 'options/drivers_externals_table.dart';
 part 'options/drivers_article_state.dart';
 
-final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
-final _DriversArticleState _pageState = _DriversArticleState(tableAgent);
 
 class DriversArticle extends CSMPageBase {
-  const DriversArticle({super.key});
+  static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
+  static final _DriversArticleState _pageState = _DriversArticleState(tableAgent);
 
+  const DriversArticle({super.key});
+  
   @override
   Widget compose(BuildContext ctx, Size window) {
     return BusinessFrame(

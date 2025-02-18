@@ -12,7 +12,7 @@ class _DialogState extends CSMStateBase{}
 final _DialogState _dialogState = _DialogState();
 void Function() _dialogEffect = (){};
 
-final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
+final class _VehiculeModelViewAdapter implements TWSViewConsumeAdapter{
   const _VehiculeModelViewAdapter();
 
   @override
@@ -47,7 +47,7 @@ final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
+final class _SituationsViewAdapter implements TWSViewConsumeAdapter{
   const _SituationsViewAdapter();
   
   @override
@@ -65,7 +65,7 @@ final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
+final class _CarriersViewAdapter implements TWSViewConsumeAdapter {
   const _CarriersViewAdapter();
   
   @override
@@ -96,7 +96,7 @@ final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
 final class _TableAdapter extends TWSArticleTableAdapter<Truck> {
   final _TrucksArticleState state;
   const _TableAdapter(this.state);
-
+  // Concatenate the founded plates in a string.
   String getPlates(Truck item){
     String plates = '---';
     if (item.plates.isNotEmpty) {

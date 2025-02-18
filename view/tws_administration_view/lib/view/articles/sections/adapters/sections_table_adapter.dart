@@ -6,7 +6,7 @@ final class _DialogState extends CSMStateBase {}
 final _DialogState _dialogState = _DialogState();
 void Function() _dialogEffect = (){};
 
-final class _LocationsViewAdapter implements TWSAutocompleteAdapter{
+final class _LocationsViewAdapter implements TWSViewConsumeAdapter{
   const _LocationsViewAdapter();
   
   @override

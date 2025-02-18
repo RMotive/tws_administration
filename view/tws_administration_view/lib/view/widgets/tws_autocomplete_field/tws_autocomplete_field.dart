@@ -50,7 +50,7 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
   final FocusNode? focus;
 
   /// Variable that stores a [TWSFutureAutocompleteAdapter] class to consume the data (Only for async data).
-  final TWSAutocompleteAdapter? adapter;
+  final TWSViewConsumeAdapter? adapter;
 
   /// List for process non-async data.
   final List<T>? localList;

@@ -15,7 +15,7 @@ final _DialogState _dialogState = _DialogState();
 void Function() _dialogEffect = (){};
 
 
-final class _AddressesViewAdapter implements TWSAutocompleteAdapter{
+final class _AddressesViewAdapter implements TWSViewConsumeAdapter{
   const _AddressesViewAdapter();
   
   @override

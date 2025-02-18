@@ -10,7 +10,7 @@ final class _DialogState extends CSMStateBase {}
 final _DialogState _dialogState = _DialogState();
 void Function() _dialogEffect = (){};
 
-final class _TrailerTypeViewAdapter implements TWSAutocompleteAdapter{
+final class _TrailerTypeViewAdapter implements TWSViewConsumeAdapter{
   const _TrailerTypeViewAdapter();
 
   @override
@@ -45,7 +45,7 @@ final class _TrailerTypeViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
+final class _VehiculeModelViewAdapter implements TWSViewConsumeAdapter{
   const _VehiculeModelViewAdapter();
 
   @override
@@ -80,7 +80,7 @@ final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
+final class _SituationsViewAdapter implements TWSViewConsumeAdapter{
   const _SituationsViewAdapter();
   
   @override
@@ -98,7 +98,7 @@ final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
+final class _CarriersViewAdapter implements TWSViewConsumeAdapter {
   const _CarriersViewAdapter();
   
   @override
@@ -129,7 +129,7 @@ final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
 final class _TableAdapter extends TWSArticleTableAdapter<Trailer> {
   final _TrailersArticleState state;
   const _TableAdapter(this.state);
-
+  /// Contatenate the founded plates to string.
   String getPlates(Trailer item){
     String plates = '---';
     if (item.plates.isNotEmpty) {

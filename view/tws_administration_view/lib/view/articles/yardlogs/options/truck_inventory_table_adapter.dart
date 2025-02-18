@@ -70,7 +70,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<YardLog> {
   }
 }
 
-final class _SectionViewAdapter implements TWSAutocompleteAdapter {
+final class _SectionViewAdapter implements TWSViewConsumeAdapter {
   const _SectionViewAdapter();
 
   @override

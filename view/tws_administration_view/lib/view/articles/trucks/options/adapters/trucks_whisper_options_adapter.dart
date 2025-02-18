@@ -3,7 +3,7 @@ part of '../../whispers/trucks_create_whisper.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
+final class _VehiculeModelViewAdapter implements TWSViewConsumeAdapter{
   const _VehiculeModelViewAdapter();
 
   @override
@@ -38,7 +38,7 @@ final class _VehiculeModelViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
+final class _SituationsViewAdapter implements TWSViewConsumeAdapter{
   const _SituationsViewAdapter();
   
   @override
@@ -67,7 +67,7 @@ final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
+final class _CarriersViewAdapter implements TWSViewConsumeAdapter {
   const _CarriersViewAdapter();
   
   @override
@@ -95,7 +95,7 @@ final class _CarriersViewAdapter implements TWSAutocompleteAdapter {
   }
 }
 
-final class _ManufacturersViewAdapter implements TWSAutocompleteAdapter {
+final class _ManufacturersViewAdapter implements TWSViewConsumeAdapter {
   const _ManufacturersViewAdapter();
   
   @override

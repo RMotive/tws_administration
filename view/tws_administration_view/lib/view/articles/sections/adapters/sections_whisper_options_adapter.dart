@@ -2,7 +2,7 @@ part of '../whispers/sections_create_whisper.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _LocationsViewAdapter implements TWSAutocompleteAdapter{
+final class _LocationsViewAdapter implements TWSViewConsumeAdapter{
   const _LocationsViewAdapter();
   
   @override

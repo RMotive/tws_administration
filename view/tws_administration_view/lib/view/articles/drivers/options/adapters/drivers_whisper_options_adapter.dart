@@ -3,7 +3,7 @@ part of '../../whispers/drivers_create_whisper.dart';
 
 final SessionStorage _sessionStorage = SessionStorage.i;
 
-final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
+final class _SituationsViewAdapter implements TWSViewConsumeAdapter{
   const _SituationsViewAdapter();
   
   @override
@@ -32,7 +32,7 @@ final class _SituationsViewAdapter implements TWSAutocompleteAdapter{
   }
 }
 
-final class _EmployeeViewAdapter implements TWSAutocompleteAdapter{
+final class _EmployeeViewAdapter implements TWSViewConsumeAdapter{
   const _EmployeeViewAdapter();
   
   @override
