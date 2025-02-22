@@ -33,8 +33,8 @@ part 'options/drivers_article_state.dart';
 
 
 class DriversArticle extends CSMPageBase {
-  static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
-  static final _DriversArticleState _pageState = _DriversArticleState(tableAgent);
+  static final TWSArticleTableAgent agent = TWSArticleTableAgent();
+  static final _DriversArticleState _pageState = _DriversArticleState(agent);
 
   const DriversArticle({super.key});
   
@@ -43,7 +43,7 @@ class DriversArticle extends CSMPageBase {
     return BusinessFrame(
       currentRoute: TWSARoutes.driversArticle,
       actionsOptions: ActionRibbonOptions(
-        refresher: tableAgent.refresh,
+        refresher: agent.refresh,
         maintenanceGroupConfig: MaintenanceGroupOptions(
           onCreate: () => CSMRouter.i.drive(TWSARoutes.driversCreateWhisper),
         ),
@@ -93,7 +93,7 @@ class DriversArticle extends CSMPageBase {
             ),
             Expanded(
               child: _DriverArticleTablesAssembly(
-                agent: tableAgent,
+                agent: agent,
                 state: state,
               ),
             ),

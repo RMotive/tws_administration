@@ -136,9 +136,7 @@ class TrucksCreateWhisper extends CSMPageBase{
       child: TWSArticleCreator<Object>(
         agent: creatorAgent,
         factory: Truck.a,
-        afterClose: () {
-          tableAgent.refresh();
-        }, 
+        afterClose: TrucksArticle.agent.refresh, 
         modelValidator: (Object model) {
           if(model is Truck) return model.evaluate().isEmpty;
           if(model is TruckExternal) return model.evaluate().isEmpty;

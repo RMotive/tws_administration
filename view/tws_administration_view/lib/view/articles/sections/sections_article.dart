@@ -23,10 +23,9 @@ import 'package:tws_foundation_client/tws_foundation_client.dart';
 part 'adapters/sections_table_adapter.dart';
 part 'adapters/sections_article_state.dart';
 
-final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
-final _SectionArticleState _pageState = _SectionArticleState(tableAgent);
-
 class SectionsArticle extends CSMPageBase {
+    static final TWSArticleTableAgent agent = TWSArticleTableAgent();
+  static final _SectionArticleState _pageState = _SectionArticleState(agent);
   const SectionsArticle({super.key});
 
   @override
@@ -34,7 +33,7 @@ class SectionsArticle extends CSMPageBase {
     return BusinessFrame(
       currentRoute: TWSARoutes.sectionsArticle,
       actionsOptions: ActionRibbonOptions(
-        refresher: tableAgent.refresh,
+        refresher: agent.refresh,
         maintenanceGroupConfig: MaintenanceGroupOptions(
           onCreate: () => CSMRouter.i.drive(TWSARoutes.sectionsCreateWhisper),
         ),
@@ -76,9 +75,8 @@ class SectionsArticle extends CSMPageBase {
                 Expanded(
                   child: TWSArticleTable<Section>(
                     editable: true,
-                    removable: false,
                     adapter: _TableAdapter(state),
-                    agent: tableAgent,
+                    agent: agent,
                     fields: <TWSArticleTableFieldOptions<Section>>[
                       TWSArticleTableFieldOptions<Section>(
                         'Name',

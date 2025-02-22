@@ -14,13 +14,13 @@
         - Added [TruckInventory] article.
 
     4. Whispers added:
-        - [Trucks] and [ExternalTrucks] added newer table [View] & [Update].
-        - [Trailers] and [TrailersExternals] added [View], [Create] & [Update].
-        - [Drivers] and [ExternalDrivers] added [View], [Create] & [Update].
-        - [Locations] added [View], [Create] & [Update].
-        - [Sections] added [View], [Create] & [Update].
-        - [Accounts] added [View], [Create] & [Update].
-        - [Yardlogs] added [View] & [Update].
+        - [Trucks] and [ExternalTrucks] added newer table [View], [Update] & [Delete].
+        - [Trailers] and [TrailersExternals] added [View], [Create], [Update] $ [Delete].
+        - [Drivers] and [ExternalDrivers] added [View], [Create], [Update] & [Delete].
+        - [Locations] added [View], [Create], [Update] & [Delete].
+        - [Sections] added [View], [Create], [Update] & [Delete].
+        - [Accounts] added [View], [Create], [Update] & [Delete].
+        - [Yardlogs] added [View], [Update] & [Delete].
 
     5. Widget newest version migrated from  [tws_guard_view] project. The migrated widgets are the following:
         - [TWSAutocompleteField].
@@ -91,7 +91,9 @@
     37. Added [TWSFilePicker] widget to local files selections.
     38. Added [TWSFilePicker] widget implemtation in [TWSPhotoTaker] widget.
     39. Added exceptions dialogs for [Accounts] article creation form in [Security] module.
-    40. TEMPORAL dependencies implementation: file_picker, camera_platform, camera_web.
+    40. Added async gap to [onRemoveRequest] and [closeReinvoke] method in [TWSArticleTable] and return a [Future<bool>] value type to allow async API consume.
+
+    41. TEMPORAL dependencies implementation: file_picker, camera_platform, camera_web.
 
 - Dependencies upgrade:
     1. (-) tws_foundation_client: Deprecated now used tws_foundation_client

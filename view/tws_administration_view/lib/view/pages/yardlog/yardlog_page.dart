@@ -48,7 +48,7 @@ String _getDriverName(YardLog item){
 
 class YardlogPage extends CSMPageBase {
   
-  static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
+  static final TWSArticleTableAgent agent = TWSArticleTableAgent();
   final CSMRouteOptions currentRoute;
 
   const YardlogPage({
@@ -61,13 +61,12 @@ class YardlogPage extends CSMPageBase {
     return YardlogFrame(
       currentRoute: TWSARoutes.yardlogPage,
       actionsOptions: ActionRibbonOptions(
-        refresher: tableAgent.refresh,
+        refresher: agent.refresh,
       ),
       article: TWSArticleTable<YardLog>(
         viewerTitle: "Registro",
-        removable: false,
         adapter: const _TableAdapter(),
-        agent: tableAgent,
+        agent: agent,
         fields: <TWSArticleTableFieldOptions<YardLog>>[
           TWSArticleTableFieldOptions<YardLog>(
             'ID',

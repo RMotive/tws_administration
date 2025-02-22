@@ -5,6 +5,101 @@ part of '../../trucks_article.dart';
 final class _ExternalTableAdapter extends TWSArticleTableAdapter<TruckExternal> {
   final _TrucksArticleState state;
   const _ExternalTableAdapter(this.state);
+
+Widget _removeDialog(bool exceptionFlag, String xMessage, TruckExternal set, BuildContext context, Future<void> Function() onAccept){
+    String entity = "external truck";
+    return TWSConfirmationDialog(
+      showCancelButton: !exceptionFlag,
+      accept: 'OK',
+      title: exceptionFlag? "Unnexpected error on delete $entity" :"Delete $entity confirmation",
+      statement: Text.rich(
+        textAlign: TextAlign.center,
+        exceptionFlag? TextSpan(
+          text: 'Unexpected problem. Please retry the operation or contact your administrator.',
+          children: <InlineSpan>[
+            const TextSpan(
+              text: '\n\nError message:\n\n',
+              style: TextStyle(fontWeight: FontWeight.bold),                        
+            ),
+            TextSpan(
+              text: xMessage
+            ),
+          ],     
+        ): TextSpan(
+          text: 'Are you sure you want to delete this $entity: ${set.truckCommonNavigation?.economic}?'
+        ),
+      ),
+      onAccept:() async {
+        await onAccept();
+      },
+    );
+  }
+
+  @override
+  Future<bool> onRemoveRequest(TruckExternal set, void Function() closeReinvoke, BuildContext context) async {
+    bool exceptionFlag = false;
+    String xMessage = '---';
+    bool clicked = false;
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CSMDynamicWidget<_DialogState>(
+          state: _dialogState, 
+          designer:(BuildContext ctx, _DialogState state) {
+            _dialogEffect = state.effect;
+            return !exceptionFlag? _removeDialog(
+              exceptionFlag,
+              xMessage, 
+              set, 
+              context,
+              () async {
+                if(!clicked){
+                  clicked = true;
+                  String auth = _sessionStorage.session!.token;
+                  MainResolver<TruckExternal> resolver = await Sources.foundationSource.trucksExternals.delete(set, auth);
+
+                  resolver.resolve(
+                    decoder: (JObject json) => TruckExternal.des(json),
+                    onConnectionFailure: () {
+                      exceptionFlag = true;
+                      xMessage = "Connection problem.";
+                      _dialogEffect();
+                    },
+                    onException: (Object exception, StackTrace trace) {
+                      exceptionFlag = true;
+                      xMessage = exception.toString();
+                      _dialogEffect();
+                    },
+                    onFailure: (FailureFrame failure, int status) {
+                      exceptionFlag = true;
+                      xMessage = "${failure.estela.advise} : ${failure.estela.system}";
+                      _dialogEffect();
+                    },
+                    onSuccess: (SuccessFrame<TruckExternal> success) { 
+                      Navigator.of(context).pop();
+                      closeReinvoke();
+                      TrucksArticle.agent.refresh();
+                    },
+                  );
+                }  
+              }
+            ) : _removeDialog(
+              exceptionFlag, 
+              xMessage, 
+              set, 
+              context,
+              () async {
+                Navigator.of(context).pop();
+              }
+            );
+          },
+        );
+      },
+    );
+    
+    return true;
+  }
+
   @override
   Future<SetViewOut<TruckExternal>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     final SetViewOptions<TruckExternal> options = SetViewOptions<TruckExternal>(false, range, page, null, orderings, state.externalsFilters);

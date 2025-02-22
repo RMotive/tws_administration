@@ -11,7 +11,6 @@ class _TruckExternalTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return TWSArticleTable<TruckExternal>(
       editable: true,
-      removable: false,
       agent: agent,
       adapter: adapter,
       fields: <TWSArticleTableFieldOptions<TruckExternal>>[

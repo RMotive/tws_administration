@@ -12,7 +12,7 @@ final class _TableAdapter extends TWSArticleTableAdapter<YardLog> {
     if(isMXplate) return item.truckNavigation?.plates.where((Plate i) => i.country == TWSAMessages.kCountryList[1]).lastOrNull?.identifier ?? item.truckExternalNavigation?.mxPlate ?? '---';
     return item.truckNavigation?.plates.where((Plate i) => i.country == TWSAMessages.kCountryList[0]).lastOrNull?.identifier ?? item.truckExternalNavigation?.usaPlate ?? '---';
   }
-
+  
   @override
   Future<SetViewOut<YardLog>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     final SetViewOptions<YardLog> options = SetViewOptions<YardLog>(false, range, page, null, orderings, state.filters);

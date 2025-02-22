@@ -11,7 +11,6 @@ class _TrailerExternalTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return TWSArticleTable<TrailerExternal>(
       editable: true,
-      removable: false,
       agent: agent,
       adapter: adapter,
       fields: <TWSArticleTableFieldOptions<TrailerExternal>>[

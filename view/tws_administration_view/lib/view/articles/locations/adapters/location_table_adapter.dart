@@ -68,6 +68,100 @@ final class _TableAdapter extends TWSArticleTableAdapter<Location> {
   final _LocationssArticleState state;
   const _TableAdapter(this.state);
 
+  Widget _removeDialog(bool exceptionFlag, String xMessage, Location set, BuildContext context, Future<void> Function() onAccept){
+    String entity = "location";
+    return TWSConfirmationDialog(
+      showCancelButton: !exceptionFlag,
+      accept: 'OK',
+      title: exceptionFlag? "Unnexpected error on delete $entity" :"Delete $entity confirmation",
+      statement: Text.rich(
+        textAlign: TextAlign.center,
+        exceptionFlag? TextSpan(
+          text: 'Unexpected problem. Please retry the operation or contact your administrator.',
+          children: <InlineSpan>[
+            const TextSpan(
+              text: '\n\nError message:\n\n',
+              style: TextStyle(fontWeight: FontWeight.bold),                        
+            ),
+            TextSpan(
+              text: xMessage
+            ),
+          ],     
+        ): TextSpan(
+          text: 'Are you sure you want to delete this $entity: ${set.name}?'
+        ),
+      ),
+      onAccept:() async {
+        await onAccept();
+      },
+    );
+  }
+
+  @override
+  Future<bool> onRemoveRequest(Location set, void Function() closeReinvoke, BuildContext context) async {
+    bool exceptionFlag = false;
+    String xMessage = '---';
+    bool clicked = false;
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CSMDynamicWidget<_DialogState>(
+          state: _dialogState, 
+          designer:(BuildContext ctx, _DialogState state) {
+            _dialogEffect = state.effect;
+            return !exceptionFlag? _removeDialog(
+              exceptionFlag,
+              xMessage, 
+              set, 
+              context,
+              () async {
+                if(!clicked){
+                  clicked = true;
+                  String auth = _sessionStorage.session!.token;
+                  MainResolver<Location> resolver = await Sources.foundationSource.locations.delete(set, auth);
+
+                  resolver.resolve(
+                    decoder: (JObject json) => Location.des(json),
+                    onConnectionFailure: () {
+                      exceptionFlag = true;
+                      xMessage = "Connection problem.";
+                      _dialogEffect();
+                    },
+                    onException: (Object exception, StackTrace trace) {
+                      exceptionFlag = true;
+                      xMessage = exception.toString();
+                      _dialogEffect();
+                    },
+                    onFailure: (FailureFrame failure, int status) {
+                      exceptionFlag = true;
+                      xMessage = "${failure.estela.advise} : ${failure.estela.system}";
+                      _dialogEffect();
+                    },
+                    onSuccess: (SuccessFrame<Location> success) { 
+                      Navigator.of(context).pop();
+                      closeReinvoke();
+                      LocationsArticle.agent.refresh();
+                    },
+                  );
+                }  
+              }
+            ) : _removeDialog(
+              exceptionFlag, 
+              xMessage, 
+              set, 
+              context,
+              () async {
+                Navigator.of(context).pop();
+              }
+            );
+          },
+        );
+      },
+    );
+    
+    return true;
+  }
+
  @override
   Future<SetViewOut<Location>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
     final SetViewOptions<Location> options = SetViewOptions<Location>(false, range, page, null, orderings, state.locationsFilters);

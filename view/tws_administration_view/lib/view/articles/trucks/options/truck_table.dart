@@ -13,7 +13,6 @@ class _TruckTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return TWSArticleTable<Truck>(
       editable: true,
-      removable: false,
       adapter: adapter,
       agent: agent,
       fields: <TWSArticleTableFieldOptions<Truck>>[

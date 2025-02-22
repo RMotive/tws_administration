@@ -13,7 +13,6 @@ class _DriversExternalTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return TWSArticleTable<DriverExternal>(
       editable: true,
-      removable: false,
       adapter: adapter,
       agent: agent,
       fields: <TWSArticleTableFieldOptions<DriverExternal>>[

@@ -29,10 +29,10 @@ import 'package:tws_foundation_client/tws_foundation_client.dart';
 part 'adapters/location_table_adapter.dart';
 part 'adapters/locations_article_state.dart'; 
 
-final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
-final _LocationssArticleState _pageState = _LocationssArticleState(tableAgent);
-
 class LocationsArticle extends CSMPageBase {
+  static final TWSArticleTableAgent agent = TWSArticleTableAgent();
+  static final _LocationssArticleState _pageState = _LocationssArticleState(agent);
+  
   const LocationsArticle({super.key});
 
   @override
@@ -40,7 +40,7 @@ class LocationsArticle extends CSMPageBase {
     return BusinessFrame(
       currentRoute: TWSARoutes.locationsArticle,
       actionsOptions: ActionRibbonOptions(
-        refresher: tableAgent.refresh,
+        refresher: agent.refresh,
         maintenanceGroupConfig: MaintenanceGroupOptions(
           onCreate: () => CSMRouter.i.drive(TWSARoutes.locationsCreateWhisper),
         ),
@@ -68,9 +68,8 @@ class LocationsArticle extends CSMPageBase {
             Expanded(
               child: TWSArticleTable<Location>(
                 editable: true,
-                removable: false,
                 adapter: _TableAdapter(state),
-                agent: tableAgent,
+                agent: agent,
                 fields: <TWSArticleTableFieldOptions<Location>>[
                   TWSArticleTableFieldOptions<Location>(
                     'Name',

@@ -20,8 +20,8 @@ import 'package:tws_foundation_client/tws_foundation_client.dart';
 part 'options/truck_inventory_table_adapter.dart';
 part 'options/inventory_page_state.dart';
 
-final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
-final _InventoryPageState _pageState = _InventoryPageState(tableAgent);
+final TWSArticleTableAgent _tableAgent = TWSArticleTableAgent();
+final _InventoryPageState _pageState = _InventoryPageState(_tableAgent);
 
 class TruckInventoryArticle extends CSMPageBase {
   final CSMRouteOptions currentRoute;
@@ -45,7 +45,7 @@ class TruckInventoryArticle extends CSMPageBase {
     return YardlogFrame(
       currentRoute: TWSARoutes.yardlogsTruckInventoryArticle,
       actionsOptions: ActionRibbonOptions(
-        refresher: tableAgent.refresh,
+        refresher: _tableAgent.refresh,
       ),
       article: CSMDynamicWidget<_InventoryPageState>(
         state: _pageState,
@@ -150,7 +150,7 @@ class TruckInventoryArticle extends CSMPageBase {
                 editable: false,
                 removable: false,
                 adapter: adapter,
-                agent: tableAgent,
+                agent: _tableAgent,
                 sizes: const <int>[25, 30, 35, 40, 45, 50],
                   fields: <TWSArticleTableFieldOptions<YardLog>>[
                     TWSArticleTableFieldOptions<YardLog>(

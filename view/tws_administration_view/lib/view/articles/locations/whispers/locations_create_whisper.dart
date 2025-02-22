@@ -73,7 +73,7 @@ class LocationsCreateWhisper  extends CSMPageBase{
       child: TWSArticleCreator<Location>(
         agent: creatorAgent,
         factory: Location.a,
-        afterClose: () => tableAgent.refresh(), 
+        afterClose: LocationsArticle.agent.refresh, 
         modelValidator: (Location model) {
           return model.evaluate().isEmpty;
         },

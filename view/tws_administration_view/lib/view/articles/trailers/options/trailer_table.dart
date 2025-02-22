@@ -13,7 +13,6 @@ class _TrailerTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return TWSArticleTable<Trailer>(
       editable: true,
-      removable: false,
       adapter: adapter,
       agent: agent,
       fields: <TWSArticleTableFieldOptions<Trailer>>[

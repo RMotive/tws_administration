@@ -33,10 +33,10 @@ part 'options/trailer_external_table.dart';
 part 'options/trailer_table.dart';
 part 'options/trailers_article_state.dart';
 
-final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
-final _TrailersArticleState _pageState = _TrailersArticleState(tableAgent);
-
 class TrailersArticle extends CSMPageBase {
+  static final TWSArticleTableAgent agent = TWSArticleTableAgent();
+  static final _TrailersArticleState _pageState = _TrailersArticleState(agent);
+
   const TrailersArticle({super.key});
 
   @override
@@ -44,7 +44,7 @@ class TrailersArticle extends CSMPageBase {
     return BusinessFrame(
       currentRoute: TWSARoutes.trailersArticle,
       actionsOptions: ActionRibbonOptions(
-        refresher: tableAgent.refresh,
+        refresher: agent.refresh,
         maintenanceGroupConfig: MaintenanceGroupOptions(
           onCreate: () => CSMRouter.i.drive(TWSARoutes.trailersCreateWhisper),
         ),
@@ -73,7 +73,7 @@ class TrailersArticle extends CSMPageBase {
             ),
             Expanded(
               child: _TrailerArticleTablesAssembly(
-                agent: tableAgent,
+                agent: agent,
                 state: state,
               ),
             ),
