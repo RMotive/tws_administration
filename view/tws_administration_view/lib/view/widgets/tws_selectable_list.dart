@@ -122,7 +122,7 @@ class _TwsSelectableListState<T> extends State<TwsSelectableList<T>> {
    
   @override
   Widget build(BuildContext context) {
-    tcolor = widget.enabled? widget.textColor ?? pageColorTheme.fore : widget.textColor?.withOpacity(0.5) ?? pageColorTheme.fore.withOpacity(0.5);
+    tcolor = widget.enabled? widget.textColor ?? pageColorTheme.fore : widget.textColor?.withValues(alpha: 50) ?? pageColorTheme.fore.withAlpha(50);
     return TWSSection(
       title: widget.title, 
       content: CSMConsumer<List<SetViewOut<dynamic>>>(
@@ -142,7 +142,7 @@ class _TwsSelectableListState<T> extends State<TwsSelectableList<T>> {
           );
         },
         successBuilder:(BuildContext ctx, List<SetViewOut<dynamic>> data) {
-          fetchedList = data.first.sets as List<T>;
+          fetchedList = data.first.records as List<T>;
           return CSMSpacingColumn(
             spacing: 5,
             children: <Widget>[

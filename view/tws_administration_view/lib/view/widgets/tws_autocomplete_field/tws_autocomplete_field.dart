@@ -441,7 +441,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
                                   onFetch: (List<SetViewOut<dynamic>> data) {
                                     //Stores the properties results
                                     for (SetViewOut<dynamic> view in data) {
-                                      suggestionsList = <T>[...view.sets];
+                                      suggestionsList = <T>[...view.records];
                                     }
                                     
                                     firstbuild = false;

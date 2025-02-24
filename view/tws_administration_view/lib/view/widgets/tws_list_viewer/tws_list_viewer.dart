@@ -96,7 +96,7 @@ class TwsListViewer<T> extends StatelessWidget {
           },
           successBuilder:(BuildContext ctx, SetViewOut<dynamic> data) {
             return _TwsListViewerBody<T>(
-              content: data.sets as List<T>, 
+              content: data.records as List<T>, 
               tColor: tColor, 
               bColor: bColor, 
               heigth: heigth, 

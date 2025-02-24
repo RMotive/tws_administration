@@ -31,7 +31,7 @@ class _TWSAutocompleteFuture<T> extends StatelessWidget {
   List<T> getSets(List<SetViewOut<dynamic>> rawData){
     List<T> data = <T>[];
     for (SetViewOut<dynamic> view in rawData) {
-      data = <T>[...data, ...view.sets];
+      data = <T>[...data, ...view.records];
     }
     return data;
   }
@@ -45,7 +45,7 @@ class _TWSAutocompleteFuture<T> extends StatelessWidget {
         onFetch(data); 
         int cont = 0;
         for(SetViewOut<dynamic> view in data){
-          cont += view.sets.length;
+          cont += view.records.length;
         }
         return cont == 0? true: false;
       },
