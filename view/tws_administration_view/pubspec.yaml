@@ -32,7 +32,7 @@ dependencies:
     git:
       url: https://github.com/RMotive/tws_foundation
       path: client/tws_foundation_client
-      ref: development#trailers_creation
+      ref: main
 
 
 dev_dependencies:
