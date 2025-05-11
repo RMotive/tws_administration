@@ -63,12 +63,12 @@ final class ContactsTableAdapter extends TWSArticleTableAdapter<Contact> {
   }
 
   @override
-  Future<SetViewOut<Contact>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
-    final SetViewOptions<Contact> options = SetViewOptions<Contact>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Contact>>[]);
+  Future<SetViewOutput<Contact>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+    final SetViewInput<Contact> options = SetViewInput<Contact>(false, range, page, null, orderings, <SetViewFilterNodeInterface<Contact>>[]);
     String auth = _sessionStorage.session!.token;
-    MainResolver<SetViewOut<Contact>> resolver = await Sources.foundationSource.contacts.view(options, auth);
+    ServiceResolver<SetViewOutput<Contact>> resolver = await Sources.foundationSource.contacts.view(options, auth);
 
-    SetViewOut<Contact> view = await resolver.act((Map<String, dynamic> json) => SetViewOut<Contact>.des(json, Contact.des)).catchError(
+    SetViewOutput<Contact> view = await resolver.act((Map<String, dynamic> json) => SetViewOutput<Contact>.des(json, Contact.des)).catchError(
       (Object x, StackTrace s) {
         const CSMAdvisor('contact-table-adapter').exception('Exception catched at table view consume', Exception(x), s);
         throw x;

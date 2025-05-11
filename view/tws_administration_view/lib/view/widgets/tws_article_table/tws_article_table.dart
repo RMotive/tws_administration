@@ -53,7 +53,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
   static const double _kMinFieldWidth = 200;
   static const double _kDetailsWidth = 400;
 
-  late Future<SetViewOut<TArticle>> Function() consume;
+  late Future<SetViewOutput<TArticle>> Function() consume;
   late AnimationController detailsAnimationController;
   late ScrollController horizontalController;
   final CSMConsumerAgent agent = CSMConsumerAgent();
@@ -103,7 +103,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     super.dispose();
   }
 
-  void _updatePagingChanges(SetViewOut<TArticle> data) {
+  void _updatePagingChanges(SetViewOutput<TArticle> data) {
     if (items != data.count || pages != data.pages || records != data.records) {
       WidgetsBinding.instance.addPostFrameCallback(
         (Duration timeStamp) {
@@ -193,15 +193,15 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                     ),
                                     // --> Table items
                                     Expanded(
-                                      child: CSMConsumer<SetViewOut<TArticle>>(
+                                      child: CSMConsumer<SetViewOutput<TArticle>>(
                                         consume: consume,
                                         agent: agent,
-                                        emptyCheck: (SetViewOut<TArticle> data) => data.records.isEmpty,
+                                        emptyCheck: (SetViewOutput<TArticle> data) => data.records.isEmpty,
                                         loadingBuilder: (_) => _TWSArticleTableLoading(viewSize: viewSize),
                                         errorBuilder: (_, __, ___) => _TWSArticleTableError(
                                           viewSize: viewSize,
                                         ),
-                                        successBuilder: (_, SetViewOut<TArticle> data) {
+                                        successBuilder: (_, SetViewOutput<TArticle> data) {
                                           _updatePagingChanges(data);
     
                                           return SizedBox(

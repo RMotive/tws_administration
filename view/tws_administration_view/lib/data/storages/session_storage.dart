@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:csm_view/csm_view.dart';
+import 'package:csm_view/csm_view.dart' hide JObject;
 import 'package:localstorage/localstorage.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_foundation_client/tws_foundation_client.dart';
@@ -21,10 +21,10 @@ class SessionStorage {
   late final CSMAdvisor _advisor;
 
   /// Stores the current session that the manager works in.
-  Session? _session;
+  ServerSession? _session;
 
   /// Current session.
-  Session? get session => _session;
+  ServerSession? get session => _session;
 
   /// Wheter the application context has an active session
   late bool _isSession;
@@ -42,11 +42,11 @@ class SessionStorage {
     }
 
     JObject json = jsonDecode(sessionGather);
-    _session = Session.des(json);
+    _session = ServerSession.des(json);
     _isSession = _evaluateExpiration(_session!.expiration);
   }
 
-  void storeSession(Session session) {
+  void storeSession(ServerSession session) {
     _session = session;
     _isSession = _evaluateExpiration(session.expiration);
     localStorage.setItem(_kSessionItemStoreKey, jsonEncode(session.encode()));
