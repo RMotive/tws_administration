@@ -6,7 +6,7 @@ part of 'features_create_whisper.dart';
 ///
 /// [FeaturesCreateWhisper] concept: handles the cretion of a [Feature] entity
 /// concept that is a business concept reference see documentation for it.
-final class _FeaturesCreateWhisperState extends CSMStateBase {
+final class _FeaturesCreateWhisperState extends ReactorB {
   /// [Form] state key interface.
   final GlobalKey form = GlobalKey();
 }

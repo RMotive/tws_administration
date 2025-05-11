@@ -18,13 +18,13 @@ part 'options/solutions_article_table_adapter.dart';
 
 
 
-class SolutionsArticle extends CSMPageBase {
+class SolutionsArticle extends PageB {
   
   static final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
   const SolutionsArticle({super.key});
 
   @override
-  Widget compose(BuildContext ctx, Size window) {
+  Widget compose(BuildContext ctx, Size windowSize, Size pageSize) {
 
     return SecurityFrame(
       currentRoute: TWSARoutes.solutionsArticle,

@@ -24,8 +24,8 @@ part 'master_layout_small.dart';
 const double _minMenuWidth = 175;
 const double _maxMenuWidth = 250;
 
-class MasterLayout extends CSMLayoutBase {
-  final CSMRouterOutput rOutput;
+class MasterLayout extends LayoutB {
+  final RouteData rOutput;
 
   const MasterLayout({
     super.key,
@@ -34,7 +34,7 @@ class MasterLayout extends CSMLayoutBase {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget compose(BuildContext context, Size windowSize, Size pageSize) {
     const List<_MasterLayoutMenuButtonOptions> buttons = <_MasterLayoutMenuButtonOptions>[
       _MasterLayoutMenuButtonOptions(
         label: 'Overview',
@@ -63,7 +63,7 @@ class MasterLayout extends CSMLayoutBase {
       )
     ];
 
-    return CSMResponsiveView(
+    return ResponsiveWidget(
       onLarge: _MasterLayoutLarge(
         buttons: buttons,
         currentRoute: rOutput.absolutePath,

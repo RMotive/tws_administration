@@ -11,11 +11,11 @@ import 'package:tws_foundation_client/tws_foundation_client.dart';
 
 part './options/features_article_table_adapter.dart';
 
-final class FeaturesArticle extends CSMPageBase {
+final class FeaturesArticle extends PageB {
   const FeaturesArticle({super.key});
 
   @override
-  Widget compose(BuildContext ctx, Size window) {
+  Widget compose(BuildContext ctx, Size windowSize, Size pageSize) {
     return SecurityFrame(
       currentRoute: TWSARoutes.featuresArticle,
       actionsOptions: ActionRibbonOptions(
@@ -25,9 +25,9 @@ final class FeaturesArticle extends CSMPageBase {
           },
         ),
       ),
-      article: const TWSArticleTable<Feature>(
+      article: const TWSArticleTable<void>(
         adapter: _TableAdapter(),
-        fields: <TWSArticleTableFieldOptions<Feature>>[],
+        fields: <TWSArticleTableFieldOptions<void>>[],
         page: 1,
         size: 25,
         sizes: <int>[25, 50, 75, 100],

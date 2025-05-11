@@ -1,4 +1,4 @@
-import 'package:csm_view/csm_view.dart';
+import 'package:csm_view/csm_view.dart' hide LayoutBuilder;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -19,11 +19,11 @@ const BoxConstraints _floatSectionConstrains = BoxConstraints(
   minWidth: _maxFloatSectionWidth - 100,
 );
 
-class OverviewPage extends CSMPageBase {
+class OverviewPage extends PageB {
   const OverviewPage({super.key});
 
   @override
-  Widget compose(BuildContext ctx, Size window) {
+  Widget compose(BuildContext ctx, Size windowSize, Size pageSize) {
     return LayoutBuilder(
       builder: (_, BoxConstraints constraints) {
         final double availableWidth = constraints.maxWidth;

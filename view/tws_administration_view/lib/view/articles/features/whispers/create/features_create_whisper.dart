@@ -7,21 +7,21 @@ part 'features_create_whisper_state.dart';
 
 typedef _State = _FeaturesCreateWhisperState;
 
-class FeaturesCreateWhisper extends CSMPageBase {
+class FeaturesCreateWhisper extends PageB {
   const FeaturesCreateWhisper({super.key});
 
   @override
-  Widget compose(BuildContext ctx, Size window) {
-    return CSMDynamicWidget<_State>(
-      state: _State(),
-      designer: (BuildContext ctx, CSMStateBase state) {
-        return const WhisperFrame(
+  Widget compose(BuildContext ctx, Size windowSize, Size pageSize) {
+    return ReactiveWidget<_State>(
+      reactor: _State(),
+      builder: (BuildContext ctx, _State state) {
+        return WhisperFrame(
           title: 'Feature creation',
-          child: CSMForm(
-            options: CSMFormOptions(
+          child: FormWidget(
+            controller: FormWidgetController(
               name: 'feature-creation',
             ),
-            child: SizedBox(
+            child: const SizedBox(
               width: double.maxFinite,
               child: Padding(
                 padding: EdgeInsets.symmetric(

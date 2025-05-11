@@ -11,11 +11,11 @@ part 'business_decorator.dart';
 part 'login_form/login_form.dart';
 part 'login_form/login_form_state.dart';
 
-class LoginPage extends CSMPageBase {
+class LoginPage extends PageB {
   const LoginPage({super.key});
 
   @override
-  Widget compose(BuildContext ctx, Size window) {
+  Widget compose(BuildContext buildContext, Size windowSize, Size pageSize) {
     const double maxWidthAllowedFullView = 740;
     const double separatorDecoratorWidth = 1.5;
     const double itemSeparation = 20;
@@ -23,7 +23,7 @@ class LoginPage extends CSMPageBase {
     const double separatorHeight = rowSize * .55;
     const double offsetTransaltionAboveCenterForm = 100;
     const double maxHeightAllowedToTranslateForm = 850;
-    final Size screenSize = MediaQuery.sizeOf(ctx);
+    final Size screenSize = MediaQuery.sizeOf(buildContext);
     final double screenWidth = screenSize.width;
 
     final bool isFullView = screenWidth >= maxWidthAllowedFullView;
@@ -64,9 +64,11 @@ class LoginPage extends CSMPageBase {
                       // --> Separator bar.
                       Visibility(
                         visible: isFullView,
-                        child: const CSMColorBox(
-                          size: Size(separatorDecoratorWidth, separatorHeight),
-                          background: Colors.grey,
+                        child: ColoredBox(
+                          color: Colors.grey,
+                          child: SizedBox.fromSize(
+                            size: const Size(separatorDecoratorWidth, separatorHeight),
+                          ),
                         ),
                       ),
                       Padding(

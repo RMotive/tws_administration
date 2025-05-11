@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tws_administration_view/view/frames/introduction/introduction_frame.dart';
 import 'package:tws_administration_view/view/pages/security/security_frame.dart';
 
-class SecurityPage extends CSMPageBase {
-  final CSMRouteOptions currentRoute;
+class SecurityPage extends PageB {
+  final RouteData currentRoute;
 
   const SecurityPage({
     super.key,
@@ -12,7 +12,7 @@ class SecurityPage extends CSMPageBase {
   });
 
   @override
-  Widget compose(BuildContext ctx, Size window) {
+  Widget compose(BuildContext ctx, Size windowSize, Size pageSize) {
     return IntroductionFrame(
       articles: SecurityFrame.securityArticles,
     );

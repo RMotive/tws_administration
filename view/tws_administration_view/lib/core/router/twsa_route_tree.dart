@@ -32,101 +32,101 @@ import 'package:tws_administration_view/view/pages/yardlog/yardlog_page.dart';
 
 typedef Routes = TWSARoutes;
 
-class TWSARouteTree extends CSMRouterTreeBase {
+class TWSARouteTree extends RouterTreeB {
   TWSARouteTree()
       : super(
           devRoute: Routes.solutionsArticle,
           redirect: (_, __) {
             return null;
           },
-          routes: <CSMRouteBase>[
+          routes: <RouteB>[
             // --> [Login Page]
-            CSMRouteNode(
+            RouteNode(
               Routes.loginPage,
-              redirect: (_, __) async {
+              redirection: (_, __) async {
                 return null;
               },
-              pageBuild: (_, __) => const LoginPage(),
+              pageBuilder: (_, __) => const LoginPage(),
             ),
             // --> [MasterLayout]
-            CSMRouteLayout(
-              layoutBuild: (_, CSMRouterOutput output, Widget page) {
+            RouteLayout(
+              layoutBuilder: (_, RouteData output, Widget page) {
                 return MasterLayout(
                   page: page,
                   rOutput: output,
                 );
               },
-              routes: <CSMRouteBase>[
+              routes: <RouteB>[
                 // --> [Overview Page]
-                CSMRouteNode(
+                RouteNode(
                   Routes.overviewPage,
-                  pageBuild: (_, __) => const OverviewPage(),
+                  pageBuilder: (_, __) => const OverviewPage(),
                 ),
                 // --> [About page]
-                CSMRouteNode(
+                RouteNode(
                   Routes.about,
-                  pageBuild: (_, __) => const AboutPage(),
+                  pageBuilder: (_, __) => const AboutPage(),
                 ),
                 // --> [Profile user page]
-                CSMRouteNode(
+                RouteNode(
                   Routes.profile,
-                  pageBuild: (_, __) => const ProfilePage(),
+                  pageBuilder: (_, __) => const ProfilePage(),
                 ),
                 // --> [User settings page]
-                CSMRouteNode(
+                RouteNode(
                   Routes.settings,
-                  pageBuild: (_, __) => const SettingsPage(),
+                  pageBuilder: (_, __) => const SettingsPage(),
                 ),
                 // --> [Security Page]
-                CSMRouteNode(
+                RouteNode(
                   Routes.securityPage,
-                  pageBuild: (_, __) {
+                  pageBuilder: (_, __) {
                     return const SecurityPage(
                       currentRoute: Routes.securityPage,
                     );
                   },
-                  routes: <CSMRouteBase>[
+                  routes: <RouteB>[
                     // --> [Features]
-                    CSMRouteNode(
+                    RouteNode(
                       Routes.featuresArticle,
-                      pageBuild: (_, __) {
+                      pageBuilder: (_, __) {
                         return const FeaturesArticle();
                       },
-                      routes: <CSMRouteBase>[
-                        CSMRouteWhisper<Object>(
+                      routes: <RouteB>[
+                        RouteWhisper<Object>(
                           Routes.featuresCreateWhisper,
-                          whisperOptions: const CSMRouteWhisperOptions(),
-                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const FeaturesCreateWhisper(),
+                          whisperOptions: const RouteWhisperOptions(),
+                          pageBuilder: (BuildContext ctx, RouteData _) => const FeaturesCreateWhisper(),
                         ),
                       ],
                     ),
                     // --> [Solutions]
-                    CSMRouteNode(
+                    RouteNode(
                       TWSARoutes.solutionsArticle,
-                      pageBuild: (BuildContext ctx, CSMRouterOutput output) => const SolutionsArticle(),
-                      routes: <CSMRouteBase>[
+                      pageBuilder: (BuildContext _, RouteData __) => const SolutionsArticle(),
+                      routes: <RouteB>[
                         // --> [Create]
-                        CSMRouteWhisper<void>(
+                        RouteWhisper<void>(
                           TWSARoutes.solutionsCreateWhisper,
-                          whisperOptions: const CSMRouteWhisperOptions(
+                          whisperOptions: const RouteWhisperOptions(
                             padding: EdgeInsets.zero,
                           ),
-                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const SolutionsCreateWhisper(),
+                          pageBuilder: (BuildContext _, RouteData __) => const SolutionsCreateWhisper(),
                         ),
                       ],
                     ),
                     // --> [Accounts]
-                    CSMRouteNode(
+                    RouteNode(
                       TWSARoutes.accountsArticle,
-                      pageBuild: (BuildContext ctx, CSMRouterOutput output) => const AccountsArticle(),
-                      routes: <CSMRouteBase>[
+                      pageBuilder: (BuildContext _, RouteData __) => const AccountsArticle(),
+                      routes: <RouteB>[
                         // --> [Create]
-                        CSMRouteWhisper<void>(
+                        RouteWhisper<void>(
                           TWSARoutes.accountsCreateWhisper,
-                          whisperOptions: const CSMRouteWhisperOptions(
+                          whisperOptions: const RouteWhisperOptions(
                             padding: EdgeInsets.zero,
                           ),
-                          pageBuild: (BuildContext ctx, CSMRouterOutput output) => const AccountsCreateWhisper(),
+                          pageBuilder: (BuildContext _, RouteData __) => const AccountsCreateWhisper(),
                         ),
                       ],
                     ),
