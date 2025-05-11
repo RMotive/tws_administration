@@ -1,7 +1,6 @@
 import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/constants/twsa_common_displays.dart';
-import 'package:tws_administration_view/core/extension/datetime.dart';
 import 'package:tws_administration_view/core/router/twsa_routes.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
@@ -21,8 +20,8 @@ import 'package:tws_foundation_client/tws_foundation_client.dart';
 part 'options/truck_inventory_table_adapter.dart';
 part 'options/inventory_page_state.dart';
 
-final TWSArticleTableAgent tableAgent = TWSArticleTableAgent();
-final _InventoryPageState _pageState = _InventoryPageState(tableAgent);
+final TWSArticleTableAgent _tableAgent = TWSArticleTableAgent();
+final _InventoryPageState _pageState = _InventoryPageState(_tableAgent);
 
 class TruckInventoryArticle extends CSMPageBase {
   final CSMRouteOptions currentRoute;
@@ -32,13 +31,21 @@ class TruckInventoryArticle extends CSMPageBase {
   });
   
 
+  String identifyTruck(YardLog yardlog) {
+    return yardlog.truck != null
+        ? 'Interno'
+        : yardlog.truckExternal != null
+            ? 'Externo'
+            : 'No identificable';
+  }
+
 
   @override
   Widget compose(BuildContext ctx, Size window) {
     return YardlogFrame(
       currentRoute: TWSARoutes.yardlogsTruckInventoryArticle,
       actionsOptions: ActionRibbonOptions(
-        refresher: tableAgent.refresh,
+        refresher: _tableAgent.refresh,
       ),
       article: CSMDynamicWidget<_InventoryPageState>(
         state: _pageState,
@@ -139,58 +146,48 @@ class TruckInventoryArticle extends CSMPageBase {
               ),
             ),
             Expanded(
-              child: TWSArticleTable<TruckInventory>(
+              child: TWSArticleTable<YardLog>(
                 editable: false,
                 removable: false,
                 adapter: adapter,
-                agent: tableAgent,
-                fields: <TWSArticleTableFieldOptions<TruckInventory>>[
-                  TWSArticleTableFieldOptions<TruckInventory>(
-                    'Entry',
-                    (TruckInventory item, int index, BuildContext ctx) => item.entryDate.dateOnlyString,
-                  ),
-                  TWSArticleTableFieldOptions<TruckInventory>(
-                    'Economic',
-                    (TruckInventory item, int index, BuildContext ctx) {
-                      return  item.truckNavigation != null? item.truckNavigation!.truckCommonNavigation!.economic
-                      : item.truckExternalNavigation != null? item.truckExternalNavigation!.truckCommonNavigation!.economic
-                      : '---';
-                    },
-                  ),
-                  TWSArticleTableFieldOptions<TruckInventory>(
-                    'MX Plate',
-                    (TruckInventory item, int index, BuildContext ctx) {
-                      return adapter.getPlates(item, true);
-                    },
-                  ),
-                  TWSArticleTableFieldOptions<TruckInventory>(
-                    'USA Plate',
-                    (TruckInventory item, int index, BuildContext ctx) {
-                      return  adapter.getPlates(item, false);
-                    },
-                  ),
-                  TWSArticleTableFieldOptions<TruckInventory>(
-                    'Carrier',
-                    (TruckInventory item, int index, BuildContext ctx) {
-                      return  item.truckNavigation != null? item.truckNavigation!.carrierNavigation!.name 
-                      : item.truckExternalNavigation != null? item.truckExternalNavigation!.carrier
-                      : '---';
-                    },
-                  ),
-                  TWSArticleTableFieldOptions<TruckInventory>(
-                    'Section',
-                    (TruckInventory item, int index, BuildContext ctx) => "${item.sectionNavigation?.name} - ${item.sectionNavigation?.locationNavigation?.name}",
-                  ),
-                  
-                  TWSArticleTableFieldOptions<TruckInventory>(
-                    'Ownership',
-                    (TruckInventory item, int index, BuildContext ctx) => item.truck != null? "Own" : "External",
-                  ),
-              
-                ],
+                agent: _tableAgent,
+                sizes: const <int>[25, 30, 35, 40, 45, 50],
+                  fields: <TWSArticleTableFieldOptions<YardLog>>[
+                    TWSArticleTableFieldOptions<YardLog>(
+                      'Trailer NO.',
+                      (YardLog item, int index, BuildContext ctx) =>
+                          item.trailerNavigation?.trailerCommonNavigation?.economic ?? item.trailerExternalNavigation?.trailerCommonNavigation?.economic ?? '---',
+                    ),
+                    TWSArticleTableFieldOptions<YardLog>(
+                      'Placa MX',
+                      (YardLog item, int index, BuildContext ctx) =>
+                          item.trailerNavigation?.plates.where((Plate i) => i.country == "MEX").lastOrNull?.identifier ?? item.trailerExternalNavigation?.mxPlate ?? '---',
+                    ),
+                    TWSArticleTableFieldOptions<YardLog>(
+                      'Placa USA',
+                      (YardLog item, int index, BuildContext ctx) {
+                        return item.trailerNavigation?.plates.where((Plate i) => i.country == "USA").lastOrNull?.identifier ?? item.trailerExternalNavigation?.usaPlate ?? '---';
+                      },
+                    ),
+                    TWSArticleTableFieldOptions<YardLog>(
+                      'Entrada',
+                      (YardLog item, int index, BuildContext ctx) => item.timestamp.toLocal().fullDateString,
+                    ),
+                    TWSArticleTableFieldOptions<YardLog>(
+                      'Sección',
+                      (YardLog item, int index, BuildContext ctx) => "${item.sectionNavigation?.locationNavigation?.name} - ${item.sectionNavigation?.name}",
+                    ),
+                    TWSArticleTableFieldOptions<YardLog>(
+                      'Compañía',
+                      (YardLog item, int index, BuildContext ctx) => item.trailerNavigation?.carrierNavigation?.name ?? item.trailerExternalNavigation?.carrier ?? '---',
+                    ),
+                    TWSArticleTableFieldOptions<YardLog>(
+                      'Posesión',
+                      (YardLog item, int index, BuildContext ctx) => identifyTruck(item),
+                    ),
+                  ],
                 page: 1,
                 size: 25,
-                sizes: const <int>[25, 50, 75, 100],
               ),
             ),
           ],

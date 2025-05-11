@@ -1,7 +1,6 @@
 import 'package:csm_view/csm_view.dart';
 import 'package:flutter/material.dart';
 import 'package:tws_administration_view/core/constants/twsa_common_displays.dart';
-import 'package:tws_administration_view/core/extension/datetime.dart';
 import 'package:tws_administration_view/core/theme/bases/twsa_theme_base.dart';
 import 'package:tws_administration_view/data/services/sources.dart';
 import 'package:tws_administration_view/data/storages/session_storage.dart';
@@ -137,9 +136,7 @@ class TrucksCreateWhisper extends CSMPageBase{
       child: TWSArticleCreator<Object>(
         agent: creatorAgent,
         factory: Truck.a,
-        afterClose: () {
-          TrucksArticle.tableAgent.refresh();
-        }, 
+        afterClose: TrucksArticle.agent.refresh, 
         modelValidator: (Object model) {
           if(model is Truck) return model.evaluate().isEmpty;
           if(model is TruckExternal) return model.evaluate().isEmpty;

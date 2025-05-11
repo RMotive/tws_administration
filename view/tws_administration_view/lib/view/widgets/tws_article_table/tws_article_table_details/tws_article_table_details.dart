@@ -74,7 +74,7 @@ final class _TWSArticleTableDetails<TArticle extends CSMEncodeInterface> extends
                         hint: 'Remove record',
                         icon: Icons.remove,
                         fore: tCritical.main.background,
-                        action: () => adapter.onRemoveRequest(record, context),
+                        action: () async => adapter.onRemoveRequest(record, closeAction, context),
                       ),
                       
                       if(editable)

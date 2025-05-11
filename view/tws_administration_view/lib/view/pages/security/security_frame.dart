@@ -40,6 +40,16 @@ final class SecurityFrame extends StatelessWidget {
       route: TWSARoutes.solutionsArticle,
       title: 'Solutions',
     ),
+    ArticleOptions(
+      icon: (Color? stateColor) {
+        return Icon(
+          Icons.account_box,
+          color: stateColor,
+        );
+      },
+      route: TWSARoutes.accountsArticle,
+      title: 'Accounts',
+    ),
   ];
 
   @override

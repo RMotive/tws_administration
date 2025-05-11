@@ -25,9 +25,30 @@ class TWSARoutes {
   static const CSMRouteOptions solutionsArticle = CSMRouteOptions('solutions');
   static const CSMRouteOptions solutionsCreateWhisper = CSMRouteOptions(name: 'solutions-create', 'create');
 
+
+  static const CSMRouteOptions accountsArticle = CSMRouteOptions('accounts');
+  static const CSMRouteOptions accountsCreateWhisper = CSMRouteOptions(name: 'accounts-create', 'create');
+
   static const CSMRouteOptions trucksArticle = CSMRouteOptions('trucks');
   static const CSMRouteOptions trucksCreateWhisper = CSMRouteOptions('add');
   static const CSMRouteOptions trucksViewWhisper = CSMRouteOptions(name: 'trucks-view', 'view');
+
+  static const CSMRouteOptions trailersArticle = CSMRouteOptions('trailers');
+  static const CSMRouteOptions trailersCreateWhisper = CSMRouteOptions('add-trailer');
+  static const CSMRouteOptions trailersViewWhisper = CSMRouteOptions(name: 'trailers-view', 'view');
+
+  static const CSMRouteOptions driversArticle = CSMRouteOptions('drivers');
+  static const CSMRouteOptions driversCreateWhisper = CSMRouteOptions('add-driver');
+  static const CSMRouteOptions driversViewWhisper = CSMRouteOptions(name: 'driver-view', 'view');
+
+  static const CSMRouteOptions locationsArticle = CSMRouteOptions('locations');
+  static const CSMRouteOptions locationsCreateWhisper = CSMRouteOptions('add-location');
+  static const CSMRouteOptions locationsViewWhisper = CSMRouteOptions(name: 'location-view', 'view');
+
+  static const CSMRouteOptions sectionsArticle = CSMRouteOptions('sections');
+  static const CSMRouteOptions sectionsCreateWhisper = CSMRouteOptions('add-section');
+  static const CSMRouteOptions sectionsViewWhisper = CSMRouteOptions(name: 'section-view', 'view');
+
 
   static const CSMRouteOptions manufacturersArticle = CSMRouteOptions('manufacturers');
   static const CSMRouteOptions manufacturersViewWhisper = CSMRouteOptions(name: 'manufacturers-view', 'view');
@@ -42,9 +63,6 @@ class TWSARoutes {
 
   static const CSMRouteOptions maintencesArticle = CSMRouteOptions('mainteneces');
   static const CSMRouteOptions maintenecesViewWhisper = CSMRouteOptions(name: 'maintenences-view', 'view');
-
-  static const CSMRouteOptions sctsArticle = CSMRouteOptions('scts');
-  static const CSMRouteOptions sctsViewWhisper = CSMRouteOptions(name: 'scts-view', 'view');
 
   static const CSMRouteOptions situationsArticle = CSMRouteOptions('situations');
   static const CSMRouteOptions situationsViewWhisper = CSMRouteOptions(name: 'situations-view', 'view');

@@ -39,7 +39,7 @@ abstract class TWSArticleTableAdapter<TSet extends CSMEncodeInterface> {
   /// [set] the [TSet] entity selected at the row.
   ///
   /// [context] table [BuildContext].
-  bool onRemoveRequest(TSet set, BuildContext context) {
-    return false;
+  Future<bool> onRemoveRequest(TSet set, void Function() closeReinvoke, BuildContext context) async {
+    return true;
   }
 }

@@ -20,16 +20,40 @@ part 'tws_article_table_error.dart';
 part 'tws_article_table_header/tws_article_table_header.dart';
 part 'tws_article_table_loading.dart';
 
+/// Generate a [TArticle] table, with custom [TWSArticleTableFieldOptions] columns.
+/// The data to populate this table is fetch from [TWSArticleTableAgent] property.
+/// Each record row is selectable and display to the user the record details and update the data.
+/// The records can be splitted by pages. This record pages has an selectable record quantity to show.
 class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidget {
+  /// List of columns and the displayed data.
   final List<TWSArticleTableFieldOptions<TArticle>> fields;
+
+  /// Consume adaptaer. In this class can set the details view and record update feature.
   final TWSArticleTableAdapter<TArticle> adapter;
+
+  /// Table agent to manage the table states.
   final TWSArticleTableAgent? agent;
+
+  /// Text to show in record details section.
   final String viewerTitle;
+
+  /// Flag to set visibily for record update section.
   final bool editable;
+
+  /// Flag to set visibility for record remove option.
   final bool removable;
+
+  /// Current page selected.
   final int page;
+
+  /// Records displayed quantity.
   final int size;
+
+  /// Selectable sizes options.
   final List<int> sizes;
+
+  /// Records selection trigger.
+  final Function(bool isShowingDetails)? onSelect;
 
   const TWSArticleTable({
     super.key,
@@ -38,6 +62,7 @@ class TWSArticleTable<TArticle extends CSMEncodeInterface> extends StatefulWidge
     this.viewerTitle = "Record",
     this.page = 1,
     this.agent,
+    this.onSelect,
     required this.size,
     required this.sizes,
     required this.fields,
@@ -63,7 +88,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
   // --> State resources
   late (int index, TArticle item)? selected;
   late List<TArticle> records;
-  late int items;
+  late int count;
   late int page;
   late int pages;
   late int size;
@@ -86,7 +111,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     sizes = widget.sizes;
     pages = page;
     size = widget.size;
-    items = 0;
+    count = 0;
     adapter = widget.adapter;
     records = <TArticle>[];
     consume = () => adapter.consume(page, size, <SetViewOrderOptions>[]);
@@ -103,13 +128,13 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
     super.dispose();
   }
 
-  void _updatePagingChanges(SetViewOutput<TArticle> data) {
-    if (items != data.count || pages != data.pages || records != data.records) {
+  void _updatePagingChanges(SetViewOut<TArticle> data) {
+    if (count != data.count || pages != data.pages || records != data.records) {
       WidgetsBinding.instance.addPostFrameCallback(
         (Duration timeStamp) {
           setState(() {
             records = data.records;
-            items = data.count;
+            count = data.count;
             pages = data.pages;
           });
         },
@@ -118,15 +143,18 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
   }
 
   void _selectRecord(int index, TArticle set) {
-    setState(() {
-      if (selected?.$1 == index) {
-        selected = null;
-        detailsAnimationController.reverse();
-      } else {
-        selected = (index, set);
-        detailsAnimationController.forward();
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (selected?.$1 == index) {
+          selected = null;
+          detailsAnimationController.reverse();
+        } else {
+          selected = (index, set);
+          detailsAnimationController.forward();
+        }
+        if (widget.onSelect != null) widget.onSelect!(true);
+      });
+    }
   }
 
   @override
@@ -139,14 +167,14 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
             height: constrains.minHeight,
           );
         }
-    
+
         final Size viewSize = pageBounds.biggest;
         final bool detailsFullDisplay = viewSize.width <= (_kDetailsWidth * 2);
         final Animation<double> detailsDisplayAnimation = Tween<double>(
           begin: 0,
           end: detailsFullDisplay ? viewSize.width : _kDetailsWidth,
         ).animate(detailsAnimationController);
-    
+
         return SizedBox(
           width: viewSize.width,
           child: AnimatedBuilder(
@@ -154,7 +182,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
             builder: (_, __) {
               final double animationComputationValue = viewSize.width - detailsDisplayAnimation.value;
               final double cellWidth = animationComputationValue / widget.fields.length;
-    
+
               return Stack(
                 children: <Widget>[
                   // --> Table
@@ -203,13 +231,13 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                         ),
                                         successBuilder: (_, SetViewOutput<TArticle> data) {
                                           _updatePagingChanges(data);
-    
+
                                           return SizedBox(
                                             height: pageBounds.maxHeight - 100,
                                             child: SingleChildScrollView(
                                               child: Column(
                                                 children: List<Widget>.generate(
-                                                  data.length,
+                                                  data.records.length,
                                                   (int index) {
                                                     return CSMPointerHandler(
                                                       cursor: SystemMouseCursors.click,
@@ -239,7 +267,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                                                         maxLines: 2,
                                                                         overflow: TextOverflow.ellipsis,
                                                                       );
-    
+
                                                                       if (!field.tip) {
                                                                         return textWidget;
                                                                       }
@@ -285,7 +313,7 @@ class _TWSArticleTableState<TArticle extends CSMEncodeInterface> extends State<T
                                 size: size,
                                 items: records.length,
                                 sizes: sizes,
-                                total: items,
+                                total: count,
                                 onChange: updatePaging,
                               ),
                             ),
