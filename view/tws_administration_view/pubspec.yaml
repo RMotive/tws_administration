@@ -1,15 +1,15 @@
 name: tws_administration_view
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0-alpha
 
 environment:
-  sdk: '>=3.1.5 <4.0.0'
+  sdk: ">=3.1.5 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_web_plugins: 
+  flutter_web_plugins:
     sdk: flutter
   go_router: ^14.0.2
   http: ^1.2.0
@@ -29,8 +29,7 @@ dependencies:
     git:
       url: https://github.com/RMotive/tws_foundation
       path: client/tws_foundation_client
-      ref: development
-
+      ref: development#59
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +38,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets: 
+  assets:
     - assets/
     - assets/business/

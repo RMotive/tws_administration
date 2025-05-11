@@ -1,14 +1,14 @@
 part of 'tws_autocomplete_field.dart';
 
 class _TWSAutocompleteFuture<T> extends StatelessWidget {
-  final Future<List<SetViewOut<dynamic>>> Function() consume;
+  final Future<List<SetViewOutput<dynamic>>> Function() consume;
   final ScrollController controller;
   final List<T> suggestions;
   final double tileHeigth;
   final CSMColorThemeOptions theme;
   final String Function(T?) displayLabel;
   final void Function(String label) onTap;
-  final List<T> Function(List<SetViewOut<dynamic>> data) onFirstBuild;
+  final List<T> Function(List<SetViewOutput<dynamic>> data) onFirstBuild;
   final Color loadingColor;
   final Color hoverTextColor;
   final bool firstBuild;
@@ -29,9 +29,9 @@ class _TWSAutocompleteFuture<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CSMConsumer<List<SetViewOut<dynamic>>>(
+    return CSMConsumer<List<SetViewOutput<dynamic>>>(
       consume: consume,
-        emptyCheck: (List<SetViewOut<dynamic>> data) {
+        emptyCheck: (List<SetViewOutput<dynamic>> data) {
         return false;
       },
       loadingBuilder: (_) {
@@ -44,7 +44,7 @@ class _TWSAutocompleteFuture<T> extends StatelessWidget {
           ),
         );
       },
-        errorBuilder: (BuildContext ctx, Object? error, List<SetViewOut<dynamic>>? data) {
+        errorBuilder: (BuildContext ctx, Object? error, List<SetViewOutput<dynamic>>? data) {
         return const Padding(
           padding: EdgeInsets.all(10),
           child: TWSDisplayFlat(
@@ -52,7 +52,7 @@ class _TWSAutocompleteFuture<T> extends StatelessWidget {
           ),
         );
       },
-        successBuilder: (BuildContext ctx, List<SetViewOut<dynamic>> rawData) {  
+        successBuilder: (BuildContext ctx, List<SetViewOutput<dynamic>> rawData) {  
         return suggestions.isNotEmpty || firstBuild? Scrollbar(
           trackVisibility: true,
           thumbVisibility: true,

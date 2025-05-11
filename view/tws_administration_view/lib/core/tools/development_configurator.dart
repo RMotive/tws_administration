@@ -13,8 +13,8 @@ class DevelopmentConfigurator {
     SessionStorage sessionStorage = SessionStorage.i;
     if (sessionStorage.isSession) return;
 
-    final MainResolver<Session> service = await Sources.foundationSource.security.authenticate(DevelopmentSecrets.credentials).timeout(4.seconds);
-    Session privileges = await service.act(Session.des);
+    final ServiceResolver<ServerSession> service = await Sources.foundationSource.security.authenticate(DevelopmentSecrets.credentials).timeout(4.seconds);
+    ServerSession privileges = await service.act(ServerSession.des);
     sessionStorage.storeSession(privileges);
   }
 }

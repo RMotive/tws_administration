@@ -99,7 +99,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
   late final TWSAThemeBase theme;
 
   /// Consume method declaration in [adapter] property.
-  late final Future<List<SetViewOut<dynamic>>> Function()? consume;
+  late final Future<List<SetViewOutput<dynamic>>> Function()? consume;
 
   /// Internal scroll controller for overlay scrolling.
   late final ScrollController scrollController;
@@ -338,10 +338,10 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with 
                                               hoverTextColor: pageColorTheme.fore,
                                               firstBuild: firstbuild,
                                               onTap: (String label) => onTileTap(label),
-                                              onFirstBuild: (List<SetViewOut<dynamic>> data) {
+                                              onFirstBuild: (List<SetViewOutput<dynamic>> data) {
                                                 //Only do the builder callback once.
                                                 //Stores the properties result to avoid unnecesary callbacks on rebuild.
-                                                for (SetViewOut<dynamic> view in data) {
+                                                for (SetViewOutput<dynamic> view in data) {
                                     rawOptionsList = <T>[...rawOptionsList, ...view.records];
                                                 }
                                                 _search(ctrl.text);
