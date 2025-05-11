@@ -80,8 +80,6 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
   /// This property has a default method initialitation that always return TRUE.
   final bool Function(T?)? hasKeyValue;
 
-  
-
   const TWSAutoCompleteField({
     super.key,
     required this.onChanged,
@@ -102,23 +100,19 @@ class TWSAutoCompleteField<T> extends StatefulWidget {
     this.quantityResults = 10,
     this.suffixResultLabel,
     this.hasKeyValue,
-  })  : assert(localList != null || adapter != null,
-            "At least one data type must be assigned"),
-        assert(localList == null || adapter == null,
-            "Only one data type must be assigned (local or future-async)");
+  })  : assert(localList != null || adapter != null, "At least one data type must be assigned"),
+        assert(localList == null || adapter == null, "Only one data type must be assigned (local or future-async)");
 
   @override
-  State<TWSAutoCompleteField<T>> createState() =>
-      _TWSAutoCompleteFieldState<T>();
+  State<TWSAutoCompleteField<T>> createState() => _TWSAutoCompleteFieldState<T>();
 }
 
-class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
-    with SingleTickerProviderStateMixin {
+class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>> with SingleTickerProviderStateMixin {
   final GlobalKey _fieldKey = GlobalKey();
   late TWSAThemeBase theme;
 
   /// Consume method declaration in [adapter] property.
-  Future<List<SetViewOut<dynamic>>> Function()? consume;
+  late final Future<List<SetViewOutput<dynamic>>> Function()? consume;
 
   /// Internal scroll controller for overlay scrolling.
   late final ScrollController scrollController;
@@ -166,7 +160,6 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
   /// Stores the previous query value.
   String previousQuery = "";
 
-
   /// Methoth that verify if the [TWSTextField] component has a valid input selection.
   bool verifySelection() {
     if (selectedOption != null) return true;
@@ -184,8 +177,9 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
     selectedOption = tapSelection;
     String query = input.toLowerCase().trim();
     List<T> exactCoincidense = <T>[];
+
     /// filter the Original options list based on user input, for local data.
-    if(widget.adapter == null){
+    if (widget.adapter == null) {
       if (query.isNotEmpty) {
         //Do a search for the method input variable for parcial results.
         suggestionsList = rawOptionsList.where((T set) {
@@ -198,7 +192,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
         }).toList();
 
         if (suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
-          if(!firstbuild) ctrl.text = input;
+          if (!firstbuild) ctrl.text = input;
           selectedOption = exactCoincidense.first;
         }
       } else {
@@ -211,28 +205,28 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
         });
       }
       previousSelection = selectedOption;
-    }else{
+    } else {
       // Search data using the adapter given in parameters.
       // When this method is used, is necesary to tap in any option to set an item selection.
-      if(query.isNotEmpty){
+      if (query.isNotEmpty) {
         //Do a search for exact coincidenses.
-        if(tapSelection == null){
+        if (tapSelection == null) {
           exactCoincidense = suggestionsList.where((T set) {
             return widget.displayValue(set).toLowerCase() == query;
           }).toList();
-          
+
           if (!firstbuild && suggestionsList.isNotEmpty && exactCoincidense.isNotEmpty) {
             selectedOption = exactCoincidense.first;
           }
         }
-      }  
+      }
 
       // Trigger the Onchange callback when a search is triggered.
-      if(!firstbuild){
+      if (!firstbuild) {
         //Check if is necesary a list refresh.
-        if(tapSelection == null && (previousQuery.isNotEmpty || query.isNotEmpty)) agent.refresh();
-        if(previousSelection != selectedOption) widget.onChanged(selectedOption);
-      } 
+        if (tapSelection == null && (previousQuery.isNotEmpty || query.isNotEmpty)) agent.refresh();
+        if (previousSelection != selectedOption) widget.onChanged(selectedOption);
+      }
       previousSelection = selectedOption;
       previousQuery = query;
     }
@@ -290,7 +284,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
       ctrl.text = label;
       search(
         label,
-        tapSelection:  item,
+        tapSelection: item,
       );
       show = false;
     });
@@ -298,7 +292,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
 
   @override
   void initState() {
-    theme = getTheme( 
+    theme = getTheme(
       updateEfect: themeUpdateListener,
     );
     hasKeyValue = widget.hasKeyValue ?? (T? set) => true;
@@ -308,7 +302,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
     ctrl = TextEditingController(text: widget.initialValue != null ? widget.displayValue(widget.initialValue) : null);
     focus = widget.focus ?? FocusNode();
     overlayController = OverlayPortalController();
-    if(widget.initialValue != null) selectedOption = widget.initialValue;
+    if (widget.initialValue != null) selectedOption = widget.initialValue;
     if (widget.adapter != null) {
       agent = CSMConsumerAgent();
       consume = () => widget.adapter!.consume(1, widget.quantityResults, <SetViewOrderOptions>[], "");
@@ -323,7 +317,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
   void didUpdateWidget(covariant TWSAutoCompleteField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     //Set a new local list if changes.
-    if(widget.localList != null && (widget.localList != oldWidget.localList)){
+    if (widget.localList != null && (widget.localList != oldWidget.localList)) {
       rawOptionsList = widget.localList!;
       suggestionsList = rawOptionsList;
     }
@@ -443,7 +437,7 @@ class _TWSAutoCompleteFieldState<T> extends State<TWSAutoCompleteField<T>>
                                     for (SetViewOut<dynamic> view in data) {
                                       suggestionsList = <T>[...view.records];
                                     }
-                                    
+
                                     firstbuild = false;
                                     return suggestionsList;
                                   },

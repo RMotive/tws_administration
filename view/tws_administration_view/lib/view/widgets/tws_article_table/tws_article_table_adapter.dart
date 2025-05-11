@@ -16,7 +16,7 @@ abstract class TWSArticleTableAdapter<TSet extends CSMEncodeInterface> {
   /// [range] the current selected records per page range.
   ///
   /// [orderings] self-handled table orderings.
-  Future<SetViewOut<TSet>> consume(int page, int range, List<SetViewOrderOptions> orderings);
+  Future<SetViewOutput<TSet>> consume(int page, int range, List<SetViewOrderOptions> orderings);
 
   /// method contract used to determine if the selected table row can display and build a detailed view section.
   ///

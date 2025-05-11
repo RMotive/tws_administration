@@ -146,8 +146,8 @@ final class _TableAdapter extends TWSArticleTableAdapter<YardLog> {
   }
 
   @override
-  Future<SetViewOut<YardLog>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
-    final SetViewOptions<YardLog> options = SetViewOptions<YardLog>(false, range, page, null, orderings, <SetViewFilterNodeInterface<YardLog>>[]);
+  Future<SetViewOutput<YardLog>> consume(int page, int range, List<SetViewOrderOptions> orderings) async {
+    final SetViewInput<YardLog> options = SetViewInput<YardLog>(false, range, page, null, orderings, <SetViewFilterNodeInterface<YardLog>>[]);
     String auth = _sessionStorage.session!.token;
     MainResolver<SetViewOut<YardLog>> resolver = await source.yardLogs.view(options, auth);
 
